@@ -1,0 +1,506 @@
+{$Content}
+#email-box.clearfix
+  .row
+    .col-lg-12
+      #email-header-mobile.visible-xs.visible-sm.clearfix
+        #email-header-title-mobile.pull-left
+          i.fa.fa-inbox
+          |  Inbox
+        a.btn.btn-success.email-compose-btn.pull-right(href='email-compose.html')
+          i.fa.fa-pencil-square-o
+          |  Compose email
+      header#email-header.clearfix
+        #email-header-title.visible-md.visible-lg
+          i.fa.fa-inbox
+          |  Inbox
+        #email-header-tools
+          .btn-group
+            button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Select')
+              i.fa.fa-square-o
+              span.caret
+            ul.dropdown-menu
+              li
+                a(href='#') All
+              li
+                a(href='#') None
+              li
+                a(href='#') Read
+              li
+                a(href='#') Unread
+              li
+                a(href='#') Starred
+              li
+                a(href='#') Unstarred
+          .btn-group
+            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Refresh')
+              i.fa.fa-refresh
+            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Spam')
+              i.fa.fa-exclamation-circle
+            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Erase')
+              i.fa.fa-trash-o
+          .btn-group
+            button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Labels')
+              i.fa.fa-tag
+              span.caret
+            ul.dropdown-menu.dropdown-menu-right
+              li
+                a(href='#')
+                  i.fa.fa-circle.green
+                  |  Work
+              li
+                a(href='#')
+                  i.fa.fa-circle.red
+                  |  Home
+              li
+                a(href='#')
+                  i.fa.fa-circle.yellow
+                  |  Personal
+              li
+                a(href='#')
+                  i.fa.fa-circle.purple
+                  |  Documents
+        #email-header-pagination.pull-right
+          .btn-group.pagination.pull-right
+            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Previous')
+              i.fa.fa-chevron-left
+            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Next')
+              i.fa.fa-chevron-right
+          .num-items.pull-right.hidden-xs
+            | 1-50 from 5,912
+  .row
+    .col-lg-12
+      #email-navigation.email-nav-nano.hidden-xs.hidden-sm.has-scrollbar
+        .email-nav-nano-content(tabindex='0', style='right: -13px;')
+          a.btn.btn-success.email-compose-btn(href='email-compose.html')
+            i.fa.fa-pencil-square-o
+            |  Compose email
+          ul#email-nav-items.clearfix
+            li.active
+              a(href='#')
+                i.fa.fa-inbox
+                | Inbox
+                span.label.label-primary.pull-right 83
+            li
+              a(href='#')
+                i.fa.fa-star
+                | Starred
+            li
+              a(href='#')
+                i.fa.fa-pencil
+                | Drafts
+            li
+              a(href='#')
+                i.fa.fa-envelope
+                | Sent
+                span.label.label-default.pull-right 11
+            li
+              a(href='#')
+                i.fa.fa-trash-o
+                | Trash
+                span.label.label-default.pull-right 1,292
+          #email-nav-labels-wrapper
+            .email-nav-headline
+              | Labels
+            ul#email-nav-labels.clearfix
+              li
+                a(href='#')
+                  i.fa.fa-circle.emerald
+                  | Important
+              li
+                a(href='#')
+                  i.fa.fa-circle.red
+                  | Home
+              li
+                a(href='#')
+                  i.fa.fa-circle.green
+                  | Work
+              li
+                a(href='#')
+                  i.fa.fa-circle.yellow
+                  | Personal
+              li
+                a(href='#')
+                  i.fa.fa-circle.purple
+                  | Documents
+        .nano-pane(style='display: none;')
+          .nano-slider(style='height: 551px; transform: translate(0px, 0px);')
+      #email-content.email-content-nano.has-scrollbar(style='height: 564px;')
+        .email-content-nano-content(tabindex='0', style='right: -13px;')
+          ul#email-list
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-1(type='checkbox')
+                  label(for='m-checkbox-1')
+              .star
+                a
+              .name
+                | Mila Kunis
+              .message
+                span.label.label-success Work
+                span.subject Like your new movie -
+                span.body Hi beauty, I watched your movies last night.
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date 9:34 am
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-2(type='checkbox')
+                  label(for='m-checkbox-2')
+              .star
+                a
+              .name
+                | Robert Downey Jr.
+              .message
+                span.subject Happy birthday -
+                span.body I wish you all the best.
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date Sep 14
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-3(type='checkbox')
+                  label(for='m-checkbox-3')
+              .star
+                a
+              .name
+                | Ryan Gosling
+              .message
+                span.subject (no subject) -
+                span.body How you doing? Answer The term 'How are you doing" means...
+              .meta-info
+                span.date Sep 11
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-4(type='checkbox', checked='checked')
+                  label(for='m-checkbox-4')
+              .star
+                a.starred
+              .name
+                | Mila Kunis
+              .message
+                span.label.label-primary Important
+                span.subject Like your new movie -
+                span.body Hi beauty, I watched your movies last night and really...
+              .meta-info
+                span.date 9:34 am
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-8(type='checkbox')
+                  label(for='m-checkbox-8')
+              .star
+                a
+              .name
+                | Robert Downey Jr.
+              .message
+                span.subject Happy birthday -
+                span.body I wish you all the best.
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date Sep 14
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-5(type='checkbox')
+                  label(for='m-checkbox-5')
+              .star
+                a
+              .name
+                | Emma Watson
+              .message
+                span.label.label-danger Personal
+                span.subject Meet me for coffee -
+                span.body Hi Scarlet, we should meet tomorrow. Emma.
+              .meta-info
+                span.date Sep 10
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-6(type='checkbox')
+                  label(for='m-checkbox-6')
+              .star
+                a
+              .name
+                | Angelina Jolie
+              .message
+                span.label.label-success Work
+                span.subject Wedding invitation -
+                span.body I would like to invite to our secret wedding with Brad.
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date Sep 08
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-9(type='checkbox')
+                  label(for='m-checkbox-9')
+              .star
+                a
+              .name
+                | Ryan Gosling
+              .message
+                span.subject (no subject) -
+                span.body How you doing? Answer The term 'How are you doing" means...
+              .meta-info
+                span.date Sep 11
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-7(type='checkbox')
+                  label(for='m-checkbox-7')
+              .star
+                a
+              .name
+                | Adriana Lima
+              .message
+                span.subject New Victoria secret collection -
+                span.body Check it out.
+              .meta-info
+                span.date Sep 02
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-10(type='checkbox', checked='checked')
+                  label(for='m-checkbox-10')
+              .star
+                a.starred
+              .name
+                | Mila Kunis
+              .message
+                span.label.label-primary Important
+                span.subject Like your new movie -
+                span.body Hi beauty, I watched your movies last night and really...
+              .meta-info
+                span.date 9:34 am
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-11(type='checkbox')
+                  label(for='m-checkbox-11')
+              .star
+                a.starred
+              .name
+                | Emma Watson
+              .message
+                span.subject Meet me for coffee -
+                span.body Hi Scarlet, we should meet tomorrow. Emma.
+              .meta-info
+                span.date Sep 10
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-14(type='checkbox')
+                  label(for='m-checkbox-14')
+              .star
+                a
+              .name
+                | Robert Downey Jr.
+              .message
+                span.subject Happy birthday -
+                span.body I wish you all the best.
+              .meta-info
+                span.date Sep 14
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-13(type='checkbox')
+                  label(for='m-checkbox-13')
+              .star
+                a
+              .name
+                | Adriana Lima
+              .message
+                span.subject New Victoria secret collection -
+                span.body Check it out.
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date Sep 02
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-12(type='checkbox')
+                  label(for='m-checkbox-12')
+              .star
+                a
+              .name
+                | Angelina Jolie
+              .message
+                span.label.label-primary Important
+                span.subject Wedding invitation -
+                span.body I would like to invite to our secret wedding with Brad.
+              .meta-info
+                span.date Sep 08
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-16(type='checkbox', checked='checked')
+                  label(for='m-checkbox-16')
+              .star
+                a.starred
+              .name
+                | Mila Kunis
+              .message
+                span.subject Like your new movie -
+                span.body Hi beauty, I watched your movies last night and really...
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date 9:34 am
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-15(type='checkbox')
+                  label(for='m-checkbox-15')
+              .star
+                a
+              .name
+                | Ryan Gosling
+              .message
+                span.subject (no subject) -
+                span.body How you doing? Answer The term 'How are you doing" means...
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date Sep 11
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-18(type='checkbox')
+                  label(for='m-checkbox-18')
+              .star
+                a
+              .name
+                | Angelina Jolie
+              .message
+                span.subject Wedding invitation -
+                span.body I would like to invite to our secret wedding with Brad.
+              .meta-info
+                span.date Sep 08
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-17(type='checkbox')
+                  label(for='m-checkbox-17')
+              .star
+                a
+              .name
+                | Emma Watson
+              .message
+                span.subject Meet me for coffee -
+                span.body Hi Scarlet, we should meet tomorrow. Emma.
+              .meta-info
+                span.date Sep 10
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-2(type='checkbox')
+                  label(for='m-checkbox-2')
+              .star
+                a
+              .name
+                | Robert Downey Jr.
+              .message
+                span.subject Happy birthday -
+                span.body I wish you all the best.
+              .meta-info
+                span.date Sep 14
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-3(type='checkbox')
+                  label(for='m-checkbox-3')
+              .star
+                a
+              .name
+                | Ryan Gosling
+              .message
+                span.subject (no subject) -
+                span.body How you doing? Answer The term 'How are you doing" means...
+              .meta-info
+                span.date Sep 11
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-16(type='checkbox', checked='checked')
+                  label(for='m-checkbox-16')
+              .star
+                a.starred
+              .name
+                | Mila Kunis
+              .message
+                span.subject Like your new movie -
+                span.body Hi beauty, I watched your movies last night and really...
+              .meta-info
+                span.date 9:34 am
+            li.unread.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-14(type='checkbox')
+                  label(for='m-checkbox-14')
+              .star
+                a
+              .name
+                | Robert Downey Jr.
+              .message
+                span.subject Happy birthday -
+                span.body I wish you all the best.
+              .meta-info
+                span.date Sep 14
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-13(type='checkbox')
+                  label(for='m-checkbox-13')
+              .star
+                a
+              .name
+                | Adriana Lima
+              .message
+                span.subject New Victoria secret collection -
+                span.body Check it out.
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date Sep 02
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-12(type='checkbox')
+                  label(for='m-checkbox-12')
+              .star
+                a
+              .name
+                | Angelina Jolie
+              .message
+                span.label.label-primary Important
+                span.subject Wedding invitation -
+                span.body I would like to invite to our secret wedding with Brad.
+              .meta-info
+                span.date Sep 08
+            li.clickable-row(data-href='email-detail.html')
+              .chbox
+                .checkbox-nice
+                  input#m-checkbox-17(type='checkbox')
+                  label(for='m-checkbox-17')
+              .star
+                a
+              .name
+                | Emma Watson
+              .message
+                span.subject Meet me for coffee -
+                span.body Hi Scarlet, we should meet tomorrow. Emma.
+              .meta-info
+                a.attachment(href='#')
+                  i.fa.fa-paperclip
+                span.date Sep 10
+        .nano-pane
+          .nano-slider(style='height: 274px; transform: translate(0px, 0px);')

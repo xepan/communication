@@ -1,20 +1,13 @@
 <?php
-
-/**
-* description: ATK Page
-* 
-* @author : Gowrav Vishwakarma
-* @email : gowravvishwakarma@gmail.com, info@xavoc.com
-* @website : http://xepan.org
-* 
-*/
-
 namespace xepan\communication;
 
-class page_emails extends \Page {
-	public $title='Emails';
-
+class page_emails extends \Page{
 	function init(){
 		parent::init();
+
+	}
+	
+	function defaultTemplate(){
+		return['page/emails'];
 	}
 }
