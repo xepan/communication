@@ -10,7 +10,9 @@ class Initiator extends \Controller_Addon {
 		$this->routePages('xepan_communication');
 		$this->addLocation(array('template'=>'templates'));
 
-		$this->app->side_menu->addItem('Emails','xepan_communication_emails');
+		if($this->app->is_admin){
+			$this->app->side_menu->addItem('Emails','xepan_communication_emails');
+		}
 		
 	}
 }
