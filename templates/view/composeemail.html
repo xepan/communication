@@ -1,0 +1,144 @@
+{$Content}
+<div id="email-box" class="clearfix">
+  <div class="row">
+    <div class="col-lg-12">
+      <div id="email-header-mobile" class="visible-xs visible-sm clearfix">
+        <div id="email-header-title-mobile" class="pull-left"><i class="fa fa-inbox"></i> Inbox</div><a href="email-compose.html" class="btn btn-success email-compose-btn pull-right"><i class="fa fa-pencil-square-o"></i> Compose email</a>
+      </div>
+      <header id="email-header" class="clearfix">
+        <div id="email-header-title" class="visible-md visible-lg"><i class="fa fa-inbox"></i> Inbox</div>
+        <div id="email-header-tools">
+          <div class="btn-group"><a href="email-inbox.html" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Back to inbox</a></div>
+          <div class="btn-group">
+            <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Refresh" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
+            <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Spam" class="btn btn-primary"><i class="fa fa-exclamation-circle"></i></button>
+            <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Erase" class="btn btn-primary"><i class="fa fa-trash-o"></i></button>
+          </div>
+          <div class="btn-group">
+            <button title="" type="button" data-toggle="dropdown" data-original-title="Labels" class="btn btn-primary dropdown-toggle has-tooltip"><i class="fa fa-tag"></i><span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="#"><i class="fa fa-circle green"></i> Work</a></li>
+              <li><a href="#"><i class="fa fa-circle red"></i> Home</a></li>
+              <li><a href="#"><i class="fa fa-circle yellow"></i> Personal</a></li>
+              <li><a href="#"><i class="fa fa-circle purple"></i> Documents</a></li>
+            </ul>
+          </div>
+        </div>
+        <div id="email-header-pagination" class="pull-right hidden-xs">
+          <div class="btn-group pagination pull-right">
+            <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Previous" class="btn btn-primary"><i class="fa fa-chevron-left"></i></button>
+            <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Next" class="btn btn-primary"><i class="fa fa-chevron-right"></i></button>
+          </div>
+          <div class="num-items pull-right hidden-xs">1-50 from 5,912</div>
+        </div>
+      </header>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div id="email-navigation" class="email-nav-nano hidden-xs hidden-sm has-scrollbar">
+        <ul id="email-nav-items" class="clearfix">
+          <li><a href="email-inbox.html"><i class="fa fa-inbox"></i>Inbox<span class="label label-default pull-right">83</span></a></li>
+          <li><a href="#"><i class="fa fa-star"></i>Starred</a></li>
+          <li><a href="#"><i class="fa fa-pencil"></i>Drafts</a></li>
+          <li><a href="#"><i class="fa fa-envelope"></i>Sent<span class="label label-default pull-right">11</span></a></li>
+          <li><a href="#"><i class="fa fa-trash-o"></i>Trash<span class="label label-default pull-right">1,292</span></a></li>
+        </ul>
+        <div id="email-nav-labels-wrapper">
+          <div class="email-nav-headline">Labels</div>
+          <ul id="email-nav-labels" class="clearfix">
+            <li><a href="#"><i class="fa fa-circle emerald"></i>Important</a></li>
+            <li><a href="#"><i class="fa fa-circle red"></i>Home</a></li>
+            <li><a href="#"><i class="fa fa-circle green"></i>Work</a></li>
+            <li><a href="#"><i class="fa fa-circle yellow"></i>Personal</a></li>
+            <li><a href="#"><i class="fa fa-circle purple"></i>Documents</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="display: none;" class="nano-pane">
+        <div style="height: 466px; transform: translate(0px, 0px);" class="nano-slider"></div>
+      </div>
+      <div id="email-new" style="height: 478px;" class="email-new-nano has-scrollbar">
+        <div tabindex="0" style="right: -12px;" class="email-new-nano-content">
+          <div id="email-new-inner">
+            <div id="email-new-title" class="clearfix"><span class="subject">New Email</span></div>
+            <form>
+              <div id="email-new-header">
+                <div class="row form-group">
+                  <label for="exampleInpTo" class="col-md-2">To:</label>
+                  <div class="col-md-10">
+                    <input id="exampleInpTo" type="text" value="mila@kunis.com,ryan@gosling.com" placeholder="Enter recepients" class="form-control-s2 email-recepients"/>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <label for="exampleInpCc" class="col-md-2">CC:</label>
+                  <div class="col-md-10">
+                    <input id="exampleInpCc" type="text" value="angelina@jolie.com" placeholder="Enter recepients" class="form-control-s2 email-recepients"/>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <label for="exampleInpSubject" class="col-md-2">Subject:</label>
+                  <div class="col-md-10">
+                    <input id="exampleInpSubject" type="text" placeholder="Enter subject" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+              <div id="email-new-body">
+                <div class="row">
+                  <label class="visible-xs">Content:</label>
+                  <div class="col-md-12">
+                    <div id="alerts"></div>
+                    <div data-target="#editor" data-role="editor-toolbar" class="btn-toolbar editor-toolbar hidden-xs">
+                      <div class="btn-group"><a title="Font" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-font"></i><b class="caret"></b></a>
+                        <ul class="dropdown-menu"></ul>
+                      </div>
+                      <div class="btn-group"><a title="Font Size" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-text-height"></i><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+                          <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+                          <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                        </ul>
+                      </div>
+                      <div class="btn-group"><a title="Bold (Ctrl/Cmd+B)" data-edit="bold" class="btn btn-default"><i class="fa fa-bold"></i></a><a title="Italic (Ctrl/Cmd+I)" data-edit="italic" class="btn btn-default"><i class="fa fa-italic"></i></a><a title="Strikethrough" data-edit="strikethrough" class="btn btn-default"><i class="fa fa-strikethrough"></i></a><a title="Underline (Ctrl/Cmd+U)" data-edit="underline" class="btn btn-default"><i class="fa fa-underline"></i></a></div>
+                      <div class="btn-group"><a title="Bullet list" data-edit="insertunorderedlist" class="btn btn-default"><i class="fa fa-list-ul"></i></a><a title="Number list" data-edit="insertorderedlist" class="btn btn-default"><i class="fa fa-list-ol"></i></a><a title="Reduce indent (Shift+Tab)" data-edit="outdent" class="btn btn-default"><i class="fa fa-dedent"></i></a><a title="Indent (Tab)" data-edit="indent" class="btn btn-default"><i class="fa fa-indent"></i></a></div>
+                      <div class="btn-group"><a title="Align Left (Ctrl/Cmd+L)" data-edit="justifyleft" class="btn btn-default"><i class="fa fa-align-left"></i></a><a title="Center (Ctrl/Cmd+E)" data-edit="justifycenter" class="btn btn-default"><i class="fa fa-align-center"></i></a><a title="Align Right (Ctrl/Cmd+R)" data-edit="justifyright" class="btn btn-default"><i class="fa fa-align-right"></i></a><a title="Justify (Ctrl/Cmd+J)" data-edit="justifyfull" class="btn btn-default"><i class="fa fa-align-justify"></i></a></div>
+                      <div class="btn-group"><a title="Hyperlink" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-link"></i></a>
+                        <div class="dropdown-menu input-append">
+                          <input type="text" data-edit="createLink" placeholder="URL" class="span2"/>
+                          <button type="button" class="btn">Add</button>
+                        </div><a title="Remove Hyperlink" data-edit="unlink" class="btn btn-default"><i class="fa fa-cut"></i></a>
+                      </div>
+                      <div class="btn-group"><a id="pictureBtn" title="Insert picture (or just drag &amp; drop)" class="btn btn-default"><i class="fa fa-picture-o"></i></a>
+                        <input type="file" data-edit="insertImage" data-target="#pictureBtn" data-role="magic-overlay"/>
+                      </div>
+                      <div class="btn-group"><a title="Undo (Ctrl/Cmd+Z)" data-edit="undo" class="btn btn-default"><i class="fa fa-undo"></i></a><a title="Redo (Ctrl/Cmd+Y)" data-edit="redo" class="btn btn-default"><i class="fa fa-repeat"></i></a></div>
+                      <input id="voiceBtn" type="text" x-webkit-speech="" data-edit="inserttext"/>
+                    </div>
+                    <div id="editor" class="wysiwyg-editor">Go ahead…</div>
+                  </div>
+                </div>
+              </div>
+              <div id="email-new-footer">
+                <div class="row">
+                  <div class="col-xs-12 col-md-10 col-md-offset-2">
+                    <div class="pull-right">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-default"><i class="fa fa-times"></i> Cancel</button>
+                      </div>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-success"><i class="fa fa-send"></i> Send email</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="nano-pane">
+          <div style="height: 344px; transform: translate(0px, 0px);" class="nano-slider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

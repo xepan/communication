@@ -8,6 +8,6 @@ class page_emails extends \Page{
 	}
 	
 	function defaultTemplate(){
-		return['page/emails'];
+		return['view/emails'];
 	}
 }
