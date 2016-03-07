@@ -1,0 +1,35 @@
+<?php
+
+/**
+* description: ATK Model
+* 
+* @author : Gowrav Vishwakarma
+* @email : gowravvishwakarma@gmail.com, info@xavoc.com
+* @website : http://xepan.org
+* 
+*/
+
+namespace xepan\communication;
+
+class Model_Communication extends \xepan\base\Model_Document{
+
+	function init(){
+		parent::init();
+		
+		$comm_j = $this->join('communication.document_id');
+		$comm_j->hasOne('xepan\base\Contact','from_id');
+		$comm_j->hasOne('xepan\base\Contact','to_id');
+		$comm_j->hasOne('xepan\base\Document','related_document_id');
+
+		$comm_j->addField('from_raw');
+		$comm_j->addField('to_raw');
+
+		$comm_j->addField('title');
+		$comm_j->addField('description');
+
+		$comm_j->addField('communication_type');
+		
+
+		$this->addCondition('type','Communication');
+	}
+}
