@@ -9,15 +9,11 @@
 * 
 */
 
-namespace xepan\communication;
-
-class Model_Communication_Email extends Model_Communication{
-	
-	public $status=['Draft','Sent','Received','Trashed'];
+class Model_Communication_Email_Received extends Model_Communication_Email{
 
 	function init(){
 		parent::init();
 		
-		$this->addCondition('communication_type','Email');		
+		$this->getElement('status')->defaultValue('Received');		
 	}
 }

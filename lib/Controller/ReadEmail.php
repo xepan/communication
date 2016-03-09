@@ -28,7 +28,7 @@ class Controller_ReadEmail extends \AbstractController {
 
 	function fetch($mail_box){
 		$this->imap->setActiveMailbox($mail_box);
-		return $this->imap-getEmails(0,3);
+		return $this->imap->getEmails(0,3);
 	}
 
 	function getMailBoxes(){

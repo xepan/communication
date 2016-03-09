@@ -7,15 +7,12 @@ class page_cron extends \Page {
 	function init(){
 		parent::init();
 
-		$emails = $this->add('xepan\base\Model_Epan_EmailSetting');
+		$emails = $this->add('xepan\base\Model_Epan_EmailSetting')
+						->addCondition('is_imap_enabled',true);
 
 		foreach ($emails as $email) {
-			if(!$email['imap_email_password']) continue;
 			$cont = $this->add('xepan\communication\Controller_ReadEmail',['email_setting'=>$email]);
 			$emails = $cont->fetch('INBOX');
-
-			var_dump($emails);
-			exit;
 		}
 	}
 
