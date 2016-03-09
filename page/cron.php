@@ -14,6 +14,9 @@ class page_cron extends \Page {
 			$cont = $this->add('xepan\communication\Controller_ReadEmail',['email_setting'=>$email]);
 			$emails = $cont->fetch('INBOX');
 		}
+			echo json_encode($emails[0]);
+			exit;
+
 	}
 
 }

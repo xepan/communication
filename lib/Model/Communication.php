@@ -20,9 +20,12 @@ class Model_Communication extends \xepan\base\Model_Document{
 		$comm_j->hasOne('xepan\base\Contact','from_id');
 		$comm_j->hasOne('xepan\base\Contact','to_id');
 		$comm_j->hasOne('xepan\base\Document','related_document_id');
-
+		$comm_j->addField('uid');
 		$comm_j->addField('from_raw');
 		$comm_j->addField('to_raw');
+		$comm_j->addField('flags');
+		$comm_j->addField('cc_raw');
+		$comm_j->addField('bcc_raw');
 
 		$comm_j->addField('title');
 		$comm_j->addField('description');

@@ -8,7 +8,7 @@
 * @website : http://xepan.org
 * 
 */
-
+namespace xepan\communication;
 class Model_Communication_Email_Received extends Model_Communication_Email{
 
 	function init(){
