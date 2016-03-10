@@ -13,7 +13,7 @@ namespace xepan\communication;
 
 class Model_Communication_Email extends Model_Communication{
 	
-	public $status=['Draft','Sent','Received','Trashed'];
+	public $status=['Draft','Sent','Outbox','Received','Trashed'];
 
 	function init(){
 		parent::init();
