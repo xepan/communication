@@ -79,7 +79,12 @@
             li.active
               a(href='#')
                 i.fa.fa-inbox
-                | Inbox
+                | Contacts Inbox
+                span.label.label-primary.pull-right 13
+            li
+              a(href='#')
+                i.fa.fa-inbox
+                | Inbox All
                 span.label.label-primary.pull-right 83
             li
               a(href='#')
@@ -106,23 +111,19 @@
               li
                 a(href='#')
                   i.fa.fa-circle.emerald
-                  | Important
+                  | Info
               li
                 a(href='#')
                   i.fa.fa-circle.red
-                  | Home
+                  | Management
               li
                 a(href='#')
                   i.fa.fa-circle.green
-                  | Work
+                  | Support
               li
                 a(href='#')
                   i.fa.fa-circle.yellow
                   | Personal
-              li
-                a(href='#')
-                  i.fa.fa-circle.purple
-                  | Documents
         .nano-pane(style='display: none;')
           .nano-slider(style='height: 551px; transform: translate(0px, 0px);')
       #email-content.email-content-nano.has-scrollbar(style='height: 564px;')

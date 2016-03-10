@@ -2,12 +2,15 @@
 namespace xepan\communication;
 
 class page_emails extends \Page{
+
+	public $title="Emails";
+
 	function init(){
 		parent::init();
 
 	}
 	
 	function defaultTemplate(){
-		return['view/emails'];
+		return['page/emails'];
 	}
 }
