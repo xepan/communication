@@ -15,5 +15,6 @@ class Model_Communication_Email_Received extends Model_Communication_Email{
 		parent::init();
 		
 		$this->getElement('status')->defaultValue('Received');		
+		$this->addCondition('direction','In');
 	}
 }

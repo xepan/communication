@@ -31,7 +31,7 @@ class Model_Communication extends \xepan\base\Model_Document{
 		$comm_j->addField('description');
 
 		$comm_j->addField('tags');
-
+		$comm_j->addField('direction');
 		$comm_j->addField('communication_type');
 		
 
