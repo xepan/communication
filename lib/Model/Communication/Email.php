@@ -11,7 +11,7 @@
 
 namespace xepan\communication;
 
-class Model_Communication_Email extends Model_Communication{
+class Model_Communication_Email extends Model_Communication_Abstract_Email{
 	
 	public $status=['Draft','Sent','Outbox','Received','Trashed'];
 
