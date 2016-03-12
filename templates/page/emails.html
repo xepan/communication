@@ -1,16 +1,9 @@
 
 <div id="email-box" class="clearfix">
-  <div class="col-lg-2">
-    <div id="email-header-mobile" class="visible-xs visible-sm clearfix">
-      <div id="email-header-title-mobile" class="pull-left"><i class="fa fa-inbox"></i> Inbox</div><a href="{url}?page=xepan_communication_composeemail{/}" class="user-link"><a class="btn btn-success email-compose-btn pull-right"><i class="fa fa-pencil-square-o"></i> Compose email</a></a>
-    </div>
-    <header id="email-header" class="clearfix">
-      <div id="email-header-title" class="visible-md visible-lg"><i class="fa fa-inbox"></i> Inbox</div>
-    </header>
-  </div>
+  <div class="row">{$email_header}</div>
   <div class="row">
     <div class="col-lg-12">
-      <div id="email-navigation" style="margin-top:4% " class="email-nav-nano hidden-xs hidden-sm has-scrollbar">
+      <div id="email-navigation" style=" " class="email-nav-nano hidden-xs hidden-sm has-scrollbar">
         <div tabindex="0" style="right: -13px;" class="email-nav-nano-content"><a href="{url}?page=xepan_communication_composeemail{/}" class="btn btn-success email-compose-btn"><i class="fa fa-pencil-square-o"></i> Compose email</a>{$email_navigation}
           {$email_labels}
         </div>
