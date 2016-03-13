@@ -2,6 +2,10 @@
             .email-nav-headline
               | Labels
             ul#email-nav-labels.clearfix
+              li.active
+                a.mailbox(href='#' data-mail='%')
+                  i.fa.fa-circle.emerald
+                  | All
               {rows}{row}
               li.active
                 a.mailbox(href='#' data-mail='{$email_username}')

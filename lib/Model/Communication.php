@@ -40,6 +40,8 @@ class Model_Communication extends \xepan\base\Model_Document{
 		
 		$comm_j->addField('mailbox');
 
+		$comm_j->addField('detailed')->type('boolean')->defaultValue(false);
+
 		$this->addCondition('type','Communication');
 	}
 }

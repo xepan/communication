@@ -16,7 +16,7 @@ class page_cron extends \Page {
 			$mbs = ['INBOX'] ; // $cont->getMailBoxes();
 
 			foreach ($mbs as $mb) {
-				$emails = $cont->fetch($mb,'ALL',0,3);
+				$emails = $cont->fetch($mb,'ALL',0,10,false,false);
 				foreach ($emails as $uid => $email) {
 					if(!is_array($email)) continue;
 					try{
@@ -32,10 +32,23 @@ class page_cron extends \Page {
 						$email_model['flags']=$email['flags'];
 						$email_model['title']=$email['subject'];
 						$email_model['description']=$body;
+						$email_model->findContact(false);
+
+						if($email_model['from_id'] || $email_model['to_id']){
+							$details = $cont->getUniqueEmails($uid);
+							$email_model['description'] = $details['body']['text/html']?:$details['body']['text/plain'];
+							$email_model['detailed']=true;
+
+							if($details['attachment']){
+								var_dump($details['body']['attachment']);
+								var_dump($details['attachment']);
+							}
+						}
 						$email_model->save();
+						// var_dump($email);
 					}catch(\Exception $e){
 						var_dump($email);
-						// throw $e;
+						throw $e;
 					}
 				}
 

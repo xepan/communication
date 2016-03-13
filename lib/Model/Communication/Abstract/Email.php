@@ -18,10 +18,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	function init(){
 		parent::init();
 
-		$this->add('misc/Field_Callback','callback_from')->set(function($m){
-			$from_raw=json_decode($m['from_raw'],true);
-			$to_raw=json_decode($m['to_raw'],true);
+		$this->add('misc/Field_Callback','communication_with')->set(function($m){
 			
+			$from_raw=$m['from_raw'];
+			$to_raw=$m['to_raw'];
+
 			if($m['direction']=='Out'){
 				return $m['to_id']?$m['to']:
 							($to_raw[0]['name']?$to_raw[0]['name']:$to_raw[0]['email'])
@@ -35,19 +36,17 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			}	
 		});
 
-		$this->add('misc/Field_Callback','callback_body')->set(function($m){
-			$description=json_decode($m['description'],true);
-
-			return (isset($description['text/html']) AND $description['text/html'] ) ?
-							$description['text/html']:
-								$description['text/plain']?$description['text/plain']:'(no content)';
-		});
 
 		$this->addHook('afterLoad',function($m){
-			$m['to_raw'] = json_decode($m['to_raw']);
-			$m['from_raw'] = json_decode($m['from_raw']);
-		});
 
+			$m['from_raw'] = json_decode($m['from_raw'],true);
+			$m['to_raw'] = json_decode($m['to_raw'],true);
+			$m['title'] = $m['subject'] = $m['title']?:'(no subject)';
+			
+			$description=json_decode($m['description'],true);
+			$m['body'] = $m['description'];
+		});
+		
 		$this->addHook('beforeSave',function($m){
 			$m['to_raw'] = json_encode($m['to_raw']);
 			$m['from_raw'] = json_encode($m['from_raw']);

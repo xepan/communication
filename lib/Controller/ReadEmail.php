@@ -55,9 +55,13 @@ class Controller_ReadEmail extends \AbstractController {
 
 	 */
 
-	function fetch($mail_box,$query='UNSEEN',$start=null,$range=null){
+	function fetch($mail_box,$query='UNSEEN',$start=null,$range=null,$or_search=false,$body=true){
 		$this->imap->setActiveMailbox($mail_box);
-		return $this->imap->search([$query],$start,$range);
+		return $this->imap->search([$query],$start,$range,$or_search,$body);
+	}
+
+	function getUniqueEmails($uid, $getBody=true){
+		return $this->imap->getUniqueEmails($uid);
 	}
 
 	function getMailBoxes(){
