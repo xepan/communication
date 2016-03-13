@@ -12,7 +12,9 @@ class page_cron extends \Page {
 
 		foreach ($email_settings as $email_setting) {
 			$cont = $this->add('xepan\communication\Controller_ReadEmail',['email_setting'=>$email_setting]);
-			$mbs = $cont->getMailBoxes();
+			
+			$mbs = ['INBOX'] ; // $cont->getMailBoxes();
+
 			foreach ($mbs as $mb) {
 				$emails = $cont->fetch($mb,'ALL',0,3);
 				foreach ($emails as $uid => $email) {
@@ -21,6 +23,7 @@ class page_cron extends \Page {
 						$body=(isset($email['body']['text/html']) And $email['body']['text/html'])?$email['body']['text/html']:(isset($email['body']['text/plain']) And $email['body']['text/plain'])?$email['body']['text/plain']:'(no content)';
 						$email_model=$this->add('xepan\communication\Model_Communication_Email_Received');	
 						$email_model['uid']=$uid;
+						$email_model['uuid']=$email['id'];
 						$email_model['mailbox']=$email_setting['imap_email_username'].'#'.$email['mailbox'];
 						$email_model['from_raw']=json_encode($email['from']);
 						$email_model['to_raw']=json_encode($email['to']);

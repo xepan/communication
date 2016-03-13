@@ -9,19 +9,12 @@
 * 
 */
 namespace xepan\communication;
-class Model_Communication_Email_Received extends Model_Communication_Email{
+class Model_Communication_Email_Draft extends Model_Communication_Email{
 
 	function init(){
 		parent::init();
 		
-		$this->addCondition('status','Received');		
+		$this->addCondition('status','Draft');		
 		$this->addCondition('direction','In');
 	}
-
-	function findContact(){
-		$email = $this['from_raw'];
-		
-		
-	}
-
 }

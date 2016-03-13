@@ -2,9 +2,9 @@
 namespace xepan\communication;
 
 class View_EmailNavigation extends \View{
-	function init(){
-		parent::init();
-
+	
+	function getJSID(){
+		return 'email-nav-items';
 	}
 
 	function defaultTemplate(){

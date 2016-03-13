@@ -3,8 +3,8 @@
               | Labels
             ul#email-nav-labels.clearfix
               {rows}{row}
-              li
-                a(href='#')
+              li.active
+                a.mailbox(href='#' data-mail='{$email_username}')
                   i.fa.fa-circle.emerald
                   {email_username}| Info{/}
               {/row}                  
