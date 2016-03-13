@@ -60,24 +60,31 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		
 	}
 
-	function setFrom($email,$name=null){
-		$from=['name'=>$name,'email'=>$email];
-		$this['from_raw'][]=$from;
+	function setFrom($email,$name=null){		
+		$tmp=['name'=>$name,'email'=>$email];
+		$tmp = array_merge($tmp,$this['from_raw']);
+		$this->set('from_raw',$tmp);
 	}
 
 	function addTo($email,$name=null){
+		$tmp = $this['to_raw'];
 		$to=['name'=>$name,'email'=>$email];
-		$this['to_raw'][]=$to;
+		$tmp[] = $to;
+		$this->set('to_raw',$tmp);
 	}
 
 	function addCc($email,$name=null){
-		$cc=['name'=>$name,'email'=>$email];
-		$this['cc_raw'][]=$cc;
+		$tmp = $this['cc_raw'];
+		$to=['name'=>$name,'email'=>$email];
+		$tmp[] = $to;
+		$this->set('cc_raw',$tmp);
 	}
 
 	function addBcc($email, $name=null){
-		$bcc=['name'=>$name,'email'=>$email];
-		$this['bcc_raw'][]=$bcc;
+		$tmp = $this['bcc_raw'];
+		$to=['name'=>$name,'email'=>$email];
+		$tmp[] = $to;
+		$this->set('bcc_raw',$tmp);
 	}
 
 	function setSubject($subject){

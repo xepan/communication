@@ -25,11 +25,11 @@ class Model_Communication extends \xepan\base\Model_Document{
 		$comm_j->addField('uuid');
 		$comm_j->addField('reply_to');
 		
-		$comm_j->addField('from_raw');
-		$comm_j->addField('to_raw');
+		$comm_j->addField('from_raw')->defaultValue([]);
+		$comm_j->addField('to_raw')->defaultValue([]);
 		$comm_j->addField('flags');
-		$comm_j->addField('cc_raw');
-		$comm_j->addField('bcc_raw');
+		$comm_j->addField('cc_raw')->defaultValue([]);
+		$comm_j->addField('bcc_raw')->defaultValue([]);
 
 		$comm_j->addField('title');
 		$comm_j->addField('description');
