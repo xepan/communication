@@ -16,7 +16,7 @@ class page_cron extends \Page {
 			$mbs = ['INBOX'] ; // $cont->getMailBoxes();
 
 			foreach ($mbs as $mb) {
-				$emails = $cont->fetch($mb,'ALL',0,10,false,false);
+				$emails = $cont->fetch($mb,'UNSEEN',0,10,false,false);
 				foreach ($emails as $uid => $email) {
 					if(!is_array($email)) continue;
 					try{

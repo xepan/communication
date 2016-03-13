@@ -36,11 +36,12 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			}	
 		});
 
-
 		$this->addHook('afterLoad',function($m){
 
 			$m['from_raw'] = json_decode($m['from_raw'],true);
 			$m['to_raw'] = json_decode($m['to_raw'],true);
+			$m['cc_raw'] = json_decode($m['cc_raw'],true);
+			$m['bcc_raw'] = json_decode($m['bcc_raw'],true);
 			$m['title'] = $m['subject'] = $m['title']?:'(no subject)';
 			
 			$description=json_decode($m['description'],true);
@@ -50,12 +51,16 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this->addHook('beforeSave',function($m){
 			$m['to_raw'] = json_encode($m['to_raw']);
 			$m['from_raw'] = json_encode($m['from_raw']);
+			$m['cc_raw'] = json_encode($m['cc_raw']);
+			$m['bcc_raw'] = json_encode($m['bcc_raw']);
 			$m['title'] = $m['title']?:("(no subject)");
 		});
+
+		$this->getElement('status')->defaultValue('Draft');
 		
 	}
 
-	function addFrom($email,$name=null){
+	function setFrom($email,$name=null){
 		$from=['name'=>$name,'email'=>$email];
 		$this['from_raw'][]=$from;
 	}
@@ -94,11 +99,39 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['related_document_id'] = $document;
 	}
 
-	function send(){
+	function send(\xepan\base\Model_Epan_EmailSetting $email_setting){
 		$this['status']='Outbox';
 		try{
-			// Try send email in actual
-			// throw new \Exception("Mail Not Send", 1);
+			
+			$mail = new \Nette\Mail\Message;
+			$mail->setFrom($this['from_raw']['email'],$this['from_raw']['name']?:null);
+
+			foreach ($this['to_raw'] as $to) {
+			    $mail->addTo($to['email'],$to['name']?:null);
+			}
+
+			if($this['cc_raw'])
+				foreach ($this['cc_raw'] as $cc) {
+				    $mail->addCC($cc['email'],$cc['name']?:null);
+				}
+
+			if($this['bcc_raw'])
+				foreach ($this['bcc_raw'] as $bcc) {
+				    $mail->addBcc($bcc['email'],$bcc['name']?:null);
+				}
+
+			$mail->setSubject($this['title'])
+			    ->setHTMLBody($this['description']);
+
+			$mailer = new \Nette\Mail\SmtpMailer(array(
+			        'host' => $email_setting['email_host'],
+			        'username' => $email_setting['email_username'],
+			        'password' => $email_setting['email_password'],
+			        'secure' => $email_setting['encryption'],
+			));
+
+			$mailer->send($mail);
+
 		}catch(\Exception $e){
 			$this->save();
 			throw $e;

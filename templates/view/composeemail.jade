@@ -1,218 +1,34 @@
-{$Content}
-#email-box.clearfix
-  .row
-    .col-lg-12
-      #email-header-mobile.visible-xs.visible-sm.clearfix
-        #email-header-title-mobile.pull-left
-          i.fa.fa-inbox
-          |  Inbox
-        a.btn.btn-success.email-compose-btn.pull-right(href='email-compose.html')
-          i.fa.fa-pencil-square-o
-          |  Compose email
-      header#email-header.clearfix
-        #email-header-title.visible-md.visible-lg
-          i.fa.fa-inbox
-          |  Inbox
-        #email-header-tools
-          .btn-group
-            a.btn.btn-primary(href='email-inbox.html')
-              i.fa.fa-chevron-left
-              |  Back to inbox
-          .btn-group
-            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Refresh')
-              i.fa.fa-refresh
-            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Spam')
-              i.fa.fa-exclamation-circle
-            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Erase')
-              i.fa.fa-trash-o
-          .btn-group
-            button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Labels')
-              i.fa.fa-tag
-              span.caret
-            ul.dropdown-menu.dropdown-menu-right
-              li
-                a(href='#')
-                  i.fa.fa-circle.green
-                  |  Work
-              li
-                a(href='#')
-                  i.fa.fa-circle.red
-                  |  Home
-              li
-                a(href='#')
-                  i.fa.fa-circle.yellow
-                  |  Personal
-              li
-                a(href='#')
-                  i.fa.fa-circle.purple
-                  |  Documents
-        #email-header-pagination.pull-right.hidden-xs
-          .btn-group.pagination.pull-right
-            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Previous')
-              i.fa.fa-chevron-left
-            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Next')
-              i.fa.fa-chevron-right
-          .num-items.pull-right.hidden-xs
-            | 1-50 from 5,912
-  .row
-    .col-lg-12
-      #email-navigation.email-nav-nano.hidden-xs.hidden-sm.has-scrollbar
-          //-  .email-nav-nano-content(tabindex='0', style='right: -12px;')
-          //- a.btn.btn-success.email-compose-btn(href='email-compose.html')
-          //-   i.fa.fa-pencil-square-o
-          //-   |  Compose email
-          ul#email-nav-items.clearfix
-            li
-              a(href='email-inbox.html')
-                i.fa.fa-inbox
-                | Inbox
-                span.label.label-default.pull-right 83
-            li
-              a(href='#')
-                i.fa.fa-star
-                | Starred
-            li
-              a(href='#')
-                i.fa.fa-pencil
-                | Drafts
-            li
-              a(href='#')
-                i.fa.fa-envelope
-                | Sent
-                span.label.label-default.pull-right 11
-            li
-              a(href='#')
-                i.fa.fa-trash-o
-                | Trash
-                span.label.label-default.pull-right 1,292
-          #email-nav-labels-wrapper
-            .email-nav-headline
-              | Labels
-            ul#email-nav-labels.clearfix
-              li
-                a(href='#')
-                  i.fa.fa-circle.emerald
-                  | Important
-              li
-                a(href='#')
-                  i.fa.fa-circle.red
-                  | Home
-              li
-                a(href='#')
-                  i.fa.fa-circle.green
-                  | Work
-              li
-                a(href='#')
-                  i.fa.fa-circle.yellow
-                  | Personal
-              li
-                a(href='#')
-                  i.fa.fa-circle.purple
-                  | Documents
-        .nano-pane(style='display: none;')
-          .nano-slider(style='height: 466px; transform: translate(0px, 0px);')
-      #email-new.email-new-nano.has-scrollbar(style='height: 478px;')
-        .email-new-nano-content(tabindex='0', style='right: -12px;')
-          #email-new-inner
-            #email-new-title.clearfix
-              span.subject New Email
-            form
-              #email-new-header
-                .row.form-group
-                  label.col-md-2(for='exampleInpTo') To:
-                  .col-md-10
-                    input#exampleInpTo.form-control-s2.email-recepients(type='text', value='mila@kunis.com,ryan@gosling.com', placeholder='Enter recepients')
-                .row.form-group
-                  label.col-md-2(for='exampleInpCc') CC:
-                  .col-md-10
-                    input#exampleInpCc.form-control-s2.email-recepients(type='text', value='angelina@jolie.com', placeholder='Enter recepients')
-                .row.form-group
-                  label.col-md-2(for='exampleInpSubject') Subject:
-                  .col-md-10
-                    input#exampleInpSubject.form-control(type='text', placeholder='Enter subject')
-              #email-new-body
-                .row
-                  label.visible-xs Content:
-                  .col-md-12
-                    #alerts
-                    .btn-toolbar.editor-toolbar.hidden-xs(data-target='#editor', data-role='editor-toolbar')
-                      .btn-group
-                        a.btn.btn-default.dropdown-toggle(title='Font', data-toggle='dropdown')
-                          i.fa.fa-font
-                          b.caret
-                        ul.dropdown-menu
-                      .btn-group
-                        a.btn.btn-default.dropdown-toggle(title='Font Size', data-toggle='dropdown')
-                          i.fa.fa-text-height
-                          b.caret
-                        ul.dropdown-menu
-                          li
-                            a(data-edit='fontSize 5')
-                              font(size='5') Huge
-                          li
-                            a(data-edit='fontSize 3')
-                              font(size='3') Normal
-                          li
-                            a(data-edit='fontSize 1')
-                              font(size='1') Small
-                      .btn-group
-                        a.btn.btn-default(title='Bold (Ctrl/Cmd+B)', data-edit='bold')
-                          i.fa.fa-bold
-                        a.btn.btn-default(title='Italic (Ctrl/Cmd+I)', data-edit='italic')
-                          i.fa.fa-italic
-                        a.btn.btn-default(title='Strikethrough', data-edit='strikethrough')
-                          i.fa.fa-strikethrough
-                        a.btn.btn-default(title='Underline (Ctrl/Cmd+U)', data-edit='underline')
-                          i.fa.fa-underline
-                      .btn-group
-                        a.btn.btn-default(title='Bullet list', data-edit='insertunorderedlist')
-                          i.fa.fa-list-ul
-                        a.btn.btn-default(title='Number list', data-edit='insertorderedlist')
-                          i.fa.fa-list-ol
-                        a.btn.btn-default(title='Reduce indent (Shift+Tab)', data-edit='outdent')
-                          i.fa.fa-dedent
-                        a.btn.btn-default(title='Indent (Tab)', data-edit='indent')
-                          i.fa.fa-indent
-                      .btn-group
-                        a.btn.btn-default(title='Align Left (Ctrl/Cmd+L)', data-edit='justifyleft')
-                          i.fa.fa-align-left
-                        a.btn.btn-default(title='Center (Ctrl/Cmd+E)', data-edit='justifycenter')
-                          i.fa.fa-align-center
-                        a.btn.btn-default(title='Align Right (Ctrl/Cmd+R)', data-edit='justifyright')
-                          i.fa.fa-align-right
-                        a.btn.btn-default(title='Justify (Ctrl/Cmd+J)', data-edit='justifyfull')
-                          i.fa.fa-align-justify
-                      .btn-group
-                        a.btn.btn-default.dropdown-toggle(title='Hyperlink', data-toggle='dropdown')
-                          i.fa.fa-link
-                        .dropdown-menu.input-append
-                          input.span2(type='text', data-edit='createLink', placeholder='URL')
-                          button.btn(type='button') Add
-                        a.btn.btn-default(title='Remove Hyperlink', data-edit='unlink')
-                          i.fa.fa-cut
-                      .btn-group
-                        a#pictureBtn.btn.btn-default(title='Insert picture (or just drag & drop)')
-                          i.fa.fa-picture-o
-                        input(type='file', data-edit='insertImage', data-target='#pictureBtn', data-role='magic-overlay')
-                      .btn-group
-                        a.btn.btn-default(title='Undo (Ctrl/Cmd+Z)', data-edit='undo')
-                          i.fa.fa-undo
-                        a.btn.btn-default(title='Redo (Ctrl/Cmd+Y)', data-edit='redo')
-                          i.fa.fa-repeat
-                      input#voiceBtn(type='text', x-webkit-speech='', data-edit='inserttext')
-                    #editor.wysiwyg-editor
-                      | Go ahead…
-              #email-new-footer
-                .row
-                  .col-xs-12.col-md-10.col-md-offset-2
-                    .pull-right
-                      .btn-group
-                        button.btn.btn-default(type='button')
-                          i.fa.fa-times
-                          |  Cancel
-                      .btn-group
-                        button.btn.btn-success(type='button')
-                          i.fa.fa-send
-                          |  Send email
-        .nano-pane
-          .nano-slider(style='height: 344px; transform: translate(0px, 0px);')
+#email-new-nano.has-scrollbar(style='height: 478px;')
+  .email-new-nano-content(tabindex='0', style='right: -12px;')
+    #email-new-inner
+      #email-new-title.clearfix
+        span.subject New Email
+      #email-new-header
+        .row.form-group
+          label.col-md-2(for='exampleInpTo') To:
+          .col-md-10
+            #exampleInpTo.form-control-s2.email-recepients(type='text', placeholder='Enter recepients') {$email_to}
+        .row.form-group
+          label.col-md-2(for='exampleInpCc') CC:
+          .col-md-10
+            #exampleInpCc.form-control-s2.email-recepients(type='text', placeholder='Enter recepients') {$email_cc}
+        .row.form-group
+          label.col-md-2(for='exampleInpSubject') Subject:
+          .col-md-10
+            #exampleInpSubject.form-control(type='text', placeholder='Enter subject') {$email_subject}
+      #email-new-body
+        {$email_body}
+      #email-new-footer
+        .row
+          .col-xs-12.col-md-10.col-md-offset-2
+            .pull-right
+              .btn-group
+                button.btn.btn-default(type='button')
+                  i.fa.fa-times
+                  |  Cancel
+              .btn-group
+                button.btn.btn-success(type='button')
+                  i.fa.fa-send
+                  |  Send email
+  .nano-pane
+    .nano-slider(style='height: 344px; transform: translate(0px, 0px);')
