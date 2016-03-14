@@ -9,6 +9,7 @@ class page_composeemail extends \Page{
 		$form = $this->add('Form');
 		$form->setLayout(['view/composeemail']);
 
+		$form->addField('Dropdown','email_from')->setModel('xepan\hr\Post_Email_MyEmails');
 		$to_field = $form->addField('email_to');
 
 		// if($_GET[$to_field->name]){
