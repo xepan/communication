@@ -5,6 +5,9 @@
         span.subject New Email
       #email-new-header
         .row.form-group
+          label.col-md-2(for='exampleInpTo') From:
+          .col-md-10
+            #exampleInpTo.form-control-s2.email-recepients(type='text', placeholder='Enter recepients') {$email_from}
           label.col-md-2(for='exampleInpTo') To:
           .col-md-10
             #exampleInpTo.form-control-s2.email-recepients(type='text', placeholder='Enter recepients') {$email_to}
