@@ -14,7 +14,11 @@
         .row.form-group
           label.col-md-2(for='exampleInpCc') CC:
           .col-md-10
-            #exampleInpCc.form-control-s2.email-recepients(type='text', placeholder='Enter recepients') {$email_cc}
+            #exampleInpCc.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_cc}
+        .row.form-group
+          label.col-md-2(for='exampleInpBcc') BCC:
+          .col-md-10
+            #exampleInpBcc.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_bcc}
         .row.form-group
           label.col-md-2(for='exampleInpSubject') Subject:
           .col-md-10
