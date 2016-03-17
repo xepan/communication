@@ -7,7 +7,6 @@ class page_emails extends \Page{
 
 	function init(){
 		parent::init();
-
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 
 		$mail = $email_view->recall('mail','%');
@@ -71,7 +70,9 @@ class page_emails extends \Page{
 
 		});
 
-		
+		$email_view->on('click','li.clickable-row',function($js,$data){
+			return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
+		});
 	}
 	
 	function defaultTemplate(){

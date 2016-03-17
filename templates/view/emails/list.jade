@@ -2,7 +2,7 @@ div(id="{$_name}")
   .email-content-nano-content(tabindex='0', style='right: -13px;')
     ul#email-list
       {rows}{row}
-      li.clickable-row(data-href='email-detail.html')
+      li.unread.clickable-row(data-id="{$id}")
         .chbox
           .checkbox-nice
             input#m-checkbox-1(type='checkbox')
@@ -20,4 +20,4 @@ div(id="{$_name}")
           span.date {callback_date}9:34 am{/}
       {/}{/}
   .nano-pane
-    .nano-slider(style='height: 274px; transform: translate(0px, 0px);')    
+    .nano-slider(style='height: 274px; transform: translate(0px, 0px);')
