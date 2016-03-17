@@ -12,8 +12,10 @@ class page_composeemail extends \Page{
 		$form->addField('Dropdown','email_from')->setModel('xepan\hr\Post_Email_MyEmails');
 		$to_field = $form->addField('xepan\base\DropDown','email_to');
 		$to_field->validate_values = false;
+		$cc_field = $form->addField('xepan\base\Dropdown','email_cc');
+		$cc_field->validate_values = false;
 
-		if($_GET[$to_field->name]){
+		if($_GET[$this->name.'_src_email']){
 
 			$results = [];
 			$contact_info = $this->add('xepan\base\Model_Contact_Email');
@@ -34,21 +36,21 @@ class page_composeemail extends \Page{
 		}
 
 		$to_field->select_menu_options = 
+		$cc_field->select_menu_options = 
 			[	
 				'width'=>'100%',
 				'tags'=>true,
 				'tokenSeparators'=>[','],
 				'ajax'=>[
-					'url' => $this->api->url(null,[$to_field->name=>true])->getURL(),
+					'url' => $this->api->url(null,[$this->name.'_src_email'=>true])->getURL(),
 					'dataType'=>'json'
 				]
 			];
 
 		$to_field->setAttr('multiple','multiple');
-		// $to_field->setModel('xepan\base\Contact');
+		$cc_field->setAttr('multiple','multiple');
 
 
-		$form->addField('email_cc');
 		$form->addField('email_subject');
 		$form->addField('xepan\base\RichText','email_body');
 
@@ -72,6 +74,21 @@ class page_composeemail extends \Page{
 					$mail->addTo($e2);
 				}
 			}
+
+			foreach (explode(",",$f['email_cc']) as $e2) {
+				if(is_numeric(trim($e2))){
+					$contact_info = $this->add('xepan\base\Model_Contact_Info');
+					$contact_info->tryLoad($e2);
+					if(!$contact_info->loaded())
+						return $f->error('email_cc','Value '.$e2.' is not acceptable...');
+					$mail->addCC($contact_info['value'],$contact_info['contact']);
+				}else{
+					if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
+						return $f->error('email_cc','Value '.$e2.' is not acceptable');
+					$mail->addCC($e2);
+				}
+			}
+
 			$mail->setSubject($f['email_subject']);
 			$mail->setBody($f['email_body']);
 			// $mail->send($email_settings);
