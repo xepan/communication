@@ -20,6 +20,12 @@ class page_emaildetail extends \Page{
 			}
 			return $m['created_at']=date('M d',strtotime($m['created_at']));
 		});
+		// $email_model->add('misc/Field_Callback','callback_from')->set(function($m){
+		// 	return $m['from_raw']=json_encode($m['from_raw']['email']);
+		// });
+		// $email_model->add('misc/Field_Callback','callback_to')->set(function($m){
+		// 	return $m['to_raw']=json_encode($m['to_raw']['email']);
+		// });
 
 
 		$email_model->addCondition('id',$_GET['email_id']);
