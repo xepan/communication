@@ -42,15 +42,6 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			return $m['created_at']=date('M d',strtotime($m['created_at']));
 		});
 
-		$this->add('misc/Field_Callback','callback_to')->set(function($m){
-			$to_raw=$m['to_raw'];
-				return $m['to_id']?$m['to']:
-							($to_raw['name']?$to_raw['name']:$to_raw['email'])
-							;
-
-		});
-
-
 		$this->addHook('afterLoad',function($m){
 
 			$m['from_raw'] = json_decode($m['from_raw'],true);

@@ -99,17 +99,18 @@ class page_composeemail extends \Page{
 					$contact_info->tryLoad($e2);
 					if($contact_info->id != $e2)
 						return $f->error('email_bcc','Value '.$e2.' is not acceptable...');
-					$mail->addTo($contact_info['value'],$contact_info['contact']);
+					$mail->addBcc($contact_info['value'],$contact_info['contact']);
 				}else{
 					if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
 						return $f->error('email_bcc','Value '.$e2.' is not acceptable');
-					$mail->addTo($e2);
+					$mail->addBcc($e2);
 				}
 			}
 
 			$mail->setSubject($f['email_subject']);
 			$mail->setBody($f['email_body']);
 			// $mail->send($email_settings);
+			$mail->save();
 			return $f->js()->univ()->successMessage('EMAIL SENDING DONE, , but actually code commented');
 		});
 	}

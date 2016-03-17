@@ -1,16 +1,18 @@
 
-<div id="email-detail" style="height: 562px;margin-left:0px" class="email-detail-nano has-scrollbar">
+<div id="email-box" style="height: 562px;margin-left:0px" class="email-detail-nano has-scrollbar">
   <div tabindex="0" style="right: -13px;" class="email-detail-nano-content">
     <div id="email-detail-inner">
       <div id="email-detail-subject" class="clearfix"><span class="subject">{subject}FW: Like your new movie{/}</span><span class="label label-success">{status}Work{/}</span></div>
-      <div id="email-detail-sender" class="clearfix">
+      <div id="email-detail-sender" style="height:auto;" class="clearfix">
         <div class="picture hidden-xs"><img alt="" src="img/samples/angelina-300.jpg"/></div>
         <div class="users">
           <div class="from clearfix">
             <div class="name">{communication_with}| Angelina Jolie{/}</div>
             <div class="email hidden-xs"></div>
           </div>
-          <div class="to">To: <span>{callback_to}Me, Brad Pitt{/}</span></div>
+          <div class="to">To: <span>{to_name}Me, Brad Pitt{/}</span></div>
+          <div class="to">Cc: <span>{$cc_name}</span></div>
+          <div class="to">Bcc: <span>{$bcc_name}</span></div>
         </div>
         <div class="tools">
           <div class="date">{callback_date}Sep 12 (6 days ago){/}</div>
@@ -46,8 +48,8 @@
           differently than mine. You don't get sick, I do. That's also clear. But for some reason,
           you and I react the exact same way to water. We swallow it too fast, we choke. We get some
           in our lungs, we drown. However unreal it may seem, we are connected, you and I. We're on
-          the same curve, just on opposite ends.{/}
-        </p>
+          the same curve, just on opposite ends.
+        </p>{/}
       </div>
       <div id="email-detail-attachments">
         <div id="email-attachments-header" class="clearfix">

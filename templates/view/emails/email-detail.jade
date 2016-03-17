@@ -1,10 +1,10 @@
-#email-detail.email-detail-nano.has-scrollbar(style='height: 562px;margin-left:0px')
+#email-box.email-detail-nano.has-scrollbar(style='height: 562px;margin-left:0px')
         .email-detail-nano-content(tabindex='0', style='right: -13px;')
           #email-detail-inner
             #email-detail-subject.clearfix
               span.subject {subject}FW: Like your new movie{/}
               span.label.label-success {status}Work{/}
-            #email-detail-sender.clearfix
+            #email-detail-sender.clearfix(style="height:auto;")
               .picture.hidden-xs
                 img(alt='', src='img/samples/angelina-300.jpg')
               .users
@@ -14,7 +14,13 @@
                   .email.hidden-xs
                 .to
                   | To: 
-                  span {callback_to}Me, Brad Pitt{/}
+                  span {to_name}Me, Brad Pitt{/}
+                .to
+                  | Cc: 
+                  span {$cc_name}
+                .to
+                  | Bcc: 
+                  span {$bcc_name}
               .tools
                 .date
                   | {callback_date}Sep 12 (6 days ago){/}
@@ -66,7 +72,8 @@
                 | differently than mine. You don't get sick, I do. That's also clear. But for some reason,
                 | you and I react the exact same way to water. We swallow it too fast, we choke. We get some
                 | in our lungs, we drown. However unreal it may seem, we are connected, you and I. We're on
-                | the same curve, just on opposite ends.{/}
+                | the same curve, just on opposite ends.
+              {/}
             #email-detail-attachments
               #email-attachments-header.clearfix
                 .headline
