@@ -2,7 +2,7 @@
 <div id="{$_name}">
   <div tabindex="0" style="right: -13px;" class="email-content-nano-content">
     <ul id="email-list">{rows}{row}
-      <li data-href="email-detail.html" class="clickable-row">
+      <li data-id="{$id}" class="unread clickable-row">
         <div class="chbox">
           <div class="checkbox-nice">
             <input id="m-checkbox-1" type="checkbox"/>
@@ -17,6 +17,6 @@
     </ul>
   </div>
   <div class="nano-pane">
-    <div style="height: 274px; transform: translate(0px, 0px);" class="nano-slider">   </div>
+    <div style="height: 274px; transform: translate(0px, 0px);" class="nano-slider"></div>
   </div>
 </div>
