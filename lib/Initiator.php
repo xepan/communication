@@ -12,7 +12,7 @@ class Initiator extends \Controller_Addon {
 			->setBaseURL('../vendor/xepan/communication/');
 
 		if($this->app->is_admin){
-			$this->app->side_menu->addItem('Emails','xepan_communication_emails');
+			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-users','badge'=>[123,'swatch'=>' label label-primary label-circle pull-right']],'xepan_communication_emails');
 		}
 		
 	}
