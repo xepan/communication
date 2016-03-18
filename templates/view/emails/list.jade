@@ -5,10 +5,10 @@ div(id="{$_name}")
       li.unread.clickable-row(data-id="{$id}")
         .chbox
           .checkbox-nice
-            input#m-checkbox-1(type='checkbox')
-            label(for='m-checkbox-1')
+            input(id='m-checkbox-{$id}' type='checkbox')
+            label(for='m-checkbox-{$id}')
         .star
-          a
+          a(data-id="{$id}" data-starred="{$is_starred}" class="{$starred}")
         .name(style='overflow:hidden') {communication_with}Mila Kunis{/}
         .message
           span.label.label-success Work

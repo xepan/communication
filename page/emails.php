@@ -10,19 +10,29 @@ class page_emails extends \Page{
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 
 		$mail = $email_view->recall('mail','%');
-		$mailbox = $email_view->recall('mailbox','Received');
+		$mailbox = $email_view->recall('mailbox','_Received');
+
+		if(($filter_contacts = $email_view->recall('filter-contacts',false))){			
+			$mailbox = "_ContactReceivedEmail";
+		}
+
+		if(($starred = $email_view->recall('starred',false))){			
+			$mailbox = "_Starred";
+		}
+		if(($sent = $email_view->recall('sent',false))){			
+			$mailbox = "_Sent";
+		}
+		if(($draft = $email_view->recall('draft',false))){			
+			$mailbox = "_Draft";
+		}
+		if(($trashed = $email_view->recall('trashed',false))){			
+			$mailbox = "_Trashed";
+		}
 
 
-		$email_model=$this->add('xepan\communication\Model_Communication_Email_'.$mailbox);
+		$email_model=$this->add('xepan\communication\Model_Communication_Email'.$mailbox);
 
 		$email_model->addCondition('mailbox','like',$mail.'%');
-		if(($filter_contacts = $email_view->recall('filter-contacts',false))){			
-			$email_model->addCondition(
-					$email_model->dsql()->orExpr()
-						->where('from_id','not',null)
-						->where('to_id','not',null)
-				);
-		}
 
 
 		$header = $this->add('xepan\communication\View_EmailHeader',null,'email_header');
@@ -42,6 +52,9 @@ class page_emails extends \Page{
 			$email_view->memorize('mailbox',$data['mailbox']);
 			$email_view->memorize('filter-contacts',(int)$data['filterContacts']);
 			$email_view->memorize('starred',(int) $data['starred']);
+			$email_view->memorize('draft',(int) $data['draft']);
+			$email_view->memorize('trashed',(int) $data['trashed']);
+			$email_view->memorize('sent',(int) $data['sent']);
 
 			return [
 					$mailboxes_view->js()->find('li')->removeClass('active'),
@@ -62,8 +75,28 @@ class page_emails extends \Page{
 
 		});
 
-		$email_view->on('click','li.clickable-row',function($js,$data){
+		$email_view->on('click','li.clickable-row > div:not(.chbox,.star)',function($js,$data){
 			return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
+		});
+		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
+			// load data['id'] wala e,mail and mark starred or remove is_starred
+			$email_model->load($data['id']);
+			$js_array=[];
+			if($data['starred']=='1'){
+				$js_array[] = $js->removeClass('starred');
+				$js_array[] = $js->data('starred','0');
+				$email_model['is_starred']=false;
+			}
+			else{
+				$js_array[] = $js->addClass('starred');
+				$js_array[] = $js->data('starred','1');
+				$email_model['is_starred']=true;
+			}
+			$email_model->saveAndUnload();
+
+			$js_array[] = $js->univ()->successMessage("done");
+
+			return $js_array;
 		});
 	}
 	
