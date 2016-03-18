@@ -10,8 +10,13 @@ class View_EmailDetail extends \View{
 
 		$to_raw=$m['to_raw'];
 		$to_str = "";
-			foreach ($to_raw as $name) {
-				$to_str.= $name['name']."<".$name['email'].">,";
+
+			foreach ($to_raw as $emails) {
+				if(isset($emails['name']) and $emails['name']){
+					$to_str.= $emails['name']."<".$emails['email'].">,";
+				}else{
+					$to_str.=$m['to'] ."<".$emails['email'].">,";
+				}	
 			}
 
 		$this->template->set('to_name',$to_str);
@@ -25,7 +30,13 @@ class View_EmailDetail extends \View{
 				if($email->loaded()){
 					$contact=$email->ref('contact_id');
 				}
-				$cc_str.= $name['name']."<".$name['email'].">,";
+				if(isset($name['name']) and $name['name']){
+					$cc_str.= $name['name']."<".$name['email'].">,";
+				}else{
+					// throw new \Exception($contact['name'], 1);
+					$cc_str.= $contact['name']."<".$name['email'].">,";
+					
+				}	
 			}
 
 		$this->template->trySet('cc_name',$cc_str);
@@ -39,7 +50,12 @@ class View_EmailDetail extends \View{
 				if($email->loaded()){
 					$contact=$email->ref('contact_id');
 				}
-				$bcc_str.= $name['name']."<".$name['email'].">,";
+				if(isset($name['name']) and $name['name']){
+					$bcc_str.= $name['name']."<".$name['email'].">,";
+				}else{
+					$bcc_str.= $contact['name']."<".$name['email'].">,";
+
+				}
 			}
 
 		$this->template->trySet('bcc_name',$bcc_str);
