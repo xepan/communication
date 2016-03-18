@@ -39,6 +39,7 @@ class Model_Communication extends \xepan\base\Model_Document{
 		$comm_j->addField('communication_type');
 		
 		$comm_j->addField('mailbox');
+		$comm_j->addField('is_starred')->type('boolean')->defaultValue(false);
 
 		$comm_j->addField('detailed')->type('boolean')->defaultValue(false);
 
