@@ -14,6 +14,8 @@ class page_composeemail extends \Page{
 		$to_field->validate_values = false;
 		$cc_field = $form->addField('xepan\base\Dropdown','email_cc');
 		$cc_field->validate_values = false;
+		$bcc_field = $form->addField('xepan\base\Dropdown','email_bcc');
+		$bcc_field->validate_values = false;
 
 		if($_GET[$this->name.'_src_email']){
 
@@ -37,6 +39,7 @@ class page_composeemail extends \Page{
 
 		$to_field->select_menu_options = 
 		$cc_field->select_menu_options = 
+		$bcc_field->select_menu_options = 
 			[	
 				'width'=>'100%',
 				'tags'=>true,
@@ -49,6 +52,7 @@ class page_composeemail extends \Page{
 
 		$to_field->setAttr('multiple','multiple');
 		$cc_field->setAttr('multiple','multiple');
+		$bcc_field->setAttr('multiple','multiple');
 
 
 		$form->addField('email_subject');
@@ -79,7 +83,7 @@ class page_composeemail extends \Page{
 				if(is_numeric(trim($e2))){
 					$contact_info = $this->add('xepan\base\Model_Contact_Info');
 					$contact_info->tryLoad($e2);
-					if(!$contact_info->loaded())
+					if($contact_info->id != $e2)
 						return $f->error('email_cc','Value '.$e2.' is not acceptable...');
 					$mail->addCC($contact_info['value'],$contact_info['contact']);
 				}else{
@@ -89,9 +93,24 @@ class page_composeemail extends \Page{
 				}
 			}
 
+			foreach (explode(",",$f['email_bcc']) as $e2) {
+				if(is_numeric(trim($e2))){
+					$contact_info = $this->add('xepan\base\Model_Contact_Info');
+					$contact_info->tryLoad($e2);
+					if($contact_info->id != $e2)
+						return $f->error('email_bcc','Value '.$e2.' is not acceptable...');
+					$mail->addBcc($contact_info['value'],$contact_info['contact']);
+				}else{
+					if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
+						return $f->error('email_bcc','Value '.$e2.' is not acceptable');
+					$mail->addBcc($e2);
+				}
+			}
+
 			$mail->setSubject($f['email_subject']);
 			$mail->setBody($f['email_body']);
 			// $mail->send($email_settings);
+			$mail->save();
 			return $f->js()->univ()->successMessage('EMAIL SENDING DONE, , but actually code commented');
 		});
 	}

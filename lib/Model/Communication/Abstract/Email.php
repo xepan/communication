@@ -35,6 +35,12 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 							;
 			}	
 		});
+		$this->add('misc/Field_Callback','callback_date')->set(function($m){
+			if(date('Y-m-d',strtotime($m['created_at']))==date('Y-m-d',strtotime($this->app->now))){
+				return $m['created_at']=date('h:i:a',strtotime($m['created_at']));	
+			}
+			return $m['created_at']=date('M d',strtotime($m['created_at']));
+		});
 
 		$this->addHook('afterLoad',function($m){
 
