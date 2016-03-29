@@ -37,6 +37,8 @@ class Model_Communication extends \xepan\base\Model_Document{
 		$comm_j->addField('tags');
 		$comm_j->addField('direction');
 		$comm_j->addField('communication_type');
+
+		$comm_j->addField('related_id'); // Can be used anywhere as per requirement
 		
 		$comm_j->addField('mailbox');
 		$comm_j->addField('is_starred')->type('boolean')->defaultValue(false);
