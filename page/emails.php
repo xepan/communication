@@ -75,7 +75,7 @@ class page_emails extends \Page{
 
 		});
 
-		$email_view->on('click','li.clickable-row > div:not(.chbox,.star)',function($js,$data){
+		$email_view->on('click','li.clickable-row  div:not(.chbox,.star)',function($js,$data){
 			return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
 		});
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
