@@ -8,6 +8,14 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}else{
 			$this->current_row['starred']='';
 		}
+
+		$seen_by=$this->model->ref('extra_info')->get('seen_by');
+		
+		if($seen_by){
+			$this->current_row['unread']='';
+		}else{
+			$this->current_row['unread']='unread';
+		}
 		parent::formatRow();
 	}
 	function defaultTemplate(){
