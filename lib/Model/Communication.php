@@ -12,7 +12,7 @@
 namespace xepan\communication;
 
 class Model_Communication extends \xepan\base\Model_Table{
-	public $table="communication"
+	public $table="communication";
 	function init(){
 		parent::init();
 		
@@ -41,11 +41,13 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('related_id'); // Can be used anywhere as per requirement
 		$this->addField('sent_on')->type('date'); // Can be used anywhere as per requirement
 		
+		$this->addField('created_at');
+		$this->addField('status');
 		$this->addField('mailbox');
 		$this->addField('is_starred')->type('boolean')->defaultValue(false);
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
 
-		$this->addCondition('type','Communication');
+		// $this->addCondition('type','Communication');
 	}
 }
