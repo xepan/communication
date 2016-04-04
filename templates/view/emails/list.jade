@@ -3,18 +3,18 @@ div(id="{$_name}")
     ul#email-list
       {rows}{row}
       li.unread.clickable-row(data-id="{$id}")
-        .chbox
+        .chbox(data-id="{$id}")
           .checkbox-nice
             input(id='m-checkbox-{$id}' type='checkbox')
             label(for='m-checkbox-{$id}')
-        .star
+        .star(data-id="{$id}")
           a(data-id="{$id}" data-starred="{$is_starred}" class="{$starred}")
-        .name(style='overflow:hidden') {communication_with}Mila Kunis{/}
-        .message
+        .name(style='overflow:hidden' data-id="{$id}") {communication_with}Mila Kunis{/}
+        .message(data-id="{$id}")
           span.label.label-success Work
           span.subject {subject}Like your new movie -{/}&nbsp;
           span.body {body}Hi beauty, I watched your movies last night.{/}
-        .meta-info
+        .meta-info(data-id="{$id}")
           a.attachment(href='#')
             i.fa.fa-paperclip
           span.date {callback_date}9:34 am{/}
