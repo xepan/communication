@@ -4,7 +4,9 @@ namespace xepan\communication;
 class page_composeemail extends \Page{
 	function init(){
 		parent::init();
-
+		$to_email=$this->api->stickyGET('to_email_array');
+		// throw new \Exception($to_email, 1);
+		
 		$action= 'add';
 		$form = $this->add('Form');
 		$form->setLayout(['view/composeemail']);
@@ -16,6 +18,7 @@ class page_composeemail extends \Page{
 		$cc_field->validate_values = false;
 		$bcc_field = $form->addField('xepan\base\Dropdown','email_bcc');
 		$bcc_field->validate_values = false;
+
 
 		if($_GET[$this->name.'_src_email']){
 
@@ -57,7 +60,6 @@ class page_composeemail extends \Page{
 
 		$form->addField('email_subject');
 		$form->addField('xepan\base\RichText','email_body');
-
 		
 		$form->onSubmit(function($f){
 

@@ -20,5 +20,10 @@ class page_emaildetail extends \Page{
 		$email_detail=$this->add('xepan\communication\View_EmailDetail');
 
 		$email_detail->setModel($email_model);
+
+
+		$email_detail->on('click','li.reply',function($js,$data)use($email_model){
+			return $js->univ()->location($this->api->url('xepan_communication_composeemail',['to_email_array'=>json_encode($email_model['to_raw'])]));
+		});
 	}
 }
