@@ -1,78 +1,84 @@
 
-<div id="email-box" style="height: 562px;margin-left:0px" class="email-detail-nano has-scrollbar">
-  <div tabindex="0" style="right: -13px;" class="email-detail-nano-content">
-    <div id="email-detail-inner">
-      <div id="email-detail-subject" class="clearfix"><span class="subject">{subject}FW: Like your new movie{/}</span><span class="label label-success">{status}Work{/}</span></div>
-      <div id="email-detail-sender" style="height:auto;" class="clearfix">
-        <div class="picture hidden-xs"><img alt="" src="img/samples/angelina-300.jpg"/></div>
-        <div class="users">
-          <div class="from clearfix">
-            <div class="name">{communication_with}| Angelina Jolie{/}</div>
-            <div class="email hidden-xs"></div>
+<div id="{$_name}">
+  <div id="email-box" style="height: 562px;margin-left:0px" class="email-detail-nano has-scrollbar">
+    <div tabindex="0" style="right: -13px;" class="email-detail-nano-content">
+      <div id="email-detail-inner">
+        <div id="email-detail-subject" class="clearfix"><span class="subject">{subject}FW: Like your new movie{/}</span><span class="label label-success">{status}Work{/}</span></div>
+        <div id="email-detail-sender" style="height:auto;" class="clearfix">
+          <div class="picture hidden-xs"><img alt="" src="img/samples/angelina-300.jpg"/></div>
+          <div class="users">
+            <div class="from clearfix">
+              <div class="name">{communication_with}| Angelina Jolie{/}</div>
+              <div class="email hidden-xs"></div>
+            </div>
+            <div class="to">To: <span>{to_name}Me, Brad Pitt{/}</span></div>
+            <div class="to">Cc: <span>{$cc_name}</span></div>
+            <div class="to">Bcc: <span>{$bcc_name}</span></div>
           </div>
-          <div class="to">To: <span>{to_name}Me, Brad Pitt{/}</span></div>
-          <div class="to">Cc: <span>{$cc_name}</span></div>
-          <div class="to">Bcc: <span>{$bcc_name}</span></div>
-        </div>
-        <div class="tools">
-          <div class="date">{callback_date}Sep 12 (6 days ago){/}</div>
-          <div class="btns">
-            <div class="btn-group">
-              <button type="button" class="btn btn-success"><i class="fa fa-mail-reply"></i></button>
-              <button type="button" data-toggle="dropdown" class="btn btn-success dropdown-toggle"><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><a href="#"><i class="fa fa-mail-reply"></i> Reply</a></li>
-                <li><a href="#"><i class="fa fa-mail-reply-all"></i> Reply all</a></li>
-                <li><a href="#"><i class="fa fa-mail-forward"></i> Forward</a></li>
-                <li><a href="#"><i class="fa fa-print"></i> Print</a></li>
-              </ul>
+          <div class="tools">
+            <div class="date">{callback_date}Sep 12 (6 days ago){/}</div>
+            <div class="btns">
+              <div class="btn-group">
+                <button type="button" class="btn btn-success">
+                  <ul>
+                    <li class="reply"><a data-id="{$id}"><i class="fa fa-mail-reply"></i></a></li>
+                  </ul>
+                </button>
+                <button type="button" data-toggle="dropdown" class="btn btn-success dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li class="reply"><a data-id="{$id}"><i class="fa fa-mail-reply"></i> Reply</a></li>
+                  <li class="reply-all"><a data-id="{$id}"><i class="fa fa-mail-reply-all"></i> Reply all</a></li>
+                  <li class="forward"><a data-id="{$id}"><i class="fa fa-mail-forward"></i> Forward</a></li>
+                  <li class="print"><a data-id="{$id}"><i class="fa fa-print"></i> Print</a></li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div id="email-body">{email_body}
-        <p>Hey Scarlett,</p>
-        <p>
-          Well, the way they make shows is, they make one show. That show's called a pilot. Then they
-          show that show to the people who make shows, and on the strength of that one show they decide
-          if they're going to make more shows. <a href="#">Some pilots</a> get picked and become television
-          programs. Some don't, become nothing. She starred in one of the ones that became nothing.
-        </p>
-        <p>
-          Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as
-          the most popular gun in American crime. Do you believe that shit? It actually says that in
-          the <a href="#">little book</a> that comes with it: the most popular gun in American crime.
-          Like they're actually proud of that shit.
-        </p>
-        <p><b>You don't get sick!</b><br/>Your bones don't break, mine do. That's clear. Your cells react to bacteria and viruses
-          differently than mine. You don't get sick, I do. That's also clear. But for some reason,
-          you and I react the exact same way to water. We swallow it too fast, we choke. We get some
-          in our lungs, we drown. However unreal it may seem, we are connected, you and I. We're on
-          the same curve, just on opposite ends.
-        </p>{/}
-      </div>
-      <div id="email-detail-attachments">
-        <div id="email-attachments-header" class="clearfix">
-          <div class="headline"><i class="fa fa-paperclip"></i><span>Attachments:</span><b>{attachment_count}3{/}</b> -</div>
-          <div class="tools"><a href="#">Download all</a></div>
+        <div id="email-body">{email_body}
+          <p>Hey Scarlett,</p>
+          <p>
+            Well, the way they make shows is, they make one show. That show's called a pilot. Then they
+            show that show to the people who make shows, and on the strength of that one show they decide
+            if they're going to make more shows. <a href="#">Some pilots</a> get picked and become television
+            programs. Some don't, become nothing. She starred in one of the ones that became nothing.
+          </p>
+          <p>
+            Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as
+            the most popular gun in American crime. Do you believe that shit? It actually says that in
+            the <a href="#">little book</a> that comes with it: the most popular gun in American crime.
+            Like they're actually proud of that shit.
+          </p>
+          <p><b>You don't get sick!</b><br/>Your bones don't break, mine do. That's clear. Your cells react to bacteria and viruses
+            differently than mine. You don't get sick, I do. That's also clear. But for some reason,
+            you and I react the exact same way to water. We swallow it too fast, we choke. We get some
+            in our lungs, we drown. However unreal it may seem, we are connected, you and I. We're on
+            the same curve, just on opposite ends.
+          </p>{/}
         </div>
-        <div id="email-attachments-content">{Attachments}
-          <ul class="clearfix">
-            <li>
-              <div class="img"><a href="#"><img alt="" src="img/samples/hdr/small/img_5.jpg"/></a></div><span class="name">nature.jpg</span><a href="#">Download</a>
-            </li>
-            <li>
-              <div class="img"><a href="#"><img alt="" src="img/samples/hdr/small/img_8.jpg"/></a></div><span class="name">bratislava.jpg</span><a href="#">Download</a>
-            </li>
-            <li>
-              <div class="img"><i class="fa fa-file"></i></div><span class="name">invoice.pdf</span><a href="#">Download</a>
-            </li>
-          </ul>{/}
+        <div id="email-detail-attachments">
+          <div id="email-attachments-header" class="clearfix">
+            <div class="headline"><i class="fa fa-paperclip"></i><span>Attachments:</span><b>{attachment_count}3{/}</b> -</div>
+            <div class="tools"><a href="#">Download all</a></div>
+          </div>
+          <div id="email-attachments-content">{Attachments}
+            <ul class="clearfix">
+              <li>
+                <div class="img"><a href="#"><img alt="" src="img/samples/hdr/small/img_5.jpg"/></a></div><span class="name">nature.jpg</span><a href="#">Download</a>
+              </li>
+              <li>
+                <div class="img"><a href="#"><img alt="" src="img/samples/hdr/small/img_8.jpg"/></a></div><span class="name">bratislava.jpg</span><a href="#">Download</a>
+              </li>
+              <li>
+                <div class="img"><i class="fa fa-file"></i></div><span class="name">invoice.pdf</span><a href="#">Download</a>
+              </li>
+            </ul>{/}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="nano-pane">
-    <div style="height: 502px; transform: translate(0px, 60px);" class="nano-slider"></div>
+    <div class="nano-pane">
+      <div style="height: 502px; transform: translate(0px, 60px);" class="nano-slider"></div>
+    </div>
   </div>
 </div>
