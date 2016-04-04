@@ -12,9 +12,9 @@ class page_emaildetail extends \Page{
 		$email_model=$this->add('xepan\communication\Model_Communication_Email_Received');
 		$email_model->load($_GET['email_id']);
 
-		$email_model->ref('extra_info')->set('seen_by',111)->save();
-		echo $email_model->ref('extra_info')->get('seen_by');
-		exit;
+		$email_model->ref('extra_info')->set('seen_by',$this->app->employee->id)->save();
+		// echo $email_model->ref('extra_info')->get('seen_by');
+		// exit;
 
 		// $email_model->tryLoadAny();
 		$email_detail=$this->add('xepan\communication\View_EmailDetail');
