@@ -18,6 +18,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	function init(){
 		parent::init();
 
+
+		$this->containsOne('extra_info',function($m){
+			$m->addField('seen_by')->defaultValue(null);
+		});
+
 		$this->add('misc/Field_Callback','communication_with')->set(function($m){
 			
 			$from_raw=$m['from_raw'];
