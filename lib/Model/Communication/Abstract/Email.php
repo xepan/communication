@@ -19,7 +19,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		parent::init();
 
 
-		$this->containsOne('extra_info',function($m){
+		$this->containsOne(['extra_info','json'=>true],function($m){
 			$m->addField('seen_by')->defaultValue(null);
 		});
 
