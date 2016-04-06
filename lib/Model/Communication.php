@@ -48,5 +48,6 @@ class Model_Communication extends \xepan\base\Model_Table{
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
 		$this->addField('extra_info');
+		$this->hasMany('xepan\communication\Model_Communication_Attachment','communication_email_id',null,'EmailAttachments');
 	}
 }
