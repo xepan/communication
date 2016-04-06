@@ -111,16 +111,28 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['description']=$body;
 	}
 
-	function addAttachment($attachment){
-		// $this->ref('Attachments')=$attachment;
+	function addAttachment($attach_id){
+		if(!$attach_id) return;
+		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
+		$attach['file_id'] = $attach_id;
+	
+		$attach->save();
+
+		return $attach;
 	}
 
-	function setRelatedDocument($document){
-		if($document instanceof \xepan\base\Model_Document)
-			$document = $document->id;
+	function getAttachments(){
+		$attach_arry = array();
+		if($this->loaded()){
+			foreach ($this->attachment() as $attach) {
+				$attach_arry[] = $attach['id'];
+			}
 
-		$this['related_document_id'] = $document;
+		}
+		
+		return $attach_arry;
 	}
+
 
 	function send(\xepan\base\Model_Epan_EmailSetting $email_setting){
 		$this['status']='Outbox';
