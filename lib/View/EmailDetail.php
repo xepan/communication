@@ -17,7 +17,10 @@ class View_EmailDetail extends \View{
 		$cc_lister->setSource($cc_raw);
 
 		$this->template->setHTML('email_body',$model['description']);
-	
+		$this->template->setHTML('attachment_count',$model['attachment_count']);
+
+		$attach=$this->add('CompleteLister',null,'Attachments',['view/emails/email-detail','Attachments']);
+		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_email_id',$m->id);
 		return $m;
 	}
 	function defaultTemplate(){
