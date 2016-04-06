@@ -14,11 +14,19 @@ div(id="{$_name}")
                       {communication_with}| Angelina Jolie{/}
                     .email.hidden-xs
                   .to
-                    | To: 
-                    span {to_name}Me, Brad Pitt{/}
+                    | To:
+                    {to_lister}
+                    {rows}{row} 
+                    span {name}Me{/},{email} Brad Pitt{/}
+                    {/}{/}
+                    {/}
                   .to
-                    | Cc: 
-                    span {$cc_name}
+                    | Cc:
+                    {cc_lister}
+                    {rows}{row} 
+                    span {name}Me{/},{email} Brad Pitt{/}
+                    {/}{/}
+                    {/}
                   .to
                     | Bcc: 
                     span {$bcc_name}
