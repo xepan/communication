@@ -98,13 +98,15 @@ div(id="{$_name}")
                 #email-attachments-content
                   {Attachments}
                   ul.clearfix
+                    {rows}{row}
                     li
                       .img
                         a(href='#')
-                          img(alt='', src='img/samples/hdr/small/img_5.jpg')
+                          img(alt='', src='{file}img/samples/hdr/small/img_5.jpg{/}')
                       span.name
                         | nature.jpg
                       a(href='#') Download
+                      {/}
                     li
                       .img
                         a(href='#')
@@ -118,6 +120,6 @@ div(id="{$_name}")
                       span.name
                         | invoice.pdf
                       a(href='#') Download
-                  {/}
+                  {/}{/}
           .nano-pane
             .nano-slider(style='height: 502px; transform: translate(0px, 60px);')

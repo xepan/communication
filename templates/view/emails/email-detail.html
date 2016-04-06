@@ -72,9 +72,9 @@
             <div class="tools"><a href="#">Download all</a></div>
           </div>
           <div id="email-attachments-content">{Attachments}
-            <ul class="clearfix">
+            <ul class="clearfix">{rows}{row}
               <li>
-                <div class="img"><a href="#"><img alt="" src="img/samples/hdr/small/img_5.jpg"/></a></div><span class="name">nature.jpg</span><a href="#">Download</a>
+                <div class="img"><a href="#"><img alt="" src="{file}img/samples/hdr/small/img_5.jpg{/}"/></a></div><span class="name">nature.jpg</span><a href="#">Download</a>{/}
               </li>
               <li>
                 <div class="img"><a href="#"><img alt="" src="img/samples/hdr/small/img_8.jpg"/></a></div><span class="name">bratislava.jpg</span><a href="#">Download</a>
@@ -82,7 +82,7 @@
               <li>
                 <div class="img"><i class="fa fa-file"></i></div><span class="name">invoice.pdf</span><a href="#">Download</a>
               </li>
-            </ul>{/}
+            </ul>{/}{/}
           </div>
         </div>
       </div>
