@@ -139,7 +139,7 @@ class Controller_ReadEmail extends \AbstractController {
 					$mail_m['uid'] = $mail->id;
 					$mail_m['direction'] = 'In';
 					$mail_m['flags'] = $conditions;
-					$mail_m->findContact(false);
+					$mail_m->findContact(true);
 					// $mail_m['from_name'] = $mail->fromName;
 					$mail_m->save();
 					$fetch_email_array[] = $mail_m->id;
