@@ -115,6 +115,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		if(!$attach_id) return;
 		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
 		$attach['file_id'] = $attach_id;
+		$attach['communication_email_id'] = $this->id;
 	
 		$attach->save();
 
