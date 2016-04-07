@@ -35,4 +35,27 @@ class Model_Communication_Email_Received extends Model_Communication_Email{
 		}
 	}
 
+	function createTicket(){
+		$ticket = $this->add('xepan\crm\Model_SupportTicket');
+		$ticket['status'] = "Pending";
+		$ticket['uid'] = $this['uid'];
+		$ticket['from_id'] = $this['from_id'];
+		$ticket['from_email'] = $this['from_raw']['email'];
+		$ticket['from_name'] = $this['from_raw']['name'];
+		$ticket['to'] = $this['to_raw'];
+		$ticket['to_id'] = $this['to_id'];
+		$ticket['to_email'] = $this['to_raw']['email'];
+		$ticket['cc'] = $this['cc_raw']['email'];
+		$ticket['subject'] = $this['title'];
+		$ticket['message'] = $this['description'];
+		$ticket['contact_id'] = $this['from_id'];
+		$ticket->save();
+
+		// foreach ($this->attachment() as $attach) {
+		// 	$ticket->addAttachment($attach['attachment_url_id'],$attach['file_id']);	
+		// }
+		// $t->autoReply();
+
+	}
+
 }
