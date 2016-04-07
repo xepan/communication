@@ -70,31 +70,16 @@ div(id="{$_name}")
                   a(href='#') Some pilots
                   |  get picked and become television
                   | programs. Some don't, become nothing. She starred in one of the ones that became nothing.
-                p
-                  | Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as
-                  | the most popular gun in American crime. Do you believe that shit? It actually says that in
-                  | the 
-                  a(href='#') little book
-                  |  that comes with it: the most popular gun in American crime.
-                  | Like they're actually proud of that shit.
-                p
-                  b You don't get sick!
-                  br
-                  | Your bones don't break, mine do. That's clear. Your cells react to bacteria and viruses
-                  | differently than mine. You don't get sick, I do. That's also clear. But for some reason,
-                  | you and I react the exact same way to water. We swallow it too fast, we choke. We get some
-                  | in our lungs, we drown. However unreal it may seem, we are connected, you and I. We're on
-                  | the same curve, just on opposite ends.
                 {/}
               #email-detail-attachments
                 #email-attachments-header.clearfix
                   .headline
                     i.fa.fa-paperclip
-                    span Attachments:
-                    b {attachment_count}3{/}
-                    |  -
+                    span Attachments : 
+                    b {attachment_count}( 3 ){/}
+                    //- |  -
                   .tools
-                    a(href='#') Download all
+                    //- a.all-Attachment-media(data-id="{$id}") Download all
                 #email-attachments-content
                   {Attachments}
                   ul.clearfix
@@ -104,8 +89,8 @@ div(id="{$_name}")
                         a(href='#')
                           img(alt='', src='{file}img/samples/hdr/small/img_5.jpg{/}')
                       span.name
-                        | nature.jpg
-                      a(href='#') Download
+                        //- {file}| nature.jpg{/}
+                      a(href='{$file}' download) Download
                       {/}
                     li
                       .img
