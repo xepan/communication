@@ -74,10 +74,11 @@ div(id="{$_name}")
               #email-detail-attachments
                 #email-attachments-header.clearfix
                   .headline
-                    i.fa.fa-paperclip
+                    {check_attach}
+                    i.fa.fa-paperclip &nbsp;
                     span Attachments : 
                     b {attachment_count}( 3 ){/}
-                    //- |  -
+                    {/}
                   .tools
                     //- a.all-Attachment-media(data-id="{$id}") Download all
                 #email-attachments-content

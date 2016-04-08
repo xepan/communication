@@ -15,8 +15,9 @@ div(id="{$_name}")
           span.subject {subject}Like your new movie -{/}&nbsp;
           span.body {body}Hi beauty, I watched your movies last night.{/}
         .meta-info(data-id="{$id}")
+          {check_attach}
           a.attachment(href='#')
-            i.fa.fa-paperclip
+            i.fa.fa-paperclip{/}
           span.date {callback_date}9:34 am{/}
       {/}{/}
   .nano-pane
