@@ -18,10 +18,15 @@ class View_EmailDetail extends \View{
 
 		$this->template->setHTML('email_body',$model['description']);
 		$this->template->setHTML('attachment_count',$model['attachment_count']);
+		
+		if(!$model['attachment_count']){
+			$this->template->tryDel('check_attach');
+		}
 
 		$attach=$this->add('CompleteLister',null,'Attachments',['view/emails/email-detail','Attachments']);
 		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_email_id',$m->id);
 		return $m;
+
 	}
 	function defaultTemplate(){
 		return ['view/emails/email-detail'];
