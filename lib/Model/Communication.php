@@ -50,6 +50,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('extra_info');
 		$this->hasMany('xepan\communication\Communication_Attachment','communication_email_id',null,'EmailAttachments');
 		$this->hasMany('xepan\crm\Ticket_Comments','communication_email_id',null,'Comments');
+		$this->hasMany('xepan\crm\SupportTicket','communication_email_id',null,'SupportTicket');
 		
 		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->count());
 	}
