@@ -20,6 +20,8 @@ class View_Lister_EmailsList extends \CompleteLister{
 			$this->current_row['check_attach']='';
 		}
 
+		$this->current_row['body'] = strip_tags($this->current_row['body']);
+
 		parent::formatRow();
 	}
 	function defaultTemplate(){
