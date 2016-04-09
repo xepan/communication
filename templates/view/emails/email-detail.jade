@@ -8,7 +8,7 @@ div(id="{$_name}")
               #email-detail-sender.clearfix(style="height:auto;")
                 .picture.hidden-xs
                   img(alt='', src='img/samples/angelina-300.jpg')
-                .users
+                .users(style="width:88%")
                   .from.clearfix
                     .name
                       {communication_with}| Angelina Jolie{/}
@@ -24,12 +24,12 @@ div(id="{$_name}")
                     | Cc:
                     {cc_lister}
                     {rows}{row} 
-                    span {name}Me{/},&nbsp;{email} Brad Pitt{/}&nbsp;&nbsp;
+                    small{name}Me{/},&nbsp;{email} Brad Pitt{/}&nbsp;&nbsp;
                     {/}{/}
                     {/}
                   .to
                     | Bcc: 
-                    span {$bcc_name}
+                    small {$bcc_name}
                 .tools
                   .date
                     | {callback_date}Sep 12 (6 days ago){/}

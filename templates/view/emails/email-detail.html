@@ -6,7 +6,7 @@
         <div id="email-detail-subject" class="clearfix"><span class="subject">{subject}FW: Like your new movie{/}</span><span class="label label-success">{status}Work{/}</span></div>
         <div id="email-detail-sender" style="height:auto;" class="clearfix">
           <div class="picture hidden-xs"><img alt="" src="img/samples/angelina-300.jpg"/></div>
-          <div class="users">
+          <div style="width:88%" class="users">
             <div class="from clearfix">
               <div class="name">{communication_with}| Angelina Jolie{/}</div>
               <div class="email hidden-xs"></div>
@@ -20,10 +20,10 @@
             <div class="to">
               Cc:
               {cc_lister}
-              {rows}{row} <span>{name}Me{/},&nbsp;{email} Brad Pitt{/}&nbsp;&nbsp;</span>{/}{/}
+              {rows}{row} <small>{name}Me{/},&nbsp;{email} Brad Pitt{/}&nbsp;&nbsp;</small>{/}{/}
               {/}
             </div>
-            <div class="to">Bcc: <span>{$bcc_name}</span></div>
+            <div class="to">Bcc: <small>{$bcc_name}</small></div>
           </div>
           <div class="tools">
             <div class="date">{callback_date}Sep 12 (6 days ago){/}</div>
