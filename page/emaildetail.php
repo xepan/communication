@@ -1,8 +1,10 @@
 <?php
 namespace xepan\communication;
 
-class page_emaildetail extends \Page{
+class page_emaildetail extends \xepan\base\Page{
 	public $title="Email Details";
+	public $breadcrumb=['Home'=>'index','Email'=>'xepan_communication_emails','Details'=>'#'];
+
 	function init(){
 		parent::init();
 		$email_id=$this->api->stickyGET('email_id');
