@@ -1,4 +1,4 @@
-.col-lg-12
+.col-lg-12(id="{$_name}")
       #email-header-mobile.visible-xs.visible-sm.clearfix
         #email-header-title-mobile.pull-left
           i.fa.fa-inbox
@@ -18,9 +18,9 @@
               span.caret
             ul.dropdown-menu
               li
-                a(href='#') All
+                a.all-select(href='#') All
               li
-                a(href='#') None
+                a.select-none(href='#') None
               li
                 a(href='#') Read
               li

@@ -74,10 +74,15 @@ class page_emails extends \Page{
 			];
 
 		});
+		$email_view->on('click','.chbox',function($js,$data)use($email_model){
+			return $js->univ()->alert('checkbox');
+		});
 
-		$email_view->on('click','li.clickable-row  div:not(.chbox,.star)',function($js,$data){
+		$email_view->on('click','li.clickable-row  div:not(.chbox, .star)',function($js,$data){
 			return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
 		});
+
+
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
 			// load data['id'] wala e,mail and mark starred or remove is_starred
 			$email_model->load($data['id']);
@@ -97,6 +102,18 @@ class page_emails extends \Page{
 			$js_array[] = $js->univ()->successMessage("done");
 
 			return $js_array;
+		});
+
+		$header->on('click','li > .all-select',function($js,$data)use($email_view){
+			// return $js->univ()->alert('All');
+			return $email_view->js()->find('.chbox input')->attr('checked',true);
+
+		});
+
+		$header->on('click','li > .select-none',function($js,$data)use($email_view){
+			// return $js->univ()->alert('None');
+			return $email_view->js()->find('.chbox input')->attr('checked',false);
+
 		});
 	}
 	
