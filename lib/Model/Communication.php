@@ -41,7 +41,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('related_id'); // Can be used anywhere as per requirement
 		$this->addField('sent_on')->type('date'); // Can be used anywhere as per requirement
 		
-		$this->addField('created_at');
+		$this->addField('created_at')->type('datetime')->defaultValue($this->app->now);
 		$this->addField('status');
 		$this->addField('mailbox');
 		$this->addField('is_starred')->type('boolean')->defaultValue(false);
