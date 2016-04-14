@@ -63,7 +63,7 @@ class page_composeemail extends \Page{
 		
 		$form->onSubmit(function($f){
 
-			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->tryLoadAny();
+			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_from']);
 			$mail = $this->add('xepan\communication\Model_Communication_Email');
 			$mail->setfrom($email_settings['from_email'],$email_settings['from_name']);
 			
@@ -111,9 +111,9 @@ class page_composeemail extends \Page{
 
 			$mail->setSubject($f['email_subject']);
 			$mail->setBody($f['email_body']);
-			// $mail->send($email_settings);
+			$mail->send($email_settings);
 			$mail->save();
-			return $f->js()->univ()->successMessage('EMAIL SENDING DONE, , but actually code commented');
+			return $f->js()->univ()->successMessage('EMAIL SENT');
 		});
 	}
 
