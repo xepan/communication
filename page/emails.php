@@ -33,6 +33,7 @@ class page_emails extends \Page{
 		$email_model=$this->add('xepan\communication\Model_Communication_Email'.$mailbox);
 
 		$email_model->addCondition('mailbox','like',$mail.'%');
+		$email_model->setOrder('created_at','desc');
 
 
 		$header = $this->add('xepan\communication\View_EmailHeader',null,'email_header');
