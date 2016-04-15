@@ -8,8 +8,8 @@ class page_composeemail extends \Page{
 		// throw new \Exception($to_email, 1);
 		
 		$action= 'add';
-		$form = $this->add('Form');
-		$form->setLayout(['view/composeemail']);
+		$form = $this->add('Form');//,null,null,['view/composeemail']);
+		// $form->setLayout(['view/composeemail']);
 
 		$form->addField('Dropdown','email_from')->setModel('xepan\hr\Post_Email_MyEmails');
 		$to_field = $form->addField('xepan\base\DropDown','email_to');
@@ -61,6 +61,13 @@ class page_composeemail extends \Page{
 		$form->addField('email_subject');
 		$form->addField('xepan\base\RichText','email_body');
 		
+		$multi_upload_field = $form->addField('Upload','attachment',"")
+										->allowMultiple()
+										/*->setFormatFilesTemplate('view/xepan_file_upload')*/;
+
+		$multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
+		$multi_upload_field->setModel('filestore/Image');
+
 		$form->onSubmit(function($f){
 
 			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_from']);
@@ -113,10 +120,21 @@ class page_composeemail extends \Page{
 				}
 			}
 
+
+
+			$upload_images_array = explode(",",$f['attachment']);
+			// var_dump($upload_images_array);
+			// exit;
 			$mail->setSubject($f['email_subject']);
 			$mail->setBody($f['email_body']);
-			$mail->send($email_settings);
 			$mail->save();
+
+			foreach ($upload_images_array as $file_id) {
+				$mail->addAttachment($file_id);
+			}
+
+			$mail->send($email_settings);
+
 			return $f->js()->univ()->successMessage('EMAIL SENT');
 		});
 	}
