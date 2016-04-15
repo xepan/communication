@@ -82,30 +82,34 @@ class page_composeemail extends \Page{
 			}
 
 			foreach (explode(",",$f['email_cc']) as $e2) {
-				if(is_numeric(trim($e2))){
-					$contact_info = $this->add('xepan\base\Model_Contact_Info');
-					$contact_info->tryLoad($e2);
-					if($contact_info->id != $e2)
-						return $f->error('email_cc','Value '.$e2.' is not acceptable...');
-					$mail->addCC($contact_info['value'],$contact_info['contact']);
-				}else{
-					if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
-						return $f->error('email_cc','Value '.$e2.' is not acceptable');
-					$mail->addCC($e2);
+				if($f['email_cc']){
+					if(is_numeric(trim($e2))){
+						$contact_info = $this->add('xepan\base\Model_Contact_Info');
+						$contact_info->tryLoad($e2);
+							if($contact_info->id != $e2)
+								return $f->error('email_cc','Value '.$e2.' is not acceptable...');
+						$mail->addCC($contact_info['value'],$contact_info['contact']);
+					}else{
+						if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
+							return $f->error('email_cc','Value '.$e2.' is not acceptable');
+						$mail->addCC($e2);
+					}
 				}
 			}
 
 			foreach (explode(",",$f['email_bcc']) as $e2) {
-				if(is_numeric(trim($e2))){
-					$contact_info = $this->add('xepan\base\Model_Contact_Info');
-					$contact_info->tryLoad($e2);
-					if($contact_info->id != $e2)
-						return $f->error('email_bcc','Value '.$e2.' is not acceptable...');
-					$mail->addBcc($contact_info['value'],$contact_info['contact']);
-				}else{
-					if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
-						return $f->error('email_bcc','Value '.$e2.' is not acceptable');
-					$mail->addBcc($e2);
+				if($f['email_bcc']){
+					if(is_numeric(trim($e2))){
+						$contact_info = $this->add('xepan\base\Model_Contact_Info');
+						$contact_info->tryLoad($e2);
+						if($contact_info->id != $e2)
+							return $f->error('email_bcc','Value '.$e2.' is not acceptable...');
+						$mail->addBcc($contact_info['value'],$contact_info['contact']);
+					}else{
+						if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
+							return $f->error('email_bcc','Value '.$e2.' is not acceptable');
+						$mail->addBcc($e2);
+					}
 				}
 			}
 
