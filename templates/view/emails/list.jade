@@ -5,7 +5,7 @@ div(id="{$_name}")
       li.clickable-row(data-id="{$id}" class="{$unread}")
         .chbox(data-id="{$id}")
           .checkbox-nice
-            input(id='m-checkbox-{$id}' type='checkbox')
+            input(data-id="{$id}" id='m-checkbox-{$id}' type='checkbox' )
             label(for='m-checkbox-{$id}')
         .star(data-id="{$id}")
           a(data-id="{$id}" data-starred="{$is_starred}" class="{$starred}")

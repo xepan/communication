@@ -22,19 +22,19 @@
               li
                 a.select-none(href='#') None
               li
-                a(href='#') Read
+                a.select-read(href='#') Read
               li
-                a(href='#') Unread
+                a.select-unread(href='#') Unread
               li
-                a(href='#') Starred
+                a.select-starred(href='#') Starred
               li
-                a(href='#') Unstarred
+                a.select-unstarred(href='#') Unstarred
           .btn-group
-            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Refresh')
+            button.fetch-refresh.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Refresh')
               i.fa.fa-refresh
             button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Spam')
               i.fa.fa-exclamation-circle
-            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Erase')
+            button.do-delete.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Erase')
               i.fa.fa-trash-o
           .btn-group
             button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Labels')
