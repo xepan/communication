@@ -122,11 +122,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		return $attach;
 	}
 
-	function getAttachments(){
+	function getAttachments($urls=true){
 		$attach_arry = array();
 		if($this->loaded()){
-			foreach ($this->attachment() as $attach) {
-				$attach_arry[] = $attach['id'];
+			foreach ($this->ref('EmailAttachments') as $attach) {
+				$attach_arry[] = $urls?$attach['file']:$attach['id'];
 			}
 
 		}
@@ -155,7 +155,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 				foreach ($this['bcc_raw'] as $bcc) {
 				    $mail->addBcc($bcc['email'],$bcc['name']?:null);
 				}
-
+				
+			foreach ($this->getAttachments() as $attach) {
+				$mail->addAttachment($_SERVER["DOCUMENT_ROOT"].$attach);				
+			}
+				
 			$mail->setSubject($this['title'])
 			    ->setHTMLBody($this['description']);
 
