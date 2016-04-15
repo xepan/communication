@@ -10,6 +10,7 @@ class View_EmailNavigation extends \View{
 		$this->template->trySet('contat_inbox_count',$contact_count);
 		
 		$inbox=$this->add('xepan\communication\Model_Communication_Email_Received');
+		$inbox->addCondition('extra_info',null);
 		$inbox_count=$inbox->count()->getOne();
 		$this->template->trySet('inbox_count',$inbox_count);
 

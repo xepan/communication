@@ -8,6 +8,7 @@ class page_emails extends \Page{
 	function init(){
 		parent::init();
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
+
 		$mail = $email_view->recall('mail','%');
 		$mailbox = $email_view->recall('mailbox','_Received');
 
