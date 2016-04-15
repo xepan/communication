@@ -1,6 +1,7 @@
 div(id="{$_name}")
   .email-content-nano-content(tabindex='0', style='right: -13px;')
     ul#email-list
+      .pull-right{$paginator}
       {rows}{row}
       li.clickable-row(data-id="{$id}" class="{$unread}")
         .chbox(data-id="{$id}")
