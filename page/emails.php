@@ -41,7 +41,7 @@ class page_emails extends \Page{
 		
 		$email_view->setModel($email_model);
 		$paginator = $email_view->add('Paginator',null,'paginator');
-		$paginator->setRowsPerPage(10);
+		$paginator->setRowsPerPage(50);
 		
 		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
 		$label_view=$this->add('xepan\communication\View_Lister_EmailLabel',null,'email_labels');
