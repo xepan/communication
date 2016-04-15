@@ -38,9 +38,10 @@ class page_emails extends \Page{
 		$header = $this->add('xepan\communication\View_EmailHeader',null,'email_header');
 		$mailboxes_view = $this->add('xepan\communication\View_EmailNavigation',null,'email_navigation');
 		
-
-		
 		$email_view->setModel($email_model);
+		$paginator = $email_view->add('Paginator',null,'paginator');
+		$paginator->setRowsPerPage(10);
+		
 		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
 		$label_view=$this->add('xepan\communication\View_Lister_EmailLabel',null,'email_labels');
 		$label_view->setModel($my_email);
