@@ -8,7 +8,6 @@ class page_emails extends \Page{
 	function init(){
 		parent::init();
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
-
 		$mail = $email_view->recall('mail','%');
 		$mailbox = $email_view->recall('mailbox','_Received');
 
@@ -75,14 +74,10 @@ class page_emails extends \Page{
 			];
 
 		});
-		$email_view->on('click','.chbox',function($js,$data)use($email_model){
-			return $js->univ()->alert('checkbox');
-		});
 
 		$email_view->on('click','li.clickable-row  div:not(.chbox, .star)',function($js,$data){
 			return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
 		});
-
 
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
 			// load data['id'] wala e,mail and mark starred or remove is_starred
@@ -106,15 +101,15 @@ class page_emails extends \Page{
 		});
 
 		$header->on('click','li > .all-select',function($js,$data)use($email_view){
-			// return $js->univ()->alert('All');
 			return $email_view->js()->find('.chbox input')->attr('checked',true);
 
 		});
-
 		$header->on('click','li > .select-none',function($js,$data)use($email_view){
-			// return $js->univ()->alert('None');
 			return $email_view->js()->find('.chbox input')->attr('checked',false);
 
+		});
+		$header->on('click','button.fetch-refresh',function($js,$data){
+			return $js->univ()->location();
 		});
 	}
 	
