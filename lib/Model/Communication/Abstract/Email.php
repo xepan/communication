@@ -176,6 +176,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			throw $e;
 		}
 		$this['status']='Sent';
+		$this['direction']='Out';
 		$this->save();
 	}		
 }
