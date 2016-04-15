@@ -42,6 +42,7 @@ class page_emails extends \Page{
 
 		
 		$email_view->setModel($email_model);
+		
 		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
 		$label_view=$this->add('xepan\communication\View_Lister_EmailLabel',null,'email_labels');
 		$label_view->setModel($my_email);
