@@ -8,8 +8,8 @@ class page_composeemail extends \Page{
 		// throw new \Exception($to_email, 1);
 		
 		$action= 'add';
-		$form = $this->add('Form');
-		$form->setLayout(['view/composeemail']);
+		$form = $this->add('Form');//,null,null,['view/composeemail']);
+		// $form->setLayout(['view/composeemail']);
 
 		$form->addField('Dropdown','email_from')->setModel('xepan\hr\Post_Email_MyEmails');
 		$to_field = $form->addField('xepan\base\DropDown','email_to');
@@ -61,6 +61,13 @@ class page_composeemail extends \Page{
 		$form->addField('email_subject');
 		$form->addField('xepan\base\RichText','email_body');
 		
+		$multi_upload_field = $form->addField('Upload','attachment',"")
+										->allowMultiple()
+										/*->setFormatFilesTemplate('view/xepan_file_upload')*/;
+
+		$multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
+		$multi_upload_field->setModel('filestore/Image');
+
 		$form->onSubmit(function($f){
 
 			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_from']);
@@ -82,37 +89,52 @@ class page_composeemail extends \Page{
 			}
 
 			foreach (explode(",",$f['email_cc']) as $e2) {
-				if(is_numeric(trim($e2))){
-					$contact_info = $this->add('xepan\base\Model_Contact_Info');
-					$contact_info->tryLoad($e2);
-					if($contact_info->id != $e2)
-						return $f->error('email_cc','Value '.$e2.' is not acceptable...');
-					$mail->addCC($contact_info['value'],$contact_info['contact']);
-				}else{
-					if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
-						return $f->error('email_cc','Value '.$e2.' is not acceptable');
-					$mail->addCC($e2);
+				if($f['email_cc']){
+					if(is_numeric(trim($e2))){
+						$contact_info = $this->add('xepan\base\Model_Contact_Info');
+						$contact_info->tryLoad($e2);
+							if($contact_info->id != $e2)
+								return $f->error('email_cc','Value '.$e2.' is not acceptable...');
+						$mail->addCC($contact_info['value'],$contact_info['contact']);
+					}else{
+						if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
+							return $f->error('email_cc','Value '.$e2.' is not acceptable');
+						$mail->addCC($e2);
+					}
 				}
 			}
 
 			foreach (explode(",",$f['email_bcc']) as $e2) {
-				if(is_numeric(trim($e2))){
-					$contact_info = $this->add('xepan\base\Model_Contact_Info');
-					$contact_info->tryLoad($e2);
-					if($contact_info->id != $e2)
-						return $f->error('email_bcc','Value '.$e2.' is not acceptable...');
-					$mail->addBcc($contact_info['value'],$contact_info['contact']);
-				}else{
-					if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
-						return $f->error('email_bcc','Value '.$e2.' is not acceptable');
-					$mail->addBcc($e2);
+				if($f['email_bcc']){
+					if(is_numeric(trim($e2))){
+						$contact_info = $this->add('xepan\base\Model_Contact_Info');
+						$contact_info->tryLoad($e2);
+						if($contact_info->id != $e2)
+							return $f->error('email_bcc','Value '.$e2.' is not acceptable...');
+						$mail->addBcc($contact_info['value'],$contact_info['contact']);
+					}else{
+						if(!filter_var($e2, FILTER_VALIDATE_EMAIL))
+							return $f->error('email_bcc','Value '.$e2.' is not acceptable');
+						$mail->addBcc($e2);
+					}
 				}
 			}
 
+
+
+			$upload_images_array = explode(",",$f['attachment']);
+			// var_dump($upload_images_array);
+			// exit;
 			$mail->setSubject($f['email_subject']);
 			$mail->setBody($f['email_body']);
-			$mail->send($email_settings);
 			$mail->save();
+
+			foreach ($upload_images_array as $file_id) {
+				$mail->addAttachment($file_id);
+			}
+
+			$mail->send($email_settings);
+
 			return $f->js()->univ()->successMessage('EMAIL SENT');
 		});
 	}
