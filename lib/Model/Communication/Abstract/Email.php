@@ -137,6 +137,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 
 	function send(\xepan\base\Model_Epan_EmailSetting $email_setting){
 		$this['status']='Outbox';
+		$this['mailbox']=$email_setting['email_username'].'#SENT';
 		try{
 			
 			$mail = new \Nette\Mail\Message;
