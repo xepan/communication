@@ -38,6 +38,7 @@ class page_emails extends \Page{
 
 		$header = $this->add('xepan\communication\View_EmailHeader',null,'email_header');
 		$mailboxes_view = $this->add('xepan\communication\View_EmailNavigation',null,'email_navigation');
+		$mailboxes_view->js(true)->find('[data-mailbox='.$mailbox.']')->closest('li')->addClass('active');
 		
 		$email_view->setModel($email_model);
 		$paginator = $email_view->add('Paginator',null,'paginator');
@@ -46,6 +47,7 @@ class page_emails extends \Page{
 		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
 		$label_view=$this->add('xepan\communication\View_Lister_EmailLabel',null,'email_labels');
 		$label_view->setModel($my_email);
+		$label_view->js(true)->find('[data-mail='.($mail!='%'?$mail:'\%').']')->addClass('fa fa-check-square');
 
 		// Populate links with js->on
 		$url = $this->api->url(null,['cut_object'=>$email_view->name]);
