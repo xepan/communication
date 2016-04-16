@@ -11,7 +11,13 @@ class page_composeemail extends \Page{
 		$form = $this->add('Form');//,null,null,['view/composeemail']);
 		// $form->setLayout(['view/composeemail']);
 
-		$form->addField('Dropdown','email_from')->setModel('xepan\hr\Post_Email_MyEmails');
+		$mymail = $form->addField('Dropdown','email_username')->setEmptyText('Please Select From Email');
+		$mymail->setModel('xepan\hr\Model_Post_Email_MyEmails');		
+		
+		// $mymail->on('change',function($js,$data)use($form){
+		// 	return $form->js()->reload(['email'=>$data['shortname']]);
+		// });
+
 		$to_field = $form->addField('xepan\base\DropDown','email_to');
 		$to_field->validate_values = false;
 		$cc_field = $form->addField('xepan\base\Dropdown','email_cc');
@@ -57,9 +63,17 @@ class page_composeemail extends \Page{
 		$cc_field->setAttr('multiple','multiple');
 		$bcc_field->setAttr('multiple','multiple');
 
+		
+		$email_username_model=$this->add('xepan\base\Model_Epan_EmailSetting');
+		if($_GET['email_username']){
+			$email_username_model->tryLoad($_GET['email_username']);
+		}
 
 		$form->addField('email_subject');
 		$form->addField('xepan\base\RichText','email_body');
+		$view=$form->add('View')->setHTML($email_username_model['signature']);
+		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
+		// $mymail->js('change',$form->js()->atk4_form('reloadField','email_signature',[$this->app->url(),'email_username'=>$mymail->js()->val()]));
 		
 		$multi_upload_field = $form->addField('Upload','attachment',"")
 										->allowMultiple()
@@ -69,8 +83,8 @@ class page_composeemail extends \Page{
 		$multi_upload_field->setModel('filestore/Image');
 
 		$form->onSubmit(function($f){
-
-			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_from']);
+			
+			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_username']);
 			$mail = $this->add('xepan\communication\Model_Communication_Email');
 			$mail->setfrom($email_settings['from_email'],$email_settings['from_name']);
 			
@@ -126,7 +140,8 @@ class page_composeemail extends \Page{
 			// var_dump($upload_images_array);
 			// exit;
 			$mail->setSubject($f['email_subject']);
-			$mail->setBody($f['email_body']);
+			$mail->setBody($f['email_body'].$email_settings['signature']);
+			
 			$mail->save();
 
 			foreach ($upload_images_array as $file_id) {

@@ -108,7 +108,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	}		
 
 	function setBody($body){
-		$this['description']=$body;
+		$this['description']=$body.$signature;
 	}
 
 	function addAttachment($attach_id){
