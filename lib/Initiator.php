@@ -27,6 +27,9 @@ class Initiator extends \Controller_Addon {
 	}
 
 	function generateInstaller(){
+		if(!isset($this->app->old_epan)) $this->app->old_epan = $this->app->epan;
+        if(!isset($this->app->new_epan)) $this->app->new_epan = $this->app->epan;
+        
 		$this->app->epan=$this->app->old_epan;
         $truncate_model = ['Communication_Attachment','Communication'];
         foreach ($truncate_model as $t) {
