@@ -16,7 +16,6 @@ class Model_Communication extends \xepan\base\Model_Table{
 	function init(){
 		parent::init();
 		
-		// $this = $this->join('communication.document_id');
 		$this->hasOne('xepan\base\Contact','from_id');
 		$this->hasOne('xepan\base\Contact','to_id');
 		$this->hasOne('xepan\base\Document','related_document_id');
@@ -53,5 +52,13 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->hasMany('xepan\crm\SupportTicket','communication_email_id',null,'SupportTicket');
 		
 		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->count());
+
+		$this->addHook('beforeDelete',[$this,'deleteAttachments']);
+	}
+
+	function deleteAttachments(){
+		$this->ref('EmailAttachments')->each(function($o){
+			$o->delete();
+		});
 	}
 }
