@@ -27,5 +27,16 @@ class Initiator extends \Controller_Addon {
 	}
 
 	function generateInstaller(){
+		$this->app->epan=$this->app->old_epan;
+        $truncate_tables = ['communication_attachment','communication'];
+        foreach ($truncate_tables as $t) {
+            $m=$this->add('xepan\communication\Model_'.$t);
+            foreach ($m as $mt) {
+                $mt->delete();
+            }
+        }
+        
+        $this->app->epan=$this->app->new_epan;
+
 	}
 }
