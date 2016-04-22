@@ -9,8 +9,8 @@ class page_emails extends \Page{
 		parent::init();
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 
-		$mail = $email_view->recall('mail','%');
-		$mailbox = $email_view->recall('mailbox','_ContactReceivedEmail');
+		$mail = $this->app->stickyGET('mail')?:'%';
+		$mailbox = $this->app->stickyGET('mailbox')?:'_ContactReceivedEmail';
 
 		$email_model=$this->add('xepan\communication\Model_Communication_Email'.$mailbox);
 
@@ -35,27 +35,18 @@ class page_emails extends \Page{
 		$url = $this->api->url(null,['cut_object'=>$email_view->name]);
 		
 		$mailboxes_view->on('click','a',function($js,$data)use($mailboxes_view,$email_view,$url){
-			$email_view->memorize('mailbox',$data['mailbox']);
-			$email_view->memorize('filter-contacts',(int)$data['filterContacts']);
-			$email_view->memorize('starred',(int) $data['starred']);
-			$email_view->memorize('draft',(int) $data['draft']);
-			$email_view->memorize('trashed',(int) $data['trashed']);
-			$email_view->memorize('sent',(int) $data['sent']);
-
 			return [
 					$mailboxes_view->js()->find('li')->removeClass('active'),
-					$email_view->js()->reload(null,null,$url),
+					$email_view->js()->reload(null,null,$this->app->url($url,['mailbox'=>$data['mailbox']])),
 					$js->closest('li')->addClass('active')
 			];
 
 		});
 
 		$label_view->on('click','a',function($js,$data)use($label_view,$email_view,$url){
-			$email_view->memorize('mail',$data['mail']);
-						
 			return [
 					$label_view->js()->find('.fa.fa-check-square')->removeClass('fa fa-check-square'),
-					$email_view->js()->reload(null,null,$url),
+					$email_view->js()->reload(null,null,$this->app->url($url,['mail'=>$data['mail']])),
 					$js->addClass('fa fa-check-square')
 			];
 
