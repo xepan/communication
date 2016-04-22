@@ -20,7 +20,12 @@ class View_Lister_EmailsList extends \CompleteLister{
 			$this->current_row['check_attach']='';
 		}
 
+		$email_model=$this->add('xepan\base\Model_Epan_EmailSetting');
+		$email_model->tryLoadBy('email_username',$this->model['to_raw'][0]['email']);
+
+
 		$this->current_row['body'] = strip_tags($this->current_row['body']);
+		$this->current_row['email_name'] =$email_model['name'];
 
 		parent::formatRow();
 	}
