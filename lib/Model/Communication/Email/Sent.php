@@ -14,7 +14,7 @@ class Model_Communication_Email_Sent extends Model_Communication_Email{
 	function init(){
 		parent::init();
 		
-		$this->addCondition('status','Sent');		
+		$this->addCondition('status',['Sent','Outbox']);		
 		$this->addCondition('direction','Out');
 	}
 }

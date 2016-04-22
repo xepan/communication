@@ -10,25 +10,7 @@ class page_emails extends \Page{
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 
 		$mail = $email_view->recall('mail','%');
-		$mailbox = $email_view->recall('mailbox','_Received');
-
-		if(($filter_contacts = $email_view->recall('filter-contacts',false))){			
-			$mailbox = "_ContactReceivedEmail";
-		}
-
-		if(($starred = $email_view->recall('starred',false))){			
-			$mailbox = "_Starred";
-		}
-		if(($sent = $email_view->recall('sent',false))){			
-			$mailbox = "_Sent";
-		}
-		if(($draft = $email_view->recall('draft',false))){			
-			$mailbox = "_Draft";
-		}
-		if(($trashed = $email_view->recall('trashed',false))){			
-			$mailbox = "_Trashed";
-		}
-
+		$mailbox = $email_view->recall('mailbox','_ContactReceivedEmail');
 
 		$email_model=$this->add('xepan\communication\Model_Communication_Email'.$mailbox);
 

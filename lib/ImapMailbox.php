@@ -487,7 +487,11 @@ class ImapMailbox {
 			}
 		}
 		if(!empty($params['charset'])) {
-			$data = $this->convertStringEncoding($data, $params['charset'], $this->serverEncoding);
+			try{
+				$data = $this->convertStringEncoding($data, $params['charset'], $this->serverEncoding);
+			}catch(\Exception $e){
+				
+			}
 		}
 
 		// attachments
