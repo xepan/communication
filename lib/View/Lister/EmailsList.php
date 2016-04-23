@@ -18,7 +18,10 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}
 		if(!$this->model['attachment_count']){
 			$this->current_row['check_attach']='';
+		}else{
+			$this->current_row_html['check_attach']='<a href="#" class="attachment"><i class="fa fa-paperclip"></i></a>';
 		}
+
 		$mailbox=explode('#', $this->model['mailbox']);
 		$email_model=$this->add('xepan\base\Model_Epan_EmailSetting');
 		$email_model->tryLoadBy('email_username',$mailbox);
