@@ -28,7 +28,11 @@ class View_Lister_EmailsList extends \CompleteLister{
 
 
 		$this->current_row['body'] = strip_tags($this->current_row['body']);
-		$this->current_row['email_name'] =$email_model['name'];
+		if($this->model['status']=='Sent'){
+			$this->current_row['email_name'] =$email_model['name']." / ".$this->model['status'];
+		}else{
+			$this->current_row['email_name'] =$email_model['name'];
+		}
 
 		parent::formatRow();
 	}
