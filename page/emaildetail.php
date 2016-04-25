@@ -11,7 +11,7 @@ class page_emaildetail extends \xepan\base\Page{
 		// throw new \Exception($email_id, 1);
 		
 		
-		$email_model=$this->add('xepan\communication\Model_Communication_Email_Received');
+		$email_model=$this->add('xepan\communication\Model_Communication_Email');
 		$email_model->load($_GET['email_id']);
 
 		$email_model->ref('extra_info')->set('seen_by',$this->app->employee->id)->save();
