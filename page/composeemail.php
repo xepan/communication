@@ -140,7 +140,7 @@ class page_composeemail extends \Page{
 			// var_dump($upload_images_array);
 			// exit;
 			$mail->setSubject($f['email_subject']);
-			$mail->setBody($f['email_body'].$email_settings['signature']);
+			$mail->setBody($f['email_body']);
 			
 			$mail->save();
 

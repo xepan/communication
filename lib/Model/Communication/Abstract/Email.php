@@ -163,7 +163,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			}
 				
 			$mail->setSubject($this['title'])
-			    ->setHTMLBody($this['description']);
+			    ->setHTMLBody($this['description'].$email_setting['signature']);
 
 			$mailer = new \Nette\Mail\SmtpMailer(array(
 			        'host' => $email_setting['email_host'],
