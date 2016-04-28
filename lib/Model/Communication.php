@@ -13,6 +13,7 @@ namespace xepan\communication;
 
 class Model_Communication extends \xepan\base\Model_Table{
 	public $table="communication";
+	public $acl=false;
 	function init(){
 		parent::init();
 		
@@ -31,7 +32,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('bcc_raw')->defaultValue([]);
 
 		$this->addField('title');
-		$this->addField('description');
+		$this->addField('description')->type('text');
 
 		$this->addField('tags');
 		$this->addField('direction');
