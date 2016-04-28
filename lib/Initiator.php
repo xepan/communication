@@ -21,7 +21,7 @@ class Initiator extends \Controller_Addon {
 		$all_count=$all_email->count()->getOne();
 		
 		if($this->app->is_admin){
-			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary label-circle pull-right']],'xepan_communication_emails');
+			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails');
 		}
 		
 	}
