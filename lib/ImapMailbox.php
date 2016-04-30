@@ -657,6 +657,6 @@ class IncomingMailAttachment {
 	public $filePath;
 }
 
-class ImapMailboxException extends Exception {
+class ImapMailboxException extends \Exception {
 
 }

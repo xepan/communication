@@ -30,7 +30,11 @@ class page_composeemail extends \Page{
 
 			$results = [];
 			$contact_info = $this->add('xepan\base\Model_Contact_Email');
-			$contact_info->addCondition('value','like','%'.$_GET['q'].'%');
+			$contact_info->addCondition(
+				$contact_info->dsql()->orExpr()
+				->where('value','like','%'.$_GET['q'].'%')
+				->where($contact_info->dsql()->expr('[0] like "%[1]%"',[$contact_info->refSQL('contact_id')->fieldQuery('name'),$_GET['q']]))
+				);
 			$contact_info->setLimit(20);
 			
 			foreach ($contact_info as $cont) {
@@ -52,7 +56,7 @@ class page_composeemail extends \Page{
 			[	
 				'width'=>'100%',
 				'tags'=>true,
-				'tokenSeparators'=>[','],
+				'tokenSeparators'=>[',','\n\r'],
 				'ajax'=>[
 					'url' => $this->api->url(null,[$this->name.'_src_email'=>true])->getURL(),
 					'dataType'=>'json'
@@ -137,11 +141,10 @@ class page_composeemail extends \Page{
 
 
 			$upload_images_array = explode(",",$f['attachment']);
-			// var_dump($upload_images_array);
-			// exit;
 			$mail->setSubject($f['email_subject']);
 			$mail->setBody($f['email_body']);
 			
+			$mail->findContact('to');
 			$mail->save();
 
 			foreach ($upload_images_array as $file_id) {

@@ -102,17 +102,14 @@ class page_emails extends \Page{
 			return $js_array;
 		});
 
-		$header->on('click','li > .all-select',function($js,$data)use($email_view){
-			return $email_view->js()->find('.chbox input')->attr('checked',true);
+		$header->js('click',"$(':checkbox').each(function () { this.checked = true; });")->_selector('.all-select');
+		$header->js('click',"$(':checkbox').each(function () { this.checked = false; });")->_selector('.select-none');
+		$header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-read');
+		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-unread');
+		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-starred');
+		$header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-unstarred');
+		// $header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.do-delete');
 
-		});
-		$header->on('click','li > .select-none',function($js,$data)use($email_view){
-			return $email_view->js()->find('.chbox input')->attr('checked',false);
-
-		});
-		$header->on('click','button.fetch-refresh',function($js,$data){
-			return $js->univ()->location();
-		});
 	}
 	
 	function defaultTemplate(){
