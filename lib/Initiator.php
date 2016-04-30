@@ -20,12 +20,14 @@ class Initiator extends \Controller_Addon {
 		$all_count=$all_email->count()->getOne();
 		
 		$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails');
+		return $this;
 	}
 
 	function setup_frontend(){
 		$this->routePages('xepan_communication');
 		$this->addLocation(array('template'=>'templates','js'=>'templates/js'))
 			->setBaseURL('./vendor/xepan/communication/');
+			return $this;
 	}
 
 	function resetDB(){
