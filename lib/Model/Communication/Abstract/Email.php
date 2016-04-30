@@ -143,19 +143,19 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			
 			$mail = new \Nette\Mail\Message;
 			$mail->setFrom($this['from_raw']['email'],$this['from_raw']['name']?:null);
-
+			
 			foreach ($this['to_raw'] as $to) {
-			    $mail->addTo($to['email'],$to['name']?:null);
+			    $mail->addTo(trim($to['email']),$to['name']?:null);
 			}
 
 			if($this['cc_raw'])
 				foreach ($this['cc_raw'] as $cc) {
-				    $mail->addCC($cc['email'],$cc['name']?:null);
+				    $mail->addCC(trim($cc['email']),$cc['name']?:null);
 				}
 
 			if($this['bcc_raw'])
 				foreach ($this['bcc_raw'] as $bcc) {
-				    $mail->addBcc($bcc['email'],$bcc['name']?:null);
+				    $mail->addBcc(trim($bcc['email']),$bcc['name']?:null);
 				}
 				
 			foreach ($this->getAttachments() as $attach) {
@@ -171,7 +171,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			        'password' => $email_setting['email_password'],
 			        'secure' => $email_setting['encryption'],
 			));
-
+			
 			$mailer->send($mail);
 
 			$email_setting['last_emailed_at'] = $this->app->now;
@@ -184,5 +184,30 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['status']='Sent';
 		$this['direction']='Out';
 		$this->save();
-	}		
+	}	
+
+	function findContact($save=false, $field='from'){
+		if(!is_array($this[$field.'_raw'])) {
+			$this[$field.'_raw'] = json_decode($this[$field.'_raw'],true);
+		}
+
+		if($field=='from')
+			$email = [['email'=>$this[$field.'_raw']['email']]];
+		else
+			$email = $this[$field.'_raw'];
+
+		foreach ($email as $em) {
+			$contact_emails = $this->add('xepan\base\Model_Contact_Info');
+			$contact_emails->addCondition('value',$em['email']);
+			$contact_emails->tryLoadAny();
+
+			if($contact_emails->loaded()){
+				$this[$field.'_id'] = $contact_emails['contact_id'];
+				if($save) $this->save();
+				return true;
+			}
+		}
+
+		return false;
+	}	
 }
