@@ -16,7 +16,7 @@ class page_cron extends \Page {
 			$mbs = ['INBOX'] ; // $cont->getMailBoxes();
 
 			foreach ($mbs as $mb) {
-				$emails_return = $cont->fetch($mb,'UNSEEN');
+				$emails_return = $cont->fetch($mb,'RECENT');
 				$this->app->hook('emails_fetched',[$emails_return]);
 			}
 		}
