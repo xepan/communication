@@ -2,16 +2,17 @@
 namespace xepan\communication;
 
 class page_composeemail extends \Page{
+	public $breadcrumb=['Home'=>'index','Inbox'=>'xepan\communication_emails'];
+	public $title="Compose Email";
 	function init(){
 		parent::init();
 		$to_email=$this->api->stickyGET('to_email_array');
-		// throw new \Exception($to_email, 1);
 		
 		$action= 'add';
-		$form = $this->add('Form');//,null,null,['view/composeemail']);
-		// $form->setLayout(['view/composeemail']);
+		$form = $this->add('Form');;
+		$form->setLayout(['view/composeemail']);
 
-		$mymail = $form->addField('Dropdown','email_username')->setEmptyText('Please Select From Email');
+		$mymail = $form->addField('Dropdown','email_username')->setEmptyText('Please Select From Email')->validate('required');
 		$mymail->setModel('xepan\hr\Model_Post_Email_MyEmails');		
 		
 		// $mymail->on('change',function($js,$data)use($form){
@@ -75,18 +76,19 @@ class page_composeemail extends \Page{
 
 		$form->addField('email_subject');
 		$form->addField('xepan\base\RichText','email_body');
-		$form->addSubmit('Send Email')->addClass('btn btn-primary btn-sm');
 		$view=$form->add('View')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
 		// $mymail->js('change',$form->js()->atk4_form('reloadField','email_signature',[$this->app->url(),'email_username'=>$mymail->js()->val()]));
 		
-		$multi_upload_field = $form->addField('Upload','attachment',"")
-										->allowMultiple()
-										/*->setFormatFilesTemplate('view/xepan_file_upload')*/;
+		$multi_upload_field = $form->addField('xepan\base\Form_Field_Upload','attachment',"")
+									->allowMultiple()->addClass('xepan-padding');
+									// ->display(['form'=>'xepan\base\Upload'])
+										// ->setFormatFilesTemplate('xepan\base\Upload');
 
 		$multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
 		$multi_upload_field->setModel('filestore/Image');
 
+		$form->addSubmit('Send Email')->addClass('btn btn-success  fa fa-send xepan-padding-small');
 		$form->onSubmit(function($f){
 			
 			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_username']);
@@ -154,7 +156,7 @@ class page_composeemail extends \Page{
 
 			$mail->send($email_settings);
 
-			return $f->js()->univ()->successMessage('EMAIL SENT');
+			return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->reload();
 		});
 	}
 
