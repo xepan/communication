@@ -75,6 +75,7 @@ class page_composeemail extends \Page{
 
 		$form->addField('email_subject');
 		$form->addField('xepan\base\RichText','email_body');
+		$form->addSubmit('Send Email')->addClass('btn btn-primary btn-sm');
 		$view=$form->add('View')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
 		// $mymail->js('change',$form->js()->atk4_form('reloadField','email_signature',[$this->app->url(),'email_username'=>$mymail->js()->val()]));

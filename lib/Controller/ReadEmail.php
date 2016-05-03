@@ -59,7 +59,7 @@ class Controller_ReadEmail extends \AbstractController {
 		$return=[];
 
 		try{
-			$conditions = $conditions?:'UNSEEN';
+			$conditions = $conditions?:'RECENT';
 			$mailsIds = $mailbox->searchMailBox($conditions);
 
 			if(!$mailsIds) {
