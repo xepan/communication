@@ -74,10 +74,10 @@ class page_composeemail extends \Page{
 		if($_GET['email_username']){
 			$email_username_model->tryLoad($_GET['email_username']);
 		}
-		$subject=$this->app->recall('subject');
+		$subject="Fwd .".$this->app->recall('subject');
 		$message=$this->app->recall('message');
 
-		$form->addField('email_subject')->set("Fwd .".$subject);
+		$form->addField('email_subject')->set($subject);
 		$form->addField('xepan\base\RichText','email_body')->set($message);
 		$view=$form->add('View')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
