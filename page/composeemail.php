@@ -74,7 +74,9 @@ class page_composeemail extends \Page{
 		if($_GET['email_username']){
 			$email_username_model->tryLoad($_GET['email_username']);
 		}
-		$subject="Fwd .".$this->app->recall('subject');
+		$subject="";
+		if($this->app->recall('subject'))
+			$subject="Fwd .".$this->app->recall('subject');
 		$message=$this->app->recall('message');
 
 		$form->addField('email_subject')->set($subject);
