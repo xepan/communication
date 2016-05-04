@@ -24,7 +24,7 @@ class View_EmailDetail extends \View{
 		}
 
 		$attach=$this->add('CompleteLister',null,'Attachments',['view/emails/email-detail','Attachments']);
-		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_email_id',$m->id);
+		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_id',$m->id);
 		return $m;
 
 	}

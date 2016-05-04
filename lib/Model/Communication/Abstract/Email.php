@@ -115,7 +115,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		if(!$attach_id) return;
 		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
 		$attach['file_id'] = $attach_id;
-		$attach['communication_email_id'] = $this->id;
+		$attach['communication_id'] = $this->id;
 	
 		$attach->save();
 
@@ -186,6 +186,20 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['direction']='Out';
 		$this->save();
 	}	
+
+	function verifyTo($to_field, $contact_id){
+		
+		$model_contact = $this->add('xepan\base\Model_Contact')->load($contact_id);
+		$contact_email=$model_contact->getEmails();
+		
+		foreach (explode(',', $to_field) as $value) {
+			if(in_array(trim($value),$contact_email)){
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	function findContact($field='from',$save=false){
 		if(!is_array($this[$field.'_raw'])) {
