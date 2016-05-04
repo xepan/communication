@@ -55,7 +55,7 @@ class Model_Communication_SMS extends Model_Communication {
 		$model_phone = $this->add('xepan\base\Model_Contact_Phone');
 		$model_phone->addCondition('contact_id',$contact_id);
 		
-		$phone_no[];
+		$phone_no=[];
 		foreach ($model_phone as $value) {
 			$phone_no = $model_phone['value'];
 		}

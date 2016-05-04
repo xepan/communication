@@ -28,13 +28,13 @@ class View_Lister_Communication extends \CompleteLister{
 			$form->addField('line','email_to')->set(implode(", ", $model_contact->getEmails()));
 			$form->addField('line','cc_mails');
 			$form->addField('line','bcc_mails');
-			$form->addField('line','from_phone')->validate('required');
+			$form->addField('line','from_phone');
 			$emp_field = $form->addField('DropDown','from_person');
 			$emp_field->setModel('xepan\hr\Employee');
 			$emp_field->set($this->app->employee['name']);
 			$form->addField('line','called_to')->set(array_pop(array_reverse($model_contact->getPhones())));
-			$form->addField('line','from_number')->validate('required');
-			$form->addField('line','sms_to')->validate('required');
+			$form->addField('line','from_number');
+			$form->addField('line','sms_to');
 
 			$type_field->js(true)->univ()->bindConditionalShow([
 					'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
@@ -67,12 +67,20 @@ class View_Lister_Communication extends \CompleteLister{
 								
 							break;
 						case 'Phone':
+							if(!$form['from_phone'])
+								$form->displayError('from_phone','from_phone is required');
+							if(!$form['called_to'])
+								$form->displayError('called_to','called_to is required');
 							$_from = $form['from_phone'];
 							$_from_name = $this->add('xepan\hr\Model_Employee')->load($form['from_person'])->get('name');
 							$_to_field='called_to';
 							$send_settings = $_from;
 							break;
 						case 'SMS':
+							if(!$form['from_number'])
+								$form->displayError('from_number','from_number is required');
+							if(!$form['sms_to'])
+								$form->displayError('sms_to','sms_to is required');
 							$send_settings = $this->add('xepan\communication\Model_Epan_SMSSetting');
 							$send_settings->load($form['from_sms']);
 							$_from = $email_settings['from_number'];
