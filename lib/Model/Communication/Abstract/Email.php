@@ -139,7 +139,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['status']='Outbox';
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
-		return $this->save();
+		
 		try{
 			
 			$mail = new \Nette\Mail\Message;
