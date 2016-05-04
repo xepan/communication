@@ -172,7 +172,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			        'secure' => $email_setting['encryption'],
 			));
 			
-			$mailer->send($mail);
+			// $mailer->send($mail);
 
 			$email_setting['last_emailed_at'] = $this->app->now;
 			$email_setting->saveAndUnload();
