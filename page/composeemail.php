@@ -157,6 +157,7 @@ class page_composeemail extends \Page{
 			$mail->setBody($f['email_body']);
 			
 			$mail->findContact('to');
+
 			$mail->save();
 
 			foreach ($upload_images_array as $file_id) {
