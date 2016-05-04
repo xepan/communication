@@ -9,7 +9,14 @@ class page_generalsetting extends \Page{
 		$setiingview=$this->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],'general_setting',['view/setting/email-setting-grid']);
 		$setiingview->setModel('xepan\communication\Communication_EmailSetting');
 
-		// $this->add('xepan\base\View_Emails',null,'email');
+		$sms_view=$this->add('xepan\hr\CRUD',null,'sms_setting',['view/setting/sms-setting-grid']);
+		if($sms_view->isEditing()){
+			$form=$sms_view->form;
+			$form->setLayout('view/setting/form/sms-setting');
+			$form->js(true)->find('button')->addClass('btn btn-primary');
+		}	
+		$sms_view->setModel('xepan\communication\Model_Communication_SMSSetting');
+
 		/*Reset Password Email Content*/
 		$resetpass_config = $this->app->epan->config;
 		$reset_subject = $resetpass_config->getConfig('RESET_PASSWORD_SUBJECT');

@@ -1,0 +1,64 @@
+.xepan-grid.main-box.clearfix(id="{$_name}" class="{$class}")
+    {Pannel}
+    header.main-box-header.clearfix.atk-actions(class=" {$class} ")
+        div.filter-block
+            .pull-right {$grid_buttons} 
+            .form-group.pull-right.xepan-filter-form
+                div(class="form-control pull-left")|{$quick_search}
+                    i(class="fa fa-search search-icon")
+    {/Pannel}
+    .main-box-body.clearfix
+        .row
+            {header}{cols}{col}{/}{/}{/}
+            {rows}{row}
+            div(class="{$odd_even} col-md-{col-width}4{/}" data-id="{$id}")
+                {cols}
+                .main-box.small-graph-box.green-bg
+                  span.value(style="font-size:1em!important;") 
+                    a(href="#")
+                      .small-graph-box{name}69.600{/}
+                  span.headline.subinfo
+                    i.fa.fa-arrow-circle-o-down
+                    |  user name : 
+                    .pull-right{$sms_username}
+                  .progress
+                    .progress-bar(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%;')
+                      span.sr-only 84% Complete
+                  span.subinfo
+                    i.fa.fa-globe
+                    |  User Name Query: 
+                    .pull-right.sms-span{$sms_user_name_qs_param}
+                  span.subinfo
+                    i.fa.fa-clock-o
+                    |  Password Query String : 
+                    .pull-right.sms-span{sms_password_qs_param} {/}
+                  //- span.subinfo
+                  //-   i.fa.fa-clock-o
+                  //-   |  Number Query String : 
+                  //-   .pull-right.sms-span{sms_number_qs_param} {/}
+                  //- span.subinfo
+                  //-   i.fa.fa-clock-o
+                  //-   |  Message Query String : 
+                  //-   .pull-right.sms-span{sm_message_qs_param} {/}
+                  span.subinfo {$gateway_url}
+                  .pull-right{$edit}{$delete}      
+                  span.subinfo
+                  span.subinfo
+                hr
+            {/}
+            {/}{/}
+            {not_found}
+            div.row
+                .col-md-12.text-center.alert.alert-warning(role="alert")
+                    span.icon-attention.fa.fa-exclamation-triangle  &nbsp;{$not_found_message}
+            {/}
+
+            {totals}{cols}{col}{$content}{/}{/}{/}
+        {$Paginator}
+style.
+  .sms-span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
+  }

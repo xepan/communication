@@ -6,6 +6,8 @@
           li.active
             a(data-toggle='tab', href='#tab-general_setting') Emails Setting
           li
+            a(data-toggle='tab', href='#sms_setting') SMS Setting
+          li
             a(data-toggle='tab', href='#registration') Registration Mail
           li
             a(data-toggle='tab', href='#reset-password') Reset Password Mail
@@ -18,6 +20,8 @@
         .tab-content
           #tab-general_setting.tab-pane.fade.in.active
             {general_setting}Please Save Basic Information First{/}
+           #sms_setting.tab-pane.fade
+            {$sms_setting}
            #reset-password.tab-pane.fade
             {$reset_email}
            #registration.tab-pane.fade

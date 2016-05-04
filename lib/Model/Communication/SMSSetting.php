@@ -4,9 +4,10 @@ namespace xepan\communication;
 
 class Model_Communication_SMSSetting extends \xepan\base\Model_Table{
 	public $table="communication_sms_setting";
+	public $acl=false;
 	function init(){
 		parent::init();
-
+		$this->addField('name');
 		$this->addField('gateway_url')->caption('GateWay Url');
 		$this->addField('sms_username')->caption('Gateway User Name');
 		$this->addField('sms_password')->type('password')->caption('Gateway Password');

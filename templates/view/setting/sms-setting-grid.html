@@ -1,0 +1,44 @@
+
+<div id="{$_name}" class="xepan-grid main-box clearfix {$class}">{Pannel}
+  <header class="main-box-header clearfix atk-actions  {$class} ">
+    <div class="filter-block">
+      <div class="pull-right">{$grid_buttons} </div>
+      <div class="form-group pull-right xepan-filter-form">
+        <div class="form-control pull-left">{$quick_search}<i class="fa fa-search search-icon"></i></div>
+      </div>
+    </div>
+  </header>{/Pannel}
+  <div class="main-box-body clearfix">
+    <div class="row">
+      {header}{cols}{col}{/}{/}{/}
+      {rows}{row}
+      <div data-id="{$id}" class="{$odd_even} col-md-{col-width}4{/}">{cols}
+        <div class="main-box small-graph-box green-bg"><span style="font-size:1em!important;" class="value"> <a href="#">
+              <div class="small-graph-box">{name}69.600{/}</div></a></span><span class="headline subinfo"><i class="fa fa-arrow-circle-o-down"></i> user name : 
+            <div class="pull-right">{$sms_username}</div></span>
+          <div class="progress">
+            <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;" class="progress-bar"><span class="sr-only">84% Complete</span></div>
+          </div><span class="subinfo"><i class="fa fa-globe"></i> User Name Query: 
+            <div class="pull-right sms-span">{$sms_user_name_qs_param}</div></span><span class="subinfo"><i class="fa fa-clock-o"></i> Password Query String : 
+            <div class="pull-right sms-span">{sms_password_qs_param} {/}</div></span><span class="subinfo">{$gateway_url}</span>
+          <div class="pull-right">{$edit}{$delete}      </div><span class="subinfo"></span><span class="subinfo"></span>
+        </div>
+        <hr/>
+      </div>{/}
+      {/}{/}
+      {not_found}
+      <div class="row">
+        <div role="alert" class="col-md-12 text-center alert alert-warning"><span class="icon-attention fa fa-exclamation-triangle"> &nbsp;{$not_found_message}</span></div>
+      </div>{/}
+      {totals}{cols}{col}{$content}{/}{/}{/}
+    </div>{$Paginator}
+  </div>
+</div>
+<style>
+  .sms-span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
+  }
+</style>
