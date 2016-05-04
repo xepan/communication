@@ -1,4 +1,5 @@
 div(id="{$_name}")
+    
   .email-content-nano-content(tabindex='0', style='right: -13px;')
     ul#email-list
       .pull-right.xepan-push{$paginator}
@@ -23,3 +24,7 @@ div(id="{$_name}")
       {/}{/}
   .nano-pane
     .nano-slider(style='height: 1005px; transform: translate(0px, 0px);')
+style.
+  .pull-right.xepan-push > .paginator{
+    margin-top:0px!important;
+  }      
