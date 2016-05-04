@@ -73,7 +73,7 @@ class Model_Communication_SMS extends Model_Communication {
 		return false;
 	}
 
-	function findContact($save=false, $field='from'){
+	function findContact($field='from',$save=false){
 		if(!is_array($this[$field.'_raw'])) {
 			$this[$field.'_raw'] = json_decode($this[$field.'_raw'],true);
 		}

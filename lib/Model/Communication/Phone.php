@@ -72,7 +72,7 @@ class Model_Communication_Phone extends Model_Communication {
 
 	}
 
-	function findContact($save=false, $field='from'){
+	function findContact($field='from',$save=false){
 		if(!is_array($this[$field.'_raw'])) {
 			$this[$field.'_raw'] = json_decode($this[$field.'_raw'],true);
 		}
