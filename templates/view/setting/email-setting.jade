@@ -1,0 +1,236 @@
+.main-box.clearfix.wizard(id="email_setting_wizard")
+	.wizard-inner( style="padding:1em")
+		ul.steps
+			li.active(data-target="#step1")
+				span
+					.badge.badge-primary 1 
+					| Basic Connection
+					span.chevron
+			li(data-target="#step2")
+				span
+					.badge.badge-primary 2 
+					| From and Reply
+					span.chevron
+			li(data-target="#step3")
+				span
+					.badge.badge-primary 3
+					| IMAP/POP3
+					span.chevron
+			li(data-target="#step4")
+				span
+					.badge.badge-primary 4
+					| Thresholds
+					span.chevron
+			li(data-target="#step5")
+				span
+					.badge.badge-primary 5
+					| Managing Bounce Emails
+					span.chevron
+			li(data-target="#step6")
+				span
+					.badge.badge-primary 6
+					| Auto Reply Mail Content
+					span.chevron
+		.actions
+			button.btn.btn-default.btn-mini.btn-prev(type="button")
+				i.icon-arrow-left Prev
+			button.btn.btn-success.btn-mini.btn-next(type="button" data-last="Save") Next
+				i.icon-arrow-right
+		.step-content
+			.step-pane.active(id="step1")
+				.row.xepan-push(style="margin:auto!important")
+					.col-lg-12  
+						h3 Email Transport:
+						.row
+							.col-lg-12  
+								.col-lg-4.xepan-push
+									strong Email Transport:
+									.row
+									cite {$email_transport}
+								.col-lg-4.xepan-push
+									strong Name:
+									.row
+									cite {$name}
+								.col-lg-4.xepan-push
+									//- strong is_support_email:
+									.row
+									cite {$is_support_email}
+
+				.row.xepan-push(style="margin:auto!important")
+					.col-lg-12  
+						h3 Connection Settings:
+						.row
+							.col-lg-12.atk-push
+								.row
+									.col-lg-1
+										strong Encryption:
+									.col-lg-3
+										strong Email Host:
+									.col-lg-2  
+										strong Email Port:
+									.col-lg-3  
+										strong Email User Name:
+									.col-lg-3  
+										strong Email Password:
+								.row	  
+									.col-lg-1
+										cite {$encryption}
+									.col-lg-3 
+										cite {$email_host}
+									.col-lg-2
+										cite {$email_port}
+									.col-lg-3  
+										cite {$email_username}       
+									.col-lg-3  
+										cite {$email_password}
+			.step-pane(id="step2")
+				.row.xepan-push(style="margin:auto!important")
+					.col-lg-12  
+						h3 Email From : Sender Setting:
+						.row
+							.col-lg-12.atk-push
+								.row
+									.col-lg-3
+										strong From Email:
+									.col-lg-3  
+										strong From Name:
+									.col-lg-3  
+										strong Sender Email:
+									.col-lg-3  
+										strong Sender Name:
+								.row	  
+									.col-lg-3
+										cite {$from_email}
+									.col-lg-3  
+										cite {$from_name}
+									.col-lg-3
+										cite {$sender_email}  
+									.col-lg-3  
+										cite {$sender_name}  
+				.row.xepan-push(style="margin:auto!important")
+					.col-lg-12  
+						h3 Email Reply To Setting:
+						.row
+							.col-lg-12.atk-push
+								.row
+									.col-lg-4
+										strong Email Reply To:
+									.col-lg-4  
+										strong Email Reply To Name:
+								.row	  
+									.col-lg-4
+										cite {$email_reply_to}
+									.col-lg-4  
+										cite {$email_reply_to_name}
+			.step-pane(id="step3")
+				.row.xepan-push(style="margin:auto!important")
+					.col-lg-12  
+						h3 IMAP / POP3  Setting:
+						.row
+							.col-lg-12.atk-push
+								.row
+									.col-lg-2
+										strong Email Host:
+									.col-lg-2 
+										strong Email Port:
+									.col-lg-2  
+										strong Email User Name:
+									.col-lg-2  
+										strong Email Password:
+									.col-lg-2  
+										strong Is Imap Enabled:
+									.col-lg-2  
+										strong Flags:
+								.row	  
+									.col-lg-2
+										cite {$imap_email_host}
+									.col-lg-2  
+										cite {$imap_email_port}
+									.col-lg-2
+										cite {$imap_email_username}  
+									.col-lg-2 
+										cite {$imap_email_password}  
+									.col-lg-2 
+										cite {$is_imap_enabled}  
+									.col-lg-2  
+										cite {$imap_flags}  
+			.step-pane(id="step4")
+				.row.xepan-push(style="margin:auto!important")
+					.col-lg-12  
+						h3 Email Throtelling Settings:
+						.row
+							.col-lg-12.atk-push
+								.row
+									.col-lg-3
+										strong SMTP Auto Re Connect:
+									.col-lg-3 
+										strong Email Threshold:
+									.col-lg-3 
+										strong Email BCC:
+									.col-lg-3 
+								.row	  
+									.col-lg-3
+										cite {$smtp_auto_reconnect}
+									.col-lg-3  
+										cite {$email_threshold}
+									.col-lg-3
+										cite {$emails_in_BCC} 
+									.col-lg-3
+										cite {$mass_mail}	
+
+			.step-pane(id="step5")
+				.row.xepan-push-large(style="margin:auto!important")
+					.col-lg-12  
+						h3 Return Path / Bounce IMAP Settings:
+						.row
+							.col-lg-12.atk-push
+								.row
+									.col-lg-2
+										strong Email Host:
+									.col-lg-2 
+										strong Email Port:
+									.col-lg-3 
+										strong Email User Name:
+									.col-lg-3 
+										strong Email Password:
+									.col-lg-2 
+										strong Flags:
+								.row	  
+									.col-lg-2
+										cite {$bounce_imap_email_host}
+									.col-lg-2 
+										cite {$bounce_imap_email_port}
+									.col-lg-3 
+										cite {$return_path}
+									.col-lg-3 
+										cite {$bounce_imap_email_password}
+									.col-lg-2 
+										cite {$bounce_imap_flags}
+			.step-pane(id="step6")
+				.row.xepan-push-large(style="margin:auto!important")
+					.col-lg-12  
+						h3 Auto Reply Mail :
+						.row
+							.col-lg-12.atk-push
+								.row
+									.col-lg-6
+										strong Auto Reply:
+									.col-lg-6 
+										strong Auto Mail Subject:
+								.row
+									.col-lg-12 
+										strong Auto mail Body:		
+								.row
+									.col-lg-6
+										cite {$auto_reply}
+									.col-lg-6 
+										cite {$email_subject}
+								.row.xepan-push-large
+									.col-lg-12 
+										cite {$email_body}
+								.row
+									.col-lg-12 
+										strong Signature:
+								.row
+									.col-lg-12 
+										cite {$signature}		

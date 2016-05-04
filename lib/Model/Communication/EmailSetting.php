@@ -13,7 +13,7 @@
 
 namespace xepan\communication;
 
-class Model_Communication_EmailSetting extends Model_Table{
+class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 	public $table='emailsetting';
 
