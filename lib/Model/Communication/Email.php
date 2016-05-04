@@ -31,8 +31,7 @@ class Model_Communication_Email extends Model_Communication_Abstract_Email{
 		
 
 		$common_email = array_intersect($to_emails, $contact_email);		
-		var_dump($common_email);
-		exit;
+
 		if($common_email)
 			return true;
 		return false;

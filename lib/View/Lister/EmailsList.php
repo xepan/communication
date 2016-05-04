@@ -16,6 +16,7 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}else{
 			$this->current_row['unread']='unread';
 		}
+		
 		if(!$this->model['attachment_count']){
 			$this->current_row['check_attach']='';
 		}else{

@@ -11,14 +11,14 @@
 
 namespace xepan\communication;
 
-class Model_Communication_Phone extends Model_Communication {
+class Model_Communication_SMS extends Model_Communication {
 	
-	public $status=['Called','Received'];
+	public $status=['Draft','Sent','Outbox','Received','Trashed'];
 
 	function init(){
 		parent::init();
-		$this->addCondition('communication_type','Call');	
-		$this->getElement('status')->defaultValue('Called');
+		$this->addCondition('communication_type','Sms');	
+		$this->getElement('status')->defaultValue('Draft');
 	}
 
 	function setFrom($number,$person){
@@ -34,14 +34,6 @@ class Model_Communication_Phone extends Model_Communication {
 		$this->set('to_raw',$tmp);
 	}
 
-	function addCc($number,$name=null){
-		$this->addTo($number,$name);
-	}
-
-	function addBcc($email, $name=null){
-		$this->addTo($number,$name);
-	}
-
 	function setSubject($subject){
 		$this['title']=$subject;
 	}		
@@ -51,25 +43,34 @@ class Model_Communication_Phone extends Model_Communication {
 	}
 
 	function send(){
-		$this->call();
+		$this->post();
 	}
 
-	function call(){
-		$this['status']='Received';
+	function post(){
+		$this['status']='Sent';
 		$this->save();
 	}
 
 	function verifyTo($to_field, $contact_id){
 		$model_phone = $this->add('xepan\base\Model_Contact_Phone');
 		$model_phone->addCondition('contact_id',$contact_id);
-		$model_phone->addCondition('value','in',$to_field);
-		$model_phone->tryLoadAny();
+		
+		$phone_no[];
+		foreach ($model_phone as $value) {
+			$phone_no = $model_phone['value'];
+		}
 
-		if($model_phone->loaded())
-			// throw new \Exception("loaded", 1);
+		$to_no=[];
+		foreach (explode(',', $to_field) as $value) {
+			$to_no[]= $value;
+		}
+
+
+		$common_no = array_intersect($phone_no, $to_no);		
+
+		if($common_no)
 			return true;
 		return false;
-
 	}
 
 	function findContact($field='from',$save=false){

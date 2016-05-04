@@ -104,7 +104,7 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m['title'] = $fetched_mail->subject;
 				$mail_m['description'] = $fetched_mail->textHtml?:$fetched_mail->textPlain;
 				$mail_m['flags'] = $conditions;
-				$mail_m->findContact(false);
+				$mail_m->findContact('from');
 				$mail_m->save();
 				$fetch_email_array[] = $mail_m->id;
 				
