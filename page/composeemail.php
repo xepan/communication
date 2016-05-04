@@ -70,7 +70,7 @@ class page_composeemail extends \Page{
 		$bcc_field->setAttr('multiple','multiple');
 
 		
-		$email_username_model=$this->add('xepan\base\Model_Epan_EmailSetting');
+		$email_username_model=$this->add('xepan\communication\Model_Communication_EmailSetting');
 		if($_GET['email_username']){
 			$email_username_model->tryLoad($_GET['email_username']);
 		}
@@ -100,7 +100,7 @@ class page_composeemail extends \Page{
 		$form->addSubmit('Send Email')->addClass('btn btn-success ');
 		$form->onSubmit(function($f){
 			
-			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_username']);
+			$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($f['email_username']);
 			$mail = $this->add('xepan\communication\Model_Communication_Email');
 			$mail->setfrom($email_settings['from_email'],$email_settings['from_name']);
 			
@@ -157,6 +157,7 @@ class page_composeemail extends \Page{
 			$mail->setBody($f['email_body']);
 			
 			$mail->findContact('to');
+
 			$mail->save();
 
 			foreach ($upload_images_array as $file_id) {
