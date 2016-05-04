@@ -2,18 +2,16 @@
 
 namespace xepan\communication;
 
-class Controller_Sms extends AbstractController{
-	function sendActivationCode($model,$code){
-
-	}
-
-	function sendMessage($no,$msg){
+class Controller_Sms extends \AbstractController{
+	function sendMessage($no,$msg,$sms_setting){
 		$curl=$this->add('Controller_CURL');
 		$msg=urlencode($msg);
 
-		$url="http://cloud.smsindiahub.in/vendorsms/pushsms.aspx?user=".$this->app->getConfig('user')."&password=".$this->app->getConfig('password')."&msisdn=$no&sid=".$this->app->getConfig('senderId')."&msg=$msg&fl=0&gwid=2";
-		
-		// echo $url;
+		$url=$sms_setting['gateway_url'].
+		'&'.$sms_setting['sms_user_name_qs_param'] .'='.$sms_setting['sms_username'].
+		'&'.$sms_setting['sms_password_qs_param'] .'='.$sms_setting['sms_password'].
+		'&'.$sms_setting['sms_number_qs_param'] .'='.$no.
+		'&'.$sms_setting['sm_message_qs_param'] .'='.$msg;		
 		return $curl->get($url);
 	}
 }

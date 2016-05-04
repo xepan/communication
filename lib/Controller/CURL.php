@@ -7,7 +7,7 @@
 */
 namespace xepan\communication;
 
-class Controller_CURL extends AbstractController
+class Controller_CURL extends \AbstractController
 {
   public $getHeaders = true;//headers will be added to output
   public $getContent = true; //contens will be added to output
