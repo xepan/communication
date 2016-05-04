@@ -6,8 +6,9 @@ class page_composeemail extends \Page{
 	public $title="Compose Email";
 	function init(){
 		parent::init();
+
 		$to_email=$this->api->stickyGET('to_email_array');
-		
+
 		$action= 'add';
 		$form = $this->add('Form');;
 		$form->setLayout(['view/composeemail']);
@@ -73,11 +74,19 @@ class page_composeemail extends \Page{
 		if($_GET['email_username']){
 			$email_username_model->tryLoad($_GET['email_username']);
 		}
+		$subject="";
+		if($this->app->recall('subject'))
+			$subject="Fwd .".$this->app->recall('subject');
+		$message=$this->app->recall('message');
 
-		$form->addField('email_subject');
-		$form->addField('xepan\base\RichText','email_body');
+		$form->addField('email_subject')->set($subject);
+		$form->addField('xepan\base\RichText','email_body')->set($message);
 		$view=$form->add('View')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
+
+		$this->app->forget('subject');
+		$this->app->forget('message');
+
 		// $mymail->js('change',$form->js()->atk4_form('reloadField','email_signature',[$this->app->url(),'email_username'=>$mymail->js()->val()]));
 		
 		$multi_upload_field = $form->addField('xepan\base\Form_Field_Upload','attachment',"")
@@ -155,7 +164,6 @@ class page_composeemail extends \Page{
 			}
 
 			$mail->send($email_settings);
-
 			return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->reload();
 		});
 	}
