@@ -41,8 +41,8 @@ class Controller_ReadEmail extends \AbstractController {
 	function init(){
 		parent::init();
 
-		if(!$this->email_setting or !($this->email_setting instanceof \xepan\base\Model_Epan_EmailSetting)){
-			throw $this->exception('Please provide email_setting value as loaded xepan\base\Model_Epan_EmailSetting instance');
+		if(!$this->email_setting or !($this->email_setting instanceof \xepan\communication\Model_Communication_EmailSetting)){
+			throw $this->exception('Please provide email_setting value as loaded xepan\communication\Model_Communication_EmailSetting instance');
 		}
 	}
 

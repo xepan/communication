@@ -23,7 +23,7 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}
 
 		$mailbox=explode('#', $this->model['mailbox']);
-		$email_model=$this->add('xepan\base\Model_Epan_EmailSetting');
+		$email_model=$this->add('xepan\communication\Model_Communication_EmailSetting');
 		$email_model->tryLoadBy('email_username',$mailbox);
 
 

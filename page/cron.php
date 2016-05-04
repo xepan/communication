@@ -7,7 +7,7 @@ class page_cron extends \Page {
 	function init(){
 		parent::init();
 
-		$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')
+		$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')
 						->addCondition('is_imap_enabled',true);
 
 		foreach ($email_settings as $email_setting) {
