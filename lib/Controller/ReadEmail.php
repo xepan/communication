@@ -130,6 +130,7 @@ class Controller_ReadEmail extends \AbstractController {
 			throw $e;
 		}
 
+		$mailbox->disconnect();
 		return $return;
 	}
 }
