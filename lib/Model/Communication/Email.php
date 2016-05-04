@@ -19,4 +19,22 @@ class Model_Communication_Email extends Model_Communication_Abstract_Email{
 		parent::init();
 		$this->addCondition('communication_type','Email');	
 	}
+
+	function verifyTo($to_field, $contact_id){
+		$model_contact = $this->add('xepan\base\Model_Contact')->load($contact_id);
+		$contact_email=$model_contact->getEmails();
+		
+		$to_emails=[];
+		foreach (explode(',', $to_field) as $value) {
+			$to_emails[]= $value;
+		}
+		
+
+		$common_email = array_intersect($to_emails, $contact_email);		
+		var_dump($common_email);
+		exit;
+		if($common_email)
+			return true;
+		return false;
+	}
 }
