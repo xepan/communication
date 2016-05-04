@@ -1,52 +1,63 @@
 .atk-form(style='{$style}', id='{$_name}', class='{$class}')
   form(class='{$form_class}', action='{$form_action}', method='{form_method}post{/}', {$enctype}='', {$attributes}='')
-    {Layout}
-    #email-new-nano.has-scrollbar(style='height: 478px;')
+    //- #email-new-nano.has-scrollbar(style='height: 478px;')
     .email-new-nano-content(tabindex='0', style='right: -12px;')
       #email-new-inner
-        #email-new-title.clearfix
-          span.subject New Email
         #email-new-header
-          {Content}
-          {form_line}
           .row.form-group
-            label.col-md-2(for='exampleInpTo') From:
+            label.col-md-1(for='exampleInpTo') From:
             .col-md-10
-              #exampleInpTo.form-control-s2.email-recepients(type='text', placeholder='Enter recepients') {$email_from}
-            label.col-md-2(for='exampleInpTo') To:
+              #exampleInpTo.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_username}
+          .row.form-group
+            label.col-md-1(for='exampleInpTo') To:
             .col-md-10
               #exampleInpTo.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_to}
-          .row.form-group
-            label.col-md-2(for='exampleInpCc') CC:
+            label.col-md-1
+              a.cc-field.pull-left.xepan-padding-horizontal-small Cc
+              a.bcc-field.pull-left Bcc  
+          .row.form-group(id="cc-field" style="display:none")
+            label.col-md-1( for='exampleInpCc') Cc:
             .col-md-10
               #exampleInpCc.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_cc}
-          .row.form-group
-            label.col-md-2(for='exampleInpBcc') BCC:
+          .row.form-group(id="bcc-field"  style="display:none")
+            label.col-md-1(for='exampleInpBcc') Bcc:
             .col-md-10
               #exampleInpBcc.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_bcc}
           .row.form-group
-            label.col-md-2(for='exampleInpSubject') Subject:
+            label.col-md-1(for='exampleInpSubject') Subject:
             .col-md-10
               #exampleInpSubject.form-control(type='text', placeholder='Enter subject') {$email_subject}
               div(class="atk-cell atk-actions {$buttons_class}"){$form_buttons}
         #email-new-body
           {$email_body}
-        #email-attachment
-          {$attachment}{/}{/}
+        #email-new-title.clearfix
+          span.subject Attachment :
+          #email-attachment
+            {$attachment}
+          //- {$field_input}
         #email-new-footer
           .row
             .col-xs-12.col-md-10.col-md-offset-2
               .pull-right
+                //- .btn-group
+                    //- button.btn.btn-default.xepan-padding-small(type='button')
+                    //- i.fa.fa-times
+                    //- |  {$Cancel}
                 .btn-group
-                  button.btn.btn-default(type='button')
-                    i.fa.fa-times
-                    |  Cancel
-                .btn-group
-                  button.btn.btn-success(type='button')
-                    i.fa.fa-send
-                    |  Send email
+                    //- button.btn.btn-success(type='button')
+                    //- i.fa.fa-send
+                    | {$FormButtons}
     .nano-pane
       .nano-slider(style='height: 344px; transform: translate(0px, 0px);')
-    //- {$Content}
-    {/Layout}
 
+script.
+        jQuery(document).ready(function(){
+          jQuery('.cc-field').on('click', function(event) {        
+               jQuery('#cc-field').toggle('hide');
+          });
+        });
+        jQuery(document).ready(function(){
+          jQuery('.bcc-field').on('click', function(event) {        
+               jQuery('#bcc-field').toggle('hide');
+          });
+        });

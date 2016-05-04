@@ -110,6 +110,10 @@ class page_emails extends \Page{
 		$header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-unstarred');
 		// $header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.do-delete');
 
+		$header->on('click','button.fetch-refresh',function($js,$data)use($email_view){
+			return $this->js()->univ()->location();
+		});
+
 	}
 	
 	function defaultTemplate(){

@@ -1,37 +1,36 @@
 
 <div style="{$style}" id="{$_name}" class="atk-form {$class}">
-  <form action="{$form_action}" method="{form_method}post{/}" {$enctype}="" {$attributes}="" class="{$form_class}">{Layout}
-    <div id="email-new-nano" style="height: 478px;" class="has-scrollbar"></div>
+  <form action="{$form_action}" method="{form_method}post{/}" {$enctype}="" {$attributes}="" class="{$form_class}">
     <div tabindex="0" style="right: -12px;" class="email-new-nano-content">
       <div id="email-new-inner">
-        <div id="email-new-title" class="clearfix"><span class="subject">New Email</span></div>
         <div id="email-new-header">
-          {Content}
-          {form_line}
           <div class="row form-group">
-            <label for="exampleInpTo" class="col-md-2">From:</label>
+            <label for="exampleInpTo" class="col-md-1">From:</label>
             <div class="col-md-10">
-              <div id="exampleInpTo" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients">{$email_from}</div>
-            </div>
-            <label for="exampleInpTo" class="col-md-2">To:</label>
-            <div class="col-md-10">
-              <div id="exampleInpTo" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_to}</div>
+              <div id="exampleInpTo" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_username}</div>
             </div>
           </div>
           <div class="row form-group">
-            <label for="exampleInpCc" class="col-md-2">CC:</label>
+            <label for="exampleInpTo" class="col-md-1">To:</label>
+            <div class="col-md-10">
+              <div id="exampleInpTo" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_to}</div>
+            </div>
+            <label class="col-md-1"><a class="cc-field pull-left xepan-padding-horizontal-small">Cc</a><a class="bcc-field pull-left">Bcc  </a></label>
+          </div>
+          <div id="cc-field" style="display:none" class="row form-group">
+            <label for="exampleInpCc" class="col-md-1">Cc:</label>
             <div class="col-md-10">
               <div id="exampleInpCc" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_cc}</div>
             </div>
           </div>
-          <div class="row form-group">
-            <label for="exampleInpBcc" class="col-md-2">BCC:</label>
+          <div id="bcc-field" style="display:none" class="row form-group">
+            <label for="exampleInpBcc" class="col-md-1">Bcc:</label>
             <div class="col-md-10">
               <div id="exampleInpBcc" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_bcc}</div>
             </div>
           </div>
           <div class="row form-group">
-            <label for="exampleInpSubject" class="col-md-2">Subject:</label>
+            <label for="exampleInpSubject" class="col-md-1">Subject:</label>
             <div class="col-md-10">
               <div id="exampleInpSubject" type="text" placeholder="Enter subject" class="form-control">{$email_subject}</div>
               <div class="atk-cell atk-actions {$buttons_class}">{$form_buttons}</div>
@@ -39,16 +38,14 @@
           </div>
         </div>
         <div id="email-new-body">{$email_body}</div>
-        <div id="email-attachment">{$attachment}{/}{/}</div>
+        <div id="email-new-title" class="clearfix"><span class="subject">Attachment :</span>
+          <div id="email-attachment">{$attachment}</div>
+        </div>
         <div id="email-new-footer">
           <div class="row">
             <div class="col-xs-12 col-md-10 col-md-offset-2">
               <div class="pull-right">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default"><i class="fa fa-times"></i> Cancel</button>
-                </div>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-success"><i class="fa fa-send"></i> Send email</button>
+                <div class="btn-group">{$FormButtons}
                 </div>
               </div>
             </div>
@@ -58,6 +55,18 @@
     </div>
     <div class="nano-pane">
       <div style="height: 344px; transform: translate(0px, 0px);" class="nano-slider"></div>
-    </div>{/Layout}
+    </div>
   </form>
 </div>
+<script>
+  jQuery(document).ready(function(){
+    jQuery('.cc-field').on('click', function(event) {        
+         jQuery('#cc-field').toggle('hide');
+    });
+  });
+  jQuery(document).ready(function(){
+    jQuery('.bcc-field').on('click', function(event) {        
+         jQuery('#bcc-field').toggle('hide');
+    });
+  });
+</script>
