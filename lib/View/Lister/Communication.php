@@ -7,7 +7,6 @@ class View_Lister_Communication extends \CompleteLister{
 	
 	function init(){
 		parent::init();
-throw new \Exception($this);
 
 		$self = $this;
 		$self_url = $this->app->url(null,['cut_object'=>$this->name]);
@@ -51,7 +50,7 @@ throw new \Exception($this);
 
 					switch ($commtype) {
 						case 'Email':
-							$send_settings = $this->add('xepan\base\Model_Epan_EmailSetting');
+							$send_settings = $this->add('xepan\communication\Model_Communication_EmailSetting');
 							$send_settings->tryLoad($form['from_email']?:-1);
 							$_from = $send_settings['from_email'];
 							$_from_name = $send_settings['from_name'];
