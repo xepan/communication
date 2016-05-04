@@ -21,27 +21,30 @@ class View_Lister_Communication extends \CompleteLister{
 			$form = $p->add('Form');
 			$form->setLayout('view\communicationform');
 			$type_field = $form->addField('dropdown','type')->setValueList(['Email'=>'Email','Phone'=>'Call','Comment'=>'Personal','SMS'=>'SMS']);
-			$form->addField('title');
-			$form->addField('xepan\base\RichText','body');
-			$form->addField('dropdown','from_email')->setModel('xepan\hr\Model_Post_Email_MyEmails');
+			$form->addField('title')->validate('required');
+			$form->addField('xepan\base\RichText','body')->validate('required');
+			$form->addField('dropdown','from_email')
+					->setModel('xepan\hr\Model_Post_Email_MyEmails');
 			$form->addField('line','email_to')->set(implode(", ", $model_contact->getEmails()));
 			$form->addField('line','cc_mails');
 			$form->addField('line','bcc_mails');
-			$form->addField('line','from_phone');
-			$form->addField('DropDown','from_person')->setModel('xepan\hr\Employee');
+			$form->addField('line','from_phone')->validate('required');
+			$emp_field = $form->addField('DropDown','from_person');
+			$emp_field->setModel('xepan\hr\Employee');
+			$emp_field->set($this->app->employee['name']);
 			$form->addField('line','called_to')->set(array_pop(array_reverse($model_contact->getPhones())));
-			$form->addField('line','from_number');
-			$form->addField('line','sms_to');
-			$form->addSubmit('Save');
+			$form->addField('line','from_number')->validate('required');
+			$form->addField('line','sms_to')->validate('required');
 
 			$type_field->js(true)->univ()->bindConditionalShow([
 					'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
 					'Phone'=>['from_phone','from_person','called_to'],
-					'Personal'=>['title','type','body'],
+					'Personal'=>[],
 					'SMS'=>['from_number','sms_to']
 				],'div.atk-form-row');
 
-			if($form->isSubmitted()){				
+			if($form->isSubmitted()){
+							
 					$commtype = $form['type'];
 					
 					$communication = $p->add('xepan\communication\Model_Communication_'.$commtype);
@@ -55,6 +58,13 @@ class View_Lister_Communication extends \CompleteLister{
 							$_from = $send_settings['from_email'];
 							$_from_name = $send_settings['from_name'];
 							$_to_field='email_to';
+
+							foreach (explode(',', $form['email_to']) as $value) {
+
+								if( ! filter_var(trim($value), FILTER_VALIDATE_EMAIL))
+									$form->displayError('email_to',$value.' is not a valid email');
+							}
+								
 							break;
 						case 'Phone':
 							$_from = $form['from_phone'];
@@ -94,18 +104,22 @@ class View_Lister_Communication extends \CompleteLister{
 					
 					if($form['bcc_mails']){
 						foreach (explode(',',$form['bcc_mails']) as $bcc) {
+								if( ! filter_var(trim($bcc), FILTER_VALIDATE_EMAIL))
+									$form->displayError('bcc_mails',$bcc.' is not a valid email');
 							$communication->addBcc($bcc);
 						}
 					}
 
 					if($form['cc_mails']){
 						foreach (explode(',',$form['cc_mails']) as $cc) {
+								if( ! filter_var(trim($cc), FILTER_VALIDATE_EMAIL))
+									$form->displayError('cc_mails',$cc.' is not a valid email');
 							$communication->addCc($cc);
 						}
 					}
 					
 					if(!$communication->verifyTo($form[$_to_field], $contact_id)){
-						throw new \Exception("Error Processing Request", 1);	
+						throw new \Exception("Email/Phno. of customer not present");	
 					}
 
 					$communication->send($send_settings);

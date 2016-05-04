@@ -38,7 +38,7 @@ class Model_Communication_Phone extends Model_Communication {
 		$this->addTo($number,$name);
 	}
 
-	function addBcc($email, $name=null){
+	function addBcc($number, $name=null){
 		$this->addTo($number,$name);
 	}
 
