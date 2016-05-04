@@ -70,7 +70,7 @@ class page_composeemail extends \Page{
 		$bcc_field->setAttr('multiple','multiple');
 
 		
-		$email_username_model=$this->add('xepan\base\Model_Epan_EmailSetting');
+		$email_username_model=$this->add('xepan\communication\Model_Communication_EmailSetting');
 		if($_GET['email_username']){
 			$email_username_model->tryLoad($_GET['email_username']);
 		}
@@ -79,7 +79,7 @@ class page_composeemail extends \Page{
 			$subject="Fwd .".$this->app->recall('subject');
 		$message=$this->app->recall('message');
 
-		$form->addField('email_subject')->set($subject);
+		$form->addField('email_subject')->set($subject)->validate('required');
 		$form->addField('xepan\base\RichText','email_body')->set($message);
 		$view=$form->add('View')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
@@ -97,10 +97,10 @@ class page_composeemail extends \Page{
 		$multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
 		$multi_upload_field->setModel('filestore/Image');
 
-		$form->addSubmit('Send Email')->addClass('btn btn-success  fa fa-send xepan-padding-small');
+		$form->addSubmit('Send Email')->addClass('btn btn-success ');
 		$form->onSubmit(function($f){
 			
-			$email_settings = $this->add('xepan\base\Model_Epan_EmailSetting')->load($f['email_username']);
+			$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($f['email_username']);
 			$mail = $this->add('xepan\communication\Model_Communication_Email');
 			$mail->setfrom($email_settings['from_email'],$email_settings['from_name']);
 			

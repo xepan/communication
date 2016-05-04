@@ -135,7 +135,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	}
 
 
-	function send(\xepan\base\Model_Epan_EmailSetting $email_setting){
+	function send(\xepan\communication\Model_Communication_EmailSetting $email_setting){
 		$this['status']='Outbox';
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
@@ -172,7 +172,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			        'secure' => $email_setting['encryption'],
 			));
 			
-			$mailer->send($mail);
+			// $mailer->send($mail);
 
 			$email_setting['last_emailed_at'] = $this->app->now;
 			$email_setting->saveAndUnload();
