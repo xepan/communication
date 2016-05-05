@@ -174,6 +174,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['status']='Outbox';
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
+		$this['description'] = $this['description'].$email_setting['signature'];
 		
 		try{
 			
@@ -199,7 +200,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			}
 				
 			$mail->setSubject($this['title'])
-			    ->setHTMLBody($this['description'].$email_setting['signature'],$this->app->pathfinder->base_location->base_path);
+			    ->setHTMLBody($this['description'],$this->app->pathfinder->base_location->base_path);
 
 			$mailer = new \Nette\Mail\SmtpMailer(array(
 			        'host' => $email_setting['email_host'],
