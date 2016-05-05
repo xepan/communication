@@ -1,0 +1,59 @@
+
+<div id="{$_name}" class="{$class}">
+  <h2 class="atk-push">SMS Setting</h2>
+  <div class="atk-box-large atk-swatch-ink atk-push-reset atk-shape-rounded-top">
+    <div class="col-lg-12">
+      <div class="main-box">
+        <div class="main-box-body clearfix">
+          <form class="form-group">
+            <div class="row xepan-push">
+              <div class="col-md-4 col-lg-4"><strong>Name</strong>
+                <cite class="atk-form-row atk-form-field">{$name}</cite>
+              </div>
+            </div>
+            <div class="row xepan-push">
+              <div class="col-md-12 col-lg-12"><strong>GateWay URL</strong>
+                <cite class="atk-form-row atk-form-field">{$gateway_url}</cite>
+              </div>
+            </div>
+            <div class="row xepan-push">
+              <div class="col-md-6 col-lg-6"><strong>Gateway User Name</strong>
+                <cite class="atk-form-row atk-form-field atk-form-row atk-form-field">{$sms_username}</cite>
+              </div>
+              <div class="col-md-6 col-lg-6"><strong>Gateway Password</strong>
+                <cite class="atk-form-row atk-form-field">{$sms_password}</cite>
+              </div>
+            </div>
+            <div class="row xepan-push">
+              <div class="col-md-6 col-lg-6"><strong>Gateway User Query String Variable</strong>
+                <cite class="atk-form-row atk-form-field">{$sms_user_name_qs_param}</cite>
+              </div>
+              <div class="col-md-6 col-lg-6"><strong>Gateway Password Query String Variable</strong>
+                <cite class="atk-form-row atk-form-field">{$sms_password_qs_param}</cite>
+              </div>
+            </div>
+            <div class="row xepan-push">
+              <div class="col-md-6 col-lg-6"><strong>Number Query String Variable</strong>
+                <cite class="atk-form-row atk-form-field">{$sms_number_qs_param}</cite>
+              </div>
+              <div class="col-md-6 col-lg-6"><strong>Messesge Query String Variable</strong>
+                <cite class="atk-form-row atk-form-field">{$sm_message_qs_param}</cite>
+              </div>
+            </div>
+            <div class="row xepan-push">
+              <div class="col-md-6 col-lg-6"><strong>Message Prefix</strong>
+                <cite class="atk-form-row atk-form-field">{$sms_prefix}</cite>
+              </div>
+              <div class="col-md-6 col-lg-6"><strong>Message Postfix</strong>
+                <cite class="atk-form-row atk-form-field">{$sms_postfix}</cite>
+              </div>
+            </div>
+          </form>
+          <div class="xepan-push-large"></div>
+          <div class="xepan-push-large"></div>
+          <div class="atk-align-center h-lines pull-right">{$FormButtons}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -35,7 +35,7 @@ class Initiator extends \Controller_Addon {
         if(!isset($this->app->new_epan)) $this->app->new_epan = $this->app->epan;
         
 		$this->app->epan=$this->app->old_epan;
-        $truncate_model = ['Communication_Attachment','Communication'];
+        $truncate_model = ['Communication_Attachment','Communication','Communication_EmailSetting'];
         foreach ($truncate_model as $t) {
             $m=$this->add('xepan\communication\Model_'.$t);
             foreach ($m as $mt) {

@@ -24,7 +24,7 @@ class page_emails extends \Page{
 		$mailboxes_view->js(true)->find('[data-mailbox="'.$mailbox.'"]')->closest('li')->addClass('active');
 		
 		$email_view->setModel($email_model);
-		$paginator = $email_view->add('Paginator',null,'paginator');
+		$paginator = $email_view->add('xepan\base\Paginator',null,'paginator');
 		$paginator->setRowsPerPage(50);
 		
 		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');

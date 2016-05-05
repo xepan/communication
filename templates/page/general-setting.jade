@@ -1,0 +1,36 @@
+.main-box.clearfix
+      .tabs-wrapper.profile-tabs
+        ul.nav.nav-tabs
+          //- li.active
+          //-   a(data-toggle='tab', href='#tab-user') User Managment 
+          li.active
+            a(data-toggle='tab', href='#tab-general_setting') Emails Setting
+          li
+            a(data-toggle='tab', href='#sms_setting') SMS Setting
+          li
+            a(data-toggle='tab', href='#registration') Registration Mail
+          li
+            a(data-toggle='tab', href='#reset-password') Reset Password Mail
+          li
+            a(data-toggle='tab', href='#verification') After Verification Mail
+          li
+            a(data-toggle='tab', href='#update-password') Update Password Mail
+          li
+            a(data-toggle='tab', href='#misc') Misc Setting
+        .tab-content
+          #tab-general_setting.tab-pane.fade.in.active
+            {general_setting}Please Save Basic Information First{/}
+           #sms_setting.tab-pane.fade
+            {$sms_setting}
+           #reset-password.tab-pane.fade
+            {$reset_email}
+           #registration.tab-pane.fade
+            {$registration_view}
+           #verification.tab-pane.fade
+            {$verification_view}
+           #update-password.tab-pane.fade
+            {$updatepassword_view}
+           #misc.tab-pane.fade
+            {$misc_view}
+          //- #tab-chat.tab-pane.fade
+          //-   {$personal_info}                       

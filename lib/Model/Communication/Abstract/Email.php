@@ -115,7 +115,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		if(!$attach_id) return;
 		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
 		$attach['file_id'] = $attach_id;
-		$attach['communication_email_id'] = $this->id;
+		$attach['communication_id'] = $this->id;
 	
 		$attach->save();
 
@@ -135,10 +135,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	}
 
 
-	function send(\xepan\base\Model_Epan_EmailSetting $email_setting){
+	function send(\xepan\communication\Model_Communication_EmailSetting $email_setting){
 		$this['status']='Outbox';
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
+		
 		try{
 			
 			$mail = new \Nette\Mail\Message;
@@ -186,7 +187,21 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this->save();
 	}	
 
-	function findContact($save=false, $field='from'){
+	function verifyTo($to_field, $contact_id){
+		
+		$model_contact = $this->add('xepan\base\Model_Contact')->load($contact_id);
+		$contact_email=$model_contact->getEmails();
+		
+		foreach (explode(',', $to_field) as $value) {
+			if(in_array(trim($value),$contact_email)){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	function findContact($field='from',$save=false){
 		if(!is_array($this[$field.'_raw'])) {
 			$this[$field.'_raw'] = json_decode($this[$field.'_raw'],true);
 		}
@@ -198,10 +213,10 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 
 		foreach ($email as $em) {
 			$contact_emails = $this->add('xepan\base\Model_Contact_Info');
-			$contact_emails->addCondition('value',$em['email']);
+			$contact_emails->addCondition('value',trim($em['email']));
 			$contact_emails->tryLoadAny();
 
-			if($contact_emails->loaded()){
+			if($contact_emails->loaded()){				
 				$this[$field.'_id'] = $contact_emails['contact_id'];
 				if($save) $this->save();
 				return true;

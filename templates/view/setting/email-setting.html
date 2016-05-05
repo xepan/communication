@@ -1,0 +1,277 @@
+
+<div id="email_setting_wizard" class="main-box clearfix wizard">
+  <div style="padding:1em" class="wizard-inner">
+    <ul class="steps">
+      <li data-target="#step1" class="active"><span>
+          <div class="badge badge-primary">1 </div>Basic Connection<span class="chevron"></span></span></li>
+      <li data-target="#step2"><span>
+          <div class="badge badge-primary">2 </div>From and Reply<span class="chevron"></span></span></li>
+      <li data-target="#step3"><span>
+          <div class="badge badge-primary">3</div>IMAP/POP3<span class="chevron"></span></span></li>
+      <li data-target="#step4"><span>
+          <div class="badge badge-primary">4</div>Thresholds<span class="chevron"></span></span></li>
+      <li data-target="#step5"><span>
+          <div class="badge badge-primary">5</div>Managing Bounce Emails<span class="chevron"></span></span></li>
+      <li data-target="#step6"><span>
+          <div class="badge badge-primary">6</div>Auto Reply Mail Content<span class="chevron"></span></span></li>
+    </ul>
+    <div class="actions">
+      <button type="button" class="btn btn-default btn-mini btn-prev"><i class="icon-arrow-left">Prev</i></button>
+      <button type="button" data-last="Save" class="btn btn-success btn-mini btn-next">Next<i class="icon-arrow-right"></i></button>
+    </div>
+    <div class="step-content">
+      <div id="step1" class="step-pane active">
+        <div style="margin:auto!important" class="row xepan-push">
+          <div class="col-lg-12"> 
+            <h3>Email Transport:</h3>
+            <div class="row">
+              <div class="col-lg-12"> 
+                <div class="col-lg-4 xepan-push"><strong>Email Transport:</strong>
+                  <div class="row"></div>
+                  <cite>{$email_transport}</cite>
+                </div>
+                <div class="col-lg-4 xepan-push"><strong>Name:</strong>
+                  <div class="row"></div>
+                  <cite>{$name}</cite>
+                </div>
+                <div class="col-lg-4 xepan-push">
+                  <div class="row"></div>
+                  <cite>{$is_support_email}</cite>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin:auto!important" class="row xepan-push">
+          <div class="col-lg-12"> 
+            <h3>Connection Settings:</h3>
+            <div class="row">
+              <div class="col-lg-12 atk-push">
+                <div class="row">
+                  <div class="col-lg-1"><strong>Encryption:</strong></div>
+                  <div class="col-lg-3"><strong>Email Host:</strong></div>
+                  <div class="col-lg-2"> <strong>Email Port:</strong></div>
+                  <div class="col-lg-3"> <strong>Email User Name:</strong></div>
+                  <div class="col-lg-3"> <strong>Email Password:</strong></div>
+                </div>
+                <div class="row">	  
+                  <div class="col-lg-1">
+                    <cite>{$encryption}</cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$email_host}</cite>
+                  </div>
+                  <div class="col-lg-2">
+                    <cite>{$email_port}</cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$email_username}       </cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$email_password}</cite>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="step2" class="step-pane">
+        <div style="margin:auto!important" class="row xepan-push">
+          <div class="col-lg-12"> 
+            <h3>Email From : Sender Setting:</h3>
+            <div class="row">
+              <div class="col-lg-12 atk-push">
+                <div class="row">
+                  <div class="col-lg-3"><strong>From Email:</strong></div>
+                  <div class="col-lg-3"> <strong>From Name:</strong></div>
+                  <div class="col-lg-3"> <strong>Sender Email:</strong></div>
+                  <div class="col-lg-3"> <strong>Sender Name:</strong></div>
+                </div>
+                <div class="row">	  
+                  <div class="col-lg-3">
+                    <cite>{$from_email}</cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$from_name}</cite>
+                  </div>
+                  <div class="col-lg-3">
+                    <cite>{$sender_email}  </cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$sender_name}  </cite>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin:auto!important" class="row xepan-push">
+          <div class="col-lg-12"> 
+            <h3>Email Reply To Setting:</h3>
+            <div class="row">
+              <div class="col-lg-12 atk-push">
+                <div class="row">
+                  <div class="col-lg-4"><strong>Email Reply To:</strong></div>
+                  <div class="col-lg-4"> <strong>Email Reply To Name:</strong></div>
+                </div>
+                <div class="row">	  
+                  <div class="col-lg-4">
+                    <cite>{$email_reply_to}</cite>
+                  </div>
+                  <div class="col-lg-4"> 
+                    <cite>{$email_reply_to_name}</cite>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="step3" class="step-pane">
+        <div style="margin:auto!important" class="row xepan-push">
+          <div class="col-lg-12"> 
+            <h3>IMAP / POP3  Setting:</h3>
+            <div class="row">
+              <div class="col-lg-12 atk-push">
+                <div class="row">
+                  <div class="col-lg-2"><strong>Email Host:</strong></div>
+                  <div class="col-lg-2"> <strong>Email Port:</strong></div>
+                  <div class="col-lg-2"> <strong>Email User Name:</strong></div>
+                  <div class="col-lg-2"> <strong>Email Password:</strong></div>
+                  <div class="col-lg-2"> <strong>Is Imap Enabled:</strong></div>
+                  <div class="col-lg-2"> <strong>Flags:</strong></div>
+                </div>
+                <div class="row">	  
+                  <div class="col-lg-2">
+                    <cite>{$imap_email_host}</cite>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <cite>{$imap_email_port}</cite>
+                  </div>
+                  <div class="col-lg-2">
+                    <cite>{$imap_email_username}  </cite>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <cite>{$imap_email_password}  </cite>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <cite>{$is_imap_enabled}  </cite>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <cite>{$imap_flags}  </cite>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="step4" class="step-pane">
+        <div style="margin:auto!important" class="row xepan-push">
+          <div class="col-lg-12"> 
+            <h3>Email Throtelling Settings:</h3>
+            <div class="row">
+              <div class="col-lg-12 atk-push">
+                <div class="row">
+                  <div class="col-lg-3"><strong>SMTP Auto Re Connect:</strong></div>
+                  <div class="col-lg-3"> <strong>Email Threshold:</strong></div>
+                  <div class="col-lg-3"> <strong>Email BCC:</strong></div>
+                  <div class="col-lg-3"> </div>
+                </div>
+                <div class="row">	  
+                  <div class="col-lg-3">
+                    <cite>{$smtp_auto_reconnect}</cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$email_threshold}</cite>
+                  </div>
+                  <div class="col-lg-3">
+                    <cite>{$emails_in_BCC} </cite>
+                  </div>
+                  <div class="col-lg-3">
+                    <cite>{$mass_mail}	</cite>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="step5" class="step-pane">
+        <div style="margin:auto!important" class="row xepan-push-large">
+          <div class="col-lg-12"> 
+            <h3>Return Path / Bounce IMAP Settings:</h3>
+            <div class="row">
+              <div class="col-lg-12 atk-push">
+                <div class="row">
+                  <div class="col-lg-2"><strong>Email Host:</strong></div>
+                  <div class="col-lg-2"> <strong>Email Port:</strong></div>
+                  <div class="col-lg-3"> <strong>Email User Name:</strong></div>
+                  <div class="col-lg-3"> <strong>Email Password:</strong></div>
+                  <div class="col-lg-2"> <strong>Flags:</strong></div>
+                </div>
+                <div class="row">	  
+                  <div class="col-lg-2">
+                    <cite>{$bounce_imap_email_host}</cite>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <cite>{$bounce_imap_email_port}</cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$return_path}</cite>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <cite>{$bounce_imap_email_password}</cite>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <cite>{$bounce_imap_flags}</cite>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="step6" class="step-pane">
+        <div style="margin:auto!important" class="row xepan-push-large">
+          <div class="col-lg-12"> 
+            <h3>Auto Reply Mail :</h3>
+            <div class="row">
+              <div class="col-lg-12 atk-push">
+                <div class="row">
+                  <div class="col-lg-6"><strong>Auto Reply:</strong></div>
+                  <div class="col-lg-6"> <strong>Auto Mail Subject:</strong></div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12"> <strong>Auto mail Body:		</strong></div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <cite>{$auto_reply}</cite>
+                  </div>
+                  <div class="col-lg-6"> 
+                    <cite>{$email_subject}</cite>
+                  </div>
+                </div>
+                <div class="row xepan-push-large">
+                  <div class="col-lg-12"> 
+                    <cite>{$email_body}</cite>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12"> <strong>Signature:</strong></div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12"> 
+                    <cite>{$signature}		</cite>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

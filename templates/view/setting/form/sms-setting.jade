@@ -1,0 +1,48 @@
+div(id="{$_name}" class="{$class}")
+	h2.atk-push SMS Setting
+	.atk-box-large.atk-swatch-ink.atk-push-reset.atk-shape-rounded-top
+		.col-lg-12
+			.main-box
+				//- header.main-box-header.clearfix
+				.main-box-body.clearfix
+					form.form-group
+						.row.xepan-push
+							.col-md-4.col-lg-4
+								strong Name
+								cite.atk-form-row.atk-form-field{$name}
+						.row.xepan-push
+							.col-md-12.col-lg-12
+								strong GateWay URL
+								cite.atk-form-row.atk-form-field{$gateway_url}
+						.row.xepan-push
+							.col-md-6.col-lg-6
+								strong Gateway User Name
+								cite.atk-form-row.atk-form-field.atk-form-row.atk-form-field{$sms_username}
+							.col-md-6.col-lg-6
+								strong Gateway Password
+								cite.atk-form-row.atk-form-field{$sms_password}
+						.row.xepan-push
+							.col-md-6.col-lg-6
+								strong Gateway User Query String Variable
+								cite.atk-form-row.atk-form-field{$sms_user_name_qs_param}
+							.col-md-6.col-lg-6
+								strong Gateway Password Query String Variable
+								cite.atk-form-row.atk-form-field{$sms_password_qs_param}
+						.row.xepan-push
+							.col-md-6.col-lg-6
+								strong Number Query String Variable
+								cite.atk-form-row.atk-form-field{$sms_number_qs_param}
+							.col-md-6.col-lg-6
+								strong Messesge Query String Variable
+								cite.atk-form-row.atk-form-field{$sm_message_qs_param}
+						.row.xepan-push
+							.col-md-6.col-lg-6
+								strong Message Prefix
+								cite.atk-form-row.atk-form-field{$sms_prefix}
+							.col-md-6.col-lg-6
+								strong Message Postfix
+								cite.atk-form-row.atk-form-field{$sms_postfix}
+					.xepan-push-large
+					.xepan-push-large
+					.atk-align-center.h-lines.pull-right
+							{$FormButtons}

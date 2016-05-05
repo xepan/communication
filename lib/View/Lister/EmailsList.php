@@ -16,6 +16,7 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}else{
 			$this->current_row['unread']='unread';
 		}
+		
 		if(!$this->model['attachment_count']){
 			$this->current_row['check_attach']='';
 		}else{
@@ -23,7 +24,7 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}
 
 		$mailbox=explode('#', $this->model['mailbox']);
-		$email_model=$this->add('xepan\base\Model_Epan_EmailSetting');
+		$email_model=$this->add('xepan\communication\Model_Communication_EmailSetting');
 		$email_model->tryLoadBy('email_username',$mailbox);
 
 
