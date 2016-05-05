@@ -15,8 +15,15 @@ class Form_Communication extends \Form {
 			->setValueList(['Email'=>'Email','Phone'=>'Call','Comment'=>'Personal','SMS'=>'SMS']);
 		$this->addField('title')->validate('required');
 		$this->addField('xepan\base\RichText','body')->validate('required');
-		$this->addField('dropdown','from_email')
-				->setModel('xepan\hr\Model_Post_Email_MyEmails');
+		$from_email=$this->addField('dropdown','from_email')->setEmptyText('Please Select From Email');
+		$from_email->setModel('xepan\hr\Model_Post_Email_MyEmails');
+		
+		$email_setting=$this->add('xepan\communication\Model_Communication_EmailSetting');
+		if($_GET['from_email'])
+			$email_setting->tryLoad($_GET['from_email']);
+		$view=$this->add('View')->setHTML($email_setting['signature']);
+		$from_email->js('change',$view->js()->reload(['from_email'=>$from_email->js()->val()]));
+
 		$this->addField('line','email_to');
 		$this->addField('line','cc_mails');
 		$this->addField('line','bcc_mails');
