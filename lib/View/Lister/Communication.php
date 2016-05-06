@@ -64,7 +64,11 @@ class View_Lister_Communication extends \CompleteLister{
 			$this->current_row_html['attachment']='';
 
 		$this->current_row_html['to_lister'] = $to_lister->getHtml();
-		$this->current_row_html['cc_lister'] = $cc_lister->getHtml();
+		if($this->model['communication_type']==='Email'){
+			$this->current_row_html['cc_lister'] = $cc_lister->getHtml();
+		}else{
+			$this->current_row_html['cc_lister'] = "";
+		}
 		$this->current_row_html['from_lister'] = $from_lister->getHtml();
 		$this->current_row_html['Attachments'] = $attach->getHtml();
 		return parent::formatRow();
