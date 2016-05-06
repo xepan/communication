@@ -123,8 +123,8 @@ class Form_Communication extends \Form {
     	$commtype = $this['type'];
 					
 		$communication = $this->add('xepan\communication\Model_Communication_'.$commtype);
-		$communication->addCondition('from_id',$this->app->employee->id);
-		$communication->addCondition('to_id',$this->contact->id);
+		$communication['from_id']=$this['from_person'];
+		$communication['to_id']=$this->contact->id;
 
 		switch ($commtype) {
 			case 'Email':
@@ -133,11 +133,14 @@ class Form_Communication extends \Form {
 				$_from = $send_settings['from_email'];
 				$_from_name = $send_settings['from_name'];
 				$_to_field='email_to';
+				$communication->setFrom($_from,$_from_name);
 				break;
 			case 'Phone':
 		
 				$_from = $this['from_phone'];
 				$_from_name = $this->add('xepan\hr\Model_Employee')->load($this['from_person'])->get('name');
+				
+				$communication->setFrom($_from,$_from_name);
 				
 				$send_settings = $_from;
 
@@ -152,9 +155,14 @@ class Form_Communication extends \Form {
 				}
 
 				$communication['status']=$this['status'];
-
 				$_to_field='called_to';
+
+				if($this['status']=='Received'){
+					$communication['from_id']=$this->contact->id;
+					$communication['to_id']=$this['from_person']; // actually this is to person this time
+				}
 				break;
+
 			case 'SMS':
 				if(!$this['from_number'])
 					$this->displayError('from_number','from_number is required');
@@ -165,6 +173,7 @@ class Form_Communication extends \Form {
 				$_from = $email_settings['from_number'];
 				$_from_name = $email_settings['from_sms_code'];
 				$_to_field='sms_to';
+				$communication->setFrom($_from,$_from_name);
 				break;
 			case 'Comment':
 				$_from = $this->app->employee->id;
@@ -173,12 +182,11 @@ class Form_Communication extends \Form {
 				$_to_name = $model_contact['name'];
 				$_to_field=null;
 				$communication->addTo($_to, $_to_name);
+				$communication->setFrom($_from,$_from_name);
 				break;
 			default:
 				break;
 		}
-
-		$communication->setFrom($_from,$_from_name);
 		
 		$communication->setSubject($this['title']);
 		$communication->setBody($this['body']);
