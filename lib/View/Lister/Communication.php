@@ -23,6 +23,7 @@ class View_Lister_Communication extends \CompleteLister{
 
 			$member_phones = array_reverse($model_contact->getPhones());
 			$form->getElement('email_to')->set(implode(", ", $model_contact->getEmails()));
+			$form->getElement('notify_email_to')->set(implode(", ", $model_contact->getEmails()));
 			$form->getElement('called_to')->set(array_pop($member_phones));
 
 			if($form->isSubmitted()){
