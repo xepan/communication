@@ -136,13 +136,17 @@ class Form_Communication extends \Form {
 				$communication->setFrom($_from,$_from_name);
 				break;
 			case 'Phone':
-		
-				$_from = $this['from_phone'];
-				$_from_name = $this->add('xepan\hr\Model_Employee')->load($this['from_person'])->get('name');
-				
-				$communication->setFrom($_from,$_from_name);
-				
-				$send_settings = $_from;
+				$send_settings = $this['from_phone'];
+				if($this['status']=='Received'){
+					$communication['from_id']=$this->contact->id;
+					$communication['to_id']=$this['from_person']; // actually this is to person this time
+					$communication->setFrom($this['from_phone'],$this->contact['name']);
+				}else{
+					$communication['from_id']=$this['from_person']; // actually this is to person this time
+					$communication['to_id']=$this->contact->id;
+					$employee_name=$this->add('xepan\hr\Model_Employee')->load($this['from_person'])->get('name');
+					$communication->setFrom($this['from_phone'],$employee_name);
+				}
 
 				if($this['notify_email']){
 					if(!$this['notify_email_to'])
@@ -150,17 +154,11 @@ class Form_Communication extends \Form {
 					
 					$send_settings = $this->add('xepan\communication\Model_Communication_EmailSetting');
 					$send_settings->tryLoad($this['from_email']?:-1);
-					$_from = $send_settings['from_email'];
-					$_from_name = $send_settings['from_name'];
 				}
 
 				$communication['status']=$this['status'];
 				$_to_field='called_to';
 
-				if($this['status']=='Received'){
-					$communication['from_id']=$this->contact->id;
-					$communication['to_id']=$this['from_person']; // actually this is to person this time
-				}
 				break;
 
 			case 'SMS':
