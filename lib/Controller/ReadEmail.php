@@ -44,6 +44,7 @@ class Controller_ReadEmail extends \AbstractController {
 		if(!$this->email_setting or !($this->email_setting instanceof \xepan\communication\Model_Communication_EmailSetting)){
 			throw $this->exception('Please provide email_setting value as loaded xepan\communication\Model_Communication_EmailSetting instance');
 		}
+		
 	}
 
 
@@ -59,7 +60,7 @@ class Controller_ReadEmail extends \AbstractController {
 		$return=[];
 
 		try{
-			$conditions = $conditions?:'RECENT';
+			$conditions = $conditions?:'UNSEEN';
 			$mailsIds = $mailbox->searchMailBox($conditions);
 
 			if(!$mailsIds) {
@@ -106,6 +107,10 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m['flags'] = $conditions;
 				$mail_m->findContact('from');
 				$mail_m->save();
+
+				if($this->email_setting['auto_reply']){
+					$mail_m->reply($this->email_setting);
+				}
 				$fetch_email_array[] = $mail_m->id;
 				
 				if(!isset($return['fetched_emails_from']))

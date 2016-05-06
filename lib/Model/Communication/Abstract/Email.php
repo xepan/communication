@@ -134,11 +134,47 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		return $attach_arry;
 	}
 
+	function getReplyEmailFromTo(){
+		$mail_box = explode('#',$this['mailbox']);
+		$mail_box = $mail_box[0];		
+
+		$return =[
+			'to'=>[['email'=>$this['from_raw']['email']]],
+			'cc'=>[],
+			'bcc'=>[],
+			'from'=>[$mail_box]
+		];
+		foreach ($this['to_raw'] as  $to_mail) {
+			if(trim($to_mail['email']) != $mail_box){
+				$return['to'][] = ['email'=>trim($to_mail['email'])];
+			}
+		}
+
+		if($this['cc_raw']){
+			foreach ($this['cc_raw'] as  $cc_mail) {
+				if(trim($cc_mail['email']) != $mail_box){
+					$return['cc'][]  = ['email'=>trim($cc_mail['email'])];
+				}
+			}	
+		}
+
+		if($this['bcc_raw']){
+			foreach ($this['bcc_raw'] as  $bcc_mail) {
+				if(trim($bcc_mail['email']) != $mail_box){
+					$return['bcc'][] = ['email'=>trim($bcc_mail['email'])];
+				}
+			}
+		}
+
+		return $return;
+	}
+
 
 	function send(\xepan\communication\Model_Communication_EmailSetting $email_setting){
 		$this['status']='Outbox';
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
+		$this['description'] = $this['description'].$email_setting['signature'];
 		
 		try{
 			
@@ -164,7 +200,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			}
 				
 			$mail->setSubject($this['title'])
-			    ->setHTMLBody($this['description'].$email_setting['signature'],$this->app->pathfinder->base_location->base_path);
+			    ->setHTMLBody($this['description'],$this->app->pathfinder->base_location->base_path);
 
 			$mailer = new \Nette\Mail\SmtpMailer(array(
 			        'host' => $email_setting['email_host'],

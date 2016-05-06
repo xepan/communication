@@ -45,7 +45,11 @@ class page_general_email extends \Page{
 											]
 							);
 		$this->form = $email_view->form;
-
+		// $is_support=$this->form->getElement('email_transport');		
+		// $is_support->js(true)->univ()->bindConditionalShow([
+		// 	'SmtpTransport'=>['name'],
+		// 	'a'=>['email_subject']
+		// 	],'div.atk-form-row');
 	}
 
 	function render(){
