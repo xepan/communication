@@ -18,7 +18,7 @@ class View_Lister_Communication extends \CompleteLister{
 			$model_contact = $this->add('xepan\base\Model_Contact');
 			$model_contact->load($contact_id);
 			
-			$form = $p->add('xepan\communication\Form_Communication');
+			$form = $p->add('xepan\communication\Form_Communication',null,null,['form/empty']);
 			$form->setContact($model_contact);
 
 			$member_phones = array_reverse($model_contact->getPhones());

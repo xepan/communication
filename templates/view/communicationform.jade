@@ -11,13 +11,12 @@
 .row.xepan-push
 	{$signature}
 .row.xepan-push
-	.col-md-6.atk-form-row
-		|From Email-Id: {$from_email}
-.row.xepan-push
 	.col-md-4.atk-form-row
-		{$notify_email}
-	.col-md-8.atk-form-row
-		{$notify_email_to}
+		|From Email-Id: {$from_email}
+	.col-md-2.atk-form-row
+		| Notify via Email {$notify_email}
+	.col-md-6.atk-form-row
+		| Notify On Emails {$notify_email_to}
 .row.xepan-push.atk-form-row
 	.col-md-4
 		{$email_to}

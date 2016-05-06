@@ -175,6 +175,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
 		$this['description'] = $this['description'].$email_setting['signature'];
+		if(!$this['to_id']) $this->findContact('to');
 		
 		try{
 			

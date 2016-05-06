@@ -15,7 +15,7 @@ class Form_Communication extends \Form {
 			->setValueList(['Email'=>'Email','Phone'=>'Call','Comment'=>'Personal','SMS'=>'SMS']);
 		
 		$this->addField('dropdown','status')
-			->setValueList(['Call'=>'Call','Received'=>'Received'])->setEmptyText('Please Select');
+			->setValueList(['Called'=>'Called','Received'=>'Received'])->setEmptyText('Please Select');
 
 		$this->addField('title')->validate('required');
 		$this->addField('xepan\base\RichText','body')->validate('required');
@@ -28,7 +28,7 @@ class Form_Communication extends \Form {
 		$view=$this->layout->add('View',null,'signature')->setHTML($email_setting['signature']);
 		$from_email->js('change',$view->js()->reload(['from_email'=>$from_email->js()->val()]));
 
-		$notify_email = $this->addField('Checkbox','notify_email');
+		$notify_email = $this->addField('Checkbox','notify_email','');
 		$notify_email_to = $this->addField('line','notify_email_to');
 		$this->addField('line','email_to');
 		$this->addField('line','cc_mails');
@@ -67,6 +67,11 @@ class Form_Communication extends \Form {
 						$this->displayError('email_to',$value.' is not a valid email');
 				}
 				$_to_field='email_to';
+
+				if(!$communication->verifyTo($this[$_to_field], $this->contact->id)){
+					throw new \Exception($commtype." of customer not present");	
+				}
+		
 				break;
 			case 'Phone':
 				if(!$this['from_phone'])
@@ -103,10 +108,6 @@ class Form_Communication extends \Form {
 				break;
 			default:
 				break;
-		}
-
-		if(!$communication->verifyTo($this[$_to_field], $this->contact->id)){
-			throw new \Exception($commtype." of customer not present");	
 		}
     }
 
