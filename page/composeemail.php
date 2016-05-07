@@ -97,7 +97,7 @@ class page_composeemail extends \Page{
 		$multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
 		$multi_upload_field->setModel('filestore/Image');
 
-		$form->addSubmit('Send Email')->addClass('btn btn-success ');
+		// $form->addSubmit('Send Email')->addClass('btn btn-success ');
 		$form->onSubmit(function($f){
 			
 			$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($f['email_username']);

@@ -18,11 +18,12 @@ class View_Lister_Communication extends \CompleteLister{
 			$model_contact = $this->add('xepan\base\Model_Contact');
 			$model_contact->load($contact_id);
 			
-			$form = $p->add('xepan\communication\Form_Communication');
+			$form = $p->add('xepan\communication\Form_Communication',null,null,['form/empty']);
 			$form->setContact($model_contact);
 
 			$member_phones = array_reverse($model_contact->getPhones());
 			$form->getElement('email_to')->set(implode(", ", $model_contact->getEmails()));
+			$form->getElement('notify_email_to')->set(implode(", ", $model_contact->getEmails()));
 			$form->getElement('called_to')->set(array_pop($member_phones));
 
 			if($form->isSubmitted()){
@@ -63,7 +64,11 @@ class View_Lister_Communication extends \CompleteLister{
 			$this->current_row_html['attachment']='';
 
 		$this->current_row_html['to_lister'] = $to_lister->getHtml();
-		$this->current_row_html['cc_lister'] = $cc_lister->getHtml();
+		if($this->model['communication_type']==='Email'){
+			$this->current_row_html['cc_lister'] = $cc_lister->getHtml();
+		}else{
+			$this->current_row_html['cc_lister'] = "";
+		}
 		$this->current_row_html['from_lister'] = $from_lister->getHtml();
 		$this->current_row_html['Attachments'] = $attach->getHtml();
 		return parent::formatRow();

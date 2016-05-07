@@ -13,6 +13,10 @@ class Form_Communication extends \Form {
 		$this->setLayout('view\communicationform');
 		$type_field = $this->addField('dropdown','type')
 			->setValueList(['Email'=>'Email','Phone'=>'Call','Comment'=>'Personal','SMS'=>'SMS']);
+		
+		$this->addField('dropdown','status')
+			->setValueList(['Called'=>'Called','Received'=>'Received'])->setEmptyText('Please Select');
+
 		$this->addField('title')->validate('required');
 		$this->addField('xepan\base\RichText','body')->validate('required');
 		$from_email=$this->addField('dropdown','from_email')->setEmptyText('Please Select From Email');
@@ -21,9 +25,11 @@ class Form_Communication extends \Form {
 		$email_setting=$this->add('xepan\communication\Model_Communication_EmailSetting');
 		if($_GET['from_email'])
 			$email_setting->tryLoad($_GET['from_email']);
-		$view=$this->add('View')->setHTML($email_setting['signature']);
+		$view=$this->layout->add('View',null,'signature')->setHTML($email_setting['signature']);
 		$from_email->js('change',$view->js()->reload(['from_email'=>$from_email->js()->val()]));
 
+		$notify_email = $this->addField('Checkbox','notify_email','');
+		$notify_email_to = $this->addField('line','notify_email_to');
 		$this->addField('line','email_to');
 		$this->addField('line','cc_mails');
 		$this->addField('line','bcc_mails');
@@ -37,10 +43,14 @@ class Form_Communication extends \Form {
 
 		$type_field->js(true)->univ()->bindConditionalShow([
 			'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
-			'Phone'=>['from_phone','from_person','called_to'],
+			'Phone'=>['from_email','from_phone','from_person','called_to','notify_email','notify_email_to','status'],
 			'Personal'=>[],
 			'SMS'=>['from_number','sms_to']
 		],'div.atk-form-row');
+
+		// $notify_email->js(true)->univ()->bindConditionalShow([
+		// 	'Phone'=>['notify_email_to'],
+		// ],'div.atk-form-row');
 
 		$this->addHook('validate',[$this,'validateFields']);
 
@@ -57,12 +67,33 @@ class Form_Communication extends \Form {
 						$this->displayError('email_to',$value.' is not a valid email');
 				}
 				$_to_field='email_to';
+
+				if(!$communication->verifyTo($this[$_to_field], $this->contact->id)){
+					throw new \Exception($commtype." of customer not present");	
+				}
+		
 				break;
 			case 'Phone':
 				if(!$this['from_phone'])
 					$this->displayError('from_phone','from_phone is required');
 				if(!$this['called_to'])
 					$this->displayError('called_to','called_to is required');
+				if(!$this['status'])
+					$this->displayError('status','Status is required');
+				
+				if($this['notify_email']){
+					if(!$this['notify_email_to'])
+						$this->displayError('notify_email_to','Notify Email is required');
+					if(!$this['from_email'])
+						$this->displayError('from_email','From  Email is required to send Email');
+					
+					foreach (explode(',', $this['notify_email_to']) as $value) {
+						if( ! filter_var(trim($value), FILTER_VALIDATE_EMAIL))
+							$this->displayError('notify_email_to',$value.' is not a valid email');
+					}
+					$_to_field='notify_email_to';	
+				}
+
 				$_to_field='called_to';
 				break;
 			case 'SMS':
@@ -77,10 +108,6 @@ class Form_Communication extends \Form {
 				break;
 			default:
 				break;
-		}
-
-		if(!$communication->verifyTo($this[$_to_field], $this->contact->id)){
-			throw new \Exception($commtype." of customer not present");	
 		}
     }
 
@@ -96,8 +123,8 @@ class Form_Communication extends \Form {
     	$commtype = $this['type'];
 					
 		$communication = $this->add('xepan\communication\Model_Communication_'.$commtype);
-		$communication->addCondition('from_id',$this->app->employee->id);
-		$communication->addCondition('to_id',$this->contact->id);
+		$communication['from_id']=$this['from_person'];
+		$communication['to_id']=$this->contact->id;
 
 		switch ($commtype) {
 			case 'Email':
@@ -106,17 +133,34 @@ class Form_Communication extends \Form {
 				$_from = $send_settings['from_email'];
 				$_from_name = $send_settings['from_name'];
 				$_to_field='email_to';
+				$communication->setFrom($_from,$_from_name);
 				break;
 			case 'Phone':
-				if(!$this['from_phone'])
-					$this->displayError('from_phone','from_phone is required');
-				if(!$this['called_to'])
-					$this->displayError('called_to','called_to is required');
-				$_from = $this['from_phone'];
-				$_from_name = $this->add('xepan\hr\Model_Employee')->load($this['from_person'])->get('name');
+				$send_settings = $this['from_phone'];
+				if($this['status']=='Received'){
+					$communication['from_id']=$this->contact->id;
+					$communication['to_id']=$this['from_person']; // actually this is to person this time
+					$communication->setFrom($this['from_phone'],$this->contact['name']);
+				}else{
+					$communication['from_id']=$this['from_person']; // actually this is to person this time
+					$communication['to_id']=$this->contact->id;
+					$employee_name=$this->add('xepan\hr\Model_Employee')->load($this['from_person'])->get('name');
+					$communication->setFrom($this['from_phone'],$employee_name);
+				}
+
+				if($this['notify_email']){
+					if(!$this['notify_email_to'])
+						$this->displayError('notify_email_to','Notify Email is required');
+					
+					$send_settings = $this->add('xepan\communication\Model_Communication_EmailSetting');
+					$send_settings->tryLoad($this['from_email']?:-1);
+				}
+
+				$communication['status']=$this['status'];
 				$_to_field='called_to';
-				$send_settings = $_from;
+
 				break;
+
 			case 'SMS':
 				if(!$this['from_number'])
 					$this->displayError('from_number','from_number is required');
@@ -127,6 +171,7 @@ class Form_Communication extends \Form {
 				$_from = $email_settings['from_number'];
 				$_from_name = $email_settings['from_sms_code'];
 				$_to_field='sms_to';
+				$communication->setFrom($_from,$_from_name);
 				break;
 			case 'Comment':
 				$_from = $this->app->employee->id;
@@ -135,12 +180,11 @@ class Form_Communication extends \Form {
 				$_to_name = $model_contact['name'];
 				$_to_field=null;
 				$communication->addTo($_to, $_to_name);
+				$communication->setFrom($_from,$_from_name);
 				break;
 			default:
 				break;
 		}
-
-		$communication->setFrom($_from,$_from_name);
 		
 		$communication->setSubject($this['title']);
 		$communication->setBody($this['body']);
@@ -167,7 +211,10 @@ class Form_Communication extends \Form {
 			}
 		}
 
-		$communication->send($send_settings);
+		$communication->send(
+				$send_settings,
+				$this['notify_email']?$this['notify_email_to']:''
+				);
 
 		return $communication;
     }
