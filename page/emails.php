@@ -7,6 +7,24 @@ class page_emails extends \Page{
 
 	function init(){
 		parent::init();
+
+		if($_GET['delete_emails']){
+			foreach ($_GET['delete_emails'] as $delete_email) {
+				$this->add('xepan\communication\Model_Communication_Abstract_Email')
+				->load($delete_email)
+				->delete();
+			}
+		}
+		if($_GET['mark_unread']){
+			foreach ($_GET['mark_unread'] as $mark_email) {
+				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
+				->load($mark_email);
+				$extra_info=$mark->ref('extra_info');/*->get('seen_by')*/;
+				$extra_info['seen_by']=$this->app->employee->id;
+				$extra_info->save();
+			}
+		}
+
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 
 		$mail = $email_view->recall('mail')?:'%';
@@ -108,7 +126,28 @@ class page_emails extends \Page{
 		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-unread');
 		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-starred');
 		$header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-unstarred');
-		// $header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.do-delete');
+		$header->js('click','
+			var selected_emails=[];
+			$("#email-list :checkbox").each(function () { 
+				if(this.checked) {
+					selected_emails.push($(this).data("id"));
+					$(this).closest("li").hide();
+				}
+			});
+			$.ajax("",{data: {delete_emails:selected_emails}});
+			')->_selector('.do-delete');
+
+		$header->js('click','
+			var selected_mark_emails=[];
+			$("#email-list :checkbox").each(function (){
+				if(this.checked){
+					selected_mark_emails.push($(this).data("id"));
+					$(this).closest("li").removeClass("unread");
+				}
+			});
+			$.ajax("",{data: {mark_unread: selected_mark_emails}});
+			')->_selector('.mark-allread');
+
 
 		$header->on('click','button.fetch-refresh',function($js,$data)use($email_view){
 			return $this->js()->univ()->location();
