@@ -10,7 +10,7 @@ class page_emails extends \Page{
 
 		if($_GET['delete_emails']){
 			foreach ($_GET['delete_emails'] as $delete_email) {
-				$this->add('xepan\communication\Model_Communication')
+				$this->add('xepan\communication\Model_Communication_Abstract_Email')
 				->load($delete_email)
 				->delete();
 			}
