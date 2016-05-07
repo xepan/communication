@@ -9,8 +9,20 @@ class page_emails extends \Page{
 		parent::init();
 
 		if($_GET['delete_emails']){
-			var_dump($_GET['delete_emails']);
-			exit;
+			foreach ($_GET['delete_emails'] as $delete_email) {
+				$this->add('xepan\communication\Model_Communication')
+				->load($delete_email)
+				->delete();
+			}
+		}
+		if($_GET['mark_unread']){
+			foreach ($_GET['mark_unread'] as $mark_email) {
+				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
+				->load($mark_email);
+				$extra_info=$mark->ref('extra_info');/*->get('seen_by')*/;
+				$extra_info['seen_by']=$this->app->employee->id;
+				$extra_info->save();
+			}
 		}
 
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
@@ -124,6 +136,18 @@ class page_emails extends \Page{
 			});
 			$.ajax("",{data: {delete_emails:selected_emails}});
 			')->_selector('.do-delete');
+
+		$header->js('click','
+			var selected_mark_emails=[];
+			$("#email-list :checkbox").each(function (){
+				if(this.checked){
+					selected_mark_emails.push($(this).data("id"));
+					$(this).closest("li").removeClass("unread");
+				}
+			});
+			$.ajax("",{data: {mark_unread: selected_mark_emails}});
+			')->_selector('.mark-allread');
+
 
 		$header->on('click','button.fetch-refresh',function($js,$data)use($email_view){
 			return $this->js()->univ()->location();
