@@ -41,8 +41,6 @@ class Form_Communication extends \Form {
 		$this->addField('line','from_number');
 		$this->addField('line','sms_to');
 
-		$this->addSubmit('Save')->addClass('pull-right btn btn-primary');
-
 		$type_field->js(true)->univ()->bindConditionalShow([
 			'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
 			'Phone'=>['from_email','from_phone','from_person','called_to','notify_email','notify_email_to','status'],
