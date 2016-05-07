@@ -36,10 +36,12 @@ class Form_Communication extends \Form {
 		$this->addField('line','from_phone');
 		$emp_field = $this->addField('DropDown','from_person');
 		$emp_field->setModel('xepan\hr\Employee');
-		$emp_field->set($this->app->employee['name']);
+		$emp_field->set($this->app->employee->id);
 		$this->addField('line','called_to');
 		$this->addField('line','from_number');
 		$this->addField('line','sms_to');
+
+		$this->addSubmit('Save')->addClass('pull-right btn btn-primary');
 
 		$type_field->js(true)->univ()->bindConditionalShow([
 			'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
