@@ -7,6 +7,12 @@ class page_emails extends \Page{
 
 	function init(){
 		parent::init();
+
+		if($_GET['delete_emails']){
+			var_dump($_GET['delete_emails']);
+			exit;
+		}
+
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 
 		$mail = $email_view->recall('mail')?:'%';
@@ -108,7 +114,16 @@ class page_emails extends \Page{
 		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-unread');
 		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-starred');
 		$header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-unstarred');
-		// $header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.do-delete');
+		$header->js('click','
+			var selected_emails=[];
+			$("#email-list :checkbox").each(function () { 
+				if(this.checked) {
+					selected_emails.push($(this).data("id"));
+					$(this).closest("li").hide();
+				}
+			});
+			$.ajax("",{data: {delete_emails:selected_emails}});
+			')->_selector('.do-delete');
 
 		$header->on('click','button.fetch-refresh',function($js,$data)use($email_view){
 			return $this->js()->univ()->location();
