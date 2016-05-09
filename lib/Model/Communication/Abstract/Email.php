@@ -35,8 +35,8 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			}
 
 			if($m['direction']=="In"){
-				return $m['from_id']?$m['from']:
-							($from_raw['name']?$from_raw['name']:$from_raw['email'])
+				return $m['from_id']?$m['from'].", ".$from_raw['email']:
+							($from_raw['name']?$from_raw['name'].", ".$from_raw['email']:$from_raw['email'])
 							;
 			}	
 		});
