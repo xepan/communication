@@ -7,7 +7,7 @@ class page_composeemail extends \xepan\base\Page{
 	function init(){
 		parent::init();
 
-		$to_email=$this->api->stickyGET('to_email_array');
+		$replay_email=$this->api->stickyGET('reply_email_array');
 
 		$action= 'add';
 		$form = $this->add('Form');;
@@ -26,7 +26,16 @@ class page_composeemail extends \xepan\base\Page{
 		$cc_field->validate_values = false;
 		$bcc_field = $form->addField('xepan\base\Dropdown','email_bcc');
 		$bcc_field->validate_values = false;
-
+		
+		if($replay_email){
+			$x=json_decode($replay_email,true);
+			$to_field->js(true)->append("<option value='".$x['email']."'>".
+												$x['name']." &lt;".
+												$x['email']."&gt; 
+										</option>
+				")->trigger('change');
+			$to_field->set($x['email']);
+		}
 
 		if($_GET[$this->name.'_src_email']){
 
