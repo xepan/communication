@@ -1,7 +1,7 @@
 <?php
 namespace xepan\communication;
 
-class page_composeemail extends \Page{
+class page_composeemail extends \xepan\base\Page{
 	public $breadcrumb=['Home'=>'index','Inbox'=>'xepan\communication_emails'];
 	public $title="Compose Email";
 	function init(){
