@@ -1,0 +1,20 @@
+.main-box.clearfix
+      .tabs-wrapper.profile-tabs
+        ul.nav.nav-tabs
+          li.active
+            a(data-toggle='tab', href='#registration') Registration Mail
+          li
+            a(data-toggle='tab', href='#reset-password') Reset Password Mail
+          li
+            a(data-toggle='tab', href='#verification') After Verification Mail
+          li
+            a(data-toggle='tab', href='#update-password') Update Password Mail
+        .tab-content
+          #reset-password.tab-pane.fade.in.active
+            {$reset_email}
+          #registration.tab-pane.fade
+            {$registration_view}
+          #verification.tab-pane.fade
+            {$verification_view}
+          #update-password.tab-pane.fade
+            {$updatepassword_view}
