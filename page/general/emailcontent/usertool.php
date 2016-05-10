@@ -2,12 +2,10 @@
 
 namespace xepan\communication;
 
-class page_general_emailcontent_usertool extends \xepan\base\Page{
+class page_general_emailcontent_usertool extends \xepan\communication\page_sidebar{
 	public $title="User Panel Setting";
 	function init(){
 		parent::init();
-		$this->app->side_menu->addItem(['Admin Setting','icon'=>' fa fa-users'],'xepan_communication_general_emailcontent_admin');
-		$this->app->side_menu->addItem(['User Setting','icon'=>' fa fa-users'],'xepan_communication_general_emailcontent_usertool');
 
 		/*Reset Password Email Content*/
 		$resetpass_config = $this->app->epan->config;

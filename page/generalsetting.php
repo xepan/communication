@@ -1,13 +1,10 @@
 <?php
 namespace xepan\communication;
 
-class page_generalsetting extends \xepan\base\Page{
+class page_generalsetting extends \xepan\communication\page_sidebar{
 	public $title="General Settings";
 	function init(){
 		parent::init();
-		$this->app->side_menu->addItem(['Admin Setting','icon'=>' fa fa-users'],'xepan_communication_general_emailcontent_admin');
-		$this->app->side_menu->addItem(['User Setting','icon'=>' fa fa-users'],'xepan_communication_general_emailcontent_usertool');
-
 		/*General Email Setting*/
 		$setiingview=$this->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],'general_setting',['view/setting/email-setting-grid']);
 		$setiingview->setModel('xepan\communication\Communication_EmailSetting');
