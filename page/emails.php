@@ -1,7 +1,7 @@
 <?php
 namespace xepan\communication;
 
-class page_emails extends \Page{
+class page_emails extends \xepan\base\Page{
 
 	public $title="Emails";
 

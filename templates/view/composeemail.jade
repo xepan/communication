@@ -5,9 +5,9 @@
       #email-new-inner
         #email-new-header
           .row.form-group
-            label.col-md-1(for='exampleInpTo') From:
+            label.col-md-1(for='exampleInpFrom') From:
             .col-md-10
-              #exampleInpTo.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_username}
+              #exampleInpFrom.form-control-s2.email-recepients.atk-form-row.atk-form-field(type='text', placeholder='Enter recepients') {$email_username}
           .row.form-group
             label.col-md-1(for='exampleInpTo') To:
             .col-md-10
@@ -26,7 +26,7 @@
           .row.form-group
             label.col-md-1(for='exampleInpSubject') Subject:
             .col-md-10
-              #exampleInpSubject.form-control(type='text', placeholder='Enter subject') {$email_subject}
+              #exampleInpSubject.form-control.atk-form-row.atk-form-field(type='text', placeholder='Enter subject') {$email_subject}
               div(class="atk-cell atk-actions {$buttons_class}"){$form_buttons}
         #email-new-body
           {$email_body}
