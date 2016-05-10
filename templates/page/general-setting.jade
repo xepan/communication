@@ -8,6 +8,12 @@
           li
             a(data-toggle='tab', href='#sms_setting') SMS Setting
           li
+            a(data-toggle='tab', href='#misc') Misc Setting
+          li
+            a(data-toggle='tab', href='#adminuser') Admin
+          li
+            a(data-toggle='tab', href='#usertool_setting') UserTool
+          li
             a(data-toggle='tab', href='#registration') Registration Mail
           li
             a(data-toggle='tab', href='#reset-password') Reset Password Mail
@@ -15,22 +21,25 @@
             a(data-toggle='tab', href='#verification') After Verification Mail
           li
             a(data-toggle='tab', href='#update-password') Update Password Mail
-          li
-            a(data-toggle='tab', href='#misc') Misc Setting
         .tab-content
           #tab-general_setting.tab-pane.fade.in.active
             {general_setting}Please Save Basic Information First{/}
            #sms_setting.tab-pane.fade
             {$sms_setting}
-           #reset-password.tab-pane.fade
-            {$reset_email}
+           #misc.tab-pane.fade
+            {$misc_view}
+           #adminuser.tab-pane.fade
+            {$admin_user_setting}
+            #reset-password.tab-pane.fade
+              {$reset_email}
+            #update-password.tab-pane.fade
+              {$updatepassword_view}
+           #usertool_setting.tab-pane.fade
+            {$tool_user_setting}
+
            #registration.tab-pane.fade
             {$registration_view}
            #verification.tab-pane.fade
             {$verification_view}
-           #update-password.tab-pane.fade
-            {$updatepassword_view}
-           #misc.tab-pane.fade
-            {$misc_view}
           //- #tab-chat.tab-pane.fade
           //-   {$personal_info}                       
