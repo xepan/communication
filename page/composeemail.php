@@ -89,6 +89,7 @@ class page_composeemail extends \xepan\base\Page{
 		$message=$this->app->recall('message');
 
 		$form->addField('email_subject')->set($subject)->validate('required');
+		$form->addField('Checkbox','save_as_draft');
 		$form->addField('xepan\base\RichText','email_body')->set($message);
 		$view=$form->add('View')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
@@ -172,8 +173,9 @@ class page_composeemail extends \xepan\base\Page{
 			foreach ($upload_images_array as $file_id) {
 				$mail->addAttachment($file_id);
 			}
-
-			$mail->send($email_settings);
+			if(!$f['save_as_draft'])
+				$mail->send($email_settings);
+			
 			return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->reload();
 		});
 	}
