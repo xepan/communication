@@ -7,7 +7,9 @@ class page_composeemail extends \xepan\base\Page{
 	function init(){
 		parent::init();
 
-		$replay_email=$this->api->stickyGET('reply_email_array');
+		$replay_email=$this->api->stickyGET('reply_email');
+		$replay_email_all=$this->api->stickyGET('reply_email_all');
+		$communication_id=$this->api->stickyGET('communication_id');
 
 		$action= 'add';
 		$form = $this->add('Form');;
@@ -15,10 +17,6 @@ class page_composeemail extends \xepan\base\Page{
 
 		$mymail = $form->addField('Dropdown','email_username')->setEmptyText('Please Select From Email')->validate('required');
 		$mymail->setModel('xepan\hr\Model_Post_Email_MyEmails');		
-		
-		// $mymail->on('change',function($js,$data)use($form){
-		// 	return $form->js()->reload(['email'=>$data['shortname']]);
-		// });
 
 		$to_field = $form->addField('xepan\base\DropDown','email_to');
 		$to_field->validate_values = false;
@@ -26,15 +24,37 @@ class page_composeemail extends \xepan\base\Page{
 		$cc_field->validate_values = false;
 		$bcc_field = $form->addField('xepan\base\Dropdown','email_bcc');
 		$bcc_field->validate_values = false;
+
+		if($_GET['communication_id'])
+			$replay_model=$this->add('xepan\communication\Model_Communication_Email')->load($communication_id);
 		
 		if($replay_email){
-			$x=json_decode($replay_email,true);
-			$to_field->js(true)->append("<option value='".$x['email']."'>".
-												$x['name']." &lt;".
-												$x['email']."&gt; 
-										</option>
-				")->trigger('change');
-			$to_field->set($x['email']);
+			$emails_to=$replay_model->getReplyEmailFromTo()['to'][0];
+			$to_field->js(true)->append("<option value='".$emails_to['email']."'>".$emails_to['name']." &lt;".$emails_to['email']."&gt; </option>")->trigger('change');
+			$to_field->set($emails_to['email']);
+		}
+
+		if($replay_email_all){
+			$emails_to =[];		
+			foreach ($replay_model->getReplyEmailFromTo()['to'] as $to_field_emails) {
+				$emails_to [] = $to_field_emails['email'];
+				$to_field->js(true)->append("<option value='".$to_field_emails['email']."'>".$to_field_emails['name']." &lt;".$to_field_emails['email']."&gt;</option>")->trigger('change');
+			}
+			$to_field->set($emails_to);
+
+			$emails_cc =[];		
+			foreach ($replay_model->getReplyEmailFromTo()['cc'] as $cc_field_emails) {
+				$emails_cc [] = $cc_field_emails['email'];
+				$cc_field->js(true,$cc_field->js()->show()->_selector('#cc-field'))->append("<option value='".$cc_field_emails['email']."'>".$cc_field_emails['name']." &lt;".$cc_field_emails['email']."&gt;</option>")->trigger('change');
+			}
+			$cc_field->set($emails_cc);
+			
+			$emails_bcc =[];		
+			foreach ($replay_model->getReplyEmailFromTo()['bcc'] as $bcc_field_emails) {
+				$emails_bcc [] = $bcc_field_emails['email'];
+				$bcc_field->js(true,$bcc_field->js()->show()->_selector('#bcc-field'))->append("<option value='".$bcc_field_emails['email']."'>".$bcc_field_emails['name']." &lt;".$bcc_field_emails['email']."&gt; </option>")->trigger('change');
+			}
+			$bcc_field->set($emails_bcc);
 		}
 
 		if($_GET[$this->name.'_src_email']){
