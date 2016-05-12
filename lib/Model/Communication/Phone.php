@@ -19,6 +19,13 @@ class Model_Communication_Phone extends Model_Communication {
 		parent::init();
 		$this->addCondition('communication_type','Call');	
 		$this->getElement('status')->defaultValue('Called');
+
+		$this->addHook('beforeSave',function($m){
+			if($m['status']=='Called') 
+				$m['direction']='Out';
+			else
+				$m['direction']='In';
+		})
 	}
 
 	function setFrom($number,$person){
