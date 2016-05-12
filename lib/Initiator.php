@@ -19,7 +19,7 @@ class Initiator extends \Controller_Addon {
 		$all_email->addCondition('extra_info',null);
 		$all_count=$all_email->count()->getOne();
 		
-		$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails');
+		$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails']);
 		return $this;
 	}
 
