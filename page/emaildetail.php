@@ -21,12 +21,13 @@ class page_emaildetail extends \xepan\base\Page{
 		$email_detail->setModel($email_model);
 		$email_detail->add('xepan\base\Controller_Avatar');
 
-		$email_detail->on('click','li.reply',function($js,$data)use($email_model){
-			return $js->univ()->location($this->api->url('xepan_communication_composeemail',['reply_email_array'=>json_encode($email_model['from_raw'])]));
+		$email_detail->on('click','.reply',function($js,$data)use($email_model){
+			return $js->univ()->location($this->api->url('xepan_communication_composeemail',['reply_email'=>true,'communication_id'=>$email_model->id]));
 		});
 
 		$email_detail->on('click','li.reply-all',function($js,$data)use($email_model){
-			return $js->univ()->location($this->api->url('xepan_communication_composeemail',['to_email_array'=>json_encode($email_model['to_raw']),'cc_email_array'=>json_encode($email_model['cc_raw']),'bcc_email_array'=>json_encode($email_model['bcc_raw'])]));
+			return $js->univ()->location($this->api->url(
+										'xepan_communication_composeemail',['reply_email_all'=>true,'communication_id'=>$email_model->id]));
 		});
 		
 		$email_detail->on('click','li.forward',function($js,$data)use($email_model){
@@ -34,5 +35,6 @@ class page_emaildetail extends \xepan\base\Page{
 			$this->app->memorize('message',$email_model['description']);
 			return $js->univ()->location($this->api->url('xepan_communication_composeemail'));
 		});
+
 	}
 }
