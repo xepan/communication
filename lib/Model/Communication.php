@@ -63,4 +63,13 @@ class Model_Communication extends \xepan\base\Model_Table{
 			$o->delete();
 		});
 	}
+
+	function quickSearch($app,$search_string,$view){
+		$view->add('View')->set("Emails");
+		$this->addExpression('Relevance')->set('MATCH(from_raw, to_raw, cc_raw, bcc_raw, title, description ) AGAINST ("'.$search_string.'" IN NATURAL LANGUAGE MODE)');
+		$this->addCondition('Relevance','>',0);
+ 		$this->setOrder('Relevance','Desc');
+ 		// TODO: add completelister 
+
+	}
 }
