@@ -30,7 +30,6 @@
               div(class="atk-cell atk-actions {$buttons_class}"){$form_buttons}
         #email-new-body
           {$email_body}
-        {$save_as_draft}
         #email-new-title.clearfix
           span.subject Attachment :
           #email-attachment
@@ -48,7 +47,7 @@
                   button.btn.btn-success(type='submit')
                     i.fa.fa-send.xepan-padding-horizontal-xsmall
                     span.xepan-padding-horizontal-xsmall|Send  
-                    | {$FormButtons}
+                  {$FormButtons}
     .nano-pane
       .nano-slider(style='height: 344px; transform: translate(0px, 0px);')
 
