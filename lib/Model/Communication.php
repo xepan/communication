@@ -65,13 +65,17 @@ class Model_Communication extends \xepan\base\Model_Table{
 	}
 
 	function quickSearch($app,$search_string,$view){
-		$view->add('View')->set("Emails");
-		$this->addExpression('Relevance')->set('MATCH(from_raw, to_raw, cc_raw, bcc_raw, title, description ) AGAINST ("'.$search_string.'" IN NATURAL LANGUAGE MODE)');
+		$this->addExpression('Relevance')->set('MATCH(title, description, communication_type) AGAINST ("'.$search_string.'" IN NATURAL LANGUAGE MODE)');
 		$this->addCondition('Relevance','>',0);
  		$this->setOrder('Relevance','Desc');
- 		// TODO: add completelister 
-
-	}
+ 		if($this->count()->getOne()){
+ 			$cc = $view->add('Completelister',null,null,['grid/quicksearch-communication-grid']);
+ 			$cc->setModel($this);
+    		$cc->addHook('formatRow',function($g){
+    			$g->current_row_html['url'] = $this->app->url('xepan_communication_emaildetail',['email_id'=>$g->model->id]);	
+     		});	
+		}
+	}	
 
 	function set_old_communication_info($app,$contact_info){	
 		$communication1 = $this->add('xepan\communication\Model_Communication'); 
