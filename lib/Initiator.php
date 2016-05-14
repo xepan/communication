@@ -22,7 +22,7 @@ class Initiator extends \Controller_Addon {
 		$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails']);
 		$search_communication = $this->add('xepan\communication\Model_Communication');
 		$this->app->addHook('quick_searched',[$search_communication,'quickSearch']);
-		
+		$this->app->addHook('contact_info',[$search_communication,'set_old_communication_info']);
 		return $this;
 	}
 

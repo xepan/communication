@@ -72,4 +72,30 @@ class Model_Communication extends \xepan\base\Model_Table{
  		// TODO: add completelister 
 
 	}
+
+	function set_old_communication_info($app,$contact_info){	
+		$communication1 = $this->add('xepan\communication\Model_Communication'); 
+		$communication2 = $this->add('xepan\communication\Model_Communication');
+
+		$contact_email = $contact_info['value'];
+	    $from_communications = $communication1->addCondition('from_raw', 'like', '%'.$contact_email.'%');
+		
+		foreach ($from_communications as $previous_communication) {
+			$previous_communication['from_id']  = $contact_info['contact_id'];
+			$previous_communication->save(); 
+		}
+
+       $to_communications = $communication2->addCondition(
+            $this->dsql()->orExpr()
+               ->where('to_raw', 'like', '%'.$contact_email.'%')
+               ->where('cc_raw', 'like', '%'.$contact_email.'%')
+               ->where('bcc_raw', 'like', '%'.$contact_email.'%')
+       );
+            
+	   foreach ($to_communications as $previous_communication) {
+		   if(!$previous_communication['to_id'])
+			   $previous_communication['to_id']  = $contact_info['contact_id'];
+			   $previous_communication->save(); 
+	   }
+	}
 }
