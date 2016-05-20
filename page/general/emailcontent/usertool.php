@@ -12,8 +12,8 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		$f=$this->add('Form',null,'frontend_user_config');
 		$frontend_config = $this->app->epan->config;
 		$reg_type= $frontend_config->getConfig('REGISTRATION_TYPE');
-		$user_registration_type = $f->addField('DropDown','user_registration_type')->set($reg_type);
-		$user_registration_type->setValueList(['self_activated'=>'Self Activation Via Email','admin_activated'=>'Admin Activated',"default_activated"=>'Default Activated'])->validate('required');
+		$user_registration_type = $f->addField('DropDown','user_registration_type')->set($reg_type)->setEmptytext('Please Select');
+		$user_registration_type->setValueList(["default_activated"=>'Default Activated','admin_activated'=>'Admin Activated','self_activated'=>'Self Activation Via Email'])->validate('required');
 		$f->addSubmit('Update');
 		
 		if($f->isSubmitted()){
