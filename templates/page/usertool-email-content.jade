@@ -2,18 +2,22 @@
       .tabs-wrapper.profile-tabs
         ul.nav.nav-tabs
           li.active
-            a(data-toggle='tab', href='#registration') Registration Mail
+            a(data-toggle='tab', href='#frontend_user_config')|Frontend User Configuration
           li
-            a(data-toggle='tab', href='#reset-password') Reset Password Mail
+            a(data-toggle='tab', href='#registration')|Registration Mail
           li
-            a(data-toggle='tab', href='#verification') After Verification Mail
+            a(data-toggle='tab', href='#reset-password')|Reset Password Mail
           li
-            a(data-toggle='tab', href='#update-password') Update Password Mail
+            a(data-toggle='tab', href='#verification')|After Verification Mail
+          li
+            a(data-toggle='tab', href='#update-password')|Update Password Mail
         .tab-content
-          #reset-password.tab-pane.fade.in.active
-            {$reset_email}
+          #frontend_user_config.tab-pane.fade.in.active
+            {$frontend_user_config}
           #registration.tab-pane.fade
             {$registration_view}
+          #reset-password.tab-pane.fade
+            {$reset_email}
           #verification.tab-pane.fade
             {$verification_view}
           #update-password.tab-pane.fade
