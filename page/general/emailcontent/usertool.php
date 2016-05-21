@@ -7,6 +7,19 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 	function init(){
 		parent::init();
 
+		/*Frontend User Configuration*/
+
+		$f=$this->add('Form',null,'frontend_user_config');
+		$frontend_config = $this->app->epan->config;
+		$reg_type= $frontend_config->getConfig('REGISTRATION_TYPE');
+		$user_registration_type = $f->addField('DropDown','user_registration_type')->set($reg_type);
+		$user_registration_type->setValueList(['self_activated'=>'Self Activation Via Email','admin_activated'=>'Admin Activated',"default_activated"=>'Default Activated'])->validate('required');
+		$f->addSubmit('Update');
+		
+		if($f->isSubmitted()){
+			$frontend_config->setConfig('REGISTRATION_TYPE',$f['user_registration_type'],'base');
+			$f->js(null,$f->js()->reload())->univ()->successMessage('Update Information')->execute();
+		}
 		/*Reset Password Email Content*/
 		$resetpass_config = $this->app->epan->config;
 		$reset_subject = $resetpass_config->getConfig('RESET_PASSWORD_SUBJECT');

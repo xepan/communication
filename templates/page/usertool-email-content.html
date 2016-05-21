@@ -2,14 +2,16 @@
 <div class="main-box clearfix">
   <div class="tabs-wrapper profile-tabs">
     <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#registration">Registration Mail</a></li>
+      <li class="active"><a data-toggle="tab" href="#frontend_user_config">Frontend User Configuration</a></li>
+      <li><a data-toggle="tab" href="#registration">Registration Mail</a></li>
       <li><a data-toggle="tab" href="#reset-password">Reset Password Mail</a></li>
       <li><a data-toggle="tab" href="#verification">After Verification Mail</a></li>
       <li><a data-toggle="tab" href="#update-password">Update Password Mail</a></li>
     </ul>
     <div class="tab-content">
-      <div id="reset-password" class="tab-pane fade in active">{$reset_email}</div>
+      <div id="frontend_user_config" class="tab-pane fade in active">{$frontend_user_config}</div>
       <div id="registration" class="tab-pane fade">{$registration_view}</div>
+      <div id="reset-password" class="tab-pane fade">{$reset_email}</div>
       <div id="verification" class="tab-pane fade">{$verification_view}</div>
       <div id="update-password" class="tab-pane fade">{$updatepassword_view}</div>
     </div>
