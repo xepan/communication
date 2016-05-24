@@ -1,8 +1,43 @@
 div(id="{$_name}")
-    
   .email-content-nano-content(tabindex='0', style='right: -13px;')
+    header#email-header.clearfix
+        #email-header-tools
+          .btn-group
+            button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Select')
+              i.fa.fa-square-o
+              span.caret
+            ul.dropdown-menu
+              li
+                a.all-select(href='#') All
+              li
+                a.select-none(href='#') None
+              li
+                a.select-read(href='#') Read
+              li
+                a.select-unread(href='#') Unread
+              li
+                a.select-starred(href='#') Starred
+              li
+                a.select-unstarred(href='#') Unstarred
+          .btn-group
+            button.fetch-refresh.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Refresh')
+              i.fa.fa-refresh
+            button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Spam')
+              i.fa.fa-exclamation-circle
+            button.do-delete.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Erase')
+              i.fa.fa-trash-o
+            button.mark-allread.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Mark All As Read')
+              i.fa.fa-check-square-o
+        #email-header-pagination.pull-right
+          .pull-right.xepan-push{$paginator}
+          //- .btn-group.pagination.pull-right
+          //-   button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Previous')
+          //-     i.fa.fa-chevron-left
+          //-   button.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Next')
+          //-     i.fa.fa-chevron-right
+          //- .num-items.pull-right.hidden-xs
+          //-   | 1-50 from 5,912
     ul#email-list
-      .pull-right.xepan-push{$paginator}
       {rows}{row}
       li.clickable-row(data-id="{$id}" class="{$unread}")
         .chbox(data-id="{$id}")
@@ -27,4 +62,10 @@ div(id="{$_name}")
 style.
   .pull-right.xepan-push > .paginator{
     margin-top:0px!important;
-  }      
+  }
+  #email-header-tools{
+    margin-left:auto;
+  }  
+  #email-header{
+    padding-bottom:0px;
+  }    
