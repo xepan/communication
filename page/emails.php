@@ -36,8 +36,6 @@ class page_emails extends \xepan\base\Page{
 		$email_model->addCondition('mailbox','like',$mail.'%');
 		$email_model->setOrder('created_at','desc');
 
-
-		$header = $this->add('xepan\communication\View_EmailHeader',null,'email_header');
 		$mailboxes_view = $this->add('xepan\communication\View_EmailNavigation',null,'email_navigation');
 		$mailboxes_view->js(true)->find('[data-mailbox="'.$mailbox.'"]')->closest('li')->addClass('active');
 		
@@ -120,13 +118,13 @@ class page_emails extends \xepan\base\Page{
 			return $js_array;
 		});
 
-		$header->js('click',"$(':checkbox').each(function () { this.checked = true; });")->_selector('.all-select');
-		$header->js('click',"$(':checkbox').each(function () { this.checked = false; });")->_selector('.select-none');
-		$header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-read');
-		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-unread');
-		$header->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-starred');
-		$header->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-unstarred');
-		$header->js('click','
+		$email_view->js('click',"$(':checkbox').each(function () { this.checked = true; });")->_selector('.all-select');
+		$email_view->js('click',"$(':checkbox').each(function () { this.checked = false; });")->_selector('.select-none');
+		$email_view->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-read');
+		$email_view->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-unread');
+		$email_view->js('click',"$(':checkbox').each(function () { if($(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-starred');
+		$email_view->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').find('.starred').length) this.checked = true; else this.checked = false; });")->_selector('.select-unstarred');
+		$email_view->js('click','
 			var selected_emails=[];
 			$("#email-list :checkbox").each(function () { 
 				if(this.checked) {
@@ -137,7 +135,7 @@ class page_emails extends \xepan\base\Page{
 			$.ajax("",{data: {delete_emails:selected_emails}});
 			')->_selector('.do-delete');
 
-		$header->js('click','
+		$email_view->js('click','
 			var selected_mark_emails=[];
 			$("#email-list :checkbox").each(function (){
 				if(this.checked){
@@ -149,7 +147,7 @@ class page_emails extends \xepan\base\Page{
 			')->_selector('.mark-allread');
 
 
-		$header->on('click','button.fetch-refresh',function($js,$data)use($email_view){
+		$email_view->on('click','button.fetch-refresh',function($js,$data){
 			return $this->js()->univ()->location();
 		});
 

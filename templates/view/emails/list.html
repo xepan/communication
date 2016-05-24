@@ -1,8 +1,31 @@
 
 <div id="{$_name}">
   <div tabindex="0" style="right: -13px;" class="email-content-nano-content">
-    <ul id="email-list">
-      <div class="pull-right xepan-push">{$paginator}</div>{rows}{row}
+    <header id="email-header" class="clearfix">
+      <div id="email-header-tools">
+        <div class="btn-group">
+          <button title="" type="button" data-toggle="dropdown" data-original-title="Select" class="btn btn-primary dropdown-toggle has-tooltip"><i class="fa fa-square-o"></i><span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#" class="all-select">All</a></li>
+            <li><a href="#" class="select-none">None</a></li>
+            <li><a href="#" class="select-read">Read</a></li>
+            <li><a href="#" class="select-unread">Unread</a></li>
+            <li><a href="#" class="select-starred">Starred</a></li>
+            <li><a href="#" class="select-unstarred">Unstarred</a></li>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Refresh" class="fetch-refresh btn btn-primary"><i class="fa fa-refresh"></i></button>
+          <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Spam" class="btn btn-primary"><i class="fa fa-exclamation-circle"></i></button>
+          <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Erase" class="do-delete btn btn-primary"><i class="fa fa-trash-o"></i></button>
+          <button data-placement="bottom" data-toggle="tooltip" title="" type="button" data-original-title="Mark All As Read" class="mark-allread btn btn-primary"><i class="fa fa-check-square-o"></i></button>
+        </div>
+      </div>
+      <div id="email-header-pagination" class="pull-right">
+        <div class="pull-right xepan-push">{$paginator}</div>
+      </div>
+    </header>
+    <ul id="email-list">{rows}{row}
       <li data-id="{$id}" class="clickable-row {$unread}">
         <div data-id="{$id}" class="chbox">
           <div class="checkbox-nice">
@@ -24,5 +47,11 @@
 <style>
   .pull-right.xepan-push > .paginator{
     margin-top:0px!important;
-  }      
+  }
+  #email-header-tools{
+    margin-left:auto;
+  }  
+  #email-header{
+    padding-bottom:0px;
+  }    
 </style>
