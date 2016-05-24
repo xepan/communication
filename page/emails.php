@@ -36,8 +36,6 @@ class page_emails extends \xepan\base\Page{
 		$email_model->addCondition('mailbox','like',$mail.'%');
 		$email_model->setOrder('created_at','desc');
 
-
-		// $header = $this->add('xepan\communication\View_EmailHeader',null,'email_header');
 		$mailboxes_view = $this->add('xepan\communication\View_EmailNavigation',null,'email_navigation');
 		$mailboxes_view->js(true)->find('[data-mailbox="'.$mailbox.'"]')->closest('li')->addClass('active');
 		
