@@ -25,7 +25,7 @@ class ImapMailbox {
 		$this->serverEncoding = strtoupper($serverEncoding);
 		if($attachmentsDir) {
 			if(!is_dir($attachmentsDir)) {
-				throw new Exception('Directory "' . $attachmentsDir . '" not found');
+				throw new \Exception('Directory "' . $attachmentsDir . '" not found');
 			}
 			$this->attachmentsDir = rtrim(realpath($attachmentsDir), '\\/');
 		}
