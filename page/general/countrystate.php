@@ -1,6 +1,6 @@
 <?php 
 namespace xepan\communication;
-class page_general_countrystate extends \Page{
+class page_general_countrystate extends \xepan\communication\page_sidebar{
 	public $title="Country\ State";
 
 	function init(){
