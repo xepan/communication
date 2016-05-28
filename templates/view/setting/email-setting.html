@@ -33,15 +33,14 @@
             <div class="row">
               <div class="col-lg-12"> 
                 <div class="col-lg-4 xepan-push"><strong>Email Transport:</strong>
-                  <div class="row"></div>
-                  <cite>{$email_transport}</cite>
+                  <div>{$email_transport}</div>
                 </div>
                 <div class="col-lg-4 xepan-push"><strong>Name:</strong>
-                  <div class="row"></div>
-                  <cite>{$name}</cite>
+                  <div>{$name}</div>
                 </div>
-                <div class="col-lg-4 xepan-push">
+                <div class="col-lg-4">
                   <div class="row"></div>
+                  <div class="xepan-push"></div>
                   <cite>{$is_support_email}</cite>
                 </div>
               </div>
@@ -52,29 +51,22 @@
           <div class="col-lg-12"> 
             <h3>Connection Settings:</h3>
             <div class="row">
-              <div class="col-lg-12 atk-push">
+              <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-1"><strong>Encryption:</strong></div>
-                  <div class="col-lg-3"><strong>Email Host:</strong></div>
-                  <div class="col-lg-2"> <strong>Email Port:</strong></div>
-                  <div class="col-lg-3"> <strong>Email User Name:</strong></div>
-                  <div class="col-lg-3"> <strong>Email Password:</strong></div>
-                </div>
-                <div class="row">	  
-                  <div class="col-lg-1">
-                    <cite>{$encryption}</cite>
+                  <div class="col-lg-2"><strong>Encryption:</strong>
+                    <div>{$encryption}</div>
                   </div>
-                  <div class="col-lg-3"> 
-                    <cite>{$email_host}</cite>
+                  <div class="col-lg-2"><strong>Email Host:</strong>
+                    <div>{$email_host}</div>
                   </div>
-                  <div class="col-lg-2">
-                    <cite>{$email_port}</cite>
+                  <div class="col-lg-2"> <strong>Email Port:</strong>
+                    <div>{$email_port}</div>
                   </div>
-                  <div class="col-lg-3"> 
-                    <cite>{$email_username}       </cite>
+                  <div class="col-lg-3"> <strong>Email User Name:</strong>
+                    <div>{$email_username}</div>
                   </div>
-                  <div class="col-lg-3"> 
-                    <cite>{$email_password}</cite>
+                  <div class="col-lg-3"> <strong>Email Password:</strong>
+                    <div>{$email_password}</div>
                   </div>
                 </div>
               </div>
@@ -87,25 +79,19 @@
           <div class="col-lg-12"> 
             <h3>Email From : Sender Setting:</h3>
             <div class="row">
-              <div class="col-lg-12 atk-push">
+              <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-3"><strong>From Email:</strong></div>
-                  <div class="col-lg-3"> <strong>From Name:</strong></div>
-                  <div class="col-lg-3"> <strong>Sender Email:</strong></div>
-                  <div class="col-lg-3"> <strong>Sender Name:</strong></div>
-                </div>
-                <div class="row">	  
-                  <div class="col-lg-3">
-                    <cite>{$from_email}</cite>
+                  <div class="col-lg-3"><strong>From Email:</strong>
+                    <div>{$from_email}</div>
                   </div>
-                  <div class="col-lg-3"> 
-                    <cite>{$from_name}</cite>
+                  <div class="col-lg-3"> <strong>From Name:</strong>
+                    <div>{$from_name}</div>
                   </div>
-                  <div class="col-lg-3">
-                    <cite>{$sender_email}  </cite>
+                  <div class="col-lg-3"> <strong>Sender Email:</strong>
+                    <div>{$sender_email}</div>
                   </div>
-                  <div class="col-lg-3"> 
-                    <cite>{$sender_name}  </cite>
+                  <div class="col-lg-3"> <strong>Sender Name:</strong>
+                    <div>{$sender_name}</div>
                   </div>
                 </div>
               </div>
@@ -116,17 +102,15 @@
           <div class="col-lg-12"> 
             <h3>Email Reply To Setting:</h3>
             <div class="row">
-              <div class="col-lg-12 atk-push">
+              <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-4"><strong>Email Reply To:</strong></div>
-                  <div class="col-lg-4"> <strong>Email Reply To Name:</strong></div>
-                </div>
-                <div class="row">	  
                   <div class="col-lg-4">
-                    <cite>{$email_reply_to}</cite>
+                    <label></label><strong>Email Reply To:</strong>
+                    <div>{$email_reply_to} </div>
                   </div>
                   <div class="col-lg-4"> 
-                    <cite>{$email_reply_to_name}</cite>
+                    <label></label><strong>Email Reply To Name:</strong>
+                    <div>{$email_reply_to_name}</div>
                   </div>
                 </div>
               </div>
@@ -139,33 +123,33 @@
           <div class="col-lg-12"> 
             <h3>IMAP / POP3  Setting:</h3>
             <div class="row">
-              <div class="col-lg-12 atk-push">
-                <div class="row">
-                  <div class="col-lg-2"><strong>Email Host:</strong></div>
-                  <div class="col-lg-2"> <strong>Email Port:</strong></div>
-                  <div class="col-lg-2"> <strong>Email User Name:</strong></div>
-                  <div class="col-lg-2"> <strong>Email Password:</strong></div>
-                  <div class="col-lg-2"> <strong>Is Imap Enabled:</strong></div>
-                  <div class="col-lg-2"> <strong>Flags:</strong></div>
+              <div class="col-lg-12">
+                <div class="row xepan-push-small">
+                  <div class="col-lg-3">
+                    <label></label><strong>Email Host:</strong>
+                    <div>{$imap_email_host}</div>
+                  </div>
+                  <div class="col-lg-3">
+                    <label></label><strong>Email Port:</strong>
+                    <div>{$imap_email_port}</div>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <label></label><strong>Flags:</strong>
+                    <div>{$imap_flags}</div>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <label></label><strong>Is Imap Enabled:</strong>
+                    <div>{$is_imap_enabled}</div>
+                  </div>
                 </div>
-                <div class="row">	  
-                  <div class="col-lg-2">
-                    <cite>{$imap_email_host}</cite>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label></label><strong>Email User Name:</strong>
+                    <div>{$imap_email_username}</div>
                   </div>
-                  <div class="col-lg-2"> 
-                    <cite>{$imap_email_port}</cite>
-                  </div>
-                  <div class="col-lg-2">
-                    <cite>{$imap_email_username}  </cite>
-                  </div>
-                  <div class="col-lg-2"> 
-                    <cite>{$imap_email_password}  </cite>
-                  </div>
-                  <div class="col-lg-2"> 
-                    <cite>{$is_imap_enabled}  </cite>
-                  </div>
-                  <div class="col-lg-2"> 
-                    <cite>{$imap_flags}  </cite>
+                  <div class="col-lg-3">
+                    <label></label><strong>Email Password:</strong>
+                    <div>{$imap_email_password}</div>
                   </div>
                 </div>
               </div>
@@ -180,22 +164,21 @@
             <div class="row">
               <div class="col-lg-12 atk-push">
                 <div class="row">
-                  <div class="col-lg-3"><strong>SMTP Auto Re Connect:</strong></div>
-                  <div class="col-lg-3"> <strong>Email Threshold:</strong></div>
-                  <div class="col-lg-3"> <strong>Email BCC:</strong></div>
-                  <div class="col-lg-3"> </div>
-                </div>
-                <div class="row">	  
                   <div class="col-lg-3">
-                    <cite>{$smtp_auto_reconnect}</cite>
+                    <label></label><strong>SMTP Auto Re Connect:</strong>
+                    <div>{$smtp_auto_reconnect}</div>
                   </div>
                   <div class="col-lg-3"> 
-                    <cite>{$email_threshold}</cite>
+                    <label></label><strong>Email Threshold:</strong>
+                    <div>{$email_threshold}</div>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <label></label><strong>Email BCC:</strong>
+                    <div>{$emails_in_BCC}</div>
                   </div>
                   <div class="col-lg-3">
-                    <cite>{$emails_in_BCC} </cite>
-                  </div>
-                  <div class="col-lg-3">
+                    <div class="row"></div>
+                    <div class="xepan-push"></div>
                     <cite>{$mass_mail}	</cite>
                   </div>
                 </div>
@@ -211,27 +194,42 @@
             <div class="row">
               <div class="col-lg-12 atk-push">
                 <div class="row">
-                  <div class="col-lg-2"><strong>Email Host:</strong></div>
-                  <div class="col-lg-2"> <strong>Email Port:</strong></div>
-                  <div class="col-lg-3"> <strong>Email User Name:</strong></div>
-                  <div class="col-lg-3"> <strong>Email Password:</strong></div>
-                  <div class="col-lg-2"> <strong>Flags:</strong></div>
+                  <div class="col-lg-2">
+                    <label></label><strong>Email Host:</strong>
+                    <div>{$bounce_imap_email_host}</div>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <label></label><strong>Email Port:</strong>
+                    <div>{$bounce_imap_email_port}</div>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <label></label><strong>Email User Name:</strong>
+                    <div>{$return_path}</div>
+                  </div>
+                  <div class="col-lg-3"> 
+                    <label></label><strong>Email Password:</strong>
+                    <div>{$bounce_imap_email_password}</div>
+                  </div>
+                  <div class="col-lg-2"> 
+                    <label></label><strong>Flags:</strong>
+                    <div>{$bounce_imap_flags}</div>
+                  </div>
                 </div>
                 <div class="row">	  
                   <div class="col-lg-2">
-                    <cite>{$bounce_imap_email_host}</cite>
+                    <cite> </cite>
                   </div>
                   <div class="col-lg-2"> 
-                    <cite>{$bounce_imap_email_port}</cite>
+                    <cite> </cite>
                   </div>
                   <div class="col-lg-3"> 
-                    <cite>{$return_path}</cite>
+                    <cite> </cite>
                   </div>
                   <div class="col-lg-3"> 
-                    <cite>{$bounce_imap_email_password}</cite>
+                    <cite> </cite>
                   </div>
                   <div class="col-lg-2"> 
-                    <cite>{$bounce_imap_flags}</cite>
+                    <cite> </cite>
                   </div>
                 </div>
               </div>

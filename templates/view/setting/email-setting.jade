@@ -45,115 +45,102 @@
 							.col-lg-12  
 								.col-lg-4.xepan-push
 									strong Email Transport:
-									.row
-									cite {$email_transport}
+									div {$email_transport}
 								.col-lg-4.xepan-push
 									strong Name:
+									div {$name}
+								.col-lg-4
 									.row
-									cite {$name}
-								.col-lg-4.xepan-push
-									//- strong is_support_email:
-									.row
+									.xepan-push
 									cite {$is_support_email}
 
 				.row.xepan-push(style="margin:auto!important")
 					.col-lg-12  
 						h3 Connection Settings:
 						.row
-							.col-lg-12.atk-push
+							.col-lg-12
 								.row
-									.col-lg-1
-										strong Encryption:
-									.col-lg-3
-										strong Email Host:
-									.col-lg-2  
-										strong Email Port:
-									.col-lg-3  
-										strong Email User Name:
-									.col-lg-3  
-										strong Email Password:
-								.row	  
-									.col-lg-1
-										cite {$encryption}
-									.col-lg-3 
-										cite {$email_host}
 									.col-lg-2
-										cite {$email_port}
-									.col-lg-3  
-										cite {$email_username}       
-									.col-lg-3  
-										cite {$email_password}
+										strong Encryption:
+										div {$encryption}
+									.col-lg-2
+										strong Email Host:
+										div {$email_host}
+									.col-lg-2 
+										strong Email Port:
+										div {$email_port}
+									.col-lg-3 
+										strong Email User Name:
+										div {$email_username}
+									.col-lg-3 
+										strong Email Password:
+										div {$email_password}
 			.step-pane(id="step2")
 				.row.xepan-push(style="margin:auto!important")
 					.col-lg-12  
 						h3 Email From : Sender Setting:
 						.row
-							.col-lg-12.atk-push
+							.col-lg-12
 								.row
 									.col-lg-3
 										strong From Email:
-									.col-lg-3  
+										div {$from_email}
+									.col-lg-3 
 										strong From Name:
+										div {$from_name}
 									.col-lg-3  
 										strong Sender Email:
-									.col-lg-3  
+										div {$sender_email}
+									.col-lg-3 
 										strong Sender Name:
-								.row	  
-									.col-lg-3
-										cite {$from_email}
-									.col-lg-3  
-										cite {$from_name}
-									.col-lg-3
-										cite {$sender_email}  
-									.col-lg-3  
-										cite {$sender_name}  
+										div {$sender_name}
 				.row.xepan-push(style="margin:auto!important")
 					.col-lg-12  
 						h3 Email Reply To Setting:
 						.row
-							.col-lg-12.atk-push
+							.col-lg-12
 								.row
 									.col-lg-4
+										label
 										strong Email Reply To:
-									.col-lg-4  
+										div {$email_reply_to} 
+									.col-lg-4 
+										label
 										strong Email Reply To Name:
-								.row	  
-									.col-lg-4
-										cite {$email_reply_to}
-									.col-lg-4  
-										cite {$email_reply_to_name}
+										div {$email_reply_to_name}
 			.step-pane(id="step3")
 				.row.xepan-push(style="margin:auto!important")
 					.col-lg-12  
 						h3 IMAP / POP3  Setting:
 						.row
-							.col-lg-12.atk-push
-								.row
-									.col-lg-2
+							.col-lg-12
+								.row.xepan-push-small
+									.col-lg-3
+										label
 										strong Email Host:
-									.col-lg-2 
+										div {$imap_email_host}
+									.col-lg-3
+										label
 										strong Email Port:
-									.col-lg-2  
-										strong Email User Name:
-									.col-lg-2  
-										strong Email Password:
-									.col-lg-2  
-										strong Is Imap Enabled:
-									.col-lg-2  
+										div {$imap_email_port}
+									.col-lg-3 
+										label
 										strong Flags:
-								.row	  
-									.col-lg-2
-										cite {$imap_email_host}
-									.col-lg-2  
-										cite {$imap_email_port}
-									.col-lg-2
-										cite {$imap_email_username}  
-									.col-lg-2 
-										cite {$imap_email_password}  
-									.col-lg-2 
-										cite {$is_imap_enabled}  
-									.col-lg-2  
-										cite {$imap_flags}  
+										div {$imap_flags}
+									.col-lg-3 
+										label
+										strong Is Imap Enabled:
+										div {$is_imap_enabled}
+								.row
+									.col-lg-3
+										label
+										strong Email User Name:
+										div {$imap_email_username}
+									.col-lg-3
+										label
+										strong Email Password:
+										div {$imap_email_password}
+
 			.step-pane(id="step4")
 				.row.xepan-push(style="margin:auto!important")
 					.col-lg-12  
@@ -162,20 +149,20 @@
 							.col-lg-12.atk-push
 								.row
 									.col-lg-3
+										label
 										strong SMTP Auto Re Connect:
+										div {$smtp_auto_reconnect}
 									.col-lg-3 
+										label
 										strong Email Threshold:
+										div {$email_threshold}
 									.col-lg-3 
+										label
 										strong Email BCC:
-									.col-lg-3 
-								.row	  
+										div {$emails_in_BCC}
 									.col-lg-3
-										cite {$smtp_auto_reconnect}
-									.col-lg-3  
-										cite {$email_threshold}
-									.col-lg-3
-										cite {$emails_in_BCC} 
-									.col-lg-3
+										.row
+										.xepan-push
 										cite {$mass_mail}	
 
 			.step-pane(id="step5")
@@ -186,26 +173,36 @@
 							.col-lg-12.atk-push
 								.row
 									.col-lg-2
+										label
 										strong Email Host:
+										div {$bounce_imap_email_host}
 									.col-lg-2 
+										label
 										strong Email Port:
+										div {$bounce_imap_email_port}
 									.col-lg-3 
+										label
 										strong Email User Name:
+										div {$return_path}
 									.col-lg-3 
+										label
 										strong Email Password:
+										div {$bounce_imap_email_password}
 									.col-lg-2 
+										label
 										strong Flags:
+										div {$bounce_imap_flags}
 								.row	  
 									.col-lg-2
-										cite {$bounce_imap_email_host}
+										cite 
 									.col-lg-2 
-										cite {$bounce_imap_email_port}
+										cite 
 									.col-lg-3 
-										cite {$return_path}
+										cite 
 									.col-lg-3 
-										cite {$bounce_imap_email_password}
+										cite 
 									.col-lg-2 
-										cite {$bounce_imap_flags}
+										cite 
 			.step-pane(id="step6")
 				.row.xepan-push-large(style="margin:auto!important")
 					.col-lg-12  
