@@ -13,16 +13,26 @@
         |  Inbox  
   .row
     .col-lg-12
-      #email-navigation.email-nav-nano.hidden-xs.hidden-sm.has-scrollbar(style="margin-top:45px")
+      #email-navigation.email-nav-nano.has-scrollbar(style="margin-top:45px")
         .email-nav-nano-content(tabindex='0', style="overflow-y:hidden")
           a.btn.btn-success.email-compose-btn(href='{url}?page=xepan_communication_composeemail{/}')
             i.fa.fa-pencil-square-o
             |  Compose email
           .col-lg-12(id="{$_name}")
-          {$email_navigation}
-          {$email_labels}
+          div.mobile-email-navigation-tool.mobile-email-navigation-tool-closed
+            a.mobile-email-navigation-tool-cog.hidden-md.hidden-lg
+              i.fa.fa-filter.fa-2x
+            div.mobile-email-navigation-tool-options  
+              {$email_navigation}
+              {$email_labels}
         .nano-pane(style='display: none;')
           .nano-slider(style='transform: translate(0px, 0px);')
       #email-content.email-content-nano.has-scrollbar(style='')
         {$email_lister}
-      
+script.
+    $(".mobile-email-navigation-tool-cog").click(function(){
+        $(this).parent('div.mobile-email-navigation-tool').toggleClass("mobile-email-navigation-tool-closed");
+    });
+    $('.mobile-email-navigation-tool-options li a').click(function(){
+        $('.mobile-email-navigation-tool').toggleClass("mobile-email-navigation-tool-closed");
+    });      
