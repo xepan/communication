@@ -87,7 +87,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		
 		foreach ($from_communications as $previous_communication) {
 			$previous_communication['from_id']  = $contact_info['contact_id'];
-			$previous_communication->save(); 
+			$previous_communication->saveAndUnload(); 
 		}
 
 		$communication2 = $this->add('xepan\communication\Model_Communication');
@@ -103,7 +103,7 @@ class Model_Communication extends \xepan\base\Model_Table{
             
 	   	foreach ($to_communications as $previous_communication) {
 			   	$previous_communication['to_id']  = $contact_info['contact_id'];
-			   	$previous_communication->save(); 
+			   	$previous_communication->saveAndUnload(); 
 	   	}
 	}
 }
