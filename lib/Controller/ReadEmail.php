@@ -119,7 +119,7 @@ class Controller_ReadEmail extends \AbstractController {
 				//MAIL ATTACHME  NT 
 				$attachments = $fetched_mail->getAttachments();
 				foreach ($attachments as $attach) {
-					$file =	$this->add('filestore/Model_File',array('policy_add_new_type'=>true,'import_mode'=>'move','import_source'=>$attach->filePath));
+					$file =	$this->add('xepan/filestore/Model_File',array('policy_add_new_type'=>true,'import_mode'=>'move','import_source'=>$attach->filePath));
 					$file['filestore_volume_id'] = $file->getAvailableVolumeID();
 					$file['original_filename'] = $attach->name;
 					$file->save();
