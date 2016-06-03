@@ -21,7 +21,7 @@ class Model_Communication_Attachment extends \xepan\base\Model_Table{
 		parent::init();
 		
 		$this->hasOne('xepan\communication\Communication','communication_id');
-		$this->add('filestore\Field_File','file_id');
+		$this->add('xepan\filestore\Field_File','file_id');
 
 		$this->addExpression('filename')->set(function($m,$q){
 			return $m->refSQL('file_id')->fieldQuery('original_filename');
