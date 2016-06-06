@@ -28,11 +28,26 @@ class View_EasySetupWizard extends \View{
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
 
-		// 	$support_view = $this->add('xepan\base\View_Wizard_Step');
-		// 	$support_view->setAddOn('Application - Communication');
-		// 	$support_view->setTitle('For Support Email System');
-		// 	$support_view->setMessage('For Support Services System You have to select the given option "is support system" in Email Settings ');
-		// 	$support_view->setHelpURL('#');
-		// 	$support_view->setAction('Click Here',$support_view->js()->redirect('xepan_communication_generalsetting'));
+		if($_GET[$this->name.'_check_supportemail_options']){
+			$this->js(true)->univ()->frameURL("Mail Config",$this->app->url('xepan_communication_general_email&action=add'));
+		}
+
+		$isDone = false;
+		
+			$action = $this->js()->reload([$this->name.'_check_supportemail_options'=>1]);
+
+			$support_mail = $this->add('xepan\communication\Model_Communication_EmailSetting');
+
+			if($support_mail['is_support_email']){
+				$isDone = true;
+				$action = $this->js()->univ()->dialogOK("Already have Data",' You already have emailsetting, visit page ? <a href="'. $this->app->url('xepan_communication_general_email')->getURL().'"> click here to go </a>');
+			}
+
+			$support_view = $this->add('xepan\base\View_Wizard_Step')
+				->setAddOn('Application - Communication')
+				->setTitle('For Support Email System')
+				->setMessage('For Support Services System You have to select the given option "is support system" in Email Settings, At Least For One')
+				->setHelpURL('#')
+				->setAction('Click Here',$action,$isDone);
 	}
 }
