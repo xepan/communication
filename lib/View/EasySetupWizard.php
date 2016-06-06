@@ -9,6 +9,8 @@ class View_EasySetupWizard extends \View{
 
 		if($_GET[$this->name.'_set_emailsetting']){
 			$this->js(true)->univ()->frameURL("Mail Config",$this->app->url('xepan_communication_general_email&action=add'));
+			if($this->add('xepan\communication\Model_Communication_EmailSetting')->count()->getOne() > 0)
+				return 1;
 		}
 
 		$isDone = false;
