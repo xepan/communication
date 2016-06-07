@@ -38,7 +38,7 @@ class View_EasySetupWizard extends \View{
 		
 			$action = $this->js()->reload([$this->name.'_check_supportemail_options'=>1]);
 
-			$support_mail = $this->add('xepan\communication\Model_Communication_EmailSetting');
+			$support_mail = $this->add('xepan\communication\Model_Communication_EmailSetting')->tryLoadAny();
 
 			if($support_mail['is_support_email']){
 				$isDone = true;
