@@ -25,7 +25,7 @@ class Model_Communication_Phone extends Model_Communication {
 				$m['direction']='Out';
 			else
 				$m['direction']='In';
-		})
+		});
 	}
 
 	function setFrom($number,$person){
