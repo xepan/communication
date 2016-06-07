@@ -25,8 +25,8 @@ class View_EasySetupWizard extends \View{
 			$email_view = $this->add('xepan\base\View_Wizard_Step');
 
 			$email_view->setAddOn('Application - Communication')
-				->setTitle('Email Setting To Communicate via Email')
-				->setMessage('Please Set Email Settings to create an Email for Communication with your clients')
+				->setTitle('Configure Email Setting To Communicate Via Email')
+				->setMessage('Please configure Email Settings, for Communication with your clients via email')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
 
@@ -47,8 +47,8 @@ class View_EasySetupWizard extends \View{
 
 			$support_view = $this->add('xepan\base\View_Wizard_Step')
 				->setAddOn('Application - Communication')
-				->setTitle('For Support Email System')
-				->setMessage('For Support Services System You have to select the given option "is support system" in Email Settings, At Least For One')
+				->setTitle('Support Email System')
+				->setMessage('For Support Services System You have to select option "is support system" in Email Settings')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
 	}
