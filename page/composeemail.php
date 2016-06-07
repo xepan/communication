@@ -98,7 +98,8 @@ class page_composeemail extends \xepan\base\Page{
 		$cc_field->setAttr('multiple','multiple');
 		$bcc_field->setAttr('multiple','multiple');
 
-		
+		$email_setting=$this->add('xepan\communication\Model_Communication_EmailSetting');
+
 		$email_username_model=$this->add('xepan\communication\Model_Communication_EmailSetting');
 		if($_GET['email_username']){
 			$email_username_model->tryLoad($_GET['email_username']);
@@ -111,7 +112,7 @@ class page_composeemail extends \xepan\base\Page{
 		$form->addField('email_subject')->set($subject)->validate('required');
 		// $form->addField('Checkbox','save_as_draft');
 		$form->addField('xepan\base\RichText','email_body')->set($message);
-		$view=$form->add('View')->setHTML($email_username_model['signature']);
+		$view=$form->layout->add('View',null,'signature')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
 
 		$this->app->forget('subject');

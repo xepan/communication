@@ -21,8 +21,7 @@ class page_emaildetail extends \xepan\base\Page{
 		$email_detail->setModel($email_model);
 		if($email_model['direction']=="In"){
 			$email_detail->add('xepan\base\Controller_Avatar',['options'=>['size'=>50,'border'=>['width'=>0]],'name_field'=>'from','default_value'=>'']);
-		}
-		else {
+		}else {
 			$email_detail->add('xepan\base\Controller_Avatar',['options'=>['size'=>50,'border'=>['width'=>0]],'name_field'=>'to','default_value'=>'']);
 		}
 
