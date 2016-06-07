@@ -19,7 +19,7 @@ class page_emaildetail extends \xepan\base\Page{
 		$email_detail=$this->add('xepan\communication\View_EmailDetail');
 
 		$email_detail->setModel($email_model);
-		$email_detail->add('xepan\base\Controller_Avatar');
+		$email_detail->add('xepan\base\Controller_Avatar',['options'=>['size'=>50,'border'=>['width'=>0]],'name_field'=>'from','default_value'=>'']);
 
 		$email_detail->on('click','.reply',function($js,$data)use($email_model){
 			return $js->univ()->location($this->api->url('xepan_communication_composeemail',['reply_email'=>true,'communication_id'=>$email_model->id]));
