@@ -1,0 +1,24 @@
+ul.clearfix
+  {rows}{row}
+  li
+    .img
+      a(href='#')
+        img(alt='', src='{file}img/samples/hdr/small/img_5.jpg{/}')
+    span.name
+      //- {file}| nature.jpg{/}
+    a(href='{$file}' download="{$filename}") {$filename}
+    {/}
+  li
+    .img
+      a(href='#')
+        img(alt='', src='img/samples/hdr/small/img_8.jpg')
+    span.name
+      | bratislava.jpg
+    a(href='#') Download
+  li
+    .img
+      i.fa.fa-file
+    span.name
+      | invoice.pdf
+    a(href='#') Download
+{/}{/}
