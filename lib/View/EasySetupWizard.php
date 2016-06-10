@@ -9,6 +9,7 @@ class View_EasySetupWizard extends \View{
 
 
 		if($_GET[$this->name.'_config_user_settings']){
+
 			$frontend_config = $this->app->epan->config;
 			$reg_type=$frontend_config->getConfig('REGISTRATION_TYPE');
 
@@ -40,31 +41,50 @@ class View_EasySetupWizard extends \View{
 			$file_update_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/update_password_subject.html'));
 			$file_update_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/update_password_body.html'));
 			
-			$reg_type= $frontend_config->setConfig('REGISTRATION_TYPE',"admin_activated",'base');
+			if(!$reg_type){
+				$reg_type= $frontend_config->setConfig('REGISTRATION_TYPE',"admin_activated",'base');
+				$this->js(true)->reload(['REGISTRATION_TYPE',$reg_type]);
+			}
 
-			$reg_subject = $registration_config->setConfig('REGISTRATION_SUBJECT',$file_reg_subject,'base');
-			$reg_body = $registration_config->setConfig('REGISTRATION_BODY',$file_reg_body,'base');
+			if(!$reg_subject){
+				$reg_subject = $registration_config->setConfig('REGISTRATION_SUBJECT',$file_reg_subject,'base');
+				$this->js(true)->reload(['REGISTRATION_SUBJECT',$reg_subject]);
+			}
+			if(!$reg_body){
+				$reg_body = $registration_config->setConfig('REGISTRATION_BODY',$file_reg_body,'base');
+				$this->js(true)->reload(['REGISTRATION_BODY',$reg_body]);
+			}
 
-			$reset_subject = $resetpass_config->setConfig('RESET_PASSWORD_SUBJECT',$file_reset_subject,'base');
-			$reset_body = $resetpass_config->setConfig('RESET_PASSWORD_BODY',$file_reset_body,'base');
+			if(!$reset_subject){
+				$reset_subject = $resetpass_config->setConfig('RESET_PASSWORD_SUBJECT',$file_reset_subject,'base');
+				$this->js(true)->reload(['RESET_PASSWORD_SUBJECT',$reset_subject]);
+			}
 
-			$verify_subject = $verify_config->setConfig('VERIFICATIONE_MAIL_SUBJECT',$file_verification_subject,'base');
-			$verify_body = $verify_config->setConfig('VERIFICATIONE_MAIL_BODY',$file_verification_body,'base');
+			if(!$reset_body){
+				$reset_body = $resetpass_config->setConfig('RESET_PASSWORD_BODY',$file_reset_body,'base');
+				$this->js(true)->reload(['RESET_PASSWORD_BODY',$reset_body]);
+			}
 
-			$update_subject = $update_config->setConfig('UPDATE_PASSWORD_SUBJECT',$file_update_subject,'base');
-			$update_body = $update_config->setConfig('UPDATE_PASSWORD_BODY',$file_update_body,'base');
+			if(!$verify_subject){
+				$verify_subject = $verify_config->setConfig('VERIFICATIONE_MAIL_SUBJECT',$file_verification_subject,'base');
+				$this->js(true)->reload(['VERIFICATIONE_MAIL_SUBJECT',$verify_subject]);
+			}
+			if(!$verify_body){
+				$verify_body = $verify_config->setConfig('VERIFICATIONE_MAIL_BODY',$file_verification_body,'base');
+				$this->js(true)->reload(['VERIFICATIONE_MAIL_BODY',$verify_body]);
+			}
+
+			if(!$update_subject){
+				$update_subject = $update_config->setConfig('UPDATE_PASSWORD_SUBJECT',$file_update_subject,'base');
+				$this->js(true)->reload(['UPDATE_PASSWORD_SUBJECT',$update_subject]);
+			}
+			if(!$update_body){
+				$update_body = $update_config->setConfig('UPDATE_PASSWORD_BODY',$file_update_body,'base');
+				$this->js(true)->reload(['UPDATE_PASSWORD_BODY',$update_body]);
+			}
 			
 			$this->js(true)->univ()->frameURL("User Configuration For Activation/Deactivation",$this->app->url('xepan_communication_general_emailcontent_usertool'));
 
-			$this->js(true)->reload(['REGISTRATION_TYPE',$reg_type]);
-			$this->js(true)->reload(['REGISTRATION_SUBJECT',$reg_subject]);
-			$this->js(true)->reload(['REGISTRATION_BODY',$reg_body]);
-			$this->js(true)->reload(['RESET_PASSWORD_SUBJECT',$reset_subject]);
-			$this->js(true)->reload(['RESET_PASSWORD_BODY',$reset_body]);
-			$this->js(true)->reload(['VERIFICATIONE_MAIL_SUBJECT',$verify_subject]);
-			$this->js(true)->reload(['VERIFICATIONE_MAIL_BODY',$verify_body]);
-			$this->js(true)->reload(['UPDATE_PASSWORD_SUBJECT',$update_subject]);
-			$this->js(true)->reload(['UPDATE_PASSWORD_BODY',$update_body]);
 		}
 
 			$isDone = false;
