@@ -106,4 +106,8 @@ class Model_Communication extends \xepan\base\Model_Table{
 			   	$previous_communication->saveAndUnload(); 
 	   	}
 	}
+
+	function setRelatedDocument($document){
+		$this['related_id']=$document->id;
+	}
 }
