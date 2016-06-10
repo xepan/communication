@@ -15,6 +15,8 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	
 	public $status=['Draft','Sent','Outbox','Received','Trashed'];
 
+	public $connections=[];
+
 	function init(){
 		parent::init();
 
@@ -170,7 +172,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	}
 
 
-	function send(\xepan\communication\Model_Communication_EmailSetting $email_setting){
+	function send(\xepan\communication\Model_Communication_EmailSetting $email_setting, $mailer=null){
 		$this['status']='Outbox';
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
@@ -203,17 +205,20 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			$mail->setSubject($this['title'])
 			    ->setHTMLBody($this['description'],$this->app->pathfinder->base_location->base_path);
 
-			$mailer = new \Nette\Mail\SmtpMailer(array(
+			if(!$mailer){
+				$mailer = new \Nette\Mail\SmtpMailer(array(
 			        'host' => $email_setting['email_host'],
 			        'username' => $email_setting['email_username'],
 			        'password' => $email_setting['email_password'],
 			        'secure' => $email_setting['encryption'],
-			));
-			
+			        'persistent'=>true
+				));
+			}
+
 			$mailer->send($mail);
 
 			$email_setting['last_emailed_at'] = $this->app->now;
-			$email_setting->saveAndUnload();
+			$email_setting->save();
 
 		}catch(\Exception $e){
 			$this->save();
