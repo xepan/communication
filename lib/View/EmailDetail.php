@@ -23,7 +23,7 @@ class View_EmailDetail extends \View{
 			$this->template->tryDel('check_attach');
 		}
 
-		$attach=$this->add('CompleteLister',null,'Attachments',['view/emails/email-detail','Attachments']);
+		$attach=$this->add('xepan\communication\View_Lister_Attachment',null,'Attachments');
 		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_id',$m->id);
 		return $m;
 
