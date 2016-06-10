@@ -43,46 +43,38 @@ class View_EasySetupWizard extends \View{
 			
 			if(!$reg_type){
 				$reg_type= $frontend_config->setConfig('REGISTRATION_TYPE',"admin_activated",'base');
-				$this->js(true)->reload(['REGISTRATION_TYPE',$reg_type]);
 			}
 
 			if(!$reg_subject){
 				$reg_subject = $registration_config->setConfig('REGISTRATION_SUBJECT',$file_reg_subject,'base');
-				$this->js(true)->reload(['REGISTRATION_SUBJECT',$reg_subject]);
 			}
 			if(!$reg_body){
 				$reg_body = $registration_config->setConfig('REGISTRATION_BODY',$file_reg_body,'base');
-				$this->js(true)->reload(['REGISTRATION_BODY',$reg_body]);
 			}
 
 			if(!$reset_subject){
 				$reset_subject = $resetpass_config->setConfig('RESET_PASSWORD_SUBJECT',$file_reset_subject,'base');
-				$this->js(true)->reload(['RESET_PASSWORD_SUBJECT',$reset_subject]);
 			}
 
 			if(!$reset_body){
 				$reset_body = $resetpass_config->setConfig('RESET_PASSWORD_BODY',$file_reset_body,'base');
-				$this->js(true)->reload(['RESET_PASSWORD_BODY',$reset_body]);
 			}
 
 			if(!$verify_subject){
 				$verify_subject = $verify_config->setConfig('VERIFICATIONE_MAIL_SUBJECT',$file_verification_subject,'base');
-				$this->js(true)->reload(['VERIFICATIONE_MAIL_SUBJECT',$verify_subject]);
 			}
 			if(!$verify_body){
 				$verify_body = $verify_config->setConfig('VERIFICATIONE_MAIL_BODY',$file_verification_body,'base');
-				$this->js(true)->reload(['VERIFICATIONE_MAIL_BODY',$verify_body]);
 			}
 
 			if(!$update_subject){
 				$update_subject = $update_config->setConfig('UPDATE_PASSWORD_SUBJECT',$file_update_subject,'base');
-				$this->js(true)->reload(['UPDATE_PASSWORD_SUBJECT',$update_subject]);
 			}
 			if(!$update_body){
 				$update_body = $update_config->setConfig('UPDATE_PASSWORD_BODY',$file_update_body,'base');
-				$this->js(true)->reload(['UPDATE_PASSWORD_BODY',$update_body]);
 			}
 			
+			// $this->js(true)->reload(['UPDATE_PASSWORD_BODY',$update_body]);
 			$this->js(true)->univ()->frameURL("User Configuration For Activation/Deactivation",$this->app->url('xepan_communication_general_emailcontent_usertool'));
 
 		}
