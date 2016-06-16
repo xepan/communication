@@ -25,8 +25,10 @@ class page_composeemail extends \xepan\base\Page{
 		$bcc_field = $form->addField('xepan\base\Dropdown','email_bcc');
 		$bcc_field->validate_values = false;
 
+		// Reply based on existing communication id
+		$replay_model=$this->add('xepan\communication\Model_Communication_Email');
 		if($_GET['communication_id'])
-			$replay_model=$this->add('xepan\communication\Model_Communication_Email')->load($communication_id);
+			$replay_model->load($communication_id);
 		
 		if($replay_email){
 			$emails_to=$replay_model->getReplyEmailFromTo()['to'][0];
@@ -55,6 +57,27 @@ class page_composeemail extends \xepan\base\Page{
 				$bcc_field->js(true,$bcc_field->js()->show()->_selector('#bcc-field'))->append("<option value='".$bcc_field_emails['email']."'>".$bcc_field_emails['name']." &lt;".$bcc_field_emails['email']."&gt; </option>")->trigger('change');
 			}
 			$bcc_field->set($emails_bcc);
+		}
+
+		// Reply/Compose Based on contact
+		$contact_emails=$this->app->stickyGET('send_email_contact');
+		$contact_id=$this->app->stickyGET('contact_id');
+
+		if($contact_emails And $contact_id){
+			
+			$contact_m=$this->add('xepan\base\Model_Contact')->load($contact_id);
+			$emails = array_reverse($contact_m->getEmails());
+			$email_to = array_pop($emails);
+			$to_field->js(true)->append("<option value='".$email_to."'>".$contact_m['name']." &lt;".$email_to."&gt; </option>")->trigger('change');
+			$to_field->set($email_to);
+			
+			$emails_cc =[];		
+			foreach ($emails as $cc_field_emails) {
+				$emails_cc [] = $cc_field_emails;
+				$cc_field->js(true,$cc_field->js()->show()->_selector('#cc-field'))->append("<option value='".$cc_field_emails."'>".$contact_m['name']." &lt;".$cc_field_emails."&gt;</option>")->trigger('change');
+			}
+			$cc_field->set($emails_cc);
+			
 		}
 
 		if($_GET[$this->name.'_src_email']){
