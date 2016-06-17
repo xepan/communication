@@ -46,6 +46,37 @@ class Initiator extends \Controller_Addon {
             }
         }
         
+        $frontend_config = $this->app->epan->config;
+		$frontend_config->setConfig('REGISTRATION_TYPE',"self_activated",'base');
+		
+		$registration_config = $this->app->epan->config;
+		$file_reg_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/registration_subject.html'));
+		$file_reg_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/registration_body.html'));
+			
+		$registration_config->setConfig('REGISTRATION_SUBJECT',$file_reg_subject,'base');
+		$registration_config->setConfig('REGISTRATION_BODY',$file_reg_body,'base');
+		
+		$resetpass_config = $this->app->epan->config;
+		$file_reset_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/reset_password_subject.html'));
+		$file_reset_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/reset_password_body.html'));
+		
+		$resetpass_config->setConfig('RESET_PASSWORD_SUBJECT',$file_reset_subject,'base');
+		$resetpass_config->setConfig('RESET_PASSWORD_BODY',$file_reset_body,'base');
+		
+		$verify_config = $this->app->epan->config;
+		$file_verification_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/verification_mail_subject.html'));
+		$file_verification_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/verification_mail_body.html'));
+		
+		$verify_config->setConfig('VERIFICATIONE_MAIL_SUBJECT',$file_verification_subject,'base');
+		$verify_config->setConfig('VERIFICATIONE_MAIL_BODY',$file_verification_body,'base');
+		
+		$update_config = $this->app->epan->config;
+		$file_update_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/update_password_subject.html'));
+		$file_update_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/update_password_body.html'));
+		
+		$update_config->setConfig('UPDATE_PASSWORD_SUBJECT',$file_update_subject,'base');
+		$update_config->setConfig('UPDATE_PASSWORD_BODY',$file_update_body,'base');
+								
         $this->app->epan=$this->app->new_epan;
 
 	}
