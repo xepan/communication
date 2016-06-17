@@ -76,6 +76,8 @@ class Model_Communication extends \xepan\base\Model_Table{
  					'title'=>$data['title'],
  					'relevency'=>$data['Relevance'],
  					'url'=>$this->app->url('xepan_communication_emaildetail',['email_id'=>$data['id']])->getURL(),
+ 					'type_status'=>$data['type'].' '.'['.$data['status'].']',
+ 					'quick_info'=>substr(strip_tags($data['description']),0,200),
  				];
  			}
 		}
