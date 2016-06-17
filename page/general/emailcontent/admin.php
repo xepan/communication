@@ -11,10 +11,10 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 	function init(){
 		parent::init();
 
-		// if(!$this->api->auth->model->isSuperUser()){
-		// 	$this->add('View_Error')->set('Sorry, you are not permitted to handle acl, Ask respective authority / SuperUser');
-		// 	return;
-		// }else{
+		if(!$this->api->auth->model->isSuperUser()){
+			$this->add('View_Error')->set('Sorry, you are not permitted to handle acl, Ask respective authority / SuperUser');
+			return;
+		}else{
 
 			/*Reset Password Email Content*/
 			$resetpass_config = $this->app->epan->config;
@@ -47,7 +47,7 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 				$update_config->setConfig('UPDATE_PASSWORD_BODY_FOR_ADMIN',$form['body'],'base');
 				$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
 			}
-		// }
+		}
 	}
 	
 	function defaultTemplate(){
