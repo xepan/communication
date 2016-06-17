@@ -10,9 +10,13 @@
           li
             a(data-toggle='tab', href='#misc') Misc Setting
         .tab-content
-          #tab-general_setting.tab-pane.fade.in.active
+          #tab-general_setting.tab-pane.active
             {general_setting}Please Save Basic Information First{/}
-           #sms_setting.tab-pane.fade
+           #sms_setting.tab-pane
             {$sms_setting}
-           #misc.tab-pane.fade
+           #misc.tab-pane
             {$misc_view}
+style.
+  .select2{
+    width:100%!important;
+  }
