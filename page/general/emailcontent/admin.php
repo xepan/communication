@@ -11,10 +11,10 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 	function init(){
 		parent::init();
 
-		if(!$this->api->auth->model->isSuperUser()){
-			$this->add('View_Error')->set('Sorry, you are not permitted to handle acl, Ask respective authority / SuperUser');
-			return;
-		}else{
+		// if(!$this->api->auth->model->isSuperUser()){
+		// 	$this->add('View_Error')->set('Sorry, you are not permitted to handle acl, Ask respective authority / SuperUser');
+		// 	return;
+		// }else{
 
 			/*Reset Password Email Content*/
 			$resetpass_config = $this->app->epan->config;
@@ -22,7 +22,7 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 			$reset_body = $resetpass_config->getConfig('RESET_PASSWORD_BODY_FOR_ADMIN');
 			$form=$this->add('Form',null,'reset_email');
 			$form->addField('line','subject')->set($reset_subject);
-			$form->addField('xepan\base\RichText','body')->set($reset_body)->setFieldHint('{$name},{$email_id},{$password},{$click_here_to_activate}');
+			$form->addField('xepan\base\RichText','body')->set($reset_body)->setFieldHint('{$username},{$email_id},{$password},{$click_here},{$organization},{$post}');
 			$form->addSubmit('Update');
 
 			if($form->isSubmitted()){
@@ -38,7 +38,7 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 			$update_body = $update_config->getConfig('UPDATE_PASSWORD_BODY_FOR_ADMIN');
 			$form=$this->add('Form',null,'updatepassword_view');
 			$form->addField('line','subject')->set($update_subject);
-			$form->addField('xepan\base\RichText','body')->set($update_body)->setFieldHint('{$name},{$email_id},{$password}');
+			$form->addField('xepan\base\RichText','body')->set($update_body)->setFieldHint('{$username},{$email_id},{$password},{$organization},{$post}');
 			$form->addSubmit('Update');
 
 			if($form->isSubmitted()){
@@ -47,7 +47,7 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 				$update_config->setConfig('UPDATE_PASSWORD_BODY_FOR_ADMIN',$form['body'],'base');
 				$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
 			}
-		}
+		// }
 	}
 	
 	function defaultTemplate(){
