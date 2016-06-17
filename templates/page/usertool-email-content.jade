@@ -13,12 +13,22 @@
             a(data-toggle='tab', href='#update-password')|Update Password Mail
         .tab-content
           #frontend_user_config.tab-pane.active
+            {Content}
             {$frontend_user_config}
+            {/}
           #registration.tab-pane
+            {Content}
             {$registration_view}
+            {/}
           #reset-password.tab-pane
+            {Content}
             {$reset_email}
+            {/}
           #verification.tab-pane
+            {Content}
             {$verification_view}
+            {/}
           #update-password.tab-pane
+            {Content}
             {$updatepassword_view}
+            {/}

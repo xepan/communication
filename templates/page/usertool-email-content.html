@@ -9,11 +9,31 @@
       <li><a data-toggle="tab" href="#update-password">Update Password Mail</a></li>
     </ul>
     <div class="tab-content">
-      <div id="frontend_user_config" class="tab-pane active">{$frontend_user_config}</div>
-      <div id="registration" class="tab-pane">{$registration_view}</div>
-      <div id="reset-password" class="tab-pane">{$reset_email}</div>
-      <div id="verification" class="tab-pane">{$verification_view}</div>
-      <div id="update-password" class="tab-pane">{$updatepassword_view}</div>
+      <div id="frontend_user_config" class="tab-pane active">
+        {Content}
+        {$frontend_user_config}
+        {/}
+      </div>
+      <div id="registration" class="tab-pane">
+        {Content}
+        {$registration_view}
+        {/}
+      </div>
+      <div id="reset-password" class="tab-pane">
+        {Content}
+        {$reset_email}
+        {/}
+      </div>
+      <div id="verification" class="tab-pane">
+        {Content}
+        {$verification_view}
+        {/}
+      </div>
+      <div id="update-password" class="tab-pane">
+        {Content}
+        {$updatepassword_view}
+        {/}
+      </div>
     </div>
   </div>
 </div>
