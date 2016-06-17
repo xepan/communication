@@ -64,16 +64,20 @@ class Model_Communication extends \xepan\base\Model_Table{
 		});
 	}
 
-	function quickSearch($app,$search_string,$view){
+	function quickSearch($app,$search_string,&$result_array){
 		$this->addExpression('Relevance')->set('MATCH(title, description, communication_type) AGAINST ("'.$search_string.'" IN NATURAL LANGUAGE MODE)');
 		$this->addCondition('Relevance','>',0);
  		$this->setOrder('Relevance','Desc');
+ 		
  		if($this->count()->getOne()){
- 			$cc = $view->add('Completelister',null,null,['grid/quicksearch-communication-grid']);
- 			$cc->setModel($this);
-    		$cc->addHook('formatRow',function($g){
-    			$g->current_row_html['url'] = $this->app->url('xepan_communication_emaildetail',['email_id'=>$g->model->id]);	
-     		});	
+ 			foreach ($this->getRows() as $data) {	 				 				
+ 				$result_array[] = [
+ 					'image'=>null,
+ 					'title'=>$data['title'],
+ 					'relevency'=>$data['Relevance'],
+ 					'url'=>$this->app->url('xepan_communication_emaildetail',['email_id'=>$data['id']])->getURL(),
+ 				];
+ 			}
 		}
 	}	
 
