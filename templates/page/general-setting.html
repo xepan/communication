@@ -1,15 +1,20 @@
 
 <div class="main-box clearfix">
   <div class="tabs-wrapper profile-tabs">
-    <ul class="nav nav-tabs responsive-tabs">
+    <ul class="nav nav-tabs responsive-tabs responsive-tabs">
       <li class="active"><a data-toggle="tab" href="#tab-general_setting">Emails Setting</a></li>
       <li><a data-toggle="tab" href="#sms_setting">SMS Setting</a></li>
       <li><a data-toggle="tab" href="#misc">Misc Setting</a></li>
     </ul>
     <div class="tab-content">
-      <div id="tab-general_setting" class="tab-pane fade in active">{general_setting}Please Save Basic Information First{/}</div>
-      <div id="sms_setting" class="tab-pane fade">{$sms_setting}</div>
-      <div id="misc" class="tab-pane fade">{$misc_view}</div>
+      <div id="tab-general_setting" class="tab-pane active">{general_setting}Please Save Basic Information First{/}</div>
+      <div id="sms_setting" class="tab-pane">{$sms_setting}</div>
+      <div id="misc" class="tab-pane">{$misc_view}</div>
     </div>
   </div>
 </div>
+<style>
+  .select2{
+    width:100%!important;
+  }
+</style>
