@@ -22,7 +22,7 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 			$reset_body = $resetpass_config->getConfig('RESET_PASSWORD_BODY_FOR_ADMIN');
 			$form=$this->add('Form',null,'reset_email');
 			$form->addField('line','subject')->set($reset_subject);
-			$form->addField('xepan\base\RichText','body')->set($reset_body)->setFieldHint('{$name},{$email_id},{$password},{$click_here_to_activate}');
+			$form->addField('xepan\base\RichText','body')->set($reset_body)->setFieldHint('{$username},{$click_here}');
 			$form->addSubmit('Update');
 
 			if($form->isSubmitted()){
