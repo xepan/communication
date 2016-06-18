@@ -29,7 +29,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 			$form = $this->add('Form_Stacked',null,'misc_view');
 			$time_zone_field=$form->addField('DropDown','time_zone')->set($misc_time_zone);
 			$time_zone_field->setValueList(array_combine(timezone_identifiers_list(),timezone_identifiers_list()));
-			$form->addSubmit('Update');
+			$form->addSubmit('Update')->addClass('btn btn-primary');
 
 			if($form->isSubmitted()){
 				$misc_config->setConfig('TIME_ZONE',$form['time_zone'],'base');
