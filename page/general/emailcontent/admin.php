@@ -38,7 +38,7 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 			$update_body = $update_config->getConfig('UPDATE_PASSWORD_BODY_FOR_ADMIN');
 			$form=$this->add('Form',null,'updatepassword_view');
 			$form->addField('line','subject')->set($update_subject);
-			$form->addField('xepan\base\RichText','body')->set($update_body)->setFieldHint('{$name},{$email_id},{$password}');
+			$form->addField('xepan\base\RichText','body')->set($update_body)->setFieldHint('{$username},{$email_id},{$password},{$organization},{$post}');
 			$form->addSubmit('Update');
 
 			if($form->isSubmitted()){
