@@ -19,7 +19,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 			$reg_type= $frontend_config->getConfig('REGISTRATION_TYPE');
 			$user_registration_type = $f->addField('DropDown','user_registration_type')->set($reg_type);
 			$user_registration_type->setValueList(['self_activated'=>'Self Activation Via Email','admin_activated'=>'Admin Activated',"default_activated"=>'Default Activated'])->validate('required');
-			$f->addSubmit('Update');
+			$f->addSubmit('Update')->addClass('btn btn-primary');
 			
 			if($f->isSubmitted()){
 				$frontend_config->setConfig('REGISTRATION_TYPE',$f['user_registration_type'],'base');
@@ -32,7 +32,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 			$form=$this->add('Form',null,'reset_email');
 			$form->addField('line','subject')->set($reset_subject);
 			$form->addField('xepan\base\RichText','body')->set($reset_body)->setFieldHint('{$name},{$email_id},{$password},{$click_here_to_activate}');
-			$form->addSubmit('Update');
+			$form->addSubmit('Update')->addClass('btn btn-primary');
 
 			if($form->isSubmitted()){
 				$resetpass_config->setConfig('RESET_PASSWORD_SUBJECT',$form['subject'],'base');
@@ -49,7 +49,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 			$form=$this->add('Form',null,'registration_view');
 			$form->addField('line','subject')->set($reg_subject);
 			$form->addField('xepan\base\RichText','Body')->set($reg_body)->setFieldHint('{$name},{$email_id},{$password},{$click_here_to_activate}');
-			$form->addSubmit('Update');
+			$form->addSubmit('Update')->addClass('btn btn-primary');
 
 			if($form->isSubmitted()){
 				$registration_config->setConfig('REGISTRATION_SUBJECT',$form['subject'],'base');
@@ -65,7 +65,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 			$form=$this->add('Form',null,'verification_view');
 			$form->addField('line','subject')->set($verify_subject);
 			$form->addField('xepan\base\RichText','body')->set($verify_body)->setFieldHint('');
-			$form->addSubmit('Update');
+			$form->addSubmit('Update')->addClass('btn btn-primary');
 
 			if($form->isSubmitted()){
 				$verify_config->setConfig('VERIFICATIONE_MAIL_SUBJECT',$form['subject'],'base');
@@ -81,7 +81,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 			$form=$this->add('Form',null,'updatepassword_view');
 			$form->addField('line','subject')->set($update_subject);
 			$form->addField('xepan\base\RichText','body')->set($update_body)->setFieldHint('{$name},{$email_id},{$password}');
-			$form->addSubmit('Update');
+			$form->addSubmit('Update')->addClass('btn btn-primary');
 
 			if($form->isSubmitted()){
 				$update_config->setConfig('UPDATE_PASSWORD_SUBJECT',$form['subject'],'base');
