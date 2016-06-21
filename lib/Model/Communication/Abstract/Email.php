@@ -30,8 +30,9 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			$from_raw=$m['from_raw'];
 			$to_raw=$m['to_raw'];
 
+
 			if($m['direction']=='Out'){
-				return $m['to_id']?$m['to']:
+				return ($m['to_id'] And $m['to']!=null)?$m['to']:
 							($to_raw[0]['name']?$to_raw[0]['name']:$to_raw[0]['email'])
 							;
 			}
