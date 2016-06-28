@@ -42,7 +42,7 @@ class View_EasySetupWizard extends \View{
 			$file_update_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/update_password_body.html'));
 			
 			if(!$reg_type){
-				$reg_type= $frontend_config->setConfig('REGISTRATION_TYPE',"admin_activated",'base');
+				$reg_type= $frontend_config->setConfig('REGISTRATION_TYPE',"self_activated",'base');
 			}
 
 			if(!$reg_subject){
