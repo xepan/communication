@@ -47,6 +47,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 									'mobile_no'=>"Line",
 									'company_email'=>"Line",
 									'company_address'=>"Line",
+									'company_pin_code'=>"Line",
 									'company_description'=>"text",
 									],
 						'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
@@ -61,6 +62,8 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				$c_form->save();
 				$c_form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
 			}
+
+			$this->add('View',null,'company_info',['view/schema-micro-data','person_info'])->setModel($company_m);
 		}
 
 
