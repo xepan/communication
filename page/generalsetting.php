@@ -36,6 +36,30 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				
 				$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
 			}
+
+			/*Company Info*/
+
+			$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
+					[
+						'fields'=>[
+									'company_name'=>"Line",
+									'company_owner'=>"Line",
+									'mobile_no'=>"Line",
+									'company_email'=>"Line",
+									'company_address'=>"Line",
+									'company_description'=>"text",
+									],
+						'config_key'=>'COMPANY_AND_OWNER_INFORMATION'
+					]);
+			$c_form = $this->add('Form_Stacked',null,'company_info');
+			$c_form->setModel($company_m);
+			$c_form->addSubmit('Save')->addClass('btn btn-primary');
+			
+			if($c_form->isSubmitted()){
+				$c_form->save();
+
+				$c_form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			}
 		}
 
 

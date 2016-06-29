@@ -5,6 +5,7 @@
       <li class="active"><a data-toggle="tab" href="#tab-general_setting">Emails Setting</a></li>
       <li><a data-toggle="tab" href="#sms_setting">SMS Setting</a></li>
       <li><a data-toggle="tab" href="#misc">Misc Setting</a></li>
+      <li><a data-toggle="tab" href="#basic-info">Company Info</a></li>
     </ul>
     <div class="tab-content">
       <div id="tab-general_setting" class="tab-pane active">
@@ -20,6 +21,11 @@
       <div id="misc" class="tab-pane">
         {Content}
         {$misc_view}
+        {/}
+      </div>
+      <div id="basic-info" class="tab-pane">
+        {Content}
+        {$company_info}
         {/}
       </div>
     </div>
