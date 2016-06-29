@@ -49,15 +49,16 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 									'company_address'=>"Line",
 									'company_description'=>"text",
 									],
-						'config_key'=>'COMPANY_AND_OWNER_INFORMATION'
+						'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
+						'application'=>'communication'
 					]);
+			$company_m->tryLoadAny();
 			$c_form = $this->add('Form_Stacked',null,'company_info');
 			$c_form->setModel($company_m);
 			$c_form->addSubmit('Save')->addClass('btn btn-primary');
 			
 			if($c_form->isSubmitted()){
 				$c_form->save();
-
 				$c_form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
 			}
 		}
