@@ -2,7 +2,7 @@
 
 namespace xepan\communication;
 
-class page_cron extends \Page {
+class Controller_Cron extends \AbstractController {
 
 	function init(){
 		parent::init();
