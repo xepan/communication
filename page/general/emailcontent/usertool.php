@@ -89,6 +89,23 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 				$update_config->setConfig('UPDATE_PASSWORD_BODY',$form['body'],'base');
 				$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
 			}
+
+			/*Subscription Content*/
+			$sub_config = $this->app->epan->config;
+			$sub_subject = $sub_config->getConfig('SUBSCRIPTION_MAIL_SUBJECT');
+			$sub_body = $sub_config->getConfig('SUBSCRIPTION_MAIL_BODY');
+			
+			$form=$this->add('Form',null,'subscription_view');
+			$form->addField('line','subject')->set($sub_subject);
+			$form->addField('xepan\base\RichText','body')->set($sub_body)->setFieldHint('{$name},{$email_id}');
+			$form->addSubmit('Update')->addClass('btn btn-primary');
+
+			if($form->isSubmitted()){
+				$sub_config->setConfig('SUBSCRIPTION_MAIL_SUBJECT',$form['subject'],'base');
+
+				$sub_config->setConfig('SUBSCRIPTION_MAIL_BODY',$form['body'],'base');
+				$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			}	
 		}
 	}
 

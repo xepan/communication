@@ -7,6 +7,7 @@
       <li><a data-toggle="tab" href="#reset-password">Reset Password Mail</a></li>
       <li><a data-toggle="tab" href="#verification">After Verification Mail</a></li>
       <li><a data-toggle="tab" href="#update-password">Update Password Mail</a></li>
+      <li><a data-toggle="tab" href="#subscription">Subscription Mail  </a></li>
     </ul>
     <div class="tab-content">
       <div id="frontend_user_config" class="tab-pane active">
@@ -32,6 +33,11 @@
       <div id="update-password" class="tab-pane">
         {Content}
         {$updatepassword_view}
+        {/}
+      </div>
+      <div id="subscription" class="tab-pane">
+        {Content}
+        {$subscription_view}
         {/}
       </div>
     </div>

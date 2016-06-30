@@ -49,6 +49,12 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 									'company_address'=>"Line",
 									'company_pin_code'=>"Line",
 									'company_description'=>"text",
+									'company_description'=>"text",
+									'company_logo_absolute_url'=>"Line",
+									'company_twitter_url'=>"Line",
+									'company_facebook_url'=>"Line",
+									'company_google_url'=>"Line",
+									'company_linkedin_url'=>"Line",
 									],
 						'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
 						'application'=>'communication'
