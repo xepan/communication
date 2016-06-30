@@ -11,6 +11,8 @@
             a(data-toggle='tab', href='#verification')|After Verification Mail
           li
             a(data-toggle='tab', href='#update-password')|Update Password Mail
+          li
+            a(data-toggle='tab', href='#subscription')|Subscription Mail  
         .tab-content
           #frontend_user_config.tab-pane.active
             {Content}
@@ -32,3 +34,8 @@
             {Content}
             {$updatepassword_view}
             {/}
+          #subscription.tab-pane
+            {Content}
+            {$subscription_view}
+            {/}
+  
