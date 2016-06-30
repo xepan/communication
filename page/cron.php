@@ -11,7 +11,7 @@
 
 namespace xepan\communication;
 
-class page_communication extends \Page {
+class page_cron extends \Page {
 	public $title='Page Title';
 
 	function init(){
