@@ -1,26 +1,23 @@
 <?php
 
+/**
+* description: ATK Page
+* 
+* @author : Gowrav Vishwakarma
+* @email : gowravvishwakarma@gmail.com, info@xavoc.com
+* @website : http://xepan.org
+* 
+*/
+
 namespace xepan\communication;
 
 class page_cron extends \Page {
+	public $title='Page Title';
 
 	function init(){
 		parent::init();
-
-		$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')
-						->addCondition('is_imap_enabled',true);
-
-		foreach ($email_settings as $email_setting) {
-			$cont = $this->add('xepan\communication\Controller_ReadEmail',['email_setting'=>$email_setting]);
-			
-			$mbs = ['INBOX'] ; // $cont->getMailBoxes();
-
-			foreach ($mbs as $mb) {
-				$emails_return = $cont->fetch($mb,'RECENT');
-				$this->app->hook('emails_fetched',[$emails_return]);
-			}
-		}
+		
+		$this->add('xepan\communication\Controller_Cron');
 
 	}
-
 }
