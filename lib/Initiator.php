@@ -36,7 +36,8 @@ class Initiator extends \Controller_Addon {
 			->setBaseURL('./vendor/xepan/communication/');
 
 
-		$this->app->addHook('cron_exector',function($app){
+		$this->app->addHook('cron_executor',function($app){
+			echo "Testing at $now in Communication<br/>";
 			$job1 = new \Cron\Job\ShellJob();
 			$job1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
 			$now = \DateTime::createFromFormat('Y-m-d H:i:s', $this->app->now);
