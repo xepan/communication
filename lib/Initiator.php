@@ -34,6 +34,18 @@ class Initiator extends \Controller_Addon {
 		$this->routePages('xepan_communication');
 		$this->addLocation(array('template'=>'templates','js'=>'templates/js'))
 			->setBaseURL('./vendor/xepan/communication/');
+
+
+		$this->app->addHook('cron_exector',function($app){
+			$job1 = new \Cron\Job\ShellJob();
+			$job1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
+			$now = \DateTime::createFromFormat('Y-m-d H:i:s', $this->app->now);
+			if(!$job1->getSchedule() || $job1->getSchedule()->valid($now)){
+				echo " Executing email fetching <br/>";
+				$this->add('xepan\communication\Controller_Cron');
+			}
+		});
+
 			return $this;
 	}
 
