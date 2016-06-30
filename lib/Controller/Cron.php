@@ -16,7 +16,7 @@ class Controller_Cron extends \AbstractController {
 			$mbs = ['INBOX'] ; // $cont->getMailBoxes();
 
 			foreach ($mbs as $mb) {
-				$emails_return = $cont->fetch($mb,'RECENT');
+				$emails_return = $cont->fetch($mb,'UNSEEN');
 				$this->app->hook('emails_fetched',[$emails_return]);
 			}
 		}
