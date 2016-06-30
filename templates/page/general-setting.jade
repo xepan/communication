@@ -9,6 +9,8 @@
             a(data-toggle='tab', href='#sms_setting') SMS Setting
           li
             a(data-toggle='tab', href='#misc') Misc Setting
+          li
+            a(data-toggle='tab', href='#basic-info') Company Info
         .tab-content
           #tab-general_setting.tab-pane.active
             {Content}
@@ -21,6 +23,10 @@
            #misc.tab-pane
             {Content}
             {$misc_view}
+            {/}
+           #basic-info.tab-pane
+            {Content}
+            {$company_info}
             {/}
 style.
   .select2{
