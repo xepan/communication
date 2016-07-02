@@ -56,6 +56,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->count());
 
 		$this->addHook('beforeDelete',[$this,'deleteAttachments']);
+		$this->addHook('afterSave',[$this,'createdCommunication']);
 	}
 
 	function deleteAttachments(){
@@ -115,5 +116,13 @@ class Model_Communication extends \xepan\base\Model_Table{
 
 	function setRelatedDocument($document){
 		$this['related_id']=$document->id;
+	}
+	
+	function createdCommunication(){
+		$this['status']='*';
+			$this->app->employee
+	            ->addActivity("Just '".$this['from']."'communicate with '".$this['to']."' ", null /*Related Document ID*/, $this->id /*Related Contact ID*/)
+	            ->notifyWhoCan('communication','Active',$this);
+			return $this->save();
 	}
 }
