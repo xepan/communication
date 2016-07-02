@@ -35,7 +35,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('description')->type('text');
 
 		$this->addField('tags');
-		$this->addField('direction');
+		$this->addField('direction')->enum(['In','Out']);
 		$this->addField('communication_type');
 
 		$this->addField('related_id'); // Can be used anywhere as per requirement
@@ -55,8 +55,17 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addExpression('image')->set($this->refSQL('from_id')->fieldQuery('image'));
 		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->count());
 
+		$this->addHook('afterSave',[$this,'throwHookNotification']);
 		$this->addHook('beforeDelete',[$this,'deleteAttachments']);
+
+		$this->is([
+				'direction|required'
+			]);
 		
+	}
+
+	function throwHookNotification($model){
+		$this->app->hook('communication_created',[$model]);
 	}
 
 	function deleteAttachments(){
