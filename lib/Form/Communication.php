@@ -140,10 +140,12 @@ class Form_Communication extends \Form {
 				if($this['status']=='Received'){
 					$communication['from_id']=$this->contact->id;
 					$communication['to_id']=$this['from_person']; // actually this is to person this time
+					$communication['direction']='In';
 					$communication->setFrom($this['from_phone'],$this->contact['name']);
 				}else{
 					$communication['from_id']=$this['from_person']; // actually this is to person this time
 					$communication['to_id']=$this->contact->id;
+					$communication['direction']='Out';
 					$employee_name=$this->add('xepan\hr\Model_Employee')->load($this['from_person'])->get('name');
 					$communication->setFrom($this['from_phone'],$employee_name);
 				}
