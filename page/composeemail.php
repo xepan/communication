@@ -156,7 +156,8 @@ class page_composeemail extends \xepan\base\Page{
 		$form->onSubmit(function($f)use($save_btn){
 			
 			$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($f['email_username']);
-			$mail = $this->add('xepan\communication\Model_Communication_Email_Sent');
+			$mail = $this->add('xepan\communication\Model_Communication_Email');
+			$mail['direction']='Out';
 			$mail->setfrom($email_settings['from_email'],$email_settings['from_name']);
 			
 			foreach (explode(",",$f['email_to']) as $e2) {
