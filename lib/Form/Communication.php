@@ -134,6 +134,7 @@ class Form_Communication extends \Form {
 				$_from_name = $send_settings['from_name'];
 				$_to_field='email_to';
 				$communication->setFrom($_from,$_from_name);
+				$communication['direction']='Out';
 				break;
 			case 'Phone':
 				$send_settings = $this['from_phone'];
@@ -174,6 +175,7 @@ class Form_Communication extends \Form {
 				$_from_name = $email_settings['from_sms_code'];
 				$_to_field='sms_to';
 				$communication->setFrom($_from,$_from_name);
+				$communication['direction']='Out';
 				break;
 			case 'Comment':
 				$_from = $this->app->employee->id;
