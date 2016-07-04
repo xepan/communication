@@ -71,7 +71,7 @@ class Form_Communication extends \Form {
 				if(!$communication->verifyTo($this[$_to_field], $this->contact->id)){
 					throw new \Exception($commtype." of customer not present");	
 				}
-		
+				$communication['direction']='Out';
 				break;
 			case 'Phone':
 				if(!$this['from_phone'])
