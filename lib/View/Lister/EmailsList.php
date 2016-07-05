@@ -9,9 +9,7 @@ class View_Lister_EmailsList extends \CompleteLister{
 			$this->current_row['starred']='';
 		}
 
-		$seen_by=$this->model->ref('extra_info')->get('seen_by');
-		
-		if($seen_by){
+		if($this->model['extra_info']['seen_by']){
 			$this->current_row['unread']='';
 		}else{
 			$this->current_row['unread']='unread';
