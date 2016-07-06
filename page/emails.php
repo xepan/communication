@@ -19,9 +19,8 @@ class page_emails extends \xepan\base\Page{
 			foreach ($_GET['mark_unread'] as $mark_email) {
 				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
 				->load($mark_email);
-				$extra_info=$mark->ref('extra_info');/*->get('seen_by')*/;
-				$extra_info['seen_by']=$this->app->employee->id;
-				$extra_info->save();
+				$mark['extra_info']=['seen_by'=>$this->app->employee->id];
+				$mark->save();
 			}
 		}
 

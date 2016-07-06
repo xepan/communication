@@ -47,7 +47,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('is_starred')->type('boolean')->defaultValue(false);
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
-		$this->addField('extra_info');
+		$this->addField('extra_info')->defaultValue([]);
 		$this->hasMany('xepan\communication\Communication_Attachment','communication_id',null,'EmailAttachments');
 		$this->hasMany('xepan\crm\Ticket_Comments','communication_id',null,'Comments');
 		$this->hasMany('xepan\crm\SupportTicket','communication_id',null,'SupportTicket');
