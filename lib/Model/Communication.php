@@ -20,7 +20,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->hasOne('xepan\base\Contact','from_id');
 		$this->hasOne('xepan\base\Contact','to_id');
 		$this->hasOne('xepan\base\Document','related_document_id');
-		$this->hasOne('xepan\base\Contact','created_by_id')->defaultValue($this->app->employee->id);
+		$this->hasOne('xepan\base\Contact','created_by_id')->defaultValue(@$this->app->employee->id);
 		
 		$this->addField('uid');
 		$this->addField('uuid');
