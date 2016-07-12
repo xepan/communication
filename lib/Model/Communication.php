@@ -20,6 +20,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->hasOne('xepan\base\Contact','from_id');
 		$this->hasOne('xepan\base\Contact','to_id');
 		$this->hasOne('xepan\base\Document','related_document_id');
+		$this->hasOne('xepan\base\Contact','created_by_id')->defaultValue(@$this->app->employee->id);
 		
 		$this->addField('uid');
 		$this->addField('uuid');
@@ -48,6 +49,9 @@ class Model_Communication extends \xepan\base\Model_Table{
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
 		$this->addField('extra_info')->defaultValue([]);
+		
+		$this->addField('type');
+ 
 		$this->hasMany('xepan\communication\Communication_Attachment','communication_id',null,'EmailAttachments');
 		$this->hasMany('xepan\crm\Ticket_Comments','communication_id',null,'Comments');
 		$this->hasMany('xepan\crm\SupportTicket','communication_id',null,'SupportTicket');

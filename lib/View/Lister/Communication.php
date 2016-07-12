@@ -42,6 +42,7 @@ class View_Lister_Communication extends \CompleteLister{
 
 	function formatRow(){
 		$to_mail = json_decode($this->model['to_raw'],true);
+		
 		$to_lister = $this->app->add('CompleteLister',null,null,['view/communication1','to_lister']);
 		$to_lister->setSource($to_mail);
 			
