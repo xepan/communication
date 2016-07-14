@@ -48,7 +48,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('is_starred')->type('boolean')->defaultValue(false);
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
-		$this->addField('extra_info')->defaultValue([]);
+		$this->addField('extra_info')->defaultValue({});
 		
 		$this->addField('type');
  
