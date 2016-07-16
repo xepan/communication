@@ -20,7 +20,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	function init(){
 		parent::init();
 
-
+		$this->addCondition('communication_type','Email');
 		// $this->containsOne(['extra_info','json'=>true],function($m){
 		// 	$m->addField('seen_by')->defaultValue(null);
 		// });
