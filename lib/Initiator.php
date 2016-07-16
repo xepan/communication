@@ -14,11 +14,11 @@ class Initiator extends \Controller_Addon {
 			
 			$contact_email=$this->add('xepan\communication\Model_Communication_Email_ContactReceivedEmail');
 
-			$contact_email->addCondition('extra_info',["{}"]);
+			$contact_email->addCondition('extra_info','like','%seen_by%');
 			$contact_count=$contact_email->count()->getOne();
 
 			$all_email=$this->add('xepan\communication\Model_Communication_Email_Received');
-			$all_email->addCondition('extra_info',["{}"]);
+			$all_email->addCondition('extra_info','like','%seen_by%');
 			$all_count=$all_email->count()->getOne();
 			
 			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails']);

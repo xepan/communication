@@ -5,13 +5,13 @@ class View_EmailNavigation extends \View{
 	function init(){
 		parent::init();
 		$contact_inbox=$this->add('xepan\communication\Model_Communication_Email_ContactReceivedEmail');
-		$contact_inbox->addCondition('extra_info',["{}"]);
+		$contact_inbox->addCondition('extra_info','like','%seen_by%');
 		$contact_count=$contact_inbox->count()->getOne();
 		// throw new \Exception($contact_count, 1);
 		$this->template->trySet('contat_inbox_count',$contact_count);
 		
 		$inbox=$this->add('xepan\communication\Model_Communication_Email_Received');
-		$inbox->addCondition('extra_info',["{}"]);
+		$inbox->addCondition('extra_info','like','%seen_by%');
 		$inbox_count=$inbox->count()->getOne();
 		$this->template->trySet('inbox_count',$inbox_count);
 
