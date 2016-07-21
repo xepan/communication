@@ -15,8 +15,12 @@ class page_emaildetail extends \xepan\base\Page{
 		$email_model->load($_GET['email_id']);
 
 		// $email_model->ref('extra_info')->set('seen_by',$this->app->employee->id)->save();
-		$email_model['extra_info']=['seen_by'=>$this->app->employee->id];
-		$email_model->save();
+		
+		if(! in_array($this->app->employee->id, $email_model['extra_info'])){
+			$email_model['extra_info'] = ['seen_by'=>$this->app->employee->id];
+			$email_model->save();
+		}
+						
 		$email_detail=$this->add('xepan\communication\View_EmailDetail');
 
 		$email_detail->setModel($email_model);

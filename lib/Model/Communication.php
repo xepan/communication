@@ -59,7 +59,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addExpression('image')->set($this->refSQL('from_id')->fieldQuery('image'));
 		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->count());
 
-		$this->addHook('afterSave',[$this,'throwHookNotification']);
+		$this->addHook('afterInsert',[$this,'throwHookNotification']);
 		$this->addHook('beforeDelete',[$this,'deleteAttachments']);
 
 		$this->is([
@@ -68,8 +68,11 @@ class Model_Communication extends \xepan\base\Model_Table{
 		
 	}
 
-	function throwHookNotification($model){
-		$this->app->hook('communication_created',[$model]);
+	function throwHookNotification($model,$new_id){		
+		$communication = $this->add('xepan\communication\Model_Communication');
+		$communication->load($new_id);
+
+		$this->app->hook('communication_created',[$communication]);
 	}
 
 	function deleteAttachments(){
