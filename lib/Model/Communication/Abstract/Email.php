@@ -187,6 +187,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			
 			$mail = new \Nette\Mail\Message;
 			$mail->setFrom($this['from_raw']['email'],$this['from_raw']['name']?:null);
+
+			$return_path = $email_setting['return_path'];
+			if(!$return_path) $return_path = $this['from_raw']['email'];
+
+			$mail->setReturnPath($return_path);
 			
 			foreach ($this['to_raw'] as $to) {
 			    $mail->addTo(trim($to['email']),$to['name']?:null);
