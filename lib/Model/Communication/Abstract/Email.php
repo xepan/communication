@@ -58,7 +58,6 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			$m['cc_raw'] = json_decode($m['cc_raw'],true);
 			$m['bcc_raw'] = json_decode($m['bcc_raw'],true);
 			$m['title'] = $m['subject'] = $m['title']?:'(no subject)';
-			$m['extra_info'] = json_decode($m['extra_info'],true);
 			
 			$description=json_decode($m['description'],true);
 			$m['body'] = $m['description'];
@@ -75,7 +74,6 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 				$m['bcc_raw'] = json_encode($m['bcc_raw']);
 			$m['title'] = $m['title']?:("(no subject)");
 			
-			$m['extra_info'] = json_encode($m['extra_info']);
 		});
 
 		$this->getElement('status')->defaultValue('Draft');

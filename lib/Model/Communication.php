@@ -48,7 +48,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('is_starred')->type('boolean')->defaultValue(false);
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
-		$this->addField('extra_info')->defaultValue(["{}"]);
+		$this->addField('extra_info')->defaultValue([]);
 		
 		$this->addField('type');
  
@@ -61,6 +61,14 @@ class Model_Communication extends \xepan\base\Model_Table{
 
 		$this->addHook('afterInsert',[$this,'throwHookNotification']);
 		$this->addHook('beforeDelete',[$this,'deleteAttachments']);
+		
+		$this->addhook('beforeSave',function($m){
+			$m['extra_info'] = json_encode($m['extra_info']);
+		});
+		
+		$this->addhook('afterLoad',function($m){
+			$m['extra_info'] = json_decode($m['extra_info'],true);
+		});
 
 		$this->is([
 				'direction|required'
