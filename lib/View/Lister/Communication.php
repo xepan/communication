@@ -30,7 +30,7 @@ class View_Lister_Communication extends \CompleteLister{
 
 					$form->process();
 					$this->app->db->commit();
-					$form->js(null,$self->js()->reload())->univ()->successMessage('Done')->execute();
+					$form->js(null,$self->js()->reload())->univ()->successMessage('Done')->closeDialog()->closeDialog()->execute();
 			}
 		});	
 			
