@@ -4,11 +4,11 @@ class View_CommunicationViewer extends \View{
 	function init(){
 		parent::init();
 
-		$telemarketing = $this->add('xepan/communication/Model_Communication')->addCondition('communication_type','TeleCommunication');
-		$grid = $this->add('Grid');
-		$grid->setModel($telemarketing);
-
-
+		$id = $_GET['comm_id'];
+		$communication_model = $this->add('xepan\communication\Model_Communication');
+		$grid = $this->add('View',null,null,['view/communication/viewer']);
+		$grid->setModel($communication_model->load($id));
+		$grid->template->trySetHtml('detail',$communication_model['description']);
 	}
 	
 }
