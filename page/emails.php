@@ -35,8 +35,27 @@ class page_emails extends \xepan\base\Page{
 		$email_model->addCondition('mailbox','like',$mail.'%');
 		$email_model->setOrder('created_at','desc');
 
+		$form = $email_view->add('form',null,'search_form',['form\empty']);
+		$search_field = $form->addField('search');
+		$search_field->setAttr('placeholder','Search');
+
+		if($form->isSubmitted()){
+			$email_view->js()->reload(['search'=>$form['search']])->execute();
+		}
+
+		if($_GET['search']){
+			$email_model->addExpression('Relevance')->set('MATCH(title,description,communication_type) AGAINST ("'.$_GET["search"].'")');
+			$email_model->addCondition('Relevance','>',0);
+ 			$email_model->setOrder('Relevance','Desc');
+		}
+
+		if(!$email_model->count()->getOne()){
+			$email_view->template->trySet('message','No E-mail History Found');
+		}
+
 		$mailboxes_view = $this->add('xepan\communication\View_EmailNavigation',null,'email_navigation');
 		$mailboxes_view->js(true)->find('[data-mailbox="'.$mailbox.'"]')->closest('li')->addClass('active');
+		
 		
 		$email_view->setModel($email_model);
 		$paginator = $email_view->add('xepan\base\Paginator',null,'paginator');

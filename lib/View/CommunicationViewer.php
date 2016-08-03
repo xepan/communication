@@ -10,5 +10,4 @@ class View_CommunicationViewer extends \View{
 		$grid->setModel($communication_model->load($id));
 		$grid->template->trySetHtml('detail',$communication_model['description']);
 	}
-	
 }

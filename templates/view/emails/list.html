@@ -22,8 +22,11 @@
         </div>
       </div>
       <div id="email-header-pagination" class="pull-right">
-        <div class="pull-right xepan-push">{$paginator}</div>
+        <div class="pull-right xepan-push">{$paginator}</div>{$search_form}
       </div>
+      <div class="col-md-4"></div>
+      <div class="col-md-4">{$message}</div>
+      <div class="col-md-4">       </div>
     </header>
     <ul id="email-list">{rows}{row}
       <li data-id="{$id}" class="clickable-row {$unread}">
