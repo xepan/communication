@@ -180,58 +180,57 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['description'] = $this['description'].$email_setting['signature'];
 		if(!$this['to_id']) $this->findContact('to');
 		
-		try{
-			
-			$mail = new \Nette\Mail\Message;
-			$mail->setFrom($this['from_raw']['email'],$this['from_raw']['name']?:null);
+		if(!$this->app->getConfig('test_mode',false)){
+			try{
+				$mail = new \Nette\Mail\Message;
+				$mail->setFrom($this['from_raw']['email'],$this['from_raw']['name']?:null);
 
-			$return_path = $email_setting['return_path'];
-			if(!$return_path) $return_path = $this['from_raw']['email'];
+				$return_path = $email_setting['return_path'];
+				if(!$return_path) $return_path = $this['from_raw']['email'];
 
-			$mail->setReturnPath($return_path);
-			
-			foreach ($this['to_raw'] as $to) {
-			    $mail->addTo(trim($to['email']),$to['name']?:null);
-			}
-
-			if($this['cc_raw'])
-				foreach ($this['cc_raw'] as $cc) {
-				    $mail->addCC(trim($cc['email']),$cc['name']?:null);
+				$mail->setReturnPath($return_path);
+				
+				foreach ($this['to_raw'] as $to) {
+				    $mail->addTo(trim($to['email']),$to['name']?:null);
 				}
 
-			if($this['bcc_raw'])
-				foreach ($this['bcc_raw'] as $bcc) {
-				    $mail->addBcc(trim($bcc['email']),$bcc['name']?:null);
+				if($this['cc_raw'])
+					foreach ($this['cc_raw'] as $cc) {
+					    $mail->addCC(trim($cc['email']),$cc['name']?:null);
+					}
+
+				if($this['bcc_raw'])
+					foreach ($this['bcc_raw'] as $bcc) {
+					    $mail->addBcc(trim($bcc['email']),$bcc['name']?:null);
+					}
+					
+				foreach ($this->getAttachments() as $attach) {
+					$mail->addAttachment($_SERVER["DOCUMENT_ROOT"].$attach);				
 				}
-				
-			foreach ($this->getAttachments() as $attach) {
-				$mail->addAttachment($_SERVER["DOCUMENT_ROOT"].$attach);				
-			}
-				
-			$mail->setSubject($this['title'])
-			    ->setHTMLBody($this['description'],$this->app->pathfinder->base_location->base_path);
+					
+				$mail->setSubject($this['title'])
+				    ->setHTMLBody($this['description'],$this->app->pathfinder->base_location->base_path);
 
-			if(!$mailer){
-				$mailer = new \Nette\Mail\SmtpMailer(array(
-			        'host' => $email_setting['email_host'],
-			        'username' => $email_setting['email_username'],
-			        'password' => $email_setting['email_password'],
-			        'secure' => $email_setting['encryption'],
-			        'persistent'=>true
-				));
-			}
-
-			if(!$this->app->getConfig('test_mode',false)){
+				if(!$mailer){
+					$mailer = new \Nette\Mail\SmtpMailer(array(
+				        'host' => $email_setting['email_host'],
+				        'username' => $email_setting['email_username'],
+				        'password' => $email_setting['email_password'],
+				        'secure' => $email_setting['encryption'],
+				        'persistent'=>true
+					));
+				}
 				$mailer->send($mail);
-			}
 
-			$email_setting['last_emailed_at'] = $this->app->now;
-			$email_setting->save();
+				$email_setting['last_emailed_at'] = $this->app->now;
+				$email_setting->save();
 
-		}catch(\Exception $e){
-			$this->save();
-			throw $e;
+			}catch(\Exception $e){
+				$this->save();
+				throw $e;
+			}	
 		}
+
 		$this['status']='Sent';
 		$this->save();
 	}	
