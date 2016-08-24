@@ -38,7 +38,7 @@ class Initiator extends \Controller_Addon {
 
 		$this->app->addHook('cron_executor',function($app){
 			$now = \DateTime::createFromFormat('Y-m-d H:i:s', $this->app->now);
-			echo "Email Fetch";
+			echo "Email Fetch <br/>";
 			var_dump($now);
 			$job1 = new \Cron\Job\ShellJob();
 			$job1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
