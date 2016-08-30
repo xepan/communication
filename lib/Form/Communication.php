@@ -180,8 +180,8 @@ class Form_Communication extends \Form {
 			case 'Comment':
 				$_from = $this->app->employee->id;
 				$_from_name = $this->app->employee['name'];
-				$_to = $model_contact->id;
-				$_to_name = $model_contact['name'];
+				$_to = $this->contact->id;
+				$_to_name = $this->contact['name'];
 				$_to_field=null;
 				$communication->addTo($_to, $_to_name);
 				$communication->setFrom($_from,$_from_name);
@@ -215,10 +215,16 @@ class Form_Communication extends \Form {
 			}
 		}
 
-		$communication->send(
-				$send_settings,
-				$this['notify_email']?$this['notify_email_to']:''
-				);
+		if(isset($send_settings)){
+			$communication->send(
+					$send_settings,
+					$this['notify_email']?$this['notify_email_to']:''
+					);			
+		}else{
+			$communication['direction']='Out';
+			$communication->save();
+		}
+
 
 		return $communication;
     }
