@@ -74,4 +74,12 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		
 		$this->hasMany('xepan\hr\Post_Email_Association','emailsetting_id',null,'EmailAssociation');
 	}
+
+	function isUsable(){
+		return true;
+	}
+
+	function loadNextMassEmail(){
+
+	}
 }
