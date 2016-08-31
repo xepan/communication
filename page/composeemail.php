@@ -149,12 +149,13 @@ class page_composeemail extends \xepan\base\Page{
 										// ->setFormatFilesTemplate('xepan\base\Upload');
 
 		$multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
-		$multi_upload_field->setModel('filestore/Image');
+		$multi_upload_field->setModel('xepan\filestore\Image');
 		
 		$save_btn=$form->addSubmit('Save As Draft')->addClass('btn btn-primary');
 
 		$form->onSubmit(function($f)use($save_btn){
-			
+			// throw new \Exception(print_r($this->app->employee->id), 1);
+									
 			$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($f['email_username']);
 			$mail = $this->add('xepan\communication\Model_Communication_Email');
 			$mail['direction']='Out';
