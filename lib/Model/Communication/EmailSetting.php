@@ -25,6 +25,7 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$this->hasOne('xepan\base\Epan','epan_id');
 		$this->addField('name');
 		$this->addField('email_transport')->setValueList(array('SmtpTransport'=>'SMTP','SendmailTransport'=>'SendMail','MailTransport'=>'PHP Mail function'))->defaultValue('SmtpTransport')->display(['form'=>'xepan\base\DropDown']);
+		$this->addField('is_active')->type('boolean')->defaultValue(false);
 		$this->addField('is_support_email')->type('boolean')->defaultValue(false);
 
 		$this->addField('encryption')->enum(array('none','ssl','tls'))->mandatory(true);
@@ -55,6 +56,7 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 		$this->addField('smtp_auto_reconnect')->type('int')/*->hint('Auto Reconnect by n number of emails')*/;
 		$this->addField('email_threshold')->type('int')/*->hint('Threshold To send emails with this Email Configuration PER MINUTE')*/;
+		$this->addField('email_threshold_per_month')->type('int');
 
 		$this->addField('emails_in_BCC')->type('int')/*->hint('Emails to be sent by bunch of Bcc emails, to will be used same as From, 0 to send each email in to field')*/->defaultValue(0);
 		$this->addField('last_emailed_at')->type('datetime')->system(true);
@@ -73,5 +75,13 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$this->addField('mass_mail')->caption('Use For Mass Mailing')->type('boolean');
 		
 		$this->hasMany('xepan\hr\Post_Email_Association','emailsetting_id',null,'EmailAssociation');
+	}
+
+	function isUsable(){
+		return true;
+	}
+
+	function loadNextMassEmail(){
+
 	}
 }
