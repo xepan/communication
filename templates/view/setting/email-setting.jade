@@ -43,16 +43,20 @@
 						h3 Email Transport:
 						.row
 							.col-lg-12  
-								.col-lg-4.xepan-push
+								.col-lg-3.xepan-push
 									strong Email Transport:
 									div {$email_transport}
-								.col-lg-4.xepan-push
+								.col-lg-3.xepan-push
 									strong Name:
 									div {$name}
-								.col-lg-4
+								.col-lg-3
 									.row
 									.xepan-push
 									cite {$is_support_email}
+								.col-lg-3
+									.row
+									.xepan-push
+									cite {$is_active}
 
 				.row.xepan-push(style="margin:auto!important")
 					.col-lg-12  
@@ -148,19 +152,23 @@
 						.row
 							.col-lg-12.atk-push
 								.row
-									.col-lg-3
+									.col-lg-2
 										label
 										strong SMTP Auto Re Connect:
 										div {$smtp_auto_reconnect}
 									.col-lg-3 
 										label
-										strong Email Threshold:
+										strong Email Threshold (Per Minute):
 										div {$email_threshold}
-									.col-lg-3 
+									.col-lg-3
+										label
+										strong Email Threshold (Per Month):
+										div {$email_threshold_per_month}
+									.col-lg-2
 										label
 										strong Email BCC:
 										div {$emails_in_BCC}
-									.col-lg-3
+									.col-lg-2
 										.row
 										.xepan-push
 										cite {$mass_mail}	
