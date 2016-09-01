@@ -35,7 +35,7 @@ class page_emails extends \xepan\base\Page{
 		$email_model->addCondition('mailbox','like',$mail.'%');
 		$email_model->setOrder('created_at','desc');
 
-		$form = $email_view->add('form',null,'search_form',['form\empty']);
+		$form = $email_view->add('Form',null,'search_form',['form\empty']);
 		$search_field = $form->addField('search');
 		$search_field->setAttr('placeholder','Search');
 

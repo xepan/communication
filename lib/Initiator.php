@@ -45,6 +45,8 @@ class Initiator extends \Controller_Addon {
 			if(!$job1->getSchedule() || $job1->getSchedule()->valid($now)){
 				echo " Executing email fetching <br/>";
 				$this->add('xepan\communication\Controller_Cron');
+				$this->add('xepan\communication\Controller_BounceEmailCheck');
+				
 			}
 		});
 
