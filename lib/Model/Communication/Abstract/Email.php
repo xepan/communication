@@ -179,6 +179,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
 		$this['description'] = $this['description'].$email_setting['signature'];
 		if(!$this['to_id']) $this->findContact('to');
+		$this['communication_channel_id'] = $email_setting->id;
 		
 		if(!$this->app->getConfig('test_mode',false)){
 			try{
@@ -223,6 +224,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 				$mailer->send($mail);
 
 				$email_setting['last_emailed_at'] = $this->app->now;
+				$email_setting['email_sent_in_this_minute'] = $email_setting['email_sent_in_this_minute'] + 1;
 				$email_setting->save();
 
 			}catch(\Exception $e){

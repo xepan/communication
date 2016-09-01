@@ -78,10 +78,45 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 	}
 
 	function isUsable(){
-		return true;
+		// emails sent in this minute is under limit
+		$this_minute_ok=false;
+		$this_month_ok=false;
+
+		$in_same_minute=false;
+		if(date('Y-m-d H:i:00',strtotime($this['last_emailed_at'])) == date('Y-m-d H:i:00',strtotime($this->app->now)))
+			$in_same_minute= true;
+		if(!$in_same_minute) {
+			$this['email_sent_in_this_minute']=0;
+			$this->save();
+			$this_minute_ok = true;
+		}
+		// emails sent in this month is under limit
+		$month_emails_count = $this->add('xepan\communication\Model_Communication')
+			->addCondition('communication_channel_id',$this->id)
+			->addCondition('created_at','>=',date('Y-m-01',strtotime($this->app->now)))
+			->addCondition('created_at','<',$this->app->nextDate(date('Y-m-t',strtotime($this->app->now))))
+			->count();
+
+		if($month_emails_count < $this['email_threshold_per_month'])
+			$this_month_ok = true;
+
+		if($this_month_ok==true && $this_month_ok==true)
+			return true;
+
+		return false;
 	}
 
 	function loadNextMassEmail(){
+		$other_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')
+								->addCondition('mass_mail',true)
+								->addCondition('is_active',true)
+								->addCondition('id','<>',$this->id)
+								;
 
+		foreach ($other_settings as $settings) {
+			if($settings->isUsable()){
+				return $this->load($settings->id);
+			}
+		}
 	}
 }
