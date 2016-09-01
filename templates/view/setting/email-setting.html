@@ -32,16 +32,21 @@
             <h3>Email Transport:</h3>
             <div class="row">
               <div class="col-lg-12"> 
-                <div class="col-lg-4 xepan-push"><strong>Email Transport:</strong>
+                <div class="col-lg-3 xepan-push"><strong>Email Transport:</strong>
                   <div>{$email_transport}</div>
                 </div>
-                <div class="col-lg-4 xepan-push"><strong>Name:</strong>
+                <div class="col-lg-3 xepan-push"><strong>Name:</strong>
                   <div>{$name}</div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <div class="row"></div>
                   <div class="xepan-push"></div>
                   <cite>{$is_support_email}</cite>
+                </div>
+                <div class="col-lg-3">
+                  <div class="row"></div>
+                  <div class="xepan-push"></div>
+                  <cite>{$is_active}</cite>
                 </div>
               </div>
             </div>
@@ -168,15 +173,19 @@
                     <label></label><strong>SMTP Auto Re Connect:</strong>
                     <div>{$smtp_auto_reconnect}</div>
                   </div>
-                  <div class="col-lg-3"> 
-                    <label></label><strong>Email Threshold:</strong>
+                  <div class="col-lg-2"> 
+                    <label></label><strong>Email Threshold (Per Minute):</strong>
                     <div>{$email_threshold}</div>
+                  </div>
+                  <div class="col-lg-2">
+                    <label></label><strong>Email Threshold (Per Minute):</strong>
+                    <div>{$email_threshold_per_month}</div>
                   </div>
                   <div class="col-lg-3"> 
                     <label></label><strong>Email BCC:</strong>
                     <div>{$emails_in_BCC}</div>
                   </div>
-                  <div class="col-lg-3">
+                  <div class="col-lg-2">
                     <div class="row"></div>
                     <div class="xepan-push"></div>
                     <cite>{$mass_mail}	</cite>

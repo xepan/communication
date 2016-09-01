@@ -12,7 +12,7 @@ class page_general_email extends \Page{
 
 		$email_view->setIdField('emailsetting_id');
 		$email_view->setModel($email_setting,[
-												'email_transport','name','is_support_email','encryption',
+												'email_transport','name','is_active','is_support_email','encryption',
 												'email_host','email_port',
 												'email_username','email_password',
 												'email_reply_to','email_reply_to_name',
@@ -20,7 +20,7 @@ class page_general_email extends \Page{
 												'sender_name','imap_email_host',
 												'imap_email_port','imap_email_username',
 												'imap_email_password','is_imap_enabled','imap_flags',
-												'smtp_auto_reconnect','email_threshold',
+												'smtp_auto_reconnect','email_threshold','email_threshold_per_month',
 												'emails_in_BCC','mass_mail','bounce_imap_email_host',
 												'bounce_imap_email_port','return_path',
 												'bounce_imap_email_password',
@@ -28,7 +28,7 @@ class page_general_email extends \Page{
 												'email_body','signature'
 											],
 											[
-												'email_transport','name','is_support_email','encryption',
+												'email_transport','name','is_active','is_support_email','encryption',
 												'email_host','email_port',
 												'email_username','email_password',
 												'email_reply_to','email_reply_to_name',
@@ -36,7 +36,7 @@ class page_general_email extends \Page{
 												'sender_name','imap_email_host',
 												'imap_email_port','imap_email_username',
 												'imap_email_password','is_imap_enabled','imap_flags',
-												'smtp_auto_reconnect','email_threshold',
+												'smtp_auto_reconnect','email_threshold','email_threshold_per_month',
 												'emails_in_BCC','mass_mail','bounce_imap_email_host',
 												'bounce_imap_email_port','return_path',
 												'bounce_imap_email_password',
