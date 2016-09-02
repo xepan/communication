@@ -55,11 +55,12 @@ class Controller_ReadEmail extends \AbstractController {
 		$imap_email_password = $this->email_setting['imap_email_password']; 
 		$imap_flags = $this->email_setting['imap_flags'];
 
-		$mailbox = new ImapMailbox('{'.$imap_email_host.':'.$imap_email_port.$imap_flags.'}'.$mailbox_name, $imap_email_username, $imap_email_password, "websites/".$this->app->epan['name']."/upload", 'utf-8');
-		
-		$return=[];
 
 		try{
+			$mailbox = new ImapMailbox('{'.$imap_email_host.':'.$imap_email_port.$imap_flags.'}'.$mailbox_name, $imap_email_username, $imap_email_password, "websites/".$this->app->epan['name']."/upload", 'utf-8');
+			
+			$return=[];
+			
 			$conditions = $conditions?:'UNSEEN';
 			$mailsIds = $mailbox->searchMailBox($conditions);
 
