@@ -11,7 +11,7 @@ class Controller_BounceEmailCheck extends \AbstractController  {
 		set_time_limit(0);
 
 		$cwsMailBounceHandler = new CwsMailBounceHandler();
-		$cwsMailBounceHandler->test_mode = true; // default false
+		$cwsMailBounceHandler->test_mode = false; // default false
 		// $cwsMailBounceHandler->debug_verbose = CWSMBH_VERBOSE_DEBUG; // default CWSMBH_VERBOSE_QUIET
 		$cwsMailBounceHandler->purge = true; // default false
 		//$cwsMailBounceHandler->disable_delete = false; // default false
