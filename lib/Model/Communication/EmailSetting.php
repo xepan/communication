@@ -96,7 +96,10 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 			$this['email_sent_in_this_minute']=0;
 			$this->save();
 			$this_minute_ok = true;
+		}elseif($this['email_sent_in_this_minute'] < $this['email_threshold']){
+			$this_minute_ok = true;
 		}
+		
 		// emails sent in this month is under limit
 		$month_emails_count = $this->add('xepan\communication\Model_Communication')
 			->addCondition('communication_channel_id',$this->id)
