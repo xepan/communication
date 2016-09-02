@@ -46,7 +46,7 @@ class Controller_BounceEmailCheck extends \AbstractController  {
 		*/
 
 		$emails_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
-
+		$emails_setting->addCondition('is_active',ture);
 		$invalid_email = [];
 		foreach ($emails_setting as  $setting) {
 			// echo "string".$setting['name'];

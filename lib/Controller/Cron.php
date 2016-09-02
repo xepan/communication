@@ -9,6 +9,7 @@ class Controller_Cron extends \AbstractController {
 
 		$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')
 						->addCondition('is_imap_enabled',true);
+						->addCondition('is_active',true);
 
 		foreach ($email_settings as $email_setting) {
 			$cont = $this->add('xepan\communication\Controller_ReadEmail',['email_setting'=>$email_setting]);
