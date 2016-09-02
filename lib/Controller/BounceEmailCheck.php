@@ -45,10 +45,14 @@ class Controller_BounceEmailCheck extends \AbstractController  {
 		* Remote mailbox
 		*/
 
+		$mail_box_checked=[];
+
 		$emails_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
 		$emails_setting->addCondition('is_active',true);
 		$invalid_email = [];
 		foreach ($emails_setting as  $setting) {
+			if(in_array($setting['bounce_imap_email_host'], $mail_box_checked)) continue;
+			$mail_box_checked[] = $setting['bounce_imap_email_host'];
 			// echo "string".$setting['name'];
 			$cwsMailBounceHandler->open_mode = CWSMBH_OPEN_MODE_IMAP;
 			$cwsMailBounceHandler->host = $setting['bounce_imap_email_host']; // Mail host server ; default 'localhost'
