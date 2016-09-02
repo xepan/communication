@@ -79,12 +79,19 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 	function isUsable(){
 		// emails sent in this minute is under limit
+		// echo "Testing ". $this['name']. '<br/>';
+		// echo "Last Email at " . $this['last_emailed_at'] .'<br/>';
+
+		// echo 'date("Y-m-d H:i:00",strtotime($this["last_emailed_at"])) = ' .date('Y-m-d H:i:00',strtotime($this['last_emailed_at'])) . '<br/>';
+		// echo 'date("Y-m-d H:i:00",strtotime($this->app->now)) = ' . date('Y-m-d H:i:00',strtotime($this->app->now)) . '<br/>';
+
 		$this_minute_ok=false;
 		$this_month_ok=false;
 
 		$in_same_minute=false;
 		if(date('Y-m-d H:i:00',strtotime($this['last_emailed_at'])) == date('Y-m-d H:i:00',strtotime($this->app->now)))
 			$in_same_minute= true;
+		
 		if(!$in_same_minute) {
 			$this['email_sent_in_this_minute']=0;
 			$this->save();
@@ -100,9 +107,12 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		if($month_emails_count < $this['email_threshold_per_month'])
 			$this_month_ok = true;
 
-		if($this_month_ok==true && $this_month_ok==true)
+		if($this_minute_ok==true && $this_month_ok==true){
+			// echo "found it usable<br/>";
 			return true;
+		}
 
+		// echo "found it un-usable<br/>";
 		return false;
 	}
 
@@ -118,5 +128,8 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 				return $this->load($settings->id);
 			}
 		}
+
+		// echo "-- Did not foind any next mass email setting <br/>";
+		return false;
 	}
 }

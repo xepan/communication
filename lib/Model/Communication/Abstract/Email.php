@@ -181,7 +181,7 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		if(!$this['to_id']) $this->findContact('to');
 		$this['communication_channel_id'] = $email_setting->id;
 		
-		if(!$this->app->getConfig('test_mode',false)){
+		if(!$this->app->getConfig('test_mode',false)){			
 			try{
 				$mail = new \Nette\Mail\Message;
 				$mail->setFrom($this['from_raw']['email'],$this['from_raw']['name']?:null);
@@ -231,6 +231,13 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 				$this->save();
 				throw $e;
 			}	
+		}
+
+		if($this->app->getConfig('test_mode',false)){
+			// echo "setting last_emailed_at on ". $email_setting['name']. ' as '. $this->app->now . '<br/>';
+			$email_setting['last_emailed_at'] = $this->app->now;
+			$email_setting['email_sent_in_this_minute'] = $email_setting['email_sent_in_this_minute'] + 1;
+			$email_setting->save();
 		}
 
 		$this['status']='Sent';
