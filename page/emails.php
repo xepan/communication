@@ -15,12 +15,38 @@ class page_emails extends \xepan\base\Page{
 				->delete();
 			}
 		}
-		if($_GET['mark_unread']){
-			foreach ($_GET['mark_unread'] as $mark_email) {
+		if($_GET['mark_read']){
+			foreach ($_GET['mark_read'] as $mark_read_email) {
 				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
-				->load($mark_email);
+				->load($mark_read_email);
 				$mark['extra_info']=['seen_by'=>$this->app->employee->id];
 				$mark->save();
+			}
+		}
+		if($_GET['mark_unread']){
+			foreach ($_GET['mark_unread'] as $mark_unread_email) {
+				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
+				->load($mark_unread_email);
+				$mark['extra_info']='{}';
+				$mark->save();
+			}
+		}
+
+		if($_GET['mark_spam_emails']){
+			foreach ($_GET['mark_spam_emails'] as $spam_email) {
+				$spam_m = $this->add('xepan\communication\Model_Communication_Abstract_Email')
+					->load($spam_email);
+				$spam_m['status'] = "Junk";
+				$spam_m->save();	
+			}
+		}
+
+		if($_GET['mark_not_spam_emails']){
+			foreach ($_GET['mark_not_spam_emails'] as $unSpam_email) {
+				$spam_m = $this->add('xepan\communication\Model_Communication_Abstract_Email')
+					->load($unSpam_email);
+				$spam_m['status'] = "Received";
+				$spam_m->save();	
 			}
 		}
 
@@ -152,6 +178,7 @@ class page_emails extends \xepan\base\Page{
 			return $js_array;
 		});
 
+
 		$email_view->js('click',"$(':checkbox').each(function () { this.checked = true; });")->_selector('.all-select');
 		$email_view->js('click',"$(':checkbox').each(function () { this.checked = false; });")->_selector('.select-none');
 		$email_view->js('click',"$(':checkbox').each(function () { if(!$(this).closest('.clickable-row').hasClass('unread')) this.checked = true; else this.checked = false; });")->_selector('.select-read');
@@ -169,6 +196,8 @@ class page_emails extends \xepan\base\Page{
 			$.ajax("",{data: {delete_emails:selected_emails}});
 			')->_selector('.do-delete');
 
+		/*---------------Mark As Read Email------------ */
+
 		$email_view->js('click','
 			var selected_mark_emails=[];
 			$("#email-list :checkbox").each(function (){
@@ -177,8 +206,48 @@ class page_emails extends \xepan\base\Page{
 					$(this).closest("li").removeClass("unread");
 				}
 			});
-			$.ajax("",{data: {mark_unread: selected_mark_emails}});
+			$.ajax("",{data: {mark_read: selected_mark_emails}});
 			')->_selector('.mark-allread');
+		
+		/*----------------Mark As UnRead Emails-----------*/
+
+		$email_view->js('click','
+			var selected_mark_unread_emails=[];
+			$("#email-list :checkbox").each(function (){
+				if(this.checked){
+					selected_mark_unread_emails.push($(this).data("id"));
+					$(this).closest("li").addClass("unread");
+				}
+			});
+			$.ajax("",{data: {mark_unread: selected_mark_unread_emails}});
+			')->_selector('.do-unread');
+
+		/*------------Mark As Spam / Junk Emails----------*/
+
+		$email_view->js('click','
+			var selected_mark_spam_emails=[];
+			$("#email-list :checkbox").each(function () { 
+				if(this.checked) {
+					selected_mark_spam_emails.push($(this).data("id"));
+					$(this).closest("li").hide();
+				}
+			});
+			$.ajax("",{data: {mark_spam_emails:selected_mark_spam_emails}});
+			')->_selector('.do-spam');
+		
+
+		/*------------Mark As Not Spam / Junk Emails----------*/
+
+		$email_view->js('click','
+			var selected_mark_not_spam_emails=[];
+			$("#email-list :checkbox").each(function () { 
+				if(this.checked) {
+					selected_mark_not_spam_emails.push($(this).data("id"));
+					$(this).closest("li").hide();
+				}
+			});
+			$.ajax("",{data: {mark_not_spam_emails:selected_mark_not_spam_emails}});
+			')->_selector('.do-notspam');
 
 
 		$email_view->on('click','button.fetch-refresh',function($js,$data){
