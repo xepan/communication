@@ -24,6 +24,8 @@ class page_emails extends \xepan\base\Page{
 			}
 		}
 
+		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
+
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 
 		$mail = $email_view->recall('mail')?:'%';
@@ -32,7 +34,22 @@ class page_emails extends \xepan\base\Page{
 
 		$email_model=$this->add('xepan\communication\Model_Communication_Email'.$mailbox);
 
-		$email_model->addCondition('mailbox','like',$mail.'%');
+		// throw new \Exception($mail);
+		$my_email->addExpression('post_email')->set(function($m,$q){
+			return $q->getField('email_username');
+		});
+
+		// $mail = "management@xavoc.com";
+		$or = $email_model->dsql()->orExpr();
+		if($mail === "%"){
+			foreach ($my_email as $email) {
+				$or->where('mailbox','like',$email['post_email'].'%');
+			}
+		}else
+			$or->where('mailbox','like',$mail.'%');
+
+		$email_model->addCondition($or);
+		// $email_model->addCondition('mailbox','like',$mail.'%');
 		$email_model->setOrder('created_at','desc');
 
 		$form = $email_view->add('Form',null,'search_form',['form\empty']);
@@ -61,7 +78,6 @@ class page_emails extends \xepan\base\Page{
 		$paginator = $email_view->add('xepan\base\Paginator',null,'paginator');
 		$paginator->setRowsPerPage(50);
 		
-		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
 		$label_view=$this->add('xepan\communication\View_Lister_EmailLabel',null,'email_labels');
 		$label_view->setModel($my_email);
 		$label_view->js(true)->find('[data-mail="'.$mail.'"]')->addClass('fa fa-check-square');
