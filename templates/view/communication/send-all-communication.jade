@@ -1,0 +1,53 @@
+div(id="{$_name}" class="{$class}")
+	.main-box
+		.main-box-body.clearfix
+			.main-box
+				.main-box-body.clearfix
+				form.form-group   
+					.row.xepan-push
+						.col-lg-6
+							{$from_date}
+						.col-lg-6
+							{$to_date}
+						
+					.row.xepan-push
+						.col-lg-12
+							|To :
+							.atk-form-row.atk-form-field{$to}
+					.row.xepan-push
+						.col-lg-12
+							|Cc:-
+							.atk-form-row.atk-form-field{$cc}
+					.row.xepan-push
+						.col-lg-12
+							| Bcc:-
+							.atk-form-row.atk-form-field{$bcc}
+					.row.xepan-push
+						.col-lg-12
+							|Subject:-
+							.atk-form-row.atk-form-field{$subject}
+					.row.xepan-push
+						.col-lg-12
+							| Description:-
+							.atk-form-row.atk-form-field{$body}
+
+					.row.xepan-push
+						.col-lg-12
+							{$signature}
+					.row.xepan-push
+						.col-lg-12
+							| Form Email:-
+							.atk-form-row.atk-form-field{$from_email}
+					.row.xepan-push
+						.col-lg-12
+							.col-md-2.col-lg-2 Send Attachments
+							.col-md-10.col-lg-10
+								.row
+									i.fa.fa-check-square-o.xepan-padding-horizontal-small
+									strong|Document Attached as PDF
+								.atk-form-row.atk-form-field{$Content}
+				.xepan-push-large
+				.atk-align-center.h-lines
+						span.h-lines-wrap
+						a.atk-swatch-tomato.atk-button-large.atk-col-5.w-shadow.action-large
+							{$FormButtons}
