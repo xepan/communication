@@ -27,6 +27,10 @@ class View_EmailNavigation extends \View{
 		$starred_count=$starred->count()->getOne();
 		$this->template->trySet('starred_count',$starred_count);
 		
+		$junk=$this->add('xepan\communication\Model_Communication_Email_Junk');
+		$junk_count=$junk->count()->getOne();
+		$this->template->trySet('junk_count',$junk_count);
+
 		$trashed=$this->add('xepan\communication\Model_Communication_Email_Trashed');
 		$trashed_count=$trashed->count()->getOne();
 		$this->template->trySet('trash_count',$trashed_count);
