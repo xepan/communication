@@ -51,7 +51,7 @@ class page_contactcommunications extends \xepan\base\Page{
 		
 		
 		if($f->isSubmitted()){
-			$v=$this->add('xepan\communication\View_Lister_ContactCommunications');
+			$v=$this->add('xepan\communication\View_Lister_ContactCommunications',['contact_id'=>$this->contact_id]);
 			$v->setModel($communication);
 			$js=[
 				$f->js()->reload(
@@ -65,7 +65,7 @@ class page_contactcommunications extends \xepan\base\Page{
 
 			$v->generatePDF('return',$v);
 			$v->send($f['from_email'],$f['to'],$f['cc'],$f['bcc'],$f['subject'],$f['body'],$v);
-			$f->js(null,$js)->univ()->successMessage('Email Send SuccessFully');
+			return $f->js(null,$js)->univ()->successMessage('Email Send SuccessFully');
 		}
 
 			

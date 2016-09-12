@@ -3,10 +3,18 @@
 namespace xepan\communication;
 
 class View_Lister_ContactCommunications extends \CompleteLister{
-	
+	public $contact_id;
 	function init(){
 		parent::init();
-		$this->contact_id = $this->app->stickyGET('contact_id');
+		// throw new \Exception($contact['name'], 1);
+	}
+	function setModel($model){
+		$contact=$this->add('xepan\base\Model_Contact')
+		->load($this->contact_id);
+
+		$this->template->trySet('contact',$contact['name'] ." Communications");
+		
+		parent::setModel($model);
 	}
 
 	function formatRow(){
