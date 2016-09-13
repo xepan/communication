@@ -40,7 +40,6 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('communication_type');
 
 		$this->addField('related_id'); // Can be used anywhere as per requirement
-		$this->addField('related_2_id'); // Can be used anywhere as per requirement
 		
 		$this->addField('sent_on')->type('date'); // Can be used anywhere as per requirement
 		
