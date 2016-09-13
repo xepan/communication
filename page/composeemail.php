@@ -148,8 +148,9 @@ class page_composeemail extends \xepan\base\Page{
 									// ->display(['form'=>'xepan\base\Upload'])
 										// ->setFormatFilesTemplate('xepan\base\Upload');
 
-		$multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
-		$multi_upload_field->setModel('xepan\filestore\Image');
+		// $multi_upload_field->setAttr('accept','.jpeg,.png,.jpg');
+		$filestore_image=$this->add('xepan\filestore\Model_File',['policy_add_new_type'=>true]);
+		$multi_upload_field->setModel($filestore_image);
 		
 		$save_btn=$form->addSubmit('Save As Draft')->addClass('btn btn-primary');
 
