@@ -39,7 +39,7 @@ class page_composeemail extends \xepan\base\Page{
 			$to_field->set($emails_to['email']);
 
 			$this->subject="Re: ".$replay_model['title'];
-			$this->message="<br/><br/><br/><br/>".$replay_model['description'];
+			$this->message="<br/><br/><br/><br/><blockquote>".$replay_model['description']."<blockquote>";
 		}
 
 		if($replay_email_all){
@@ -65,12 +65,12 @@ class page_composeemail extends \xepan\base\Page{
 			$bcc_field->set($emails_bcc);
 
 			$this->subject="Re: ".$replay_model['title'];
-			$this->message="<br/><br/><br/><br/>".$replay_model['description'];
+			$this->message="<br/><br/><br/><br/><blockquote>".$replay_model['description']."<blockquote>";
 		}
 
 		if($fwd_email){
 			$this->subject="Fwd: ".$replay_model['title'];
-			$this->message="<br/><br/><br/><br/> ---------- Forwarded message ----------".$replay_model['description'];
+			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$replay_model['description']."<.blockquote>";
 		}
 
 		// Reply/Compose Based on contact
