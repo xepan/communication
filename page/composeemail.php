@@ -4,11 +4,14 @@ namespace xepan\communication;
 class page_composeemail extends \xepan\base\Page{
 	public $breadcrumb=['Home'=>'index','Inbox'=>'xepan\communication_emails'];
 	public $title="Compose Email";
+	public $subject="";
+	public $message="";
 	function init(){
 		parent::init();
 
 		$replay_email=$this->api->stickyGET('reply_email');
 		$replay_email_all=$this->api->stickyGET('reply_email_all');
+		$fwd_email=$this->api->stickyGET('fwd_email');
 		$communication_id=$this->api->stickyGET('communication_id');
 
 		$action= 'add';
@@ -34,6 +37,9 @@ class page_composeemail extends \xepan\base\Page{
 			$emails_to=$replay_model->getReplyEmailFromTo()['to'][0];
 			$to_field->js(true)->append("<option value='".$emails_to['email']."'>".$emails_to['name']." &lt;".$emails_to['email']."&gt; </option>")->trigger('change');
 			$to_field->set($emails_to['email']);
+
+			$this->subject="Re: ".$replay_model['title'];
+			$this->message="<br/><br/><br/><br/>".$replay_model['description'];
 		}
 
 		if($replay_email_all){
@@ -57,6 +63,14 @@ class page_composeemail extends \xepan\base\Page{
 				$bcc_field->js(true,$bcc_field->js()->show()->_selector('#bcc-field'))->append("<option value='".$bcc_field_emails['email']."'>".$bcc_field_emails['name']." &lt;".$bcc_field_emails['email']."&gt; </option>")->trigger('change');
 			}
 			$bcc_field->set($emails_bcc);
+
+			$this->subject="Re: ".$replay_model['title'];
+			$this->message="<br/><br/><br/><br/>".$replay_model['description'];
+		}
+
+		if($fwd_email){
+			$this->subject="Fwd: ".$replay_model['title'];
+			$this->message="<br/><br/><br/><br/> ---------- Forwarded message ----------".$replay_model['description'];
 		}
 
 		// Reply/Compose Based on contact
@@ -127,14 +141,10 @@ class page_composeemail extends \xepan\base\Page{
 		if($_GET['email_username']){
 			$email_username_model->tryLoad($_GET['email_username']);
 		}
-		$subject="";
-		if($this->app->recall('subject'))
-			$subject="Fwd .".$this->app->recall('subject');
-		$message=$this->app->recall('message');
 
-		$form->addField('email_subject')->set($subject)->validate('required');
+		$form->addField('email_subject')->set($this->subject)->validate('required');
 		// $form->addField('Checkbox','save_as_draft');
-		$form->addField('xepan\base\RichText','email_body')->set($message);
+		$form->addField('xepan\base\RichText','email_body')->set($this->message);
 		$view=$form->layout->add('View',null,'signature')->setHTML($email_username_model['signature']);
 		$mymail->js('change',$view->js()->reload(['email_username'=>$mymail->js()->val()]));
 

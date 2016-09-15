@@ -40,9 +40,9 @@ class page_emaildetail extends \xepan\base\Page{
 		});
 		
 		$email_detail->on('click','li.forward',function($js,$data)use($email_model){
-			$this->app->memorize('subject',$email_model['title']);
-			$this->app->memorize('message',$email_model['description']);
-			return $js->univ()->location($this->api->url('xepan_communication_composeemail'));
+			// $this->app->memorize('subject',$email_model['title']);
+			// $this->app->memorize('message',$email_model['description']);
+			return $js->univ()->location($this->api->url('xepan_communication_composeemail',['fwd_email'=>true,'communication_id'=>$email_model->id]));
 		});
 
 	}
