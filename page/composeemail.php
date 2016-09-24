@@ -232,11 +232,11 @@ class page_composeemail extends \xepan\base\Page{
 				$mail->addAttachment($file_id);
 			}
 			if($f->isClicked($save_btn)){
-				return $f->js(null,$f->js()->univ()->successMessage('Save Email As Draft'))->reload();
+				return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->univ()->redirect($this->app->url('xepan_communication_emails'))->execute();
+				// return $f->js(null,$f->js()->univ()->successMessage('Save Email As Draft'))->reload();
 			}
 			$mail->send($email_settings);
-			
-			return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->reload();
+			return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->univ()->redirect($this->app->url('xepan_communication_emails'))->execute();
 		});
 	}
 
