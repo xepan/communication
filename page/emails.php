@@ -66,15 +66,20 @@ class page_emails extends \xepan\base\Page{
 		});
 
 		// $mail = "management@xavoc.com";
+
 		$or = $email_model->dsql()->orExpr();
 		if($mail === "%"){
+			$i=0;
 			foreach ($my_email as $email) {
 				$or->where('mailbox','like',$email['post_email'].'%');
+				$i++;
 			}
+			if($i == 0) $or->where('mailbox',-1);
 		}else
 			$or->where('mailbox','like',$mail.'%');
 
 		$email_model->addCondition($or);
+		
 		// $email_model->addCondition('mailbox','like',$mail.'%');
 		$email_model->setOrder('created_at','desc');
 
