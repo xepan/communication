@@ -17,12 +17,13 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 	public $table='emailsetting';
 
-	public $acl=false;
+	public $acl_type="Communication_EmailSetting";
 
 	function init(){
 		parent::init();
 		// TODO : add all required fields for email + can_use_in_mass_emails
 		$this->hasOne('xepan\base\Epan','epan_id');
+		$this->hasOne('xepan\base\Contact','created_by_id');
 		$this->addField('name');
 		$this->addField('email_transport')->setValueList(array('SmtpTransport'=>'SMTP','SendmailTransport'=>'SendMail','MailTransport'=>'PHP Mail function'))->defaultValue('SmtpTransport')->display(['form'=>'xepan\base\DropDown']);
 		$this->addField('is_active')->type('boolean')->defaultValue(false);
