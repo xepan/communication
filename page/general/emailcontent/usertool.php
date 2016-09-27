@@ -12,7 +12,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		[
 			'fields'=>[
 						'user_registration_type'=>'DropDown',
-						'reset_subject'=>'xepan\base\RichText',
+						'reset_subject'=>'Line',
 						'reset_body'=>'xepan\base\RichText',
 						'update_subject'=>'Line',
 						'update_body'=>'xepan\base\RichText',
@@ -65,8 +65,8 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		/*Verification Email Content*/
 		$form=$this->add('Form',null,'verification_view');
 		$form->setModel($frontend_config_m,['verification_subject','verification_body']);
-		$form->getElement('verification_subject')->set($frontend_config_m['verify_subject']);
-		$form->getElement('verification_body')->set($frontend_config_m['verify_body']);
+		$form->getElement('verification_subject')->set($frontend_config_m['verification_subject']);
+		$form->getElement('verification_body')->set($frontend_config_m['verification_body']);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
