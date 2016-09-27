@@ -31,9 +31,9 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 		$form=$this->add('Form',null,'reset_email');
 		$form->setModel($config_m,['reset_subject','reset_body']);
 		$form->getElement('reset_subject')->set($config_m['reset_subject']);
-		$form->getElement('reset_body')->set($config_m['reset_body']);
+		$form->getElement('reset_body')->set($config_m['reset_body'])->setFieldHint('{$username},{$click_here}');
 		// $form->addField('line','subject')->set($reset_subject);
-		// $form->addField('xepan\base\RichText','body')->set($reset_body)->setFieldHint('{$username},{$click_here}');
+		// $form->addField('xepan\base\RichText','body')->set($reset_body);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
@@ -51,9 +51,9 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 		$form=$this->add('Form',null,'updatepassword_view');
 		$form->setModel($config_m,['update_subject','update_body']);
 		$form->getElement('update_subject')->set($config_m['update_subject']);
-		$form->getElement('update_body')->set($config_m['update_body']);
+		$form->getElement('update_body')->set($config_m['update_body'])->setFieldHint('{$username},{$email_id},{$password},{$organization},{$post}');
 		// $form->addField('line','subject')->set($update_subject);
-		// $form->addField('xepan\base\RichText','body')->set($update_body)->setFieldHint('{$username},{$email_id},{$password},{$organization},{$post}');
+		// $form->addField('xepan\base\RichText','body')->set($update_body);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
