@@ -69,32 +69,59 @@ class Initiator extends \Controller_Addon {
         $this->app->epan=$this->app->new_epan;
 
         //Set Config
-        $frontend_config = $this->app->epan->config;
-		$frontend_config->setConfig('REGISTRATION_TYPE',"self_activated",'communication');
-		
+		$frontend_config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+		[
+			'fields'=>[
+						'user_registration_type'=>'DropDown',
+						'reset_subject'=>'xepan\base\RichText',
+						'reset_body'=>'xepan\base\RichText',
+						'update_subject'=>'Line',
+						'update_body'=>'xepan\base\RichText',
+						'registration_subject'=>'Line',
+						'registration_body'=>'xepan\base\RichText',
+						'verification_subject'=>'Line',
+						'verification_body'=>'xepan\base\RichText',
+						'subscription_subject'=>'Line',
+						'subscription_body'=>'xepan\base\RichText',
+						],
+				'config_key'=>'FRONTEND_LOGIN_RELATED_EMAIL',
+				'application'=>'communication'
+		]);
+		$frontend_config_m->tryLoadAny();
+        // $frontend_config = $this->app->epan->config;
+		// $frontend_config->setConfig('REGISTRATION_TYPE',"self_activated",'communication');
+		$frontend_config_m['user_registration_type'] = "self_activated";
+
 		$file_reg_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/registration_subject.html'));
 		$file_reg_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/registration_body.html'));
-			
-		$frontend_config->setConfig('REGISTRATION_SUBJECT',$file_reg_subject,'base');
-		$frontend_config->setConfig('REGISTRATION_BODY',$file_reg_body,'base');
+		$frontend_config_m['registration_subject'] = $file_reg_subject;	
+		$frontend_config_m['registration_body'] = $file_reg_body;	
+		// $frontend_config->setConfig('REGISTRATION_SUBJECT',$file_reg_subject,'base');
+		// $frontend_config->setConfig('REGISTRATION_BODY',$file_reg_body,'base');
 		
 		$file_reset_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/reset_password_subject.html'));
 		$file_reset_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/reset_password_body.html'));
-		
-		$frontend_config->setConfig('RESET_PASSWORD_SUBJECT',$file_reset_subject,'communication');
-		$frontend_config->setConfig('RESET_PASSWORD_BODY',$file_reset_body,'communication');
+		$frontend_config_m['reset_subject'] =$file_reset_subject;
+		$frontend_config_m['reset_body'] =$file_reset_body;
+		// $frontend_config->setConfig('RESET_PASSWORD_SUBJECT',$file_reset_subject,'communication');
+		// $frontend_config->setConfig('RESET_PASSWORD_BODY',$file_reset_body,'communication');
 		
 		$file_verification_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/verification_mail_subject.html'));
 		$file_verification_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/verification_mail_body.html'));
+		$frontend_config_m['verification_subject'] = $file_verification_subject;
+		$frontend_config_m['verification_body'] = $file_verification_body;
 		
-		$frontend_config->setConfig('VERIFICATIONE_MAIL_SUBJECT',$file_verification_subject,'communication');
-		$frontend_config->setConfig('VERIFICATIONE_MAIL_BODY',$file_verification_body,'communication');
-		
+		// $frontend_config->setConfig('VERIFICATIONE_MAIL_SUBJECT',$file_verification_subject,'communication');
+		// $frontend_config->setConfig('VERIFICATIONE_MAIL_BODY',$file_verification_body,'communication');
+
 		$file_update_subject = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/update_password_subject.html'));
 		$file_update_body = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/update_password_body.html'));
+		$frontend_config_m['update_subject'] = $file_update_subject;
+		$frontend_config_m['update_body'] = $file_update_body;
+		$frontend_config_m->save();
 		
-		$frontend_config->setConfig('UPDATE_PASSWORD_SUBJECT',$file_update_subject,'communication');
-		$frontend_config->setConfig('UPDATE_PASSWORD_BODY',$file_update_body,'communication');
+		// $frontend_config->setConfig('UPDATE_PASSWORD_SUBJECT',$file_update_subject,'communication');
+		// $frontend_config->setConfig('UPDATE_PASSWORD_BODY',$file_update_body,'communication');
 
 	}
 }
