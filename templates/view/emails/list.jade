@@ -4,6 +4,9 @@ div(id="{$_name}")
       .xepan-push {$search_form}
       #email-header-tools
         .btn-group
+          button.btn.btn-primary.back-inbox(style="display:none" data-placement='bottom', data-toggle='tooltip', title='Back to Inbox', type='button', data-original-title='back-inbox')
+            i.fa.fa-arrow-left
+        .btn-group
           button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Select')
             i.fa.fa-square-o
             span.caret
@@ -77,6 +80,22 @@ div(id="{$_name}")
       {/}{/}
   .nano-pane
     .nano-slider(style='height: 500px; transform: translate(0px, 0px);')
+
+script.
+    $("li.clickable-row  div:not(.chbox, .star,.checkbox-nice)").click(function(){
+        $("#email-list").hide();
+        $(".nano-slider").css('height','0px');
+        $(".email-detail").show();
+        $(".back-inbox").show();
+    });  
+
+    $('button.back-inbox').click(function(){
+        $("#email-list").show();
+        $(".nano-slider").css('height','500px');
+        $(".email-detail").hide();
+    
+    });
+
 style.
   .pull-right.xepan-push > .paginator{
     margin-top:0px!important;

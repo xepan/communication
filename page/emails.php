@@ -7,7 +7,6 @@ class page_emails extends \xepan\base\Page{
 
 	function init(){
 		parent::init();
-
 		if($_GET['delete_emails']){
 			foreach ($_GET['delete_emails'] as $delete_email) {
 				$this->add('xepan\communication\Model_Communication_Abstract_Email')
@@ -155,11 +154,26 @@ class page_emails extends \xepan\base\Page{
 			// ];
 
 		});
+		
+		$email_detail=$this->add('xepan\communication\View_EmailDetail',null,'email_detail');
+		if($_GET['email_id']){
+			// throw new \Exception($_GET['email_id'], 1);
+			$email_model=$this->add('xepan\communication\Model_Communication_Email');
+			$email_model->load($_GET['email_id']);
+			if(! isset($email_model['extra_info']['seen_by'])){
+				$email_model['extra_info'] = ['seen_by'=>$this->app->employee->id];
+				$email_model->save();
+			}
+			$email_detail->setModel($email_model);
+		}
 
+		$email_view->js('click',$email_detail->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\loader.gif"/></div>')->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]))
+						->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
 
-		$email_view->on('click','li.clickable-row  div:not(.chbox, .star,.checkbox-nice)',function($js,$data){
-			return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
-		});
+		// $email_view->on('click','li.clickable-row  div:not(.chbox, .star,.checkbox-nice)',function($js,$data)use($email_detail){
+		// 	return $email_detail->js()->reload(['email_id'=>$data['id']]);
+		// 	// return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
+		// });
 
 
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){

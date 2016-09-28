@@ -29,6 +29,8 @@
           .nano-slider(style='transform: translate(0px, 0px);')
       #email-content.email-content-nano.has-scrollbar(style='')
         {$email_lister}
+        div.email-detail(style="display:none")
+          {$email_detail}
 script.
     $(".mobile-email-navigation-tool-cog").click(function(){
         $(this).parent('div.mobile-email-navigation-tool').toggleClass("mobile-email-navigation-tool-closed");
