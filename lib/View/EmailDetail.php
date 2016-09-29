@@ -3,7 +3,9 @@ namespace xepan\communication;
 class View_EmailDetail extends \View{
 	function init(){
 		parent::init();
+
 	}
+
 	function setModel($model){
 		$m=parent::setModel($model);
 		$to_raw=$m['to_raw'];
@@ -25,6 +27,11 @@ class View_EmailDetail extends \View{
 
 		$attach=$this->add('xepan\communication\View_Lister_Attachment',null,'Attachments');
 		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_id',$m->id);
+			
+		// $compose_view = $this->add('xepan\communication\View_ComposeEmailPopup',['communication_id'=>$_GET['communication_id'],'mode'=>$_GET['mode']],'compose_view');
+
+			
+
 		return $m;
 
 	}

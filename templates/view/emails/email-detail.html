@@ -60,13 +60,23 @@
             <div class="tools">
             </div>
           </div>
-          <div id="email-attachments-content">{Attachments}
+          <div id="email-attachments-content">{$Attachments}
           </div>
         </div>
       </div>
     </div>
-    <div class="nano-pane">
-      <div style="height: 502px; transform: translate(0px, 60px);" class="nano-slider"></div>
-    </div>
   </div>
 </div>
+<script>
+  $(".reply").click(function(){
+      $('.compose-email-view-popup').show();
+  });
+  
+  $("li.reply-all").click(function(){
+      $('.compose-email-view-popup').show();
+  });
+  
+  $("li.forward").click(function(){
+      $('.compose-email-view-popup').show();
+  });
+</script>

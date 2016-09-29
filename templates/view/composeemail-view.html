@@ -1,37 +1,37 @@
 
 <div style="{$style}" id="{$_name}" class="atk-form {$class}">
   <form action="{$form_action}" method="{form_method}post{/}" {$enctype}="" {$attributes}="" class="{$form_class}">
-    <div tabindex="0" style="right: -12px;" class="email-new-nano-content">
-      <div id="email-new-inner">
+    <div tabindex="0" style="right: -12px; " class="email-new-nano-content">
+      <div class="header btn-primary">{compose_email_header}New Message{/}<i class="fa fa-close pull-right close-compose-email-popup"> </i><i class="fa fa-expand pull-right compose-email-resizeable"> </i><i class="fa fa-minus pull-right minimize-compose-email-popup"></i></div>
+      <div id="email-new-inner" class="compose-email-inner">
         <div id="email-new-header">
           <div class="row form-group">
-            <label for="exampleInpFrom" class="col-md-1">From:</label>
-            <div class="col-md-10">
-              <div id="exampleInpFrom" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_username}</div>
+            <div class="col-md-12">
+              <lable class="xepan-push-small">From : </lable>
+              <div id="exampleInpFrom" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field xepan-padding-top-xsmall">{$email_username}</div>
             </div>
           </div>
           <div class="row form-group">
-            <label for="exampleInpTo" class="col-md-1">To:</label>
-            <div class="col-md-10">
-              <div id="exampleInpTo" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_to}</div>
+            <div class="col-md-11">
+              <lable>To : </lable>
+              <div id="exampleInpTo" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field xepan-padding-top-xsmall">{$email_to}</div>
             </div>
             <label class="col-md-1"><a class="cc-field pull-left xepan-padding-horizontal-small">Cc</a><a class="bcc-field pull-left">Bcc  </a></label>
           </div>
           <div id="cc-field" style="display:none" class="row form-group">
-            <label for="exampleInpCc" class="col-md-1">Cc:</label>
-            <div class="col-md-10">
-              <div id="exampleInpCc" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_cc}</div>
+            <div class="col-md-12">
+              <lable>Cc : </lable>
+              <div id="exampleInpCc" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field xepan-padding-top-xsmall">{$email_cc}</div>
             </div>
           </div>
           <div id="bcc-field" style="display:none" class="row form-group">
-            <label for="exampleInpBcc" class="col-md-1">Bcc:</label>
-            <div class="col-md-10">
-              <div id="exampleInpBcc" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field">{$email_bcc}</div>
+            <div class="col-md-12">
+              <lable>Bcc : </lable>
+              <div id="exampleInpBcc" type="text" placeholder="Enter recepients" class="form-control-s2 email-recepients atk-form-row atk-form-field xepan-padding-top-xsmall">{$email_bcc}</div>
             </div>
           </div>
           <div class="row form-group">
-            <label for="exampleInpSubject" class="col-md-1">Subject:</label>
-            <div class="col-md-10">
+            <div class="col-md-12">
               <div id="exampleInpSubject" type="text" placeholder="Enter subject" class="form-control atk-form-row atk-form-field">{$email_subject}</div>
               <div class="atk-cell atk-actions {$buttons_class}">{$form_buttons}</div>
             </div>
@@ -70,4 +70,24 @@
          jQuery('#bcc-field').toggle('hide');
     });
   });
+  
+  $('.close-compose-email-popup').click(function(){
+   $('.compose-email-view-popup').hide();
+  });
+  
+  $('.minimize-compose-email-popup').click(function(){
+   $('.compose-email-inner').slideToggle();
+  });
+  
+  $('.fa-expand').click(function(){
+   $(this).toggleClass('fa-compress');
+   $('.compose-email-view-popup').toggleClass('compose-email-resize-toggle');
+  });
+  
+  
 </script>
+<style>
+  .email-new-nano-content .select2{
+    width:100%!important;
+  }
+</style>
