@@ -145,7 +145,7 @@ class View_ComposeEmailPopup extends \View{
 			$email_username_model->tryLoad($_GET['email_username']);
 		}
 
-		$form->addField('email_subject')->set($this->subject)->validate('required');
+		$subject_field = $form->addField('email_subject')->set($this->subject)->validate('required');
 		// $form->addField('Checkbox','save_as_draft');
 		$body_field = $form->addField('xepan\base\RichText','email_body')->set($this->message);
 		
@@ -238,11 +238,27 @@ class View_ComposeEmailPopup extends \View{
 				$mail->addAttachment($file_id);
 			}
 			if($f->isClicked($save_btn)){
-				return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->univ()->redirect($this->app->url('xepan_communication_emails'))->execute();
-				// return $f->js(null,$f->js()->univ()->successMessage('Save Email As Draft'))->reload();
+				// return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->univ()->redirect($this->app->url('xepan_communication_emails'))->execute();
+				return $f->js(null,$f->js()->univ()->successMessage('Save Email As Draft'))->reload();
 			}
 			$mail->send($email_settings);
-			return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->univ()->redirect($this->app->url('xepan_communication_emails'))->execute();
+			$js=[
+					$f->js()->univ()->successMessage('EMAIL SENT'),
+				];
+
+				return $f->js(null,$js)->reload();
+			// return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->execute();
 		});
+
+		$this->js('click',$this->js()->show()->_selector('.compose-email-view-popup'))->_selector('.email-compose-btn');
+		$this->js('click',[$to_field->js()->val("")])->_selector('.email-compose-btn');
+		$this->js('click',$this->js()->hide()->_selector('.compose-email-view-popup'))->_selector('.close-compose-email-popup');
+		$this->js('click',$this->js()->slideToggle()->_selector('.compose-email-inner'))->_selector('.minimize-compose-email-popup');
+		$this->js('click',
+			[
+			$this->js()->toggleClass('fa-compress')->_selector('.fa-expand'),
+			$this->js()->toggleClass('compose-email-resize-toggle')->_selector('.compose-email-view-popup'),
+			]
+			)->_selector('.fa-expand');
 	}
 }
