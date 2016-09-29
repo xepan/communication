@@ -156,7 +156,7 @@ class page_emails extends \xepan\base\Page{
 		});
 		
 		$email_detail=$this->add('xepan\communication\View_EmailDetail',null,'email_detail');
-		if($_GET['email_id']){
+		if($this->app->stickyGET('email_id')){
 			// throw new \Exception($_GET['email_id'], 1);
 			$email_model=$this->add('xepan\communication\Model_Communication_Email');
 			$email_model->load($_GET['email_id']);
@@ -165,6 +165,7 @@ class page_emails extends \xepan\base\Page{
 				$email_model->save();
 			}
 			$email_detail->setModel($email_model);
+
 		}
 
 		$email_view->js('click',$email_detail->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\loader.gif"/></div>')->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]))
