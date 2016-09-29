@@ -1,6 +1,7 @@
 
 <div id="{$_name}">
   <div id="email-box" style="margin-left:0px" class="email-detail-nano has-scrollbar">
+    <div class="compose-email-view-popup">{$compose_view}</div>
     <div tabindex="0" style="right: -13px;" class="email-detail-nano-content">
       <div id="email-detail-inner">
         <div id="email-detail-subject" class="clearfix"><span class="subject">{subject}FW: Like your new movie{/}</span><span class="label label-success">{status}Work{/}</span></div>
@@ -60,13 +61,10 @@
             <div class="tools">
             </div>
           </div>
-          <div id="email-attachments-content">{Attachments}
+          <div id="email-attachments-content">{$Attachments}
           </div>
         </div>
       </div>
-    </div>
-    <div class="nano-pane">
-      <div style="height: 502px; transform: translate(0px, 60px);" class="nano-slider"></div>
     </div>
   </div>
 </div>
