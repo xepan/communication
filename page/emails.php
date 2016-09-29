@@ -7,6 +7,8 @@ class page_emails extends \xepan\base\Page{
 
 	function init(){
 		parent::init();
+		$compose_view = $this->add('xepan\communication\View_ComposeEmailPopup',['communication_id'=>$_GET['communication_id'],'mode'=>$_GET['mode']],'compose_view');
+		
 		if($_GET['delete_emails']){
 			foreach ($_GET['delete_emails'] as $delete_email) {
 				$this->add('xepan\communication\Model_Communication_Abstract_Email')
@@ -147,11 +149,6 @@ class page_emails extends \xepan\base\Page{
 					$email_view->js()->reload(null,null,$url,['mail'=>$data['mail']]),
 					$js->addClass('fa fa-check-square')
 			];
-			// return [
-			// 		$label_view->js()->find('.fa.fa-check-square')->removeClass('fa fa-check-square'),
-			// 		$email_view->js()->reload(null,null,$this->app->url($url,['mail'=>$data['mail']])),
-			// 		$js->addClass('fa fa-check-square')
-			// ];
 
 		});
 		
@@ -166,15 +163,23 @@ class page_emails extends \xepan\base\Page{
 			}
 			$email_detail->setModel($email_model);
 
+			$email_detail->js('click',
+				$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'reply_email']))
+				->_selector('.reply');	
+
+			$email_detail->js('click',
+				$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'reply_email_all']))
+				->_selector('li.reply-all');
+			
+			$email_detail->js('click',
+				$compose_view->js()->html('<div style="width:100%"><img style="display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'fwd_email']))
+				->_selector('li.forward');				
 		}
 
-		$email_view->js('click',$email_detail->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\loader.gif"/></div>')->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]))
+		$email_view->js('click',
+			$email_detail->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]))
 						->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
 
-		// $email_view->on('click','li.clickable-row  div:not(.chbox, .star,.checkbox-nice)',function($js,$data)use($email_detail){
-		// 	return $email_detail->js()->reload(['email_id'=>$data['id']]);
-		// 	// return $js->univ()->location($this->api->url('xepan_communication_emaildetail',['email_id'=>$data['id']]));
-		// });
 
 
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
@@ -273,6 +278,8 @@ class page_emails extends \xepan\base\Page{
 		$email_view->on('click','button.fetch-refresh',function($js,$data){
 			return $this->js()->univ()->location();
 		});
+
+
 
 	}
 	

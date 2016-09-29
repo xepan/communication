@@ -1,7 +1,7 @@
 div(id="{$_name}")
   #email-box.email-detail-nano.has-scrollbar(style='margin-left:0px')
-          .compose-email-view-popup
-            {$compose_view}
+          //- .compose-email-view-popup(style="display:none")
+          //-   {$compose_view}
           .email-detail-nano-content(tabindex='0', style='right: -13px;')
             #email-detail-inner
               #email-detail-subject.clearfix
@@ -113,3 +113,16 @@ div(id="{$_name}")
                   //- {/}{/}
           //- .nano-pane
           //-   .nano-slider(style='height: 502px; transform: translate(0px, 60px);')
+
+script.
+    $(".reply").click(function(){
+        $('.compose-email-view-popup').show();
+    });
+
+    $("li.reply-all").click(function(){
+        $('.compose-email-view-popup').show();
+    });
+
+    $("li.forward").click(function(){
+        $('.compose-email-view-popup').show();
+    });

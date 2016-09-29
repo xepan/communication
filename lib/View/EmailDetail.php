@@ -28,18 +28,9 @@ class View_EmailDetail extends \View{
 		$attach=$this->add('xepan\communication\View_Lister_Attachment',null,'Attachments');
 		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_id',$m->id);
 			
-		$compose_view = $this->add('xepan\communication\View_ComposeEmailPopup',['communication_id'=>$_GET['communication_id'],'mode'=>$_GET['mode']],'compose_view');
+		// $compose_view = $this->add('xepan\communication\View_ComposeEmailPopup',['communication_id'=>$_GET['communication_id'],'mode'=>$_GET['mode']],'compose_view');
 
-		$this->js('click',
-			$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\loader.gif"/></div>')->reload(['communication_id'=>$this->model->id,'mode'=>'reply_email']))
-			->_selector('.reply');	
-
-		$this->js('click',
-			$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\loader.gif"/></div>')->reload(['communication_id'=>$this->model->id,'mode'=>'reply_email_all']))
-			->_selector('li.reply-all');
-		
-		$this->js('click',$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\loader.gif"/></div>')->reload(['communication_id'=>$this->model->id,'mode'=>'fwd_email']))
-			->_selector('li.forward');	
+			
 
 		return $m;
 

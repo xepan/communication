@@ -1,7 +1,6 @@
 
 <div id="{$_name}">
   <div id="email-box" style="margin-left:0px" class="email-detail-nano has-scrollbar">
-    <div class="compose-email-view-popup">{$compose_view}</div>
     <div tabindex="0" style="right: -13px;" class="email-detail-nano-content">
       <div id="email-detail-inner">
         <div id="email-detail-subject" class="clearfix"><span class="subject">{subject}FW: Like your new movie{/}</span><span class="label label-success">{status}Work{/}</span></div>
@@ -68,3 +67,16 @@
     </div>
   </div>
 </div>
+<script>
+  $(".reply").click(function(){
+      $('.compose-email-view-popup').show();
+  });
+  
+  $("li.reply-all").click(function(){
+      $('.compose-email-view-popup').show();
+  });
+  
+  $("li.forward").click(function(){
+      $('.compose-email-view-popup').show();
+  });
+</script>

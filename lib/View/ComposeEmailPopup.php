@@ -10,7 +10,9 @@ class View_ComposeEmailPopup extends \View{
 	function init(){
 		parent::init();
 		$this->addClass('compose-email-view-popup');	
-		// throw new \Exception($this->mode, 1);
+		// throw new \Exception($this->communication_id, 1);
+
+
 
 		$action= 'add';
 		$form = $this->add('Form');;
@@ -32,6 +34,7 @@ class View_ComposeEmailPopup extends \View{
 			$replay_model->load($this->communication_id);
 		
 		if($this->mode == 'reply_email'){
+			$form->layout->template->trySet('compose_email_header','Reply Email');
 			$emails_to=$replay_model->getReplyEmailFromTo()['to'][0];
 			$to_field->js(true)->append("<option value='".$emails_to['email']."'>".$emails_to['name']." &lt;".$emails_to['email']."&gt; </option>")->trigger('change');
 			$to_field->set($emails_to['email']);
@@ -41,6 +44,7 @@ class View_ComposeEmailPopup extends \View{
 		}
 
 		if($this->mode == 'reply_email_all'){
+			$form->layout->template->trySet('compose_email_header','Reply Email (to all)');
 			$emails_to =[];		
 			foreach ($replay_model->getReplyEmailFromTo()['to'] as $to_field_emails) {
 				$emails_to [] = $to_field_emails['email'];
@@ -67,6 +71,7 @@ class View_ComposeEmailPopup extends \View{
 		}
 
 		if($this->mode=='fwd_email'){
+			$form->layout->template->trySet('compose_email_header','Forward Email');
 			$this->subject="Fwd: ".$replay_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$replay_model['description']."<.blockquote>";
 		}
