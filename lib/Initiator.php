@@ -22,6 +22,8 @@ class Initiator extends \Controller_Addon {
 			$all_count=$all_email->count()->getOne();
 			
 			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails']);
+			$this->app->side_menu->addItem(['General Setting','icon'=>'fa fa-cog'],'xepan_communication_generalsetting')->setAttr(['title'=>'General Setting']);
+
 		}
 
 		$search_communication = $this->add('xepan\communication\Model_Communication');
