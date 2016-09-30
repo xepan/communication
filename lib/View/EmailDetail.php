@@ -28,8 +28,21 @@ class View_EmailDetail extends \View{
 		$attach=$this->add('xepan\communication\View_Lister_Attachment',null,'Attachments');
 		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_id',$m->id);
 			
-		// $compose_view = $this->add('xepan\communication\View_ComposeEmailPopup',['communication_id'=>$_GET['communication_id'],'mode'=>$_GET['mode']],'compose_view');
+		// $(".reply").click(function(){
+  //       $('.compose-email-view-popup').show();
+  //   });
 
+  //   $("li.reply-all").click(function(){
+  //       $('.compose-email-view-popup').show();
+  //   });
+
+  //   $("li.forward").click(function(){
+  //       $('.compose-email-view-popup').show();
+  //   });
+
+		$this->js('click',[$this->js()->show()->_selector('.compose-email-view-popup'),$this->js()->reload()])->_selector('.reply');
+		$this->js('click',[$this->js()->show()->_selector('.compose-email-view-popup'),$this->js()->reload()])->_selector('li.reply-all');
+		$this->js('click',[$this->js()->show()->_selector('.compose-email-view-popup'),$this->js()->reload()])->_selector('li.forward');
 			
 
 		return $m;

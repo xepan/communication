@@ -238,20 +238,32 @@ class View_ComposeEmailPopup extends \View{
 				$mail->addAttachment($file_id);
 			}
 			if($f->isClicked($save_btn)){
+				$js=[
+					$f->js()->univ()->successMessage('Save Email As Draft'),
+					$this->js()->hide()
+				];
 				// return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->univ()->redirect($this->app->url('xepan_communication_emails'))->execute();
-				return $f->js(null,$f->js()->univ()->successMessage('Save Email As Draft'))->reload();
+				return $f->js(null,$js)->reload();
 			}
 			$mail->send($email_settings);
 			$js=[
 					$f->js()->univ()->successMessage('EMAIL SENT'),
+					$this->js()->hide()
 				];
 
 				return $f->js(null,$js)->reload();
 			// return $f->js(null,$f->js()->univ()->successMessage('EMAIL SENT'))->execute();
 		});
 
-		$this->js('click',$this->js()->show()->_selector('.compose-email-view-popup'))->_selector('.email-compose-btn');
-		$this->js('click',[$to_field->js()->val("")])->_selector('.email-compose-btn');
+		$this->js('click',[$this->js()->show()->_selector('.compose-email-view-popup'),$this->js()->reload()])->_selector('.email-compose-btn');
+		// $this->js('click',
+		// 		[
+		// 			$to_field->js()->val("")->trigger('change'),
+		// 			$subject_field->js()->val(""),
+		// 			$body_field->js()->html("")
+		// 		]
+		// )->_selector('.email-compose-btn');
+
 		$this->js('click',$this->js()->hide()->_selector('.compose-email-view-popup'))->_selector('.close-compose-email-popup');
 		$this->js('click',$this->js()->slideToggle()->_selector('.compose-email-inner'))->_selector('.minimize-compose-email-popup');
 		$this->js('click',
