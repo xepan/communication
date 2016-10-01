@@ -1,41 +1,49 @@
 
 <div class="row xepan-push">
-  <div class="col-md-4 atk-form-row">{$title}</div>
-  <div class="col-md-5 atk-form-row">
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">{$title}</div>
+  <div class="col-md-5 col-lg-5 col-xs-12 col-sm-12 atk-form-row">
     	
     Communication Type: {$type}
   </div>
-  <div class="col-md-3 atk-form-row">Status: {$status}</div>
+  <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 atk-form-row">Status: {$status}</div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-12 atk-form-row">{$body}</div>
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 atk-form-row">{$body}</div>
 </div>
 <div class="row xepan-push">{$signature}</div>
 <div class="row xepan-push">
-  <div class="col-md-4 atk-form-row">
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">
     <div class="atk-form-row atk-form-field form-email">From Email-Id: {$from_email}</div>
   </div>
-  <div class="col-md-2 atk-form-row">Notify via Email {$notify_email}</div>
-  <div class="col-md-6 atk-form-row">Notify On Emails {$notify_email_to}</div>
+  <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 atk-form-row">Notify via Email {$notify_email}</div>
+  <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12 atk-form-row">Notify On Emails {$notify_email_to}</div>
 </div>
 <div class="row xepan-push atk-form-row">
-  <div class="col-md-4">{$email_to}</div>
-  <div class="col-md-4">{$cc_mails}</div>
-  <div class="col-md-4">{$bcc_mails}	</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12">{$email_to}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12">{$cc_mails}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12">{$bcc_mails}	</div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-4 atk-form-row">From Number: {$from_phone}</div>
-  <div class="col-md-4 atk-form-row">To: {$called_to}</div>
-  <div class="col-md-4 atk-form-row">
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">From Number: {$from_phone}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">To: {$called_to}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">
     	 
     Employee: {$from_person}
   </div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-4 atk-form-row">From Number: {$from_number}</div>
-  <div class="col-md-4 atk-form-row">To: {$sms_to}</div>
-  <div class="col-md-4">										</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">From Number: {$from_number}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">To: {$sms_to}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12">										</div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-12">{$FormButtons}									</div>
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">{$FormButtons}									</div>
 </div>
+<style>
+  .form-communication .select2{
+  	width:100%!important;
+  }
+  .form-communication .col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6 {
+  	width:100%!important;
+  }
+</style>

@@ -9,7 +9,7 @@ class Form_Communication extends \Form {
 
 	function init(){
 		parent::init();
-
+		$this->addClass('form-communication');
 		$this->setLayout('view\communicationform');
 		$type_field = $this->addField('dropdown','type')
 			->setValueList(['Email'=>'Email','Phone'=>'Call','Comment'=>'Personal','SMS'=>'SMS']);
