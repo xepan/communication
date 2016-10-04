@@ -189,9 +189,11 @@ class View_EasySetupWizard extends \View{
 		
 			$action = $this->js()->reload([$this->name.'_check_supportemail_options'=>1]);
 
-			$support_mail = $this->add('xepan\communication\Model_Communication_EmailSetting')->tryLoadAny();
+			$support_mail = $this->add('xepan\communication\Model_Communication_EmailSetting');
+			$support_mail->addCondition('is_support_email',true);
+			$support_mail->tryLoadAny();
 
-			if($support_mail['is_support_email']){
+			if($support_mail->loaded()){
 				$isDone = true;
 				$action = $this->js()->univ()->dialogOK("Already have Data",' You already have emailsetting, visit page ? <a href="'. $this->app->url('xepan_communication_general_email')->getURL().'"> click here to go </a>');
 			}
