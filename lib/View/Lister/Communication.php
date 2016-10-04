@@ -7,6 +7,10 @@ class View_Lister_Communication extends \CompleteLister{
 	
 	function init(){
 		parent::init();
+		
+		if(!$this->contact_id)
+			return;			
+
 		$self = $this;
 		$self_url = $this->app->url(null,['cut_object'=>$this->name]);
 		
