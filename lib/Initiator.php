@@ -56,19 +56,19 @@ class Initiator extends \Controller_Addon {
 	}
 
 	function resetDB(){
-		if(!isset($this->app->old_epan)) $this->app->old_epan = $this->app->epan;
-        if(!isset($this->app->new_epan)) $this->app->new_epan = $this->app->epan;
+		// if(!isset($this->app->old_epan)) $this->app->old_epan = $this->app->epan;
+  //       if(!isset($this->app->new_epan)) $this->app->new_epan = $this->app->epan;
         
-		$this->app->epan=$this->app->old_epan;
-        $truncate_model = ['Communication_Attachment','Communication','Communication_EmailSetting','Communication_SMSSetting'];
-        foreach ($truncate_model as $t) {
-            $m=$this->add('xepan\communication\Model_'.$t);
-            foreach ($m as $mt) {
-                $mt->delete();
-            }
-        }
+		// $this->app->epan=$this->app->old_epan;
+  //       $truncate_model = ['Communication_Attachment','Communication','Communication_EmailSetting','Communication_SMSSetting'];
+  //       foreach ($truncate_model as $t) {
+  //           $m=$this->add('xepan\communication\Model_'.$t);
+  //           foreach ($m as $mt) {
+  //               $mt->delete();
+  //           }
+  //       }
         
-        $this->app->epan=$this->app->new_epan;
+  //       $this->app->epan=$this->app->new_epan;
 
         //Set Config
 		$frontend_config_m = $this->add('xepan\base\Model_ConfigJsonModel',
