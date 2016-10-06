@@ -213,13 +213,18 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 				    ->setHTMLBody($this['description'],$this->app->pathfinder->base_location->base_path);
 
 				if(!$mailer){
-					$mailer = new \Nette\Mail\SmtpMailer(array(
-				        'host' => $email_setting['email_host'],
-				        'username' => $email_setting['email_username'],
-				        'password' => $email_setting['email_password'],
-				        'secure' => $email_setting['encryption'],
-				        'persistent'=>true
-					));
+					if(isset($this->app->mailer)) 
+						$mailer = $this->app->mailer;
+					else{
+						$mailer = new \Nette\Mail\SmtpMailer(array(
+					        'host' => $email_setting['email_host'],
+					        'username' => $email_setting['email_username'],
+					        'password' => $email_setting['email_password'],
+					        'secure' => $email_setting['encryption'],
+					        'persistent'=>true
+						));
+						$this->app->mailer = $mailer;
+					}
 				}
 				$mailer->send($mail);
 
