@@ -86,7 +86,7 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m->tryLoadAny();
 				
 				if($mail_m->loaded()){
-					echo "<br/> UID ".." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
+					echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
 					continue;	
 				} 
 				
