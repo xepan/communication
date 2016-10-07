@@ -153,7 +153,8 @@ class View_EasySetupWizard extends \View{
 			$user_config_view = $this->add('xepan\base\View_Wizard_Step')
 				->setAddOn('Application - Communication')
 				->setTitle('Configure Settings For New Users')
-				->setMessage('Configuration setting for web user activation & deactivation mailing content')
+				->setMessage('Configuration setting for web user activation & deactivation mailing content.')
+				->setHelpMessage('Need help ! click on the help icon')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
 
@@ -177,7 +178,8 @@ class View_EasySetupWizard extends \View{
 
 			$email_view->setAddOn('Application - Communication')
 				->setTitle('Configure Email Setting To Communicate Via Email')
-				->setMessage('Please configure Email Settings, for Communication with your clients via email')
+				->setMessage('Please configure Email Settings, for Communication with your clients via email.')
+				->setHelpMessage('Need help ! click on the help icon')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
 
@@ -201,7 +203,8 @@ class View_EasySetupWizard extends \View{
 			$support_view = $this->add('xepan\base\View_Wizard_Step')
 				->setAddOn('Application - Communication')
 				->setTitle('Support Email System')
-				->setMessage('For Support Services System You have to select option "is support system" in Email Settings')
+				->setMessage('For Support Services System You have to select option "is support system" in Email Settings.')
+				->setHelpMessage('Need help ! click on the help icon')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
 
