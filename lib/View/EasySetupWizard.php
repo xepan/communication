@@ -6,7 +6,9 @@ class View_EasySetupWizard extends \View{
 	function init(){
 		parent::init();
 
-
+		/**
+		............. Frontend (Website)User Mail Config ...............
+		*/
 		if($_GET[$this->name.'_config_user_settings']){
 
 			$frontend_config_m = $this->add('xepan\base\Model_ConfigJsonModel',
@@ -152,13 +154,90 @@ class View_EasySetupWizard extends \View{
 
 			$user_config_view = $this->add('xepan\base\View_Wizard_Step')
 				->setAddOn('Application - Communication')
-				->setTitle('Configure Settings For New Users')
+				->setTitle('Configure Settings For New Users On Your Website')
 				->setMessage('Configuration setting for web user activation & deactivation mailing content.')
 				->setHelpMessage('Need help ! click on the help icon')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
 
-				
+		/**
+		............. Backend (ERP)User Mail Config ...............
+		*/
+		if($_GET[$this->name.'_config_erp_user_settings']){
+
+			$erp_config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+				[
+					'fields'=>[
+								'reset_subject'=>'Line',
+								'reset_body'=>'xepan\base\RichText',
+								'update_subject'=>'Line',
+								'update_body'=>'xepan\base\RichText',
+								],
+						'config_key'=>'ADMIN_LOGIN_RELATED_EMAIL',
+						'application'=>'communication'
+				]);
+			$erp_config_m->tryLoadAny();
+
+			$reset_subject_file = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/erp-users-mailing-content/reset_subject.html'));
+			$reset_body_file = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/erp-users-mailing-content/reset_body.html'));
+			$update_subject_file = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/erp-users-mailing-content/update_subject.html'));
+			$update_body_file = file_get_contents(realpath(getcwd().'/vendor/xepan/communication/templates/default/erp-users-mailing-content/update_body.html'));
+			
+			if(!$erp_config_m['reset_subject']){
+				$erp_config_m['reset_subject'] = $reset_subject_file;
+			}
+
+			if(!$erp_config_m['reset_body']){
+				$erp_config_m['reset_body'] = $reset_body_file;
+			}
+
+			if(!$erp_config_m['update_subject']){
+				$erp_config_m['update_subject'] = $update_subject_file;
+			}
+
+			if(!$erp_config_m['update_body']){
+				$erp_config_m['update_body'] = $update_body_file;
+			}
+
+			$erp_config_m->save();	
+			$this->js(true)->univ()->frameURL("User Configuration For Activation/Deactivation",$this->app->url('xepan_communication_general_emailcontent_admin'));
+		}
+
+			$isDone = false;
+
+			$action = $this->js()->reload([$this->name.'_config_erp_user_settings'=>1]);
+			
+			$erp_config_mdl = $this->add('xepan\base\Model_ConfigJsonModel',
+				[
+					'fields'=>[
+								'reset_subject'=>'Line',
+								'reset_body'=>'xepan\base\RichText',
+								'update_subject'=>'Line',
+								'update_body'=>'xepan\base\RichText',
+								],
+						'config_key'=>'ADMIN_LOGIN_RELATED_EMAIL',
+						'application'=>'communication'
+				]);
+			$erp_config_mdl->tryLoadAny();
+
+			if(!$erp_config_mdl['reset_subject'] || !$erp_config_mdl['reset_body'] || !$erp_config_mdl['update_subject'] || !$erp_config_mdl['update_body']){
+				$isDone = false;
+			}else{
+				$isDone = true;
+				$action = $this->js()->univ()->dialogOK("Already have Data",' You already config the user settings, visit page ? <a href="'. $this->app->url('xepan_communication_general_emailcontent_admin')->getURL().'"> click here to go </a>');
+			}
+
+			$erp_user_config_view = $this->add('xepan\base\View_Wizard_Step')
+				->setAddOn('Application - Communication')
+				->setTitle('Configure Settings For ERP Users')
+				->setMessage('Configuration setting for erp user reset & update password mailing content.')
+				->setHelpMessage('Need help ! click on the help icon')
+				->setHelpURL('#')
+				->setAction('Click Here',$action,$isDone);
+
+		/**
+		............. E-mail Settings ...............
+		*/
 		if($_GET[$this->name.'_set_emailsetting']){
 			$this->js(true)->univ()->frameURL("Mail Config",$this->app->url('xepan_communication_general_email&action=add'));
 			if($this->add('xepan\communication\Model_Communication_EmailSetting')->count()->getOne() > 0)
@@ -182,6 +261,10 @@ class View_EasySetupWizard extends \View{
 				->setHelpMessage('Need help ! click on the help icon')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
+
+		/**
+		............. Support Mail Setting ...............
+		*/
 
 		if($_GET[$this->name.'_check_supportemail_options']){
 			$this->js(true)->univ()->frameURL("Mail Config",$this->app->url('xepan_communication_general_email&action=add'));
@@ -207,6 +290,5 @@ class View_EasySetupWizard extends \View{
 				->setHelpMessage('Need help ! click on the help icon')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
-
 	}
 }
