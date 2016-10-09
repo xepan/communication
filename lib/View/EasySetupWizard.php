@@ -290,5 +290,54 @@ class View_EasySetupWizard extends \View{
 				->setHelpMessage('Need help ! click on the help icon')
 				->setHelpURL('#')
 				->setAction('Click Here',$action,$isDone);
+
+		/**
+		............. Company Info ...............
+		*/
+
+		if($_GET[$this->name.'_company_info']){
+			$this->js(true)->univ()->frameURL("Company Information",$this->app->url('xepan_communication_generalsetting'));
+		}
+
+		$isDone = false;
+		
+		$action = $this->js()->reload([$this->name.'_company_info'=>1]);
+
+		$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
+				[
+					'fields'=>[
+								'company_name'=>"Line",
+								'company_owner'=>"Line",
+								'mobile_no'=>"Line",
+								'company_email'=>"Line",
+								'company_address'=>"Line",
+								'company_pin_code'=>"Line",
+								'company_description'=>"xepan\base\RichText",
+								'company_logo_absolute_url'=>"Line",
+								'company_twitter_url'=>"Line",
+								'company_facebook_url'=>"Line",
+								'company_google_url'=>"Line",
+								'company_linkedin_url'=>"Line",
+								],
+					'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
+					'application'=>'communication'
+				]);
+		
+		$company_m->tryLoadAny();
+
+		if(!$company_m['company_name'] || !$company_m['company_owner'] || !$company_m['mobile_no'] || !$company_m['company_email'] || !$company_m['company_address'] || !$company_m['company_pin_code'] || !$company_m['company_logo_absolute_url']){
+			$isDone = false;
+		}else{
+			$isDone = true;
+			$action = $this->js()->univ()->dialogOK("Already have Data",' You already filled info of company/firm, visit page ? <a href="'. $this->app->url('xepan_communication_generalsetting')->getURL().'"> click here to go </a>');
+		}
+
+		$company_view = $this->add('xepan\base\View_Wizard_Step')
+			->setAddOn('Application - Communication')
+			->setTitle('Company/Firm Information')
+			->setMessage('Please fill Information about your company/firm. For fill click here and Go to tab of Company Info')
+			->setHelpMessage('Need help ! click on the help icon')
+			->setHelpURL('#')
+			->setAction('Click Here',$action,$isDone);
 	}
 }
