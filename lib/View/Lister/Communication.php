@@ -7,6 +7,10 @@ class View_Lister_Communication extends \CompleteLister{
 	
 	function init(){
 		parent::init();
+		
+		if(!$this->contact_id)
+			return;			
+
 		$self = $this;
 		$self_url = $this->app->url(null,['cut_object'=>$this->name]);
 		
@@ -32,11 +36,9 @@ class View_Lister_Communication extends \CompleteLister{
 					$form->js(null,$self->js()->reload())->univ()->successMessage('Done')->closeDialog()->closeDialog()->execute();
 			}
 		});	
-			
-
+		
 		$this->js('click',$this->js()->univ()->dialogURL("NEW COMMUNICATION",$this->api->url($vp->getURL(),['contact_id'=>$this->contact_id])))->_selector('.create');
-
-		$this->js('click',$this->js()->univ()->alert("Send All As Pdf"))->_selector('.inform');	
+		$this->js('click',$this->js()->univ()->frameURL("SEND ALL COMMUNICATION",$this->api->url('xepan_communication_contactcommunications',['contact_id'=>$this->contact_id])))->_selector('.inform');
 	}
 
 	function formatRow(){

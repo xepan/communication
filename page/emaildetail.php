@@ -30,20 +30,20 @@ class page_emaildetail extends \xepan\base\Page{
 			$email_detail->add('xepan\base\Controller_Avatar',['options'=>['size'=>50,'border'=>['width'=>0]],'name_field'=>'to','default_value'=>'']);
 		}
 
-		$email_detail->on('click','.reply',function($js,$data)use($email_model){
-			return $js->univ()->location($this->api->url('xepan_communication_composeemail',['reply_email'=>true,'communication_id'=>$email_model->id]));
-		});
+		// $email_detail->on('click','.reply',function($js,$data)use($email_model){
+		// 	return $js->univ()->location($this->api->url('xepan_communication_composeemail',['reply_email'=>true,'communication_id'=>$email_model->id]));
+		// });
 
-		$email_detail->on('click','li.reply-all',function($js,$data)use($email_model){
-			return $js->univ()->location($this->api->url(
-										'xepan_communication_composeemail',['reply_email_all'=>true,'communication_id'=>$email_model->id]));
-		});
+		// $email_detail->on('click','li.reply-all',function($js,$data)use($email_model){
+		// 	return $js->univ()->location($this->api->url(
+		// 								'xepan_communication_composeemail',['reply_email_all'=>true,'communication_id'=>$email_model->id]));
+		// });
 		
-		$email_detail->on('click','li.forward',function($js,$data)use($email_model){
-			$this->app->memorize('subject',$email_model['title']);
-			$this->app->memorize('message',$email_model['description']);
-			return $js->univ()->location($this->api->url('xepan_communication_composeemail'));
-		});
+		// $email_detail->on('click','li.forward',function($js,$data)use($email_model){
+		// 	// $this->app->memorize('subject',$email_model['title']);
+		// 	// $this->app->memorize('message',$email_model['description']);
+		// 	return $js->univ()->location($this->api->url('xepan_communication_composeemail',['fwd_email'=>true,'communication_id'=>$email_model->id]));
+		// });
 
 	}
 }

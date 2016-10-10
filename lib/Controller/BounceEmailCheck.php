@@ -11,7 +11,7 @@ class Controller_BounceEmailCheck extends \AbstractController  {
 		set_time_limit(0);
 
 		$cwsMailBounceHandler = new CwsMailBounceHandler();
-		$cwsMailBounceHandler->test_mode = true; // default false
+		$cwsMailBounceHandler->test_mode = false; // default false
 		// $cwsMailBounceHandler->debug_verbose = CWSMBH_VERBOSE_DEBUG; // default CWSMBH_VERBOSE_QUIET
 		$cwsMailBounceHandler->purge = true; // default false
 		//$cwsMailBounceHandler->disable_delete = false; // default false
@@ -45,10 +45,14 @@ class Controller_BounceEmailCheck extends \AbstractController  {
 		* Remote mailbox
 		*/
 
-		$emails_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
+		$mail_box_checked=[];
 
+		$emails_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
+		$emails_setting->addCondition('is_active',true);
 		$invalid_email = [];
 		foreach ($emails_setting as  $setting) {
+			if(in_array($setting['bounce_imap_email_host'], $mail_box_checked)) continue;
+			$mail_box_checked[] = $setting['bounce_imap_email_host'];
 			// echo "string".$setting['name'];
 			$cwsMailBounceHandler->open_mode = CWSMBH_OPEN_MODE_IMAP;
 			$cwsMailBounceHandler->host = $setting['bounce_imap_email_host']; // Mail host server ; default 'localhost'

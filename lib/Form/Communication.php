@@ -9,10 +9,10 @@ class Form_Communication extends \Form {
 
 	function init(){
 		parent::init();
-
+		$this->addClass('form-communication');
 		$this->setLayout('view\communicationform');
 		$type_field = $this->addField('dropdown','type')
-			->setValueList(['Email'=>'Email','Phone'=>'Call','Comment'=>'Personal','SMS'=>'SMS']);
+			->setValueList(['Email'=>'Email','Phone'=>'Call','TeleMarketing'=>'TeleMarketing','Comment'=>'Personal','SMS'=>'SMS']);
 		
 		$this->addField('dropdown','status')
 			->setValueList(['Called'=>'Called','Received'=>'Received'])->setEmptyText('Please Select');
@@ -44,6 +44,7 @@ class Form_Communication extends \Form {
 		$type_field->js(true)->univ()->bindConditionalShow([
 			'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
 			'Phone'=>['from_email','from_phone','from_person','called_to','notify_email','notify_email_to','status'],
+			'TeleMarketing'=>['from_phone','called_to'],
 			'Personal'=>[],
 			'SMS'=>['from_number','sms_to']
 		],'div.atk-form-row');
@@ -73,6 +74,8 @@ class Form_Communication extends \Form {
 				}
 				$communication['direction']='Out';
 				break;
+			case 'TeleMarketing':
+				$this['status'] = 'Called';	
 			case 'Phone':
 				if(!$this['from_phone'])
 					$this->displayError('from_phone','from_phone is required');
@@ -136,6 +139,8 @@ class Form_Communication extends \Form {
 				$communication->setFrom($_from,$_from_name);
 				$communication['direction']='Out';
 				break;
+			case 'TeleMarketing':
+				$this['status'] = 'Called';	
 			case 'Phone':
 				$send_settings = $this['from_phone'];
 				if($this['status']=='Received'){
@@ -143,7 +148,7 @@ class Form_Communication extends \Form {
 					$communication['to_id']=$this['from_person']; // actually this is to person this time
 					$communication['direction']='In';
 					$communication->setFrom($this['from_phone'],$this->contact['name']);
-				}else{
+				}else{					
 					$communication['from_id']=$this['from_person']; // actually this is to person this time
 					$communication['to_id']=$this->contact->id;
 					$communication['direction']='Out';
@@ -193,8 +198,8 @@ class Form_Communication extends \Form {
 		$communication->setSubject($this['title']);
 		$communication->setBody($this['body']);
 
-		if($_to_field){	
-			foreach (explode(',',$this[$_to_field]) as $to) {
+		if($_to_field){				
+			foreach (explode(',',$this[$_to_field]) as $to) {				
 				$communication->addTo(trim($to));
 			}			
 		}
@@ -215,7 +220,7 @@ class Form_Communication extends \Form {
 			}
 		}
 
-		if(isset($send_settings)){
+		if(isset($send_settings)){			
 			$communication->send(
 					$send_settings,
 					$this['notify_email']?$this['notify_email_to']:''

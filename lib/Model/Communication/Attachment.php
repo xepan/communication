@@ -26,5 +26,11 @@ class Model_Communication_Attachment extends \xepan\base\Model_Table{
 		$this->addExpression('filename')->set(function($m,$q){
 			return $m->refSQL('file_id')->fieldQuery('original_filename');
 		});
+
+		$this->addHook('beforeDelete',[$this,'deleteFiles']);
+	}
+
+	function deleteFiles(){
+		$this->ref('file_id')->delete();
 	}
 }

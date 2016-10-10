@@ -17,12 +17,13 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 	public $table='emailsetting';
 
-	public $acl=false;
+	public $acl_type="Communication_EmailSetting";
 
 	function init(){
 		parent::init();
 		// TODO : add all required fields for email + can_use_in_mass_emails
 		$this->hasOne('xepan\base\Epan','epan_id');
+		$this->hasOne('xepan\base\Contact','created_by_id');
 		$this->addField('name');
 		$this->addField('email_transport')->setValueList(array('SmtpTransport'=>'SMTP','SendmailTransport'=>'SendMail','MailTransport'=>'PHP Mail function'))->defaultValue('SmtpTransport')->display(['form'=>'xepan\base\DropDown']);
 		$this->addField('is_active')->type('boolean')->defaultValue(false);
@@ -96,7 +97,10 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 			$this['email_sent_in_this_minute']=0;
 			$this->save();
 			$this_minute_ok = true;
+		}elseif($this['email_sent_in_this_minute'] < $this['email_threshold']){
+			$this_minute_ok = true;
 		}
+
 		// emails sent in this month is under limit
 		$month_emails_count = $this->add('xepan\communication\Model_Communication')
 			->addCondition('communication_channel_id',$this->id)
@@ -108,11 +112,11 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 			$this_month_ok = true;
 
 		if($this_minute_ok==true && $this_month_ok==true){
-			// echo "found it usable<br/>";
+			echo $this['name']." is usable<br/>";
 			return true;
 		}
 
-		// echo "found it un-usable<br/>";
+		echo $this['name']." is un-usable<br/>";
 		return false;
 	}
 

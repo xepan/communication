@@ -1,0 +1,49 @@
+div(id="{$_name}")
+	link(rel="stylesheet" href="vender/xepan/base/templates/css/bootstrap.min.css")
+	//- {$Content}
+	table(style="width: 100%;")
+		tbody
+			tr
+				td(style=" vertical-align: middle;")
+					h3
+						{$contact}
+				td(style="text-align: right; vertical-align: top;")
+					img(src="../admin/img/small-logo.png" style="float:right; margin-top:0px")
+	hr					
+	{rows}{row}
+	table(style="font-size:10px")
+		tbody
+			tr
+				td(style="font-size:14px; ")
+					strong|{$title}
+				td(style="text-align:right; vertical-align:bottom")
+					{$created_at}
+			tr
+				td
+					{from_lister}
+					span.small From: 
+					{rows}{row} 
+					span.small {$name} &nbsp;&nbsp;
+					{/}{/}
+					{/}
+			tr
+				td
+					{to_lister}
+					span.small To:
+					{rows}{row} 
+					span.small {$email}{$number} &nbsp; &nbsp;
+					{/}{/}
+					{/}
+			tr
+				td
+					{cc_lister}
+					span.small CC: 
+					{rows}{row} 
+					span.small {$email}{$number} &nbsp;&nbsp;
+					{/}{/}
+					{/}
+			br				
+			tr
+				td(style="width:100%")
+					{$body}		
+	{/rows}{/row}

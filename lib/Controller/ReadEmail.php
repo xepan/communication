@@ -58,7 +58,7 @@ class Controller_ReadEmail extends \AbstractController {
 
 		try{
 			$mailbox = new ImapMailbox('{'.$imap_email_host.':'.$imap_email_port.$imap_flags.'}'.$mailbox_name, $imap_email_username, $imap_email_password, "websites/".$this->app->epan['name']."/upload", 'utf-8');
-			
+			echo "Connected<br/>";
 			$return=[];
 			
 			$conditions = $conditions?:'UNSEEN';
@@ -66,13 +66,18 @@ class Controller_ReadEmail extends \AbstractController {
 
 			if(!$mailsIds) {
 				$mailbox->disconnect();
+				echo "<br/>NO $conditions found returning <br/>";
 				return $return;
 			}
+
+			echo "has ".count($mailsIds)." Emails<br/>";
 
 			$i=1;
 			$fetch_email_array = array();
 			foreach ($mailsIds as $mailId) {
+				echo "Getting email <br/>";
 				$fetched_mail = $mailbox->getMail($mailId);
+				echo "got email <br/>";
 
 				
 				$mail_m = $this->add('xepan\communication\Model_Communication_Email_Received');
@@ -80,7 +85,10 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m->addCondition('mailbox',$this->email_setting['imap_email_username'].'#'.$mailbox_name);
 				$mail_m->tryLoadAny();
 				
-				if($mail_m->loaded()) continue;
+				if($mail_m->loaded()){
+					echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
+					continue;	
+				} 
 				
 				$mail_m->setFrom($fetched_mail->fromAddress,$fetched_mail->fromName);
 
@@ -107,9 +115,11 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m['description'] = $fetched_mail->textHtml?:$fetched_mail->textPlain;
 				$mail_m['flags'] = $conditions;
 				$mail_m->findContact('from');
+				echo "Saving email <br/>";
 				$mail_m->save();
 
 				if($this->email_setting['auto_reply']){
+					echo "Doing auto reply <br/>";
 					$mail_m->reply($this->email_setting);
 				}
 				$fetch_email_array[] = $mail_m->id;
@@ -133,7 +143,7 @@ class Controller_ReadEmail extends \AbstractController {
 			
 		}catch(\Exception $e){
 			$mailbox->disconnect();
-			// throw $e;
+			echo $e->getMessage().'<br/>';
 		}
 
 		$mailbox->disconnect();
