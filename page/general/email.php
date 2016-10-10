@@ -1,7 +1,9 @@
 <?php 
 namespace xepan\communication;
-class page_general_email extends \Page{
+class page_general_email extends \xepan\base\Page{
 	public $title="Email Settings";
+	public $breadcrumb=['Home'=>'index','EmailSettings'=>'xepan_communication_generalsetting','Detail'=>'#'];
+
 	function init(){
 		parent::init();
 		$action = $this->api->stickyGET('action')?:'view';
