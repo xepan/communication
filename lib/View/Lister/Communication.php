@@ -37,7 +37,7 @@ class View_Lister_Communication extends \CompleteLister{
 					$form->process();
 					$this->app->db->commit();
 				}catch(\Exception $e){
-					// if($this->api->db->inTransaction()) 
+					if($this->api->db->inTransaction()) 
 						$this->api->db->rollback();
 					throw $e;
 				}
