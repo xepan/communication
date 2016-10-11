@@ -2,7 +2,7 @@
 namespace xepan\communication;
 class page_general_email extends \xepan\base\Page{
 	public $title="Email Settings";
-	public $breadcrumb=['Home'=>'index','EmailSettings'=>'xepan_communication_generalsetting','Detail'=>'#'];
+	public $breadcrumb=['Home'=>'index','Emails Setting'=>'xepan_communication_generalsetting','Detail'=>'#'];
 
 	function init(){
 		parent::init();
