@@ -31,9 +31,17 @@ class View_Lister_Communication extends \CompleteLister{
 
 			if($form->isSubmitted()){
 
+				try{
+					$this->api->db->beginTransaction();
 					$form->process();
 					$this->app->db->commit();
-					$form->js(null,$self->js()->reload())->univ()->successMessage('Done')->closeDialog()->closeDialog()->execute();
+				}catch(\Exception $e){
+					// if($this->api->db->inTransaction()) 
+						$this->api->db->rollback();
+					throw $e;
+				}
+
+				$form->js(null,$self->js()->reload())->univ()->successMessage('Done')->closeDialog()->closeDialog()->execute();
 			}
 		});	
 		
