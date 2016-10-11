@@ -10,10 +10,11 @@ class View_Lister_Communication extends \CompleteLister{
 		
 		if(!$this->contact_id)
 			return;			
-
+		$this->addClass('xepan-communication-lister');
+		$this->js('reload')->reload();
+		
 		$self = $this;
 		$self_url = $this->app->url(null,['cut_object'=>$this->name]);
-		
 		$vp = $this->add('VirtualPage');
 		$vp->set(function($p)use($self,$self_url){
 
@@ -41,7 +42,7 @@ class View_Lister_Communication extends \CompleteLister{
 					throw $e;
 				}
 
-				$form->js(null,$self->js()->reload())->univ()->successMessage('Done')->closeDialog()->closeDialog()->execute();
+				$form->js(null,$this->js()->_selector('.xepan-communication-lister')->trigger('reload'))->univ()->successMessage('Done')->closeDialog()->closeDialog()->execute();
 			}
 		});	
 		
@@ -50,6 +51,7 @@ class View_Lister_Communication extends \CompleteLister{
 	}
 
 	function formatRow(){
+		
 		$to_mail = json_decode($this->model['to_raw'],true);
 		
 		$to_lister = $this->app->add('CompleteLister',null,null,['view/communication1','to_lister']);
