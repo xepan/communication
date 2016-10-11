@@ -1,7 +1,7 @@
 <?php 
 namespace xepan\communication;
 class page_general_countrystate extends \xepan\communication\page_sidebar{
-	public $title="Country\ State";
+	public $title="Countries & States";
 
 	function init(){
 		parent::init();
@@ -14,7 +14,7 @@ class page_general_countrystate extends \xepan\communication\page_sidebar{
 				$this->add('View_Error')->set('Sorry, you are not permitted to handle this section , Ask respective authority / SuperUser');
 				return;
 			}else{
-				$crud = $this->add('xepan\hr\CRUD');
+				$crud = $this->add('xepan\hr\CRUD',null,null,['view/country-state/country']);
 				$crud->setModel($country_model);
 				$crud->grid->addQuickSearch(['name','iso_code']);
 				$crud->grid->addPaginator(50);
@@ -27,7 +27,7 @@ class page_general_countrystate extends \xepan\communication\page_sidebar{
 						$state_model = $page->add('xepan\base\Model_State')->addCondition('country_id',$country_id);
 						$state_model->setOrder('name','asc');
 
-						$crud = $page->add('xepan\hr\CRUD');
+						$crud = $page->add('xepan\hr\CRUD',null,null,['view/country-state/state']);
 						$crud->setModel($state_model);
 						$crud->grid->addQuickSearch(['name','abbreviation']);
 						$crud->grid->addPaginator(50);

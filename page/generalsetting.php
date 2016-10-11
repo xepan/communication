@@ -11,13 +11,20 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$setiingview->setModel('xepan\communication\Communication_EmailSetting');
 		
 		// /*SMS Setting*/
+		$sms_view_model = $this->add('xepan\communication\Model_Communication_SMSSetting');
 		$sms_view=$this->add('xepan\hr\CRUD',null,'sms_setting',['view/setting/sms-setting-grid']);
 		if($sms_view->isEditing()){
 			$form=$sms_view->form;
 			$form->setLayout('view/setting/form/sms-setting');
 			$form->js(true)->find('button')->addClass('btn btn-primary');
 		}	
-		$sms_view->setModel('xepan\communication\Model_Communication_SMSSetting');
+
+		if($sms_view->isEditing()){
+		if($emp_id= $this->app->employee->id)
+			$sms_view_model->addCondition('created_by_id',$emp_id);
+		}
+
+		$sms_view->setModel($sms_view_model);
 
 		// MISC Setting
 		$misc_m = $this->add('xepan\base\Model_ConfigJsonModel',

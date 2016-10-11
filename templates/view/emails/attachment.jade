@@ -4,7 +4,7 @@ ul.clearfix
     .img
       a(href='#')
         //- img(alt='', src='{file}img/samples/hdr/small/img_5.jpg{/}')
-        embed(class="doc-img litebox-image" alt='', src='{file}img/samples/hdr/small/img_5.jpg{/}')
+        embed(style='width:100%;' class="doc-img litebox-image" alt='', src='{file}img/samples/hdr/small/img_5.jpg{/}')
     span.name
       //- {file}| nature.jpg{/}
     a(href='{$file}' download="{$filename}") {$filename}
@@ -25,6 +25,9 @@ ul.clearfix
 {/}{/}
 
 style.
+  .clearfix li{
+    width:20%;
+  }
   .clearfix li .img{
     min-height:87px;
     min-width:130px;
