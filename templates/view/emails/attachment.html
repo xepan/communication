@@ -1,7 +1,8 @@
 
 <ul class="clearfix">{rows}{row}
   <li>
-    <div class="img"><a href="#"><img alt="" src="{file}img/samples/hdr/small/img_5.jpg{/}"/></a></div><span class="name"></span><a href="{$file}" download="{$filename}">{$filename}</a>{/}
+    <div class="img"><a href="#">
+        <embed style="width:100%;" alt="" src="{file}img/samples/hdr/small/img_5.jpg{/}" class="doc-img litebox-image"/></a></div><span class="name"></span><a href="{$file}" download="{$filename}">{$filename}</a>{/}
   </li>
   <li>
     <div class="img"><a href="#"><img alt="" src="img/samples/hdr/small/img_8.jpg"/></a></div><span class="name">bratislava.jpg</span><a href="#">Download</a>
@@ -10,3 +11,14 @@
     <div class="img"><i class="fa fa-file"></i></div><span class="name">invoice.pdf</span><a href="#">Download</a>
   </li>
 </ul>{/}{/}
+<style>
+  .clearfix li{
+    width:20%;
+  }
+  .clearfix li .img{
+    min-height:87px;
+    min-width:130px;
+    width:100%!important;
+    height:auto!important;
+  }
+</style>

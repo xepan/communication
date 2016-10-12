@@ -1,0 +1,41 @@
+
+<div id="{$_name}">
+  <link rel="stylesheet" href="vender/xepan/base/templates/css/bootstrap.min.css"/>
+  <table style="width: 100%;">
+    <tbody>
+      <tr>
+        <td style=" vertical-align: middle;">
+          <h3>{$contact}</h3>
+        </td>
+        <td style="text-align: right; vertical-align: top;"><img src="../admin/img/small-logo.png" style="float:right; margin-top:0px"/></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr/>{rows}{row}
+  <table style="font-size:10px">
+    <tbody>
+      <tr>
+        <td style="font-size:14px; "><strong>{$title}</strong></td>
+        <td style="text-align:right; vertical-align:bottom">{$created_at}</td>
+      </tr>
+      <tr>
+        <td>{from_lister}<span class="small">From: </span>{rows}{row} <span class="small">{$name} &nbsp;&nbsp;</span>{/}{/}
+          {/}
+        </td>
+      </tr>
+      <tr>
+        <td>{to_lister}<span class="small">To:</span>{rows}{row} <span class="small">{$email}{$number} &nbsp; &nbsp;</span>{/}{/}
+          {/}
+        </td>
+      </tr>
+      <tr>
+        <td>{cc_lister}<span class="small">CC: </span>{rows}{row} <span class="small">{$email}{$number} &nbsp;&nbsp;</span>{/}{/}
+          {/}
+        </td>
+      </tr><br/>
+      <tr>
+        <td style="width:100%">{$body}		</td>
+      </tr>
+    </tbody>
+  </table>{/rows}{/row}
+</div>

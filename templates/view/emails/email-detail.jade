@@ -1,5 +1,7 @@
 div(id="{$_name}")
   #email-box.email-detail-nano.has-scrollbar(style='margin-left:0px')
+          //- .compose-email-view-popup(style="display:none")
+          //-   {$compose_view}
           .email-detail-nano-content(tabindex='0', style='right: -13px;')
             #email-detail-inner
               #email-detail-subject.clearfix
@@ -61,7 +63,7 @@ div(id="{$_name}")
                           a(data-id="{$id}")
                             i.fa.fa-print
                             |  Print
-              #email-body
+              #email-body(style="width:100%;overflow:scroll")
                 {email_body}
                 p
                   | Hey Scarlett,
@@ -84,7 +86,7 @@ div(id="{$_name}")
                   .tools
                     //- a.all-Attachment-media(data-id="{$id}") Download all
                 #email-attachments-content
-                  {Attachments}
+                  {$Attachments}
                   //- ul.clearfix
                   //-   {rows}{row}
                   //-   li
@@ -109,5 +111,5 @@ div(id="{$_name}")
                   //-       | invoice.pdf
                   //-     a(href='#') Download
                   //- {/}{/}
-          .nano-pane
-            .nano-slider(style='height: 502px; transform: translate(0px, 60px);')
+          //- .nano-pane
+          //-   .nano-slider(style='height: 502px; transform: translate(0px, 60px);')
