@@ -125,7 +125,8 @@ class page_emails extends \xepan\base\Page{
 		// 	];
 
 		// });
-		$mailboxes_view->on('click','a',function($js,$data)use($mailboxes_view,$email_view,$url){
+		$email_detail=$this->add('xepan\communication\View_EmailDetail',null,'email_detail');
+		$mailboxes_view->on('click','a',function($js,$data)use($mailboxes_view,$email_view,$url,$email_detail){
 			$email_view->memorize('mailbox',$data['mailbox']);
 			$email_view->memorize('filter-contacts',(int)$data['filterContacts']);
 			$email_view->memorize('starred',(int) $data['starred']);
@@ -136,23 +137,25 @@ class page_emails extends \xepan\base\Page{
 			return [
 					$mailboxes_view->js()->find('li')->removeClass('active'),
 					$email_view->js()->reload(null,null,$url),
-					$js->closest('li')->addClass('active')
+					$js->closest('li')->addClass('active'),
+					$email_detail->js()->hide()
+
 			];
 
 		});
 
-		$label_view->on('click','a',function($js,$data)use($label_view,$email_view,$url){
+		$label_view->on('click','a',function($js,$data)use($label_view,$email_view,$url,$email_detail){
 			$email_view->memorize('mail',$data['mail']);
 						
 			return [
 					$label_view->js()->find('.fa.fa-check-square')->removeClass('fa fa-check-square'),
 					$email_view->js()->reload(null,null,$url,['mail'=>$data['mail']]),
-					$js->addClass('fa fa-check-square')
+					$js->addClass('fa fa-check-square'),
+					$email_detail->js()->hide()
 			];
 
 		});
 		
-		$email_detail=$this->add('xepan\communication\View_EmailDetail',null,'email_detail');
 		if($this->app->stickyGET('email_id')){
 			$email_model=$this->add('xepan\communication\Model_Communication_Email');
 			$email_model->load($_GET['email_id']);
@@ -168,7 +171,6 @@ class page_emails extends \xepan\base\Page{
 		}
 
 		$email_view->js('click',$email_detail->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]))->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
-
 
 
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
