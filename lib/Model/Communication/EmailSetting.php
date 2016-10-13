@@ -16,14 +16,18 @@ namespace xepan\communication;
 class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 	public $table='emailsetting';
-
 	public $acl_type="Communication_EmailSetting";
-
+	
+	public $status="";
+	public $actions=[
+		'Active'=>['view','edit','delete','duplicate','checkConnection'],
+		'InActive'=>['view','edit','delete'],
+	];
 	function init(){
 		parent::init();
 		// TODO : add all required fields for email + can_use_in_mass_emails
 		$this->hasOne('xepan\base\Epan','epan_id');
-		$this->hasOne('xepan\base\Contact','created_by_id');
+		$this->hasOne('xepan\base\Contact','created_by_id')->defaultValue($this->app->employee->id);
 		$this->addField('name');
 		$this->addField('email_transport')->setValueList(array('SmtpTransport'=>'SMTP','SendmailTransport'=>'SendMail','MailTransport'=>'PHP Mail function'))->defaultValue('SmtpTransport')->display(['form'=>'xepan\base\DropDown']);
 		$this->addField('is_active')->type('boolean')->defaultValue(false);
@@ -76,7 +80,79 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$this->addField('mass_mail')->caption('Use For Mass Mailing')->type('boolean');
 		
 		$this->hasMany('xepan\hr\Post_Email_Association','emailsetting_id',null,'EmailAssociation');
+
+		$this->addExpression('status')->set(function($m,$q){
+			// return '"Active"';
+			return $q->expr('IF([0]=1,"Active","InActive")',[$q->getField('is_active')]);
+		});
+
 	}
+	function page_duplicate($p){
+		$f = $p->add('Form');
+		$f->addField('line','name')->validate('required');
+		$f->addField('line','email_username')->validate('required');
+		$f->addField('password','email_password')->validate('required');
+		$f->addField('line','from_email')->validate('required');
+		$f->addField('line','from_name')->validate('required');
+
+		$f->addSubmit('Duplicate');
+
+		if($f->isSubmitted()){
+			$duplicate_email_m = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($this->id);
+			$duplicate_email_m->duplicate($f['name'],$f['email_username'],$f['email_password'],$f['from_email'],$f['from_name']);
+			
+			$this->app->page_action_result = $f->js(null,$f->js()->closest('.dialog')->dialog('close'))->univ()->successMessage('Duplicate SuccessFully');
+		}
+		
+	}
+
+	function duplicate($name,$email_username,$email_password,$from_email,$from_name){
+		$new_email = $this->add('xepan\communication\Model_Communication_EmailSetting');
+		$new_email['name'] = $name ;
+		$new_email['encryption'] = $this['encryption'];
+		$new_email['email_host'] = $this['email_host'];
+		$new_email['email_port'] = $this['email_port'] ;
+		$new_email['email_username'] = $email_username;			
+		$new_email['email_password'] = $email_password;			
+		$new_email['from_email'] = $from_email;			
+		$new_email['from_name'] = $from_name;
+		$new_email['email_transport'] = $this['email_transport'];			
+		$new_email['is_active'] = $this['is_active'];			
+		$new_email['is_support_email'] = $this['is_support_email'];	
+		$new_email['sender_email'] = $from_email;			
+		$new_email['sender_name'] = $from_name;			
+		$new_email['email_reply_to'] = $from_email;			
+		$new_email['email_reply_to_name'] = $from_name;	
+		$new_email['imap_email_host'] = $this['imap_email_host'];	
+		$new_email['imap_email_port'] = $this['imap_email_port'];	
+		$new_email['imap_email_username'] = $this['imap_email_username'];	
+		$new_email['imap_email_password'] = $this['imap_email_password'];	
+		$new_email['imap_flags'] = $this['imap_flags'];	
+		$new_email['is_imap_enabled'] = $this['is_imap_enabled'];	
+		$new_email['bounce_imap_email_host'] = $this['bounce_imap_email_host'];	
+		$new_email['bounce_imap_email_port'] = $this['bounce_imap_email_port'];	
+		$new_email['return_path'] = $this['return_path'];	
+		$new_email['bounce_imap_email_password'] = $this['bounce_imap_email_password'];	
+		$new_email['smtp_auto_reconnect'] = $this['smtp_auto_reconnect'];	
+		$new_email['email_threshold'] = $this['email_threshold'];	
+		$new_email['email_threshold_per_month'] = $this['email_threshold_per_month'];	
+		$new_email['emails_in_BCC'] = $this['emails_in_BCC'];	
+		$new_email['last_emailed_at'] = $this['last_emailed_at'];	
+		$new_email['email_sent_in_this_minute'] = $this['email_sent_in_this_minute'];	
+		$new_email['auto_reply'] = $this['auto_reply'];	
+		$new_email['email_subject'] = $this['email_subject'];	
+		$new_email['email_body'] = $this['email_body'];	
+		$new_email['signature'] = $this['signature'];	
+		$new_email['denied_email_subject'] = $this['denied_email_subject'];	
+		$new_email['denied_email_body'] = $this['denied_email_body'];	
+		$new_email['mass_mail'] = $this['mass_mail'];	
+		$new_email->save();
+
+	}
+
+	function page_checkConnection($page){
+		$page->add('View')->set('TODO');
+	}	
 
 	function isUsable(){
 		// emails sent in this minute is under limit
