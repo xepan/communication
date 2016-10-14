@@ -125,8 +125,8 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$new_email['email_reply_to_name'] = $from_name;	
 		$new_email['imap_email_host'] = $this['imap_email_host'];	
 		$new_email['imap_email_port'] = $this['imap_email_port'];	
-		$new_email['imap_email_username'] = $from_email;	
-		$new_email['imap_email_password'] = $from_name;	
+		$new_email['imap_email_username'] = $email_username;	
+		$new_email['imap_email_password'] = $email_password;	
 		$new_email['imap_flags'] = $this['imap_flags'];	
 		$new_email['is_imap_enabled'] = $this['is_imap_enabled'];	
 		$new_email['bounce_imap_email_host'] = $this['bounce_imap_email_host'];	
