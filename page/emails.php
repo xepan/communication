@@ -20,7 +20,10 @@ class page_emails extends \xepan\base\Page{
 			foreach ($_GET['mark_read'] as $mark_read_email) {
 				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
 				->load($mark_read_email);
-				$mark['extra_info']=['seen_by'=>$this->app->employee->id];
+				
+				$einfo = $mark['extra_info'];
+				$einfo['seen_by'][] = $this->app->employee->id;
+				$mark['extra_info'] = $einfo;
 				$mark->save();
 			}
 		}
@@ -28,8 +31,16 @@ class page_emails extends \xepan\base\Page{
 			foreach ($_GET['mark_unread'] as $mark_unread_email) {
 				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
 				->load($mark_unread_email);
-				$mark['extra_info']='{}';
-				$mark->save();
+
+				$einfo = $mark['extra_info'];
+				if(in_array($this->app->employee->id,$einfo['seen_by'])){
+					
+					$einfo['seen_by'] = array_diff($einfo['seen_by'], [$this->app->employee->id]);
+																									
+					$mark['extra_info'] = $einfo;
+					$mark->save();
+
+				}
 			}
 		}
 
@@ -156,13 +167,17 @@ class page_emails extends \xepan\base\Page{
 
 		});
 		
+
 		if($this->app->stickyGET('email_id')){
 			$email_model=$this->add('xepan\communication\Model_Communication_Email');
 			$email_model->load($_GET['email_id']);
-			if(! isset($email_model['extra_info']['seen_by'])){
-				$email_model['extra_info'] = ['seen_by'=>$this->app->employee->id];
+				/*Mark Read When Click to open Email Details*/
+				$einfo = $email_model['extra_info'];
+				$einfo['seen_by'][] = $this->app->employee->id;
+				
+				$email_model['extra_info'] = $einfo;
 				$email_model->save();
-			}
+
 			$email_detail->setModel($email_model);
 
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'reply_email']))->_selector('.reply');	
