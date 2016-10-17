@@ -16,7 +16,9 @@
                 .main-box.small-graph-box.emerald-bg
                   span.value(style="font-size:1em!important;") 
                     a(href="?page=xepan_communication_general_email&emailsetting_id={$id}")
-                      .small-graph-box{name}69.600{/}
+                      .small-graph-box{name}69.600{/}  
+                        br
+                        |     ( {$email_username})
                   //- span.headline Visits
                   .progress
                     .progress-bar(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%;')
@@ -56,3 +58,8 @@
 
             {totals}{cols}{col}{$content}{/}{/}{/}
         {$Paginator}
+
+style.
+  .small-graph-box{
+    padding:5px!important;
+  }        
