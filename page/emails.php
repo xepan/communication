@@ -84,6 +84,7 @@ class page_emails extends \xepan\base\Page{
 			$i=0;
 			foreach ($my_email as $email) {
 				$or->where('mailbox','like',$email['post_email'].'%');
+				$or->where('created_by_id',$this->app->employee->id);
 				$i++;
 			}
 			if($i == 0) $or->where('mailbox',-1);
