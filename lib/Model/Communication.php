@@ -116,7 +116,8 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$communication1->addCondition('from_id',null);
 
 		$contact_email = $contact_info['value'];
-		if(! filter_var($contact_email, FILTER_VALIDATE_EMAIL)){
+        
+        if(! filter_var($contact_email, FILTER_VALIDATE_EMAIL)){
             return;
         }
 
