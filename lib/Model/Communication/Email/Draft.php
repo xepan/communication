@@ -15,6 +15,6 @@ class Model_Communication_Email_Draft extends Model_Communication_Email{
 		parent::init();
 		
 		$this->addCondition('status','Draft');		
-		// $this->addCondition('direction','In');
+		$this->addCondition('direction','Out');
 	}
 }
