@@ -26,7 +26,7 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 	function init(){
 		parent::init();
 		// TODO : add all required fields for email + can_use_in_mass_emails
-		$this->hasOne('xepan\base\Epan','epan_id');
+		// $this->hasOne('xepan\base\Epan','epan_id');
 		$this->hasOne('xepan\base\Contact','created_by_id')->defaultValue($this->app->employee->id);
 		$this->addField('name');
 		$this->addField('email_transport')->setValueList(array('SmtpTransport'=>'SMTP','SendmailTransport'=>'SendMail','MailTransport'=>'PHP Mail function'))->defaultValue('SmtpTransport')->display(['form'=>'xepan\base\DropDown']);

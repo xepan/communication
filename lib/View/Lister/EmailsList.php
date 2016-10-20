@@ -9,10 +9,13 @@ class View_Lister_EmailsList extends \CompleteLister{
 			$this->current_row['starred']='';
 		}
 
-		if(isset($this->model['extra_info']['seen_by'])){
-			$this->current_row['unread']='';
-		}else{
-			$this->current_row['unread']='unread';
+		$einfo =$this->model['extra_info'];
+		if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
+			if(in_array($this->app->employee->id, $einfo['seen_by'])){
+				$this->current_row['unread']='';
+			}else{
+				$this->current_row['unread']='unread';
+			}
 		}
 		
 		if(!$this->model['attachment_count']){
