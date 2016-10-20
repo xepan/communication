@@ -43,7 +43,7 @@ class Initiator extends \Controller_Addon {
 			echo "Email Fetch <br/>";
 			var_dump($now);
 			$job1 = new \Cron\Job\ShellJob();
-			$job1->setSchedule(new \Cron\Schedule\CrontabSchedule('*/5 * * * *'));
+			$job1->setSchedule(new \Cron\Schedule\CrontabSchedule('* * * * *'));
 			if(!$job1->getSchedule() || $job1->getSchedule()->valid($now)){
 				echo " Executing email fetching <br/>";
 				$this->add('xepan\communication\Controller_Cron');
