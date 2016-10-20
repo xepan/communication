@@ -50,7 +50,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('is_starred')->type('boolean')->defaultValue(false);
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
-		$this->addField('extra_info')->defaultValue([]);
+		$this->addField('extra_info')->defaultValue("{}");
 		
 		$this->addField('type');
  
@@ -116,6 +116,11 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$communication1->addCondition('from_id',null);
 
 		$contact_email = $contact_info['value'];
+        
+        if(! filter_var($contact_email, FILTER_VALIDATE_EMAIL)){
+            return;
+        }
+
 	    $from_communications = $communication1->addCondition('from_raw', 'like', '%'.$contact_email.'%');
 		
 		foreach ($from_communications as $previous_communication) {
