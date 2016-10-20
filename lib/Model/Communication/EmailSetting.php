@@ -66,6 +66,7 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$this->addField('emails_in_BCC')->type('int')/*->hint('Emails to be sent by bunch of Bcc emails, to will be used same as From, 0 to send each email in to field')*/->defaultValue(0);
 		$this->addField('last_emailed_at')->type('datetime')->system(true);
 		$this->addField('email_sent_in_this_minute')->type('int')->system(true);
+		$this->addField('last_email_fetched_at')->type('datetime')->system(true);
 
 		$this->addField('auto_reply')->type('boolean');
 		$this->addField('email_subject')->group('ar~12');
