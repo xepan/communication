@@ -10,7 +10,7 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}
 
 		$einfo =$this->model['extra_info'];
-		if($einfo['seen_by'] And is_array($einfo['seen_by'])){
+		if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
 			if(in_array($this->app->employee->id, $einfo['seen_by'])){
 				$this->current_row['unread']='';
 			}else{
