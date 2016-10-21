@@ -65,7 +65,7 @@ class page_emails extends \xepan\base\Page{
 		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
 
 		$email_view=$this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
-
+		
 		$mail = $email_view->recall('mail')?:'%';
 		$mailbox = $email_view->recall('mailbox','_Received');
 		// $mailbox = $this->app->stickyGET('mailbox')?:'_ContactReceivedEmail';
@@ -84,7 +84,9 @@ class page_emails extends \xepan\base\Page{
 			$i=0;
 			foreach ($my_email as $email) {
 				$or->where('mailbox','like',$email['post_email'].'%');
-				$or->where('created_by_id',$this->app->employee->id);
+				$or->where($email_model->dsql()->andExpr()
+									->where('created_by_id',$this->app->employee->id)
+									->where('status','Draft'));
 				$i++;
 			}
 			if($i == 0) $or->where('mailbox',-1);
@@ -197,11 +199,13 @@ class page_emails extends \xepan\base\Page{
 				$js_array[] = $js->removeClass('starred');
 				$js_array[] = $js->data('starred','0');
 				$email_model['is_starred']=false;
+				$email_model['created_by_id']=$this->app->employee->id;
 			}
 			else{
 				$js_array[] = $js->addClass('starred');
 				$js_array[] = $js->data('starred','1');
 				$email_model['is_starred']=true;
+				$email_model['created_by_id']=$this->app->employee->id;
 			}
 			$email_model->saveAndUnload();
 

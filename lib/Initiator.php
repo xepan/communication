@@ -11,14 +11,37 @@ class Initiator extends \Controller_Addon {
 			->setBaseURL('../vendor/xepan/communication/');
 
 		if(!$this->app->isAjaxOutput()){
-			
-			$contact_email=$this->add('xepan\communication\Model_Communication_Email_ContactReceivedEmail');
+			$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
+			$my_email->addExpression('post_email')->set(function($m,$q){
+				return $q->getField('email_username');
+			});
 
-			$contact_email->addCondition('extra_info','not like','%seen_by%');
+			$contact_email=$this->add('xepan\communication\Model_Communication_Email_ContactReceivedEmail');
+			$or = $contact_email->dsql()->orExpr();
+			$i=0;
+				foreach ($my_email as $email) {
+					$or->where('mailbox','like',$email['post_email'].'%');
+					$i++;
+				}
+				if($i == 0) $or->where('mailbox',-1);		
+			
+			
+			$contact_email->addCondition($or);
+			$contact_email->addCondition('extra_info','not like','%'.$this->app->employee->id.'%');
 			$contact_count=$contact_email->count()->getOne();
 
 			$all_email=$this->add('xepan\communication\Model_Communication_Email_Received');
-			$all_email->addCondition('extra_info','not like','%seen_by%');
+			$or = $all_email->dsql()->orExpr();
+			$i=0;
+				foreach ($my_email as $email) {
+					$or->where('mailbox','like',$email['post_email'].'%');
+					$i++;
+				}
+				if($i == 0) $or->where('mailbox',-1);		
+			
+			
+			$all_email->addCondition($or);
+			$all_email->addCondition('extra_info','not like','%'.$this->app->employee->id.'%');
 			$all_count=$all_email->count()->getOne();
 			
 			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>[$contact_count. " / " .$all_count ,'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails']);

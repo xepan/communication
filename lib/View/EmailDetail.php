@@ -43,7 +43,7 @@ class View_EmailDetail extends \View{
 		$this->js('click',[$this->js()->show()->_selector('.compose-email-view-popup'),$this->js()->reload()])->_selector('.reply');
 		$this->js('click',[$this->js()->show()->_selector('.compose-email-view-popup'),$this->js()->reload()])->_selector('li.reply-all');
 		$this->js('click',[$this->js()->show()->_selector('.compose-email-view-popup'),$this->js()->reload()])->_selector('li.forward');
-			
+		$this->add('xepan\base\Controller_Avatar',['options'=>['size'=>45,'border'=>['width'=>0]],'name_field'=>'communication_with','default_value'=>'']);	
 
 		return $m;
 
