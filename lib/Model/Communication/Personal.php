@@ -11,14 +11,14 @@
 
 namespace xepan\communication;
 
-class Model_Communication_Comment extends Model_Communication {
+class Model_Communication_Personal extends Model_Communication {
 	
 	public $status=['Commented'];
 
 	function init(){
 		parent::init();
-		$this->addCondition('communication_type','Comment');	
-		$this->getElement('status')->defaultValue('Commented');
+		$this->addCondition('communication_type','Personal');	
+		$this->getElement('status')->defaultValue('Personal');
 	}
 
 	function setFrom($employee_id,$employee){

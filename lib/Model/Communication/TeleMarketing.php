@@ -26,13 +26,16 @@ class Model_Communication_TeleMarketing extends Model_Communication {
 	}
 
 	function setFrom($number,$person){
+		$from_raw = $this['from_raw'];
+		if(!is_array($from_raw))
+			$from_raw = json_decode($from_raw,true);
 		$tmp=['name'=>$person,'number'=>$number];
-		$tmp = array_merge($tmp,$this['from_raw']);
+		$tmp = array_merge($tmp,$from_raw);
 		$this->set('from_raw',$tmp);
 	}
 
 	function addTo($number,$name=null){
-		$tmp = $this['to_raw'];
+		// $tmp = $this['to_raw'];
 		$to=['name'=>$name,'number'=>$number];
 		$tmp[] = $to;
 		$this->set('to_raw',$tmp);

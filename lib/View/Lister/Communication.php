@@ -8,6 +8,7 @@ class View_Lister_Communication extends \CompleteLister{
 	function init(){
 		parent::init();
 		
+
 		if(!$this->contact_id)
 			return;			
 		$this->addClass('xepan-communication-lister');
@@ -21,14 +22,28 @@ class View_Lister_Communication extends \CompleteLister{
 			$contact_id = $this->api->stickyGET('contact_id');	
 			$model_contact = $this->add('xepan\base\Model_Contact');
 			$model_contact->load($contact_id);
-			
-			$form = $p->add('xepan\communication\Form_Communication',null,null,['form/empty']);
+			$edit_id = $this->app->stickyGET('edit_communication_id');
+			$form = $p->add('xepan\communication\Form_Communication',['edit_communication_id'=>$edit_id],null,['form/empty']);
 			$form->setContact($model_contact);
-
 			$member_phones = array_reverse($model_contact->getPhones());
-			$form->getElement('email_to')->set(implode(", ", $model_contact->getEmails()));
+			$to_email_field = $form->getElement('email_to');
 			$form->getElement('notify_email_to')->set(implode(", ", $model_contact->getEmails()));
-			$form->getElement('called_to')->set(array_pop($member_phones));
+			$called_to_field = $form->getElement('called_to');
+
+			$edit_model = $this->add('xepan\communication\Model_Communication_Abstract_Email');
+			if($edit_id){
+				$edit_model->load($edit_id);
+				
+				$edit_emails_to =[];		
+				foreach ($edit_model['to_raw'] as $flipped) {
+					$edit_emails_to [] = $flipped['email'];
+				}
+				$to_email_field->set(implode(", ", $edit_emails_to));	
+			}else{
+				$to_email_field->set(implode(", ", $model_contact->getEmails()));
+				$called_to_field->set(array_pop($member_phones));
+				
+			}
 
 			if($form->isSubmitted()){
 
@@ -48,6 +63,33 @@ class View_Lister_Communication extends \CompleteLister{
 		
 		$this->js('click',$this->js()->univ()->dialogURL("NEW COMMUNICATION",$this->api->url($vp->getURL(),['contact_id'=>$this->contact_id])))->_selector('.create');
 		$this->js('click',$this->js()->univ()->frameURL("SEND ALL COMMUNICATION",$this->api->url('xepan_communication_contactcommunications',['contact_id'=>$this->contact_id])))->_selector('.inform');
+		
+		
+		$this->js('click',$this->js()->univ()->dialogURL("Edit  COMMUNICATION",
+					[
+						$this->api->url($vp->getURL(),['contact_id'=>$this->contact_id]),
+							'edit_communication_id'=>$this->js()->_selectorThis()->data('id')
+					])
+		)->_selector('.do-view-edit-communication');
+		
+		/*=========Delete Communication================*/
+		if($do_delete_id = $this->app->stickyGET('do_delete_communication_id')){
+			$del_model = $this->add('xepan\communication\Model_Communication')
+				->addCondition('id',$do_delete_id)
+				->tryLoadAny();
+			if($del_model->loaded()){
+				$del_model->delete();
+			}	
+
+			 $this->app->page_action_result = $this->js(null,$this->js()->univ()->successMessage('Deleted Successfully'))->_selector('.xepan-communication-lister')->trigger('reload');
+		}
+
+		$this->on('click','.do-view-delete-communication')->univ()->confirm('Are you sure?')
+			->ajaxec(array(
+            	$this->app->url(),
+            	'do_delete_communication_id'=>$this->js()->_selectorThis()->data('id')
+
+        ));
 	}
 
 	function formatRow(){
