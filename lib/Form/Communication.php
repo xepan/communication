@@ -334,23 +334,23 @@ class Form_Communication extends \Form {
 			$communication->save();
 		}
 
-		$model_task = $this->add('xepan\projects\Model_Task');
-		$model_task->addCondition('type','Followup');
-		$model_task['task_name'] = $this['task_title'];
-		$model_task['created_by_id'] = $this->app->employee->id;
-		$model_task['starting_date'] = $this['starting_at'];
-		$model_task['assign_to_id'] = $this['assign_to'];
-		$model_task['description'] = $this['description'];
-		$model_task['remind_value'] = $this['remind_value'];
-		$model_task['remind_unit'] = $this['remind_unit'];
-		$model_task['remind_via'] = $this['remind_via'];
-		$model_task['notify_to'] = $this['notify_to'];
-		$model_task['related_id'] = $communication->id;
-		
-		if($this['follow_up_type'] == 'Reminder')
-			$model_task['set_reminder'] = true;
-
-		$model_task->save();
+		if($this['follow_up'] == 'Yes'){
+			$model_task = $this->add('xepan\projects\Model_Task');
+			$model_task['type'] = 'Followup';
+			$model_task['task_name'] = $this['task_title'];
+			$model_task['created_by_id'] = $this->app->employee->id;
+			$model_task['starting_date'] = $this['starting_at'];
+			$model_task['assign_to_id'] = $this['assign_to'];
+			$model_task['description'] = $this['description'];
+			$model_task['remind_value'] = $this['remind_value'];
+			$model_task['remind_unit'] = $this['remind_unit'];
+			$model_task['remind_via'] = $this['remind_via'];
+			$model_task['notify_to'] = $this['notify_to'];
+			$model_task['related_id'] = $communication->id;
+			if($this['follow_up_type'] == 'Reminder')
+				$model_task['set_reminder'] = true;
+			$model_task->save();
+		}
 
 		return $communication;
     }
