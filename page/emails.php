@@ -188,9 +188,14 @@ class page_emails extends \xepan\base\Page{
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'fwd_email']))->_selector('li.forward');				
 		}
 
-		$email_view->js('click',$email_detail->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]))->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
-
-
+		$email_view->js('click',
+			[
+			$email_detail->js()
+				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+				->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]),
+			])
+		->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
+		$email_view->js('click',$email_view->js()->reload())->_selector('button.back-inbox');
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
 			// load data['id'] wala e,mail and mark starred or remove is_starred
 			$email_model->load($data['id']);
