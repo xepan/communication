@@ -11,10 +11,12 @@ class Form_Communication extends \Form {
 	function init(){
 		parent::init();
 		$edit_model = $this->add('xepan\communication\Model_Communication_Abstract_Email');
+		$edit_task_model = $this->add('xepan\projects\Model_Task');
 		if($this->edit_communication_id){
 			$edit_model->load($this->edit_communication_id);
-			// $this->setModel($edit_model);
+			$edit_task_model->tryLoadBy('related_id',$edit_model->id);
 		}
+
 		$this->addClass('form-communication');
 		$this->setLayout('view\communicationform');
 		$type_field = $this->addField('dropdown','type');
@@ -79,6 +81,41 @@ class Form_Communication extends \Form {
 		$this->addField('line','from_number');//->set($edit_model['from_raw']['number']);
 		$this->addField('line','sms_to');
 
+		$follow_up_field = $this->addField('DropDown','follow_up')->setValueList(['Yes'=>'Yes','No'=>'No'])->setEmptyText('Want to follow-up ?');
+		$follow_up_by_field = $this->addField('DropDown','follow_up_type')->setValueList(['Task'=>'Task','Reminder'=>'Reminder']);
+		$task_title_field = $this->addField('task_title');
+		$starting_date_field = $this->addField('DateTimePicker','starting_at')->set($this->app->now);
+		$assign_to_field = $this->addField('DropDown','assign_to');
+		$assign_to_field->setModel('xepan\hr\Model_Employee');
+		$assign_to_field->set($this->app->employee->id);
+
+		$description_field = $this->addField('text','description');
+		$remind_via_field = $this->addField('DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple']);
+		$notify_to_field = $this->addField('DropDown','notify_to')->setAttr(['multiple'=>'multiple']);
+		$notify_to_field->setModel('xepan\hr\Model_Employee');
+		$remind_value_field = $this->addField('remind_value')->set(0);
+		$remind_unit_field = $this->addField('DropDown','remind_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days','Weeks'=>'Weeks','months'=>'Months']);
+		
+		if($edit_task_model->loaded()){
+			$task_title_field->set($edit_task_model['task_name']);
+			$starting_date_field->set($edit_task_model['starting_date']);
+			$assign_to_field->set($edit_task_model['assign_to_id']);
+			$description_field->set($edit_task_model['description']);
+			$remind_via_field->set($edit_task_model['task_name']);
+			$notify_to_field->set($edit_task_model['task_name']);
+			$remind_value_field->set($edit_task_model['remind_value']);
+			$remind_unit_field->set($edit_task_model['remind_unit']);
+						
+			$temp = [];
+			$temp = explode(',', $edit_task_model['notify_to']);
+
+			$temp1 = [];
+			$temp1 = explode(',', $edit_task_model['remind_via']);
+
+			$notify_to_field->set($temp)->js(true)->trigger('changed');
+			$remind_via_field->set($temp1)->js(true)->trigger('changed');
+		}
+
 		$type_field->js(true)->univ()->bindConditionalShow([
 			'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
 			'Call'=>['from_email','from_phone','from_person','called_to','notify_email','notify_email_to','status'],
@@ -86,6 +123,14 @@ class Form_Communication extends \Form {
 			'Personal'=>['from_person'],
 			'Comment'=>['from_person'],
 			'SMS'=>['from_number','sms_to']
+		],'div.atk-form-row');
+
+		$follow_up_field->js(true)->univ()->bindConditionalShow([
+			'Yes'=>['follow_up_type','task_title','starting_at','assign_to','description'],
+		],'div.atk-form-row');
+
+		$follow_up_by_field->js(true)->univ()->bindConditionalShow([
+			'Reminder'=>['remind_via','notify_to','remind_value','remind_unit'],
 		],'div.atk-form-row');
 
 		// $notify_email->js(true)->univ()->bindConditionalShow([
@@ -99,6 +144,11 @@ class Form_Communication extends \Form {
 	function validateFields(){
         $commtype = $this['type'];
 		$communication = $this->add('xepan\communication\Model_Communication_'.$commtype);
+  //      	if($this['follow_up'] == 'Yes' && $this['task_title'] == '')
+		// 	$this->displayError('task_field','This field is required');
+		// if($this['follow_up_type'] == 'Reminder' && ($this['remind_via']=='' || $this['notify_to']==''))
+		// 	$this->displayError('remind_via','All fields are required');
+        
         switch ($commtype) {
 			case 'Email':
 				foreach (explode(',', $this['email_to']) as $value) {
@@ -284,6 +334,23 @@ class Form_Communication extends \Form {
 			$communication->save();
 		}
 
+		$model_task = $this->add('xepan\projects\Model_Task');
+		$model_task->addCondition('type','Followup');
+		$model_task['task_name'] = $this['task_title'];
+		$model_task['created_by_id'] = $this->app->employee->id;
+		$model_task['starting_date'] = $this['starting_at'];
+		$model_task['assign_to_id'] = $this['assign_to'];
+		$model_task['description'] = $this['description'];
+		$model_task['remind_value'] = $this['remind_value'];
+		$model_task['remind_unit'] = $this['remind_unit'];
+		$model_task['remind_via'] = $this['remind_via'];
+		$model_task['notify_to'] = $this['notify_to'];
+		$model_task['related_id'] = $communication->id;
+		
+		if($this['follow_up_type'] == 'Reminder')
+			$model_task['set_reminder'] = true;
+
+		$model_task->save();
 
 		return $communication;
     }

@@ -36,7 +36,40 @@
 		|From Number: {$from_number}
 	.col-md-4.col-lg-4.col-xs-12.col-sm-12.atk-form-row
 		|To: {$sms_to}
-	.col-md-4.col-lg-4.col-xs-12.col-sm-12										
+	.col-md-4.col-lg-4.col-xs-12.col-sm-12
+.row.xepan-push
+	.col-md-6.col-lg-6.col-xs-12.col-sm-12.atk-form-row
+		|Follow-Up: {$follow_up}
+	.col-md-6.col-lg-6.col-xs-12.col-sm-12.atk-form-row
+		|Follow-Up By: {$follow_up_type}
+.row.xepan-push
+	.col-md-4.col-lg-4.col-xs-12.col-sm-12.atk-form-row
+		|Follow-Up Title: {$task_title}
+	.col-md-4.col-lg-4.col-xs-12.col-sm-12.atk-form-row
+		|Starting At: {$starting_at}
+	.col-md-4.col-lg-4.col-xs-12.col-sm-12.atk-form-row
+		|Assign To: {$assign_to}
+.row.xepan-push
+	.col-md-12.col-lg-12.col-xs-12.col-sm-12.atk-form-row
+		|Description: {$description}
+.row.xepan-push
+	.col-md-12.col-lg-12.col-xs-12.col-sm-12.atk-form-row
+		.row.xepan-push
+			.col-md-12.atk-form-field.atk-form-row
+				span Remind Medium:    
+				{$remind_via}
+		.row.xepan-push
+			.col-md-12.col-lg-12.col-xs-12.col-sm-12.atk-form-field.atk-form-row
+				span Remind To:
+				{$notify_to}
+		.row.xepan-push
+			.col-md-6.col-lg-6.col-xs-12.col-sm-12.atk-form-field.atk-form-row
+				span Remind Value:
+				{$remind_value}
+			.col-md-6.col-lg-6.col-xs-12.col-sm-12.atk-form-field.atk-form-row
+				span Remind Unit:
+				{$remind_unit}
+
 .row.xepan-push
 	.col-md-12.col-lg-12.col-xs-12.col-sm-12
 		{$FormButtons}
