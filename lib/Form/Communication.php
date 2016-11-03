@@ -231,6 +231,7 @@ class Form_Communication extends \Form {
 				$_from_name = $send_settings['from_name'];
 				$_to_field='email_to';
 				$communication->unload();
+				$communication['from_id']=$this->app->employee->id;
 				$communication->setFrom($_from,$_from_name);
 				$communication['direction']='Out';
 				break;
