@@ -37,7 +37,17 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		
 		if($f->isSubmitted()){
 			$f->save();
-			$f->js(null,$f->js()->reload())->univ()->successMessage('Update Information')->execute();
+			if($f['user_registration_type'] == 'self_activated'){
+				$type = 'Self Activated Via Email';
+			}elseif ($f['user_registration_type'] == 'admin_activated') {
+				$type = 'Admin Activated';
+			}elseif ($f['user_registration_type'] == 'default_activated') {
+				$type = 'Default Activated';
+			}
+			$frontend_config_m->app->employee
+			    ->addActivity("'In Frontend User Configuration' User Registration Type Updated as '".$type."' For Website Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$frontend_config_m);
+			$f->js(null,$f->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
 		/*Reset Password Email Content*/
 		$form=$this->add('Form',null,'reset_email');
@@ -48,7 +58,10 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 
 		if($form->isSubmitted()){
 			$form->save();
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$frontend_config_m->app->employee
+			    ->addActivity("'Reset Password Email' Content's Layout Updated For Website Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$frontend_config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Layout Successfully Updated')->execute();
 		}
 
 		/*Registration Email Content*/
@@ -60,7 +73,10 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 
 		if($form->isSubmitted()){
 			$form->save();
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$frontend_config_m->app->employee
+			    ->addActivity("'New Registration Email' Content's Layout Updated For Website Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$frontend_config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Layout Successfully Updated')->execute();
 		}
 		/*Verification Email Content*/
 		$form=$this->add('Form',null,'verification_view');
@@ -71,7 +87,10 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 
 		if($form->isSubmitted()){
 			$form->save();
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$frontend_config_m->app->employee
+			    ->addActivity("'Verification Email' Content's Layout Updated For Website Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$frontend_config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Layout Successfully Updated')->execute();
 		}
 
 		/*Update Password Email Content*/
@@ -83,7 +102,10 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 
 		if($form->isSubmitted()){
 			$form->save();
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$frontend_config_m->app->employee
+			    ->addActivity("'Update Password Email' Content's Layout Updated For Website Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$frontend_config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Layout Successfully Updated')->execute();
 		}
 
 		/*Subscription Content*/
@@ -95,7 +117,10 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 
 		if($form->isSubmitted()){
 			$form->save();
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$frontend_config_m->app->employee
+			    ->addActivity("'Subscription Email' Content's Layout Updated For Website Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$frontend_config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Layout Successfully Updated')->execute();
 		}	
 	}
 

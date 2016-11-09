@@ -41,7 +41,10 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 			// $resetpass_config->setConfig('RESET_PASSWORD_SUBJECT_FOR_ADMIN',$form['subject'],'base');
 
 			// $resetpass_config->setConfig('RESET_PASSWORD_BODY_FOR_ADMIN',$form['body'],'base');
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$config_m->app->employee
+			    ->addActivity("'Reset Password Email' Content's Layout Updated For ERP Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_admin")
+				->notifyWhoCan(' ',' ',$config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Layout Successfully Updated')->execute();
 		}
 
 		/*Update Password Email Content*/
@@ -61,7 +64,10 @@ class page_general_emailcontent_admin extends \xepan\communication\page_sidebar{
 			// $update_config->setConfig('UPDATE_PASSWORD_SUBJECT_FOR_ADMIN',$form['subject'],'base');
 
 			// $update_config->setConfig('UPDATE_PASSWORD_BODY_FOR_ADMIN',$form['body'],'base');
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$config_m->app->employee
+			    ->addActivity("'Update Password Email' Content's Layout Updated For ERP Users", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_admin")
+				->notifyWhoCan(' ',' ',$config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Layout Successfully Updated')->execute();
 		}
 	}
 	

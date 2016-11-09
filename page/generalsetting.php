@@ -51,7 +51,10 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 		if($form->isSubmitted()){
 			$form->save();
-			$form->js(null,$form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$misc_m->app->employee
+			    ->addActivity("'Time Zone' Updated as '".$form['time_zone']."'", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$misc_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
 
 		/*Company Info*/
@@ -85,7 +88,10 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		
 		if($c_form->isSubmitted()){
 			$c_form->save();
-			$c_form->js(null,$c_form->js()->reload())->univ()->successMessage('Update Information')->execute();
+			$company_m->app->employee
+			    ->addActivity("Company Information Updated", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$company_m);
+			$c_form->js(null,$c_form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
 
 		// $this->add('View',null,'company_info',['view/schema-micro-data','person_info'])->setModel($company_m);
