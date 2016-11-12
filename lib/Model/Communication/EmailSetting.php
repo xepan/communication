@@ -101,7 +101,6 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		if($f->isSubmitted()){
 			$duplicate_email_m = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($this->id);
 			$duplicate_email_m->duplicate($f['name'],$f['email_username'],$f['email_password'],$f['from_email'],$f['from_name']);
-			
 			$this->app->page_action_result = $f->js(null,$f->js()->closest('.dialog')->dialog('close'))->univ()->successMessage('Duplicate SuccessFully');
 		}
 		
@@ -147,6 +146,11 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$new_email['denied_email_subject'] = $this['denied_email_subject'];	
 		$new_email['denied_email_body'] = $this['denied_email_body'];	
 		$new_email['mass_mail'] = $this['mass_mail'];	
+		$new_email->addHook('afterSave',function($m){
+			$this->app->employee
+					->addActivity("Email Settings Of Email : '".$this['name']."' Duplicated To New Email : '".$m['name']."' ", $m->id/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_email&emailsetting_id=".$m->id."")
+					->notifyWhoCan('used','Active');
+		});
 		$new_email->save();
 
 	}
