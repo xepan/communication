@@ -1,6 +1,4 @@
 .main-box.feed.xepan-grid.xepan-communication-grid(id="{$_name}" class="{$class}")
-    {$grid_buttons} 
-    {$quick_search}
     header.main-box-header.clearfix
     .main-box-body.clearfix
         ul
@@ -8,8 +6,7 @@
             {cols}  
             li.clearfix
             .text-small
-                {$from}
-                | Communicated
+                | Communicated With
                 {$to}
                 br
                 span.text-muted.text-small Title : 
@@ -19,7 +16,10 @@
                 span {$description}
             br 
             span.text-muted.text-small Direction : 
-            span {$direction} 
+            span {$direction}
+            br 
+            span.text-muted.text-small Date : 
+            span {$date} 
             .comm-type
                 span.text-muted.text-small Medium :
                 span {$action}
