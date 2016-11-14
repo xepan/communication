@@ -1,0 +1,30 @@
+
+<div id="{$_name}" class="main-box feed xepan-grid xepan-communication-grid {$class}">
+  {$grid_buttons} 
+  {$quick_search}
+  <header class="main-box-header clearfix"></header>
+  <div class="main-box-body clearfix">
+    <ul>
+      {rows}{row}
+      {cols}  
+      <li class="clearfix"></li>
+      <div class="text-small">
+        {$from}
+        Communicated
+        {$to}<br/><span class="text-muted text-small">Title : </span><span>{$title}</span><br/><span class="text-muted text-small">Description : </span><span>{$description}</span>
+      </div><br/><span class="text-muted text-small">Direction : </span><span>{$direction} </span>
+      <div class="comm-type"><span class="text-muted text-small">Medium :</span><span>{$action}</span></div>{/}
+      {/}{/}
+    </ul>
+  </div>{not_found}
+  <div class="row">
+    <div role="alert" class="col-md-12 text-center alert alert-warning"><span class="icon-attention fa fa-exclamation-triangle"> &nbsp;{$not_found_message}</span></div>
+  </div>{/}
+  {/}
+  {$Paginator}
+  <style>
+    .xepan-communication-grid .comm-type li{
+    padding:1px;
+    }
+  </style>
+</div>

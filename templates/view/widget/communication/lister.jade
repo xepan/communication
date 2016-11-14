@@ -1,0 +1,38 @@
+.main-box.feed.xepan-grid.xepan-communication-grid(id="{$_name}" class="{$class}")
+    {$grid_buttons} 
+    {$quick_search}
+    header.main-box-header.clearfix
+    .main-box-body.clearfix
+        ul
+            {rows}{row}
+            {cols}  
+            li.clearfix
+            .text-small
+                {$from}
+                | Communicated
+                {$to}
+                br
+                span.text-muted.text-small Title : 
+                span {$title}
+                br
+                span.text-muted.text-small Description : 
+                span {$description}
+            br 
+            span.text-muted.text-small Direction : 
+            span {$direction} 
+            .comm-type
+                span.text-muted.text-small Medium :
+                span {$action}
+            {/}
+            {/}{/}
+    {not_found}
+    div.row
+        .col-md-12.text-center.alert.alert-warning(role="alert")
+            span.icon-attention.fa.fa-exclamation-triangle  &nbsp;{$not_found_message}
+    {/}
+    {/}
+    {$Paginator}
+    style.
+        .xepan-communication-grid .comm-type li{
+        padding:1px;
+        }
