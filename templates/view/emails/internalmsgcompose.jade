@@ -1,0 +1,132 @@
+div(id="{$_name}")
+  .row
+    .col-lg-12
+      .main-box.clearfix
+        header.main-box-header.clearfix
+          h2 Create new Conversation
+            //- .main-box-body.clearfix
+          .conversation-wrapper
+            //- .conversation-content
+              .slimScrollDiv(style='position: relative; overflow: hidden; width: auto; height: 240px;')
+                .conversation-inner(style='overflow-y: scroll; width: auto;  height: 240px;')
+                  {rows}{row}
+                  .conversation-item.clearfix(class="item-{$position}")
+                    .conversation-user
+                      {avatar}
+                      img(src='img/samples/kunis.png', alt='')
+                      {/}  
+                    .conversation-body
+                      .name
+                        | {from_name}Ryan Gossling{/}
+                      small.text-muted
+                        |To: {$to_name}  
+                      .time.hidden-xs
+                        | {callback_date}September 21, 2013 18:28{/}
+                      .text
+                        {description}
+                        | I don't think they tried to market it to the billionaire, spelunking,
+                        | base-jumping crowd.{/}
+                        br
+                        br  
+                      div.pull-right
+                        {$to_images}
+                  {/}
+
+                  .conversation-item.item-right.clearfix
+                    .conversation-user
+                      img(src='img/samples/ryan.png', alt='')
+                    .conversation-body
+                      .name
+                        | Mila Kunis
+                      .time.hidden-xs
+                        | September 21, 2013 12:45
+                      .text
+                        | The path of the righteous man is beset on all sides by the iniquities of the
+                        | selfish and the tyranny of evil men. Blessed is he who, in the name of charity and
+                        | good will.
+                  .conversation-item.item-right.clearfix
+                    .conversation-user
+                      img(src='img/samples/kunis.png', alt='')
+                    .conversation-body
+                      .name
+                        | Mila Kunis
+                      .time.hidden-xs
+                        | September 21, 2013 12:45
+                      .text
+                        | The path of the righteous man is beset on all sides by the iniquities of the
+                        | selfish and the tyranny of evil men. Blessed is he who, in the name of charity and
+                        | good will.
+                  .conversation-item.item-left.clearfix
+                    .conversation-user
+                      img(src='img/samples/ryan.png', alt='')
+                    .conversation-body
+                      .name
+                        | Ryan Gossling
+                      .time.hidden-xs
+                        | September 21, 2013 18:28
+                      .text
+                        | I don't think they tried to market it to the billionaire, spelunking,
+                        | base-jumping crowd.
+                  .conversation-item.item-right.clearfix
+                    .conversation-user
+                      img(src='img/samples/kunis.png', alt='')
+                    .conversation-body
+                      .name
+                        | Mila Kunis
+                      .time.hidden-xs
+                        | September 21, 2013 12:45
+                      .text
+                        | The path of the righteous man is beset on all sides by the iniquities of the
+                        | selfish and the tyranny of evil men. Blessed is he who, in the name of charity and
+                        | good will.
+                  .conversation-item.item-right.clearfix
+                    .conversation-user
+                      img(src='img/samples/kunis.png', alt='')
+                    .conversation-body
+                      .name
+                        | Mila Kunis
+                      .time.hidden-xs
+                        | September 21, 2013 12:45
+                      .text
+                        | The path of the righteous man is beset on all sides by the iniquities of the
+                        | selfish and the tyranny of evil men. Blessed is he who, in the name of charity and
+                        | good will.
+                  .conversation-item.item-left.clearfix
+                    .conversation-user
+                      img(src='img/samples/ryan.png', alt='')
+                    .conversation-body
+                      .name
+                        | Ryan Gossling
+                      .time.hidden-xs
+                        | September 21, 2013 18:28
+                      .text
+                        | I don't think they tried to market it to the billionaire, spelunking,
+                        | base-jumping crowd.
+                  .conversation-item.item-right.clearfix
+                    .conversation-user
+                      img(src='img/samples/kunis.png', alt='')
+                    .conversation-body
+                      .name
+                        | Mila Kunis
+                      .time.hidden-xs
+                        | September 21, 2013 12:45
+                      .text
+                        | The path of the righteous man is beset on all sides by the iniquities of the
+                        | selfish and the tyranny of evil men. Blessed is he who, in the name of charity and
+                        | good will.
+                  {/}
+                .slimScrollBar(style='background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 158.648px;')
+                .slimScrollRail(style='width: 7px; height: 100%; position: absolute; top: 0px; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px; display: none;')
+              
+            .conversation-new-message
+              {form}
+              form
+                .form-group
+                  textarea.form-control(rows='2', placeholder='Enter your message...')
+                .clearfix
+                  button.btn.btn-success.pull-right(type='submit') Send message
+              {/}
+style.
+  .form-control{
+    border-color:#e7ebee!important;
+  }

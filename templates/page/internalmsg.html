@@ -1,0 +1,86 @@
+
+<div id="email-box" class="clearfix">
+  <div id="email-header-mobile" class="visible-xs visible-sm clearfix">
+    <div id="email-header-title-mobile" class="pull-left">
+    </div><a class="user-link"><a class="btn btn-success email-compose-btn pull-right"><i class="fa fa-pencil-square-o"></i> Compose Message</a></a>
+  </div>
+  <header id="email-header" class="clearfix">
+    <div id="email-header-title" class="visible-md visible-lg">
+    </div>
+  </header>
+  <div class="row">
+    <div class="col-lg-12">
+      <div id="email-navigation" class="email-nav-nano has-scrollbar">
+        <div tabindex="0" style="overflow-y:hidden" class="email-nav-nano-content"><a class="btn btn-success email-compose-btn hidden-xs hidden-sm"><i class="fa fa-pencil-square-o"></i> Compose Message</a>
+          <div class="mobile-email-navigation-tool mobile-email-navigation-tool-closed"><a class="mobile-email-navigation-tool-cog hidden-md hidden-lg"><i class="fa fa-filter fa-2x"></i></a>
+            <div class="mobile-email-navigation-tool-options">
+               
+              {message_navigation}Message Navigation{/}
+            </div>
+          </div>
+        </div>
+        <div style="display: none;" class="nano-pane">
+          <div style="transform: translate(0px, 0px);" class="nano-slider"></div>
+        </div>
+      </div>
+      <div id="email-content" style="height: 639px" class="email-content-nano has-scrollbar">
+        <div style="display:nones" class="compose-message-view-popup">{$message_compose_view}</div>{message_lister}Message Lister{/}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+      $('#page-wrapper').addClass('nav-small');
+  
+      //-   $('.email-compose-btn').click(function() {
+      //-     $('.compose-message-view-popup').slideToggle();    
+      //- });
+  
+      $('.email-compose-btn').click(function() {
+        if($('.compose-message-view-popup').hasClass('slide-up')) {
+          $('.compose-message-view-popup').addClass('slide-down', 1000, 'easeOutBounce');
+          $('.compose-message-view-popup').removeClass('slide-up'); 
+        } else {
+          $('.compose-message-view-popup').removeClass('slide-down');
+          $('.compose-message-view-popup').addClass('slide-up', 1000, 'easeOutBounce'); 
+        }
+    });
+  
+    });      
+  
+</script>
+<style>
+  #email-box{
+    margin-bottom:20px!important;
+  }
+  .compose-message-view-popup {
+    border-top: 2px solid #999999;
+    position:fixed;
+    width: 76%;
+    z-index: 100;
+    height: 500px;
+    font-size:18px;
+    color: #000;
+    background: #FFF;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    border-top-left-radius:25px;
+    border-top-right-radius:25px;
+    right: 2%;
+    left: 0;
+    margin-left: auto;
+    bottom: -500px;
+  }
+  
+  .slide-up{
+      bottom: 0px !important;
+  }
+  
+  .slide-down{
+      bottom: -500px !important;
+  }
+  .select2{
+    width:100%!important;
+  }
+</style>

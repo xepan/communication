@@ -1,0 +1,42 @@
+
+<div id="{$_name}">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="main-box clearfix">
+        <header class="main-box-header clearfix">
+          <h2>Conversation</h2>
+        </header>
+        <div class="main-box-body clearfix">
+          <div class="conversation-wrapper">
+            <div class="conversation-content">
+              <div style="position: relative; overflow: hidden; width: auto; height: 580px;" class="slimScrollDiv">
+                <div style="overflow-y: scroll; width: auto;  height: 580px;" class="conversation-inner">{rows}{row}
+                  <div class="conversation-item clearfix item-{$position}">
+                    <div class="conversation-user">{avatar}<img src="img/samples/kunis.png" alt=""/>{/}  </div>
+                    <div class="conversation-body">
+                      <div class="name">{from_name}Ryan Gossling{/}</div><small class="text-muted">To: {$to_name}  </small>
+                      <div class="time hidden-xs">{callback_date}September 21, 2013 18:28{/}</div>
+                      <div class="text">
+                        {description}
+                        I don't think they tried to market it to the billionaire, spelunking,
+                        base-jumping crowd.{/}<br/><br/>
+                      </div>
+                      <div class="pull-right">{$to_images}</div>
+                    </div>
+                  </div>{/}{/}
+                </div>
+                <div style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 158.648px;" class="slimScrollBar"></div>
+                <div style="width: 7px; height: 100%; position: absolute; top: 0px; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px; display: none;" class="slimScrollRail"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .form-control{
+    border-color:#e7ebee!important;
+  }
+</style>
