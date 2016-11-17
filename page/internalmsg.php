@@ -10,16 +10,30 @@ class page_internalmsg extends \xepan\base\Page{
 	function init(){
 		parent::init();
 
-		$emp = $this->add('xepan\hr\Model_Employee');
 		// $emp->addCondition('status','Active');
+		$emp = $this->add('xepan\hr\Model_Employee');
 		$emp_nav = $this->add('xepan\communication\View_InternalMessageEmployeeList',null,'message_navigation');
 		$emp_nav->setModel($emp,['name']);
+
+
+		$emp_id = $this->app->stickyGET('employee_id');
 		
 		$msg_m = $this->add('xepan\communication\Model_Communication_AbstractMessage');
 		$msg_m->addCondition([
 			['from_raw','like','%"'.$this->app->employee->id.'"%'],
 			['to_raw','like','%"'.$this->app->employee->id.'"%']
-			]);	
+			]);
+
+		if($emp_id){
+			$employee = $this->add('xepan\hr\Model_Employee');
+			$employee->load($emp_id);
+			$msg_m->addCondition([
+			['from_raw','like','%"'.$employee->id.'"%'],
+			['to_raw','like','%"'.$employee->id.'"%']
+			]);
+		}
+
+
 		$msg_m->setOrder('id','desc');
 		$msg_list = $this->add('xepan\communication\View_Lister_InternalMSGList',null,'message_lister');
 		$msg_list->setModel($msg_m);
@@ -31,6 +45,8 @@ class page_internalmsg extends \xepan\base\Page{
 		$emp_nav->js('click',[
 				$compose_msg->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 					->reload(['employee_id'=>$this->js()->_selectorThis()->data('id')]),
+				$msg_list->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+					->reload(['employee_id'=>$this->js()->_selectorThis()->data('id')]),	
 			])->_selector('.internal-conversion-emp-list');
 	}
 

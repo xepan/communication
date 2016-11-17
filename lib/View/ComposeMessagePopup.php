@@ -12,17 +12,25 @@ class View_ComposeMessagePopup extends \View{
 	
 		$employee = $this->add('xepan\hr\Model_Employee');
 		if($emp_id){
-			throw new \Exception($emp_id, 1);
+			// throw new \Exception($emp_id, 1);
 			
 			$employee->addCondition('id',$emp_id);
 		}
 
 		$f = $this->add('Form',null,'form'/*,['form\empty']*/);
+		// $f->setLayout('view/emails/internalmsgcompose');
+
 		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
 		$message_to_field->setModel($employee);
+		
 		$message_to_field->setAttr(['multiple'=>'multiple']);
 		$message_field = $f->addField('xepan\base\RichText','message');
 		$message_field->options = ['toolbar1'=>"styleselect | bold italic fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor",'menubar'=>false];
+		
+		$multi_upload_field = $f->addField('xepan\base\Form_Field_Upload','attachment',"")
+									->allowMultiple()->addClass('xepan-padding');
+		$filestore_image=$this->add('xepan\filestore\Model_File',['policy_add_new_type'=>true]);
+		$multi_upload_field->setModel($filestore_image);
 		
 		$f->addSubmit('Send message')->addClass('btn btn-success pull-right xepan-margin-top-small');
 		
@@ -43,9 +51,15 @@ class View_ComposeMessagePopup extends \View{
 			$send_msg['description'] = $f['message'];
 			$send_msg->save();
 
+			$upload_images_array = explode(",",$f['attachment']);
+			foreach ($upload_images_array as $file_id) {
+				$send_msg->addAttachment($file_id);
+			}
+
 			$js=[
 					$f->js()->univ()->successMessage('Message Send'),
-					$f->js()->closest('.compose-message-view-popup')->removeClass('slide-up')//->_selector('.compose-message-view-popup');
+					$f->js()->closest('.compose-message-view-popup')->removeClass('slide-up'),//->_selector('.compose-message-view-popup');
+					$f->js()->_selector('.internal-conversion-lister')->trigger('reload')
 				];
 
 			$f->js(null,$js)->reload()->execute();

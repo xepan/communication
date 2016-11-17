@@ -3,10 +3,39 @@ namespace xepan\communication;
 
 class View_Lister_InternalMSGList extends \CompleteLister{
 	function init(){
-		parent::init();			
-		
+		parent::init();
+		$this->js('reload')->reload();
+		$vp = $this->add('VirtualPage');
+	  	$vp->set(function($vp){
+			$this->app->stickyGET('mark_id');
+			$mark=$this->add('xepan\communication\Model_Communication_AbstractMessage');
+			$mark->load($_POST['mark_id']);
+
+			$einfo = $mark['extra_info'];
+			$einfo['seen_by'][] = $this->app->employee->id;
+			$mark['extra_info'] = $einfo;
+			$mark->save();
+			exit;
+	   	});
+
+		$this->js('click',
+				[
+					$this->js()->_selectorThis()->parent()->find('.text')->toggle('hide'),
+					$this->js()->_selectorThis()->removeClass('unread'),
+					$this->js()->_selectorThis()->univ()->ajaxec($vp->getURL(),['mark_id'=>$this->js()->_selectorThis()->data('id')])
+				])
+				->_selector('.name');	
 	}
+	function setModel($model){
+		$m = parent::setModel($model);
+		return $m;
+	}
+
 	function formatRow(){
+		$attach=$this->add('xepan\communication\View_Lister_Attachment',null,'Attachments');
+		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_id',$this->model->id);
+		// $a = $this->add('xepan\communication\Model_Communication_Attachment')->addCondition('communication_id',$this->model->id);
+		$this->current_row_html['Attachments'] = $attach->getHtml();
 		
 		$to_array=[];
 		foreach ($this->model['to_raw'] as $to) {
@@ -27,33 +56,18 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		// 	$this->current_row['starred']='';
 		// }
 
-		// $einfo =$this->model['extra_info'];
-		// if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
-		// 	if(in_array($this->app->employee->id, $einfo['seen_by'])){
-		// 		$this->current_row['unread']='';
-		// 	}else{
-		// 		$this->current_row['unread']='unread';
-		// 	}
-		// }
+		$einfo =$this->model['extra_info'];
+		if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
+			if(in_array($this->app->employee->id, $einfo['seen_by'])){
+				$this->current_row['unread']='';
+			}else{
+				$this->current_row['unread']='unread';
+			}
+		}
+
+		$this->current_row_html['message']  = strip_tags($this->model['description']);
 		
-		// if(!$this->model['attachment_count']){
-		// 	$this->current_row['check_attach']='';
-		// }else{
-		// 	$this->current_row_html['check_attach']='<a href="#" class="attachment"><i class="fa fa-paperclip"></i></a>';
-		// }
-
-		// $mailbox=explode('#', $this->model['mailbox']);
-		// $email_model=$this->add('xepan\communication\Model_Communication_EmailSetting');
-		// $email_model->tryLoadBy('email_username',$mailbox);
-
-
-		// $this->current_row['body'] = strip_tags($this->current_row['body']);
-		// if($this->model['status']=='Sent'){
-		// 	$this->current_row['email_name'] =$email_model['name']." / ".$this->model['status'];
-		// }else{
-		// 	$this->current_row['email_name'] =$email_model['name'];
-		// }
-
+		
 		parent::formatRow();
 	}
 	function defaultTemplate(){

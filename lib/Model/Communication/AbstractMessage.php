@@ -13,6 +13,13 @@ class Model_Communication_AbstractMessage extends Model_Communication{
 		parent::init();
 		$this->addCondition('communication_type','AbstractMessage');	
 		$this->getElement('status')->defaultValue('Draft');
+		
+		$this->add('misc/Field_Callback','callback_date')->set(function($m){
+			if(date('Y-m-d',strtotime($m['created_at']))==date('Y-m-d',strtotime($this->app->now))){
+				return "Today ".date('h:i a',strtotime($m['created_at']));	
+			}
+			return date('M d, Y h:i a',strtotime($m['created_at']));
+		});
 
 		$this->addHook('afterLoad',function($m){
 			$m['from_raw'] = json_decode($m['from_raw'],true);
