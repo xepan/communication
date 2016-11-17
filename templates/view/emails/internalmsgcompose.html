@@ -1,0 +1,41 @@
+
+<div id="{$_name}">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="main-box clearfix">
+        <header class="main-box-header clearfix">
+          <h2>Create new Conversation
+          </h2>
+          <div class="conversation-wrapper">
+            <div class="conversation-new-message">{form}
+              <div class="row xepan-push">
+                <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">{$message_to}</div>
+                <div class="col-md-5 col-lg-5 col-xs-12 col-sm-12 atk-form-row">
+                    
+                  {$attachment}
+                </div>
+              </div>
+              <div class="row xepan-push">
+                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 atk-form-row">{$message}
+                </div>
+              </div>
+              <form>
+                <div class="form-group">
+                  <textarea rows="2" placeholder="Enter your message..." class="form-control"></textarea>
+                </div>
+                <div class="clearfix">
+                  <button type="submit" class="btn btn-success pull-right">Send message</button>
+                </div>
+              </form>{/}
+            </div>
+          </div>
+        </header>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .form-control{
+    border-color:#e7ebee!important;
+  }
+</style>

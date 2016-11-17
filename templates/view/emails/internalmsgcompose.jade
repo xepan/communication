@@ -1,0 +1,29 @@
+div(id="{$_name}")
+  .row
+    .col-lg-12
+      .main-box.clearfix
+        header.main-box-header.clearfix
+          h2 Create new Conversation
+            //- .main-box-body.clearfix
+          .conversation-wrapper
+            .conversation-new-message
+              {form}
+              .row.xepan-push
+                .col-md-4.col-lg-4.col-xs-12.col-sm-12.atk-form-row
+                  {$message_to}
+                .col-md-5.col-lg-5.col-xs-12.col-sm-12.atk-form-row   
+                  {$attachment}
+              .row.xepan-push
+                .col-md-12.col-lg-12.col-xs-12.col-sm-12.atk-form-row
+                  {$message}
+                  //- {$body}
+              form
+                .form-group
+                  textarea.form-control(rows='2', placeholder='Enter your message...')
+                .clearfix
+                  button.btn.btn-success.pull-right(type='submit') Send message
+              {/}
+style.
+  .form-control{
+    border-color:#e7ebee!important;
+  }
