@@ -85,6 +85,29 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->app->hook('communication_created',[$communication]);
 	}
 
+	function addAttachment($attach_id){
+		if(!$attach_id) return;
+		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
+		$attach['file_id'] = $attach_id;
+		$attach['communication_id'] = $this->id;
+	
+		$attach->save();
+
+		return $attach;
+	}
+
+	function getAttachments($urls=true){
+		$attach_arry = array();
+		if($this->loaded()){
+			foreach ($this->ref('EmailAttachments') as $attach) {
+				$attach_arry[] = $urls?$attach['file']:$attach['id'];
+			}
+
+		}
+		
+		return $attach_arry;
+	}
+
 	function deleteAttachments(){
 		$this->ref('EmailAttachments')->each(function($o){
 			$o->delete();
