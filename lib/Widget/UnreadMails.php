@@ -25,7 +25,7 @@ class Widget_UnreadMails extends \xepan\base\Widget{
 		}
 
 		$this->view->template->trySet('count',$count);
-
+		$this->view->template->trySet('url',$this->app->url('xepan_communication_emails'));
 		return parent::recursiveRender();
 	}
 }
