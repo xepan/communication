@@ -48,6 +48,7 @@ class page_internalmsg extends \xepan\base\Page{
 				$msg_list->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 					->reload(['employee_id'=>$this->js()->_selectorThis()->data('id')]),	
 			])->_selector('.internal-conversion-emp-list');
+
 	}
 
 
