@@ -24,7 +24,25 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 					$this->js()->_selectorThis()->removeClass('unread'),
 					$this->js()->_selectorThis()->univ()->ajaxec($vp->getURL(),['mark_id'=>$this->js()->_selectorThis()->data('id')])
 				])
-				->_selector('.name');	
+				->_selector('.name');
+		$delete_id = $this->app->stickyGET('do_delete_employee_id');		
+		if($delete_id){
+			$delete_m = $this->add('xepan\communication\Model_Communication_AbstractMessage');
+			$delete_m->addCondition('id',$delete_id);
+			$delete_m->tryLoadAny();
+			if($delete_m->loaded()){
+				$delete_m->delete();
+			}
+			$this->js(null,$this->js()->univ()->successMessage('Deleted Successfully'))->_selector('.internal-conversion-lister')->trigger('reload')->execute();
+		}
+
+		$this->on('click','.do-delete-conversion')->univ()->confirm('Are you sure?')
+			->ajaxec(array(
+            	$this->app->url(),
+            	'do_delete_employee_id'=>$this->js()->_selectorThis()->data('id')
+
+        ));
+
 	}
 	function setModel($model){
 		$m = parent::setModel($model);
@@ -67,6 +85,9 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 
 		$this->current_row_html['message']  = strip_tags($this->model['description']);
 		
+		if($this->app->employee['scope'] != 'SuperUser'){
+			$this->current_row_html['trash_wrapper'] = '';			
+		}
 		
 		parent::formatRow();
 	}

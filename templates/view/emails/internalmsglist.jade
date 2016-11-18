@@ -18,11 +18,18 @@ div.internal-conversion-lister(id="{$_name}")
                     .conversation-body
                       a.name(class="{$unread}"  data-id="{$id}")
                         | {from_name}Ryan Gossling{/}
+                        {trash_wrapper}
+                        a.table-link.danger.do-delete-conversion.pull-right(href="#" data-id="{$id}")
+                          span.fa-stack
+                            i.fa.fa-square.fa-stack-2x
+                            i.fa.fa-stack-1x.fa-inverse.fa-trash-o
+                        {/}
                         br
                       small.text-muted
                         |To: {$to_name}  
                       .time.hidden-xs
                         | &nbsp;{callback_date}September 21, 2013 18:28{/}
+                      
                       .text(data-id="{$id}" style="display:none")
                         {message}
                         | I don't think they tried to market it to the billionaire, spelunking,
