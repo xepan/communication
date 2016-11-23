@@ -12,6 +12,7 @@ class page_internalmsg extends \xepan\base\Page{
 
 		// $emp->addCondition('status','Active');
 		$emp = $this->add('xepan\hr\Model_Employee');
+		$emp->addCondition('status','Active');
 		$emp_nav = $this->add('xepan\communication\View_InternalMessageEmployeeList',null,'message_navigation');
 		$emp_nav->setModel($emp,['name']);
 
