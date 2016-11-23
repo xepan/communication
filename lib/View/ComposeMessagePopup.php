@@ -64,6 +64,7 @@ class View_ComposeMessagePopup extends \View{
 
 			$f->js(null,$js)->reload()->execute();
 		}
+		$this->js('click',$this->js()->removeClass('slide-up')->_selector('.compose-message-view-popup'))->_selector('.close-compose-message-popup');
 	}
 
 	function defaultTemplate(){
