@@ -24,7 +24,7 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 					$this->js()->_selectorThis()->removeClass('unread'),
 					$this->js()->_selectorThis()->univ()->ajaxec($vp->getURL(),['mark_id'=>$this->js()->_selectorThis()->data('id')])
 				])
-				->_selector('.name');
+				->_selector('.internal-conversion-lister .name');
 		$delete_id = $this->app->stickyGET('do_delete_employee_id');		
 		if($delete_id){
 			$delete_m = $this->add('xepan\communication\Model_Communication_AbstractMessage');
