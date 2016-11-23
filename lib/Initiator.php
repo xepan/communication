@@ -27,7 +27,7 @@ class Initiator extends \Controller_Addon {
 	}
 
 	function exportWidgets($app,&$array){
-        $array[] = ['xepan\communication\Widget_UnreadMails','level'=>'Individual'];
+        $array[] = ['xepan\communication\Widget_UnreadMails','level'=>'Individual','title'=>'Unread Mails'];
     }
 
     function exportEntities($app,&$array){
