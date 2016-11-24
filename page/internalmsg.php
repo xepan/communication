@@ -39,7 +39,10 @@ class page_internalmsg extends \xepan\base\Page{
 		$msg_list = $this->add('xepan\communication\View_Lister_InternalMSGList',null,'message_lister');
 		$msg_list->setModel($msg_m);
 		$msg_list->add('xepan\base\Controller_Avatar',['options'=>['size'=>50,'border'=>['width'=>0]],'name_field'=>'contact']);
-
+		
+		//trigger reload
+		$msg_list->addClass('xepan-internal-message-trigger-reload');
+		// $msg_list->js('reload')->reload();
 
 		$compose_msg = $this->add('xepan\communication\View_ComposeMessagePopup',null,'message_compose_view');
 
