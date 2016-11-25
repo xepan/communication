@@ -10,7 +10,7 @@ class Model_Communication_MessageSent extends \xepan\communication\Model_Communi
 
 	function init(){
 		parent::init();
-		$this->addCondition('status','Sent');		
+		$this->addCondition('status','Sent');
 		$this->addCondition('direction','Out');
 		
 		$this->addHook('afterSave',$this);
@@ -20,13 +20,13 @@ class Model_Communication_MessageSent extends \xepan\communication\Model_Communi
 	function afterSave(){
 
 		$msg = [
-				'title'=>'New task dsfhjk dfdk ',
-				'message'=>" Task Assigned to you : 'ABCD' by 'GVS' ",
-				'type'=>'warning',
+				'title'=>$this['from'].' messaged you:',
+				'message'=>$this['description'],
+				'type'=>'success',
 				'sticky'=>false,
 				'desktop'=>false,
 				'js'=>(string) $this->app->js()->_selector('.xepan-internal-message-trigger-reload')->trigger('reload')
-			];	
+			];
 		$to_id = [];
 		foreach ($this['to_raw'] as $key => $value) {
 			$to_id[] = $value['id'];
