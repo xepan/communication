@@ -47,7 +47,7 @@ class page_internalmsg extends \xepan\base\Page{
 		$compose_msg = $this->add('xepan\communication\View_ComposeMessagePopup',['employee_id'=>$emp_id],'message_compose_view');
 
 		$emp_nav->js('click',[
-				$compose_msg->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+				$compose_msg->js()->html(' ')
 					->reload(['employee_id'=>$this->js()->_selectorThis()->data('id')]),
 				$msg_list->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 					->reload(['employee_id'=>$this->js()->_selectorThis()->data('id')]),	
