@@ -17,14 +17,14 @@ class View_ComposeMessagePopup extends \View{
 			$employee->addCondition('id',$emp_id);
 		}
 
-		$f = $this->add('Form',null,'form'/*,['form\empty']*/);
+		$f = $this->add('Form',null,'form');
 		// $f->setLayout('view/emails/internalmsgcompose');
 
 		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
 		$message_to_field->setModel($employee);
 		
 		$message_to_field->setAttr(['multiple'=>'multiple']);
-		$message_field = $f->addField('xepan\base\RichText','message');
+		$message_field = $f->addField('xepan\base\RichText','message')->validate('required');
 		$message_field->options = ['toolbar1'=>"styleselect | bold italic fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor",'menubar'=>false];
 		
 		$multi_upload_field = $f->addField('xepan\base\Form_Field_Upload','attachment',"")
@@ -58,7 +58,7 @@ class View_ComposeMessagePopup extends \View{
 
 			$js=[
 					$f->js()->univ()->successMessage('Message Send'),
-					$f->js()->closest('.compose-message-view-popup')->removeClass('slide-up'),//->_selector('.compose-message-view-popup');
+					// $f->js()->closest('.compose-message-view-popup')->removeClass('slide-up'),//->_selector('.compose-message-view-popup');
 					$f->js()->_selector('.internal-conversion-lister')->trigger('reload')
 				];
 

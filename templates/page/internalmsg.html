@@ -1,17 +1,12 @@
 
 <div id="email-box" class="clearfix">
   <div id="email-header-mobile" class="visible-xs visible-sm clearfix">
-    <div id="email-header-title-mobile" class="pull-left">
-    </div><a class="user-link"><a class="btn btn-success email-compose-btn pull-right"><i class="fa fa-pencil-square-o"></i> Compose Message</a></a>
+    <div id="email-header-title-mobile" class="pull-left"></div><a class="user-link"><a class="btn btn-success email-compose-btn pull-right"><i class="fa fa-pencil-square-o"></i> Compose Message</a></a>
   </div>
-  <header id="email-header" class="clearfix">
-    <div id="email-header-title" class="visible-md visible-lg">
-    </div>
-  </header>
   <div class="row">
-    <div class="col-lg-12">
-      <div id="email-navigation" class="email-nav-nano has-scrollbar">
-        <div tabindex="0" style="overflow-y:hidden" class="email-nav-nano-content"><a class="btn btn-success email-compose-btn hidden-xs hidden-sm"><i class="fa fa-pencil-square-o"></i> Compose Message</a>
+    <div class="col-lg-3">
+      <div id="msg-navigation" class="email-nav-nano has-scrollbar">
+        <div tabindex="0" style="overflow-y:hidden" class="email-nav-nano-content">
           <div class="mobile-email-navigation-tool mobile-email-navigation-tool-closed">
             <div class="mobile-email-navigation-tool-options">
                
@@ -23,8 +18,20 @@
           <div style="transform: translate(0px, 0px);" class="nano-slider"></div>
         </div>
       </div>
-      <div id="email-content" style="height: 639px" class="email-content-nano has-scrollbar">
-        <div style="display:nones" class="compose-message-view-popup">{$message_compose_view}</div>{message_lister}Message Lister{/}
+      
+    </div>
+    <div style="border:0px solid #e7ebee" class="main-box clearfix col-lg-9">
+      <div class="main-box-body clearfix">
+        <div class="conversation-wrapper">
+          <div class="conversation-content">
+            <div style="position: relative; overflow: hidden; width: auto; height: 352px;" class="slimScrollDiv">
+              <div style="overflow-y: scroll; width: auto; height: 352px;" class="conversation-inner">{message_lister}Message Lister{/}</div>
+              <div style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 7px; position: absolute; top: 40px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 158.648px;" class="slimScrollBar"></div>
+              <div style="width: 7px; height: 100%; position: absolute; top: 0px; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px; display: none;" class="slimScrollRail"></div>
+            </div>
+          </div>
+          <div style="display:nones" class="compose-message-view-popup">{$message_compose_view}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -54,41 +61,7 @@
   #email-box{
     margin-bottom:20px!important;
   }
-  .compose-message-view-popup h2 {
-    font-size:18px;
   
-  }
-  .compose-message-view-popup .files-container div {
-    float:left;
-    width:20%;
-  }
-  .compose-message-view-popup {
-    border-top: 2px solid #999999;
-    position:fixed;
-    width: 76%;
-    z-index: 100;
-    height: 500px;
-    font-size:14px;
-    color: #000;
-    background: #FFF;
-    display: flex;
-    justify-content: center; /* align horizontal */
-    border-top-left-radius:25px;
-    border-top-right-radius:25px;
-    right: 2%;
-    left: 0;
-    margin-left: auto;
-    bottom: -500px;
-    overflow-y:scroll;
-  }
-  
-  .slide-up{
-      bottom: 0px !important;
-  }
-  
-  .slide-down{
-      bottom: -500px !important;
-  }
   .select2{
     width:100%!important;
   }
@@ -106,5 +79,8 @@
   }
   .conversation-wrapper .conversation-body > .time{
     right:50px!important;
+  }
+  .main-box{
+    border:0px !important;
   }
 </style>
