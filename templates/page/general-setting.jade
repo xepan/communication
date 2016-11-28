@@ -11,6 +11,8 @@
             a(data-toggle='tab', href='#misc') Misc Setting
           li
             a(data-toggle='tab', href='#basic-info') Company Info
+          li
+            a(data-toggle='tab', href='#communication-subtype') Communication Sub Types
         .tab-content
           #tab-general_setting.tab-pane.active
             {Content}
@@ -27,6 +29,10 @@
            #basic-info.tab-pane
             {Content}
             {$company_info}
+            {/}
+           #communication-subtype.tab-pane
+            {Content}
+            {$comm_subtype}
             {/}
 style.
   .select2{

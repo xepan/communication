@@ -16,6 +16,16 @@ class Model_Communication extends \xepan\base\Model_Table{
 	public $acl=false;
 	function init(){
 		parent::init();
+
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+		[
+			'fields'=>[
+						'sub_type'=>'text',
+						],
+				'config_key'=>'COMMUNICATION_SUB_TYPE',
+				'application'=>'Communication'
+		]);
+		$config_m->tryLoadAny();
 		
 		$this->hasOne('xepan\base\Contact','from_id');
 		$this->hasOne('xepan\base\Contact','to_id');
@@ -36,6 +46,9 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('description')->type('text');
 
 		$this->addField('tags');
+
+		$this->addField('sub_type')->enum(explode(',', $config_m['sub_type']));
+		
 		$this->addField('direction')->enum(['In','Out']);
 		$this->addField('communication_type');
 
