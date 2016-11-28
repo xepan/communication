@@ -16,14 +16,6 @@ class View_ComposeMessagePopup extends \View{
 			$employee->addCondition('id',$emp_id);
 		}
 
-		$employee->addExpression('check_login')->set(function($m,$q){
-			 $attan_m = $this->add("xepan\hr\Model_Employee_Attandance")
-						->addCondition('employee_id',$m->getElement('id'))
-						->addCondition('fdate',$this->app->today);
-
-			return $q->expr('IFNULL([0],0)',[$attan_m->fieldQuery('id')]);
-		})->type('int');
-
 		$employee->addExpression('employee_message_to')->set(function($m,$q){
 
 			// return $q->expr("CONCAT([0],' :: ',IF([1] > 0,'Present','Absent'))",
