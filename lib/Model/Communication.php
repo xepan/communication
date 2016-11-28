@@ -98,12 +98,12 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->app->hook('communication_created',[$communication]);
 	}
 
-	function addAttachment($attach_id){
+	function addAttachment($attach_id,$type){
 		if(!$attach_id) return;
 		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
 		$attach['file_id'] = $attach_id;
 		$attach['communication_id'] = $this->id;
-	
+		$attach['type'] = $type;	
 		$attach->save();
 
 		return $attach;

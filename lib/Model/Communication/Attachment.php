@@ -23,6 +23,8 @@ class Model_Communication_Attachment extends \xepan\base\Model_Table{
 		$this->hasOne('xepan\communication\Communication','communication_id');
 		$this->add('xepan\filestore\Field_File','file_id');
 
+		$this->addField('type')->enum(['inline','attach']);
+
 		$this->addExpression('filename')->set(function($m,$q){
 			return $m->refSQL('file_id')->fieldQuery('original_filename');
 		});

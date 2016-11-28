@@ -78,6 +78,17 @@ class Controller_ReadEmail extends \AbstractController {
 				echo "Getting email <br/>";
 				$fetched_mail = $mailbox->getMail($mailId);
 				echo "got email <br/>";
+				
+				$attach_email_files=[];
+				//MAIL ATTACHME  NT 
+				$attachments = $fetched_mail->getAttachments();
+				foreach ($attachments as $attach) {
+					$file =	$this->add('xepan/filestore/Model_File',array('policy_add_new_type'=>true,'import_mode'=>'move','import_source'=>$attach->filePath));
+					$file['filestore_volume_id'] = $file->getAvailableVolumeID();
+					$file['original_filename'] = $attach->name;
+					$file->save();
+					$attach_email_files[$attach->id]=['file_id'=>$file->id,'path'=>$file['url'],'type'=>'attach'];
+				}
 
 				
 				$mail_m = $this->add('xepan\communication\Model_Communication_Email_Received');
@@ -109,14 +120,27 @@ class Controller_ReadEmail extends \AbstractController {
 						$mail_m->addBcc($email,$name);
 					}
 				}
+
+				$email_content = $fetched_mail->textHtml?:$fetched_mail->textPlain;
+				foreach ($attach_email_files as $e_id => $detail) {
+					// var_dump($email_content);
+					if(strpos($email_content, 'cid:'.$e_id)!=false){
+						// echo 'cid:'.$e_id ." <br/> Path :   " . $detail['path'] ."<br/> <br/>";
+						$email_content = str_replace('cid:'.$e_id, $detail['path'], $email_content);
+						$attach_email_files[$e_id]['type']='inline';
+					}
+				}
 				
+				// echo "string" . $email_content;
+
 				$mail_m['created_at']= $fetched_mail->date;
 				$mail_m['title'] = $fetched_mail->subject;
-				$mail_m['description'] = $fetched_mail->textHtml?:$fetched_mail->textPlain;
+				$mail_m['description'] = $email_content;
 				$mail_m['flags'] = $conditions;
 				$mail_m->findContact('from');
 				echo "Saving email <br/>";
 				$mail_m->save();
+
 
 				if($this->email_setting['auto_reply']){
 					echo "Doing auto reply <br/>";
@@ -127,15 +151,10 @@ class Controller_ReadEmail extends \AbstractController {
 				if(!isset($return['fetched_emails_from']))
 					$return['fetched_emails_from'] = $mail_m->id;
 				
-				//MAIL ATTACHME  NT 
-				$attachments = $fetched_mail->getAttachments();
-				foreach ($attachments as $attach) {
-					$file =	$this->add('xepan/filestore/Model_File',array('policy_add_new_type'=>true,'import_mode'=>'move','import_source'=>$attach->filePath));
-					$file['filestore_volume_id'] = $file->getAvailableVolumeID();
-					$file['original_filename'] = $attach->name;
-					$file->save();
-					$mail_m->addAttachment($file->id);
+				foreach ($attach_email_files as $eid=>$detail) {
+					$mail_m->addAttachment($detail['file_id'],$detail['type']);
 				}
+
 
 				$mail_m->unload();
 				$i++;
