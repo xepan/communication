@@ -72,7 +72,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->hasMany('xepan\crm\SupportTicket','communication_id',null,'SupportTicket');
 		
 		$this->addExpression('image')->set($this->refSQL('from_id')->fieldQuery('image'));
-		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->count());
+		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->addCondition('type','attach')->count());
 
 		$this->addHook('afterInsert',[$this,'throwHookNotification']);
 		$this->addHook('beforeDelete',[$this,'deleteAttachments']);

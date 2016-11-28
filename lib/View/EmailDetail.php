@@ -24,9 +24,11 @@ class View_EmailDetail extends \View{
 		if(!$model['attachment_count']){
 			$this->template->tryDel('check_attach');
 		}
-
+		$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+		$attach_m->addCondition('communication_id',$m->id);
+		$attach_m->addCondition('type','attach');
 		$attach=$this->add('xepan\communication\View_Lister_Attachment',null,'Attachments');
-		$attach->setModel('xepan\communication\Communication_Attachment')->addCondition('communication_id',$m->id);
+		$attach->setModel($attach_m);
 			
 		// $(".reply").click(function(){
   //       $('.compose-email-view-popup').show();
