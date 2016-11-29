@@ -10,6 +10,7 @@ class View_ComposeMessagePopup extends \View{
 		parent::init();
 		$emp_id = $this->app->stickyGET('employee_id');
 		$employee = $this->add('xepan\hr\Model_Employee');
+		$employee->addCondition('status','Active');
 		if($emp_id){
 			// throw new \Exception($emp_id, 1);
 			
