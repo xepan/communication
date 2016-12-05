@@ -42,7 +42,9 @@
           {$signature}
         </div>
         <div id="email-new-title" class="clearfix"><span class="subject">Attachment :</span>
-          <div id="email-attachment">{$attachment}</div>
+          <div id="email-attachment">
+            <div class="existing-attachment">{$existing_attachments}</div>{$attachment}
+          </div>
         </div>
         <div id="email-new-footer">
           <div class="row">
@@ -75,5 +77,8 @@
 <style>
   .email-new-nano-content .select2{
     width:100%!important;
+  }
+  .existing-attachment li{
+    width:20%;
   }
 </style>

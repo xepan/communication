@@ -74,6 +74,12 @@ class View_ComposeEmailPopup extends \View{
 			$form->layout->template->trySet('compose_email_header','Forward Email');
 			$this->subject="Fwd: ".$replay_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$replay_model['description']."<.blockquote>";
+		
+			$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+			$attach_m->addCondition('communication_id', $this->communication_id);
+			$attach_m->addCondition('type','attach');
+			$attach=$form->layout->add('xepan\communication\View_Lister_Attachment',null,'existing_attachments');
+			$attach->setModel($attach_m);
 		}
 
 		// Reply/Compose Based on contact

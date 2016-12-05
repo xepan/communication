@@ -44,6 +44,8 @@
         #email-new-title.clearfix
           span.subject Attachment :
           #email-attachment
+            .existing-attachment
+              {$existing_attachments}
             {$attachment}
           //- {$field_input}
         #email-new-footer
@@ -77,4 +79,7 @@ script.
 style.
   .email-new-nano-content .select2{
     width:100%!important;
+  }
+  .existing-attachment li{
+    width:20%;
   }
