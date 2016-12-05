@@ -33,6 +33,11 @@ class Model_Communication_Attachment extends \xepan\base\Model_Table{
 	}
 
 	function deleteFiles(){
-		$this->ref('file_id')->delete();
+		$file = $this->add('xepan\filestore\Model_File');
+		$file->addCondition('id',$this['file_id']);
+		$file->tryLoadAny();
+		if($file->loaded()){
+			$this->ref('file_id')->delete();
+		}
 	}
 }
