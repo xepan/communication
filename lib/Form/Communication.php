@@ -37,6 +37,10 @@ class Form_Communication extends \Form {
 		$sub_type_field = $this->addField('dropdown','sub_type')->set($edit_model['sub_type'])->setEmptyText('Please Select');
 		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
 		
+		if($this->app->auth->model->isSuperUser()){
+			$date_field = $this->addField('DateTimePicker','date')->set($edit_model['created_at']);
+		}		
+		
 		$status_field = $this->addField('dropdown','status')->set($edit_model['status']);
 		$status_field->setValueList(['Called'=>'Called','Received'=>'Received'])->setEmptyText('Please Select');
 
@@ -338,6 +342,10 @@ class Form_Communication extends \Form {
 						$this->displayError('cc_mails',$cc.' is not a valid email');
 				$communication->addCc($cc);
 			}
+		}
+
+		if($this->hasElement('date')){
+			$communication['created_at'] = $this['date'];
 		}
 
 		if(isset($send_settings)){			
