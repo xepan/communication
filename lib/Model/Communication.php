@@ -122,9 +122,11 @@ class Model_Communication extends \xepan\base\Model_Table{
 	}
 
 	function deleteAttachments(){
-		$this->ref('EmailAttachments')->each(function($o){
-			$o->delete();
-		});
+		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
+		$attach->addCondition('communication_id',$this->id);
+		foreach ($attach as  $m) {
+			$m->delete();
+		}
 	}
 
 	function quickSearch($app,$search_string,&$result_array,$relevency_mode){
