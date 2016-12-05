@@ -182,7 +182,7 @@ class page_emails extends \xepan\base\Page{
 				$email_model->save();
 
 			$email_detail->setModel($email_model);
-
+			$this->app->stickyGET('communication_id');
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'reply_email']))->_selector('.reply');	
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'reply_email_all']))->_selector('li.reply-all');
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'fwd_email']))->_selector('li.forward');				

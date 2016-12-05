@@ -43,10 +43,10 @@
           {$signature}
         #email-new-title.clearfix
           span.subject Attachment :
-          #email-attachment
-            .existing-attachment
-              {$existing_attachments}
-            {$attachment}
+        #email-attachment
+          .existing-attachment
+            {$existing_attachments}
+          {$attachment}
           //- {$field_input}
         #email-new-footer
           .row
@@ -82,4 +82,6 @@ style.
   }
   .existing-attachment li{
     width:20%;
+    float:left;
+    margin-right:5px;
   }
