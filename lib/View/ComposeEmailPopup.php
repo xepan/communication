@@ -10,16 +10,28 @@ class View_ComposeEmailPopup extends \View{
 	function init(){
 		parent::init();
 		$this->addClass('compose-email-view-popup');	
-		// throw new \Exception($this->communication_id, 1);
 		$this->app->stickyGET('communication_id');
+		$this->app->stickyGET('mode');
+		// if($_GET['communication_id'])
+		// 	throw new \Exception($this->communication_id, 1);
 
+		$my_emails = $this->add('xepan\hr\Model_Post_Email_MyEmails');
 
 		$action= 'add';
+		$replay_model=$this->add('xepan\communication\Model_Communication_Email');
+		if($this->communication_id)
+			$replay_model->load($this->communication_id);
+		if($this->mode == 'DraftMessage')
+			$my_emails->addCondition('post_email',$replay_model['from_raw']['email']);
+		
 		$form = $this->add('Form');;
 		$form->setLayout(['view/composeemail-view']);
 
+		
+
+
 		$mymail = $form->addField('Dropdown','email_username')->setEmptyText('Please Select From Email')->validate('required');
-		$mymail->setModel('xepan\hr\Model_Post_Email_MyEmails');		
+		$mymail->setModel($my_emails);		
 
 		$to_field = $form->addField('xepan\base\DropDown','email_to');
 		$to_field->validate_values = false;
@@ -28,11 +40,35 @@ class View_ComposeEmailPopup extends \View{
 		$bcc_field = $form->addField('xepan\base\Dropdown','email_bcc');
 		$bcc_field->validate_values = false;
 
-		// Reply based on existing communication id
-		$replay_model=$this->add('xepan\communication\Model_Communication_Email');
-		if($this->communication_id)
-			$replay_model->load($this->communication_id);
 		
+		// Add Existing Attachment  existing Draft & fwd communication Message
+		if($this->mode == "DraftMessage" OR $this->mode == "fwd_email"){
+			$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+			$attach_m->addCondition('communication_id', $this->communication_id);
+			$attach_m->addCondition('type','attach');
+			$attach=$form->layout->add('xepan\communication\View_Lister_Attachment',null,'existing_attachments');
+			$attach->setModel($attach_m);
+			
+		}
+		
+		//  Re . Compose  Emails existing communication Message
+		if($this->mode == "DraftMessage"){
+			
+			$form->layout->template->trySet('compose_email_header','New Message');
+			$emails_to =[];
+			$draft_to_emails = $replay_model->getReplyEmailFromTo()['to'];
+			unset($draft_to_emails[0]);
+			foreach ($draft_to_emails as $to_field_emails) {
+				$emails_to [] = $to_field_emails['email'];
+				$to_field->js(true)->append("<option value='".$to_field_emails['email']."'>".$to_field_emails['name']." &lt;".$to_field_emails['email']."&gt;</option>")->trigger('change');
+			}
+			$to_field->set($emails_to);
+			$this->subject = $replay_model['title'];
+			$this->message = $replay_model['description'];
+
+		}
+		// Reply based on existing communication id
+
 		if($this->mode == 'reply_email'){
 			$form->layout->template->trySet('compose_email_header','Reply Email');
 			$emails_to=$replay_model->getReplyEmailFromTo()['to'][0];
@@ -71,16 +107,9 @@ class View_ComposeEmailPopup extends \View{
 		}
 
 		if($this->mode=='fwd_email'){
-
 			$form->layout->template->trySet('compose_email_header','Forward Email');
 			$this->subject="Fwd: ".$replay_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$replay_model['description']."<.blockquote>";
-		
-			$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
-			$attach_m->addCondition('communication_id', $this->communication_id);
-			$attach_m->addCondition('type','attach');
-			$attach=$form->layout->add('xepan\communication\View_Lister_Attachment',null,'existing_attachments');
-			$attach->setModel($attach_m);
 		}
 
 		// Reply/Compose Based on contact
@@ -182,6 +211,9 @@ class View_ComposeEmailPopup extends \View{
 																											
 			$email_settings = $this->add('xepan\communication\Model_Communication_EmailSetting')->load($form['email_username']);
 			$mail = $this->add('xepan\communication\Model_Communication_Email');
+			if($this->mode == "DraftMessage"){
+				$mail ->load($this->communication_id);
+			}
 			$mail['direction']='Out';
 			$mail->setfrom($email_settings['from_email'],$email_settings['from_name']);
 			
@@ -238,19 +270,17 @@ class View_ComposeEmailPopup extends \View{
 			
 			$mail->findContact('to');
 			$mail->save();
-				
-			$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
-			$attach_m->addCondition('communication_id', $this->communication_id);
-			$attach_m->addCondition('type','attach');
-			// $attach_m->tryLoadAny();
-			// throw new \Exception($this->communication_id, 1);
-			// throw new \Exception($attach_m->count()->getOne(), 1);
-			foreach ($attach_m as  $existing_attachment_model) {
-					$upload_images_array[] = $existing_attachment_model->id;
-			}
 			
-			// var_dump($upload_images_array);
-			// exit;
+			if($this->mode == "fwd_email"){
+				$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+				$attach_m->addCondition('communication_id', $this->communication_id);
+				$attach_m->addCondition('type','attach');
+				
+				foreach ($attach_m as  $existing_attachment_model) {
+						$upload_images_array[] = $existing_attachment_model->id;
+				}
+			}			
+			
 
 			foreach ($upload_images_array as $file_id) {
 				$mail->addAttachment($file_id,'attach');
@@ -258,7 +288,8 @@ class View_ComposeEmailPopup extends \View{
 			if($form->isClicked($save_btn)){
 				$js=[
 					$form->js()->univ()->successMessage('Save Email As Draft'),
-					$this->js()->hide()
+					$this->js()->hide(),
+					$form->js()->_selector('.xepan-communication-email-list')->trigger('reload')
 				];
 				// return $form->js(null,$form->js()->univ()->successMessage('EMAIL SENT'))->univ()->redirect($this->app->url('xepan_communication_emails'))->execute();
 				return $form->js(null,$js)->reload()->execute();
@@ -266,7 +297,8 @@ class View_ComposeEmailPopup extends \View{
 			$mail->send($email_settings);
 			$js=[
 					$form->js()->univ()->successMessage('EMAIL SENT'),
-					$this->js()->hide()
+					$this->js()->hide(),
+					$form->js()->_selector('.xepan-communication-email-list')->trigger('reload')
 				];
 
 				return $form->js(null,$js)->reload()->execute();

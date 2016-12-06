@@ -2,6 +2,12 @@
 namespace xepan\communication;
 
 class View_Lister_EmailsList extends \CompleteLister{
+	function init(){
+		parent::init();
+		$this->js('reload')->reload();
+
+
+	}
 	function formatRow(){
 		if($this->model['is_starred']){
 			$this->current_row['starred']='starred';
@@ -22,6 +28,10 @@ class View_Lister_EmailsList extends \CompleteLister{
 			$this->current_row['check_attach']='';
 		}else{
 			$this->current_row_html['check_attach']='<a href="#" class="attachment"><i class="fa fa-paperclip"></i></a>';
+		}
+
+		if($this->model['status'] == "Draft"){
+			$this->current_row['draft']='draft-message';
 		}
 
 		$mailbox=explode('#', $this->model['mailbox']);
