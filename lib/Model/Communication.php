@@ -16,6 +16,16 @@ class Model_Communication extends \xepan\base\Model_Table{
 	public $acl=false;
 	function init(){
 		parent::init();
+
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+		[
+			'fields'=>[
+						'sub_type'=>'text',
+						],
+				'config_key'=>'COMMUNICATION_SUB_TYPE',
+				'application'=>'Communication'
+		]);
+		$config_m->tryLoadAny();
 		
 		$this->hasOne('xepan\base\Contact','from_id');
 		$this->hasOne('xepan\base\Contact','to_id');
@@ -36,6 +46,9 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('description')->type('text');
 
 		$this->addField('tags');
+
+		$this->addField('sub_type')->enum(explode(',', $config_m['sub_type']));
+		
 		$this->addField('direction')->enum(['In','Out']);
 		$this->addField('communication_type');
 
@@ -59,7 +72,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->hasMany('xepan\crm\SupportTicket','communication_id',null,'SupportTicket');
 		
 		$this->addExpression('image')->set($this->refSQL('from_id')->fieldQuery('image'));
-		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->count());
+		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->addCondition('type','attach')->count());
 
 		$this->addHook('afterInsert',[$this,'throwHookNotification']);
 		$this->addHook('beforeDelete',[$this,'deleteAttachments']);
@@ -85,12 +98,12 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->app->hook('communication_created',[$communication]);
 	}
 
-	function addAttachment($attach_id){
+	function addAttachment($attach_id,$type=null){
 		if(!$attach_id) return;
 		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
 		$attach['file_id'] = $attach_id;
 		$attach['communication_id'] = $this->id;
-	
+		$attach['type'] = $type;	
 		$attach->save();
 
 		return $attach;
@@ -109,9 +122,11 @@ class Model_Communication extends \xepan\base\Model_Table{
 	}
 
 	function deleteAttachments(){
-		$this->ref('EmailAttachments')->each(function($o){
-			$o->delete();
-		});
+		$attach = $this->add('xepan\communication\Model_Communication_Attachment');
+		$attach->addCondition('communication_id',$this->id);
+		foreach ($attach as  $m) {
+			$m->delete();
+		}
 	}
 
 	function quickSearch($app,$search_string,&$result_array,$relevency_mode){

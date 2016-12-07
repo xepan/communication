@@ -5,7 +5,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 	public $title="General Settings";
 	function init(){
 		parent::init();
-
+		
 		/*General Email Setting*/
 		$email_setting= $this->add('xepan\communication\Model_Communication_EmailSetting');
 		$settingview=$this->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],'general_setting',['view/setting/email-setting-grid']);
@@ -93,8 +93,31 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				->notifyWhoCan(' ',' ',$company_m);
 			$c_form->js(null,$c_form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
-
 		// $this->add('View',null,'company_info',['view/schema-micro-data','person_info'])->setModel($company_m);
+
+		/*Communication Sub Type Form */
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+		[
+			'fields'=>[
+						'sub_type'=>'text',
+						],
+				'config_key'=>'COMMUNICATION_SUB_TYPE',
+				'application'=>'Communication'
+		]);
+
+		$config_m->add('xepan\hr\Controller_ACL');
+		$config_m->tryLoadAny();
+
+		$this->add('View',null,'comm_subtype')->set('Enter comma seperated values with no space');
+		$sub_type_form = $this->add('Form_Stacked',null,'comm_subtype');
+		$sub_type_form->setModel($config_m,['sub_type']);
+		$sub_type_form->getElement('sub_type')->set($config_m['sub_type']);
+		$sub_type_form->addSubmit('Save')->addClass('btn btn-primary');
+		
+		if($sub_type_form->isSubmitted()){
+			$sub_type_form->save();
+			$sub_type_form->js(null,$sub_type_form->js()->reload())->univ()->successMessage('Information Saved')->execute();
+		}
 
 
 	}

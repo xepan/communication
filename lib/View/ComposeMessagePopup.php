@@ -9,19 +9,31 @@ class View_ComposeMessagePopup extends \View{
 	function init(){
 		parent::init();
 		$emp_id = $this->app->stickyGET('employee_id');
-	
 		$employee = $this->add('xepan\hr\Model_Employee');
+		$employee->addCondition('status','Active');
 		if($emp_id){
 			// throw new \Exception($emp_id, 1);
 			
 			$employee->addCondition('id',$emp_id);
 		}
 
-		$f = $this->add('Form',null,'form');
-		// $f->setLayout('view/emails/internalmsgcompose');
+		$employee->addExpression('employee_message_to')->set(function($m,$q){
 
+			// return $q->expr("CONCAT([0],' :: ',IF([1] > 0,'Present','Absent'))",
+			return $q->expr("CONCAT([0],' :: [ ',IF([1] > 0,'PRESENT','ABSENT'),' ]')",
+					[
+						$m->getElement('name'),
+						$m->getElement('check_login'),
+					]);
+
+		});
+
+		$employee->title_field = 'employee_message_to';
+		$f = $this->add('Form',null,'form');
+		
 		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
 		$message_to_field->setModel($employee);
+
 		
 		$message_to_field->setAttr(['multiple'=>'multiple']);
 		$message_field = $f->addField('xepan\base\RichText','message')->validate('required');
