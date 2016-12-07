@@ -347,7 +347,7 @@ class Form_Communication extends \Form {
 			$model_task['remind_unit'] = $this['remind_unit'];
 			$model_task['remind_via'] = $this['remind_via'];
 			$model_task['notify_to'] = $this['notify_to'];
-			$model_task['related_id'] = $communication->id;
+			$model_task['related_id'] = $this->contact->id;
 			if($this['follow_up_type'] == 'Reminder')
 				$model_task['set_reminder'] = true;
 			$model_task->save();
