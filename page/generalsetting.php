@@ -57,6 +57,65 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
 
+		// Email Setting
+		$email_m = $this->add('xepan\base\Model_ConfigJsonModel',
+			[
+				'fields'=>[
+							'email_duplication_allowed'=>'DropDown'
+							],
+					'config_key'=>'Email Duplication Allowed Settings',
+					'application'=>'base'
+			]);
+		$email_m->add('xepan\hr\Controller_ACL');
+		$email_m->tryLoadAny();		
+
+		$form = $this->add('Form_Stacked',null,'email_view');
+		$form->setModel($email_m);
+		$allow_email_permission = array('Duplication Allowed' =>'Duplication Allowed',
+									 'No Duplication Allowed' =>'No Duplication Allowed For Same Contact Type',
+									 'Never Duplication Allowed' =>'Never Duplication Allowed');
+		$email_allowed_field =$form->getElement('email_duplication_allowed')->set($email_m['email_duplication_allowed']);
+		$email_allowed_field->setValueList($allow_email_permission);
+		$form->addSubmit('Update')->addClass('btn btn-primary');
+
+		if($form->isSubmitted()){
+			$form->save();
+			$email_m->app->employee
+			    ->addActivity("'Email Duplication Setting' Updated as '".$form['email_duplication_allowed']."'", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$email_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
+		}
+
+		// Contact No Setting
+		$contactno_m = $this->add('xepan\base\Model_ConfigJsonModel',
+			[
+				'fields'=>[
+							'contact_no_duplcation_allowed'=>'DropDown'
+							],
+					'config_key'=>'Contact No Duplication Allowed Settings',
+					'application'=>'base'
+			]);
+		$contactno_m->add('xepan\hr\Controller_ACL');
+		$contactno_m->tryLoadAny();		
+
+		$form = $this->add('Form_Stacked',null,'contactno_view');
+		$form->setModel($contactno_m);
+		$allow_contactno_permission = array('Duplication Allowed' =>'Duplication Allowed',
+									 'No Duplication Allowed' =>'No Duplication Allowed For Same Contact Type',
+									 'Never Duplication Allowed' =>'Never Duplication Allowed');
+		$email_allowed_field =$form->getElement('contact_no_duplcation_allowed')->set($contactno_m['contact_no_duplcation_allowed']);
+		$email_allowed_field->setValueList($allow_contactno_permission);
+		$form->addSubmit('Update')->addClass('btn btn-primary');
+
+		if($form->isSubmitted()){
+			$form->save();
+			$contactno_m->app->employee
+			    ->addActivity("'Contact No Duplication Setting' Updated as '".$form['contact_no_duplcation_allowed']."'", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$contactno_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
+		}
+
+
 		/*Company Info*/
 
 		$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
