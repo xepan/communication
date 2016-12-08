@@ -1,4 +1,4 @@
-div(id="{$_name}")
+div.xepan-communication-email-list(id="{$_name}" class="{$class}")
   .email-content-nano-content(tabindex='0', style='right: -13px;')
     header#email-header.clearfix
       .xepan-push {$search_form}
@@ -60,7 +60,7 @@ div(id="{$_name}")
       .col-md-4        
     ul#email-list
       {rows}{row}
-      li.clickable-row(data-id="{$id}" class="{$unread}")
+      li.clickable-row(data-id="{$id}" class="{$unread} {$draft}")
         .chbox(data-id="{$id}")
           .checkbox-nice
             input(data-id="{$id}" id='m-checkbox-{$id}' type='checkbox' )
@@ -82,12 +82,15 @@ div(id="{$_name}")
     .nano-slider(style='height: 600px; transform: translate(0px, 0px);')
 
 script.
+    
+    $('li.draft-message').removeClass('clickable-row');  
+    
     $("li.clickable-row  div:not(.chbox, .star,.checkbox-nice)").click(function(){
         $("#email-list").hide();
         $(".nano-slider").css('height','0px');
         $(".email-detail").show();
         $(".back-inbox").show();
-    });  
+    });
 
     $('button.back-inbox').click(function(){
         $("#email-list").show();

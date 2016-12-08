@@ -182,7 +182,7 @@ class page_emails extends \xepan\base\Page{
 				$email_model->save();
 
 			$email_detail->setModel($email_model);
-
+			$this->app->stickyGET('communication_id');
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'reply_email']))->_selector('.reply');	
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'reply_email_all']))->_selector('li.reply-all');
 			$email_detail->js('click',$compose_view->js()->html('<div style="width:100%"><img style="display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')->reload(['communication_id'=>$email_model->id,'mode'=>'fwd_email']))->_selector('li.forward');				
@@ -195,6 +195,14 @@ class page_emails extends \xepan\base\Page{
 				->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]),
 			])
 		->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
+		
+		$email_view->js('click',
+			[
+				$compose_view->js()->show()->_selector('.compose-email-view-popup'),
+				$compose_view->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+				->reload(['communication_id'=>$this->js()->_selectorThis()->data('id'),'mode'=>'DraftMessage'])])
+		->_selector('li.draft-message  div:not(.chbox, .star,.checkbox-nice)');
+
 		$email_view->js('click',$email_view->js()->reload())->_selector('button.back-inbox');
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
 			// load data['id'] wala e,mail and mark starred or remove is_starred

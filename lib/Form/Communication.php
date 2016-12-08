@@ -37,6 +37,10 @@ class Form_Communication extends \Form {
 		$sub_type_field = $this->addField('dropdown','sub_type')->set($edit_model['sub_type'])->setEmptyText('Please Select');
 		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
 		
+		if($this->app->auth->model->isSuperUser()){
+			$date_field = $this->addField('DateTimePicker','date')->set($edit_model['created_at']);
+		}		
+		
 		$status_field = $this->addField('dropdown','status')->set($edit_model['status']);
 		$status_field->setValueList(['Called'=>'Called','Received'=>'Received'])->setEmptyText('Please Select');
 
@@ -340,6 +344,10 @@ class Form_Communication extends \Form {
 			}
 		}
 
+		if($this->hasElement('date')){
+			$communication['created_at'] = $this['date'];
+		}
+
 		if(isset($send_settings)){			
 			$communication->send(
 					$send_settings,
@@ -362,7 +370,7 @@ class Form_Communication extends \Form {
 			$model_task['remind_unit'] = $this['remind_unit'];
 			$model_task['remind_via'] = $this['remind_via'];
 			$model_task['notify_to'] = $this['notify_to'];
-			$model_task['related_id'] = $communication->id;
+			$model_task['related_id'] = $this->contact->id;
 			if($this['follow_up_type'] == 'Reminder')
 				$model_task['set_reminder'] = true;
 			$model_task->save();
