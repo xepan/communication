@@ -24,7 +24,7 @@ class Model_Communication_MessageSent extends \xepan\communication\Model_Communi
 				'message'=>$this['description'],
 				'type'=>'success',
 				'sticky'=>false,
-				'desktop'=>false,
+				'desktop'=>strip_tags($this['description']),
 				'js'=>(string) $this->app->js()->_selector('.xepan-internal-message-trigger-reload')->trigger('reload')
 			];
 		$to_id = [];
