@@ -71,9 +71,9 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 		$form = $this->add('Form_Stacked',null,'email_view');
 		$form->setModel($email_m);
-		$allow_email_permission = array('Duplication Allowed' =>'Duplication Allowed',
-									 'No Duplication Allowed' =>'No Duplication Allowed For Same Contact Type',
-									 'Never Duplication Allowed' =>'Never Duplication Allowed');
+		$allow_email_permission = array('duplication_allowed' =>'Duplication Allowed',
+									 'no_duplication_allowed_for_same_contact_type' =>'No Duplication Allowed For Same Contact Type',
+									 'never_duplication_allowed' =>'Never Duplication Allowed');
 		$email_allowed_field =$form->getElement('email_duplication_allowed')->set($email_m['email_duplication_allowed']);
 		$email_allowed_field->setValueList($allow_email_permission);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
@@ -100,9 +100,9 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 		$form = $this->add('Form_Stacked',null,'contactno_view');
 		$form->setModel($contactno_m);
-		$allow_contactno_permission = array('Duplication Allowed' =>'Duplication Allowed',
-									 'No Duplication Allowed' =>'No Duplication Allowed For Same Contact Type',
-									 'Never Duplication Allowed' =>'Never Duplication Allowed');
+		$allow_contactno_permission = array('duplication_allowed' =>'Duplication Allowed',
+									 'no_duplication_allowed_for_same_contact_type' =>'No Duplication Allowed For Same Contact Type',
+									 'never_duplication_allowed' =>'Never Duplication Allowed');
 		$email_allowed_field =$form->getElement('contact_no_duplcation_allowed')->set($contactno_m['contact_no_duplcation_allowed']);
 		$email_allowed_field->setValueList($allow_contactno_permission);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
