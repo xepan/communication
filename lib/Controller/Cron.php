@@ -4,6 +4,7 @@ namespace xepan\communication;
 
 class Controller_Cron extends \AbstractController {
 	public $loop_time_duration = 5; // in minute
+	public $debug = true;
 	function init(){
 		parent::init();
 		
@@ -21,9 +22,10 @@ class Controller_Cron extends \AbstractController {
 		$email_settings->setLimit($total_email_to_fetch_per_minute);		
 
 		foreach ($email_settings as $email_setting) {
-			echo "<br/> Fetching from ". $email_setting['name']. '<br/>';
+			if($this->debug)
+				echo "<br/> Fetching from ". $email_setting['name']. '<br/>';
 
-			$cont = $this->add('xepan\communication\Controller_ReadEmail',['email_setting'=>$email_setting]);
+			$cont = $this->add('xepan\communication\Controller_ReadEmail',['email_setting'=>$email_setting,'debug'=>$this->debug]);
 			$mbs = ['INBOX'] ; // $cont->getMailBoxes();
 			foreach ($mbs as $mb) {
 				$emails_return = $cont->fetch($mb,'UNSEEN');

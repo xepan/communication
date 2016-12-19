@@ -298,10 +298,15 @@ class page_emails extends \xepan\base\Page{
 			$.ajax("",{data: {mark_not_spam_emails:selected_mark_not_spam_emails}});
 			')->_selector('.do-notspam');
 
-
-		$email_view->on('click','button.fetch-refresh',function($js,$data){
-			return $this->js()->univ()->location();
-		});
+		
+		$email_view->js('click',
+			[
+			$email_view->js()
+				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+				->reload(['fetch_emails'=>true]),
+			$mailboxes_view->js()->_selector('#email-navigation')->trigger('reload')	
+			])
+		->_selector('button.fetch-refresh');
 
 
 

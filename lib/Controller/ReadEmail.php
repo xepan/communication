@@ -37,10 +37,11 @@ class Controller_ReadEmail extends \AbstractController {
 	public $email_setting=null;
 	public $imap;
 	public $connection;
+	public $debug = true;
 
 	function init(){
 		parent::init();
-
+		
 		if(!$this->email_setting or !($this->email_setting instanceof \xepan\communication\Model_Communication_EmailSetting)){
 			throw $this->exception('Please provide email_setting value as loaded xepan\communication\Model_Communication_EmailSetting instance');
 		}
@@ -58,7 +59,8 @@ class Controller_ReadEmail extends \AbstractController {
 
 		try{
 			$mailbox = new ImapMailbox('{'.$imap_email_host.':'.$imap_email_port.$imap_flags.'}'.$mailbox_name, $imap_email_username, $imap_email_password, "websites/".$this->app->epan['name']."/upload", 'utf-8');
-			echo "Connected<br/>";
+			if($this->debug)
+				echo "Connected<br/>";
 			$return=[];
 			
 			$conditions = $conditions?:'UNSEEN';
@@ -66,18 +68,21 @@ class Controller_ReadEmail extends \AbstractController {
 
 			if(!$mailsIds) {
 				$mailbox->disconnect();
-				echo "<br/>NO $conditions found returning <br/>";
+				if($this->debug)
+					echo "<br/>NO $conditions found returning <br/>";
 				return $return;
 			}
-
-			echo "has ".count($mailsIds)." Emails<br/>";
+			if($this->debug)
+				echo "has ".count($mailsIds)." Emails<br/>";
 
 			$i=1;
 			$fetch_email_array = array();
 			foreach ($mailsIds as $mailId) {
-				echo "Getting email <br/>";
+				if($this->debug)
+					echo "Getting email <br/>";
 				$fetched_mail = $mailbox->getMail($mailId);
-				echo "got email <br/>";
+				if($this->debug)
+					echo "got email <br/>";
 				
 				$attach_email_files=[];
 				//MAIL ATTACHME  NT 
@@ -97,7 +102,8 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m->tryLoadAny();
 				
 				if($mail_m->loaded()){
-					echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
+					if($this->debug)
+						echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
 					continue;	
 				} 
 				
@@ -138,12 +144,14 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m['description'] = $email_content;
 				$mail_m['flags'] = $conditions;
 				$mail_m->findContact('from');
-				echo "Saving email <br/>";
+				if($this->debug)
+					echo "Saving email <br/>";
 				$mail_m->save();
 
 
 				if($this->email_setting['auto_reply']){
-					echo "Doing auto reply <br/>";
+					if($this->debug)
+						echo "Doing auto reply <br/>";
 					$mail_m->reply($this->email_setting);
 				}
 				$fetch_email_array[] = $mail_m->id;
