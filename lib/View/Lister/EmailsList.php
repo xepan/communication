@@ -6,16 +6,8 @@ class View_Lister_EmailsList extends \CompleteLister{
 		parent::init();
 		$this->js('reload')->reload();
 
-		$no_debug = $this->app->stickyGET('no_debug');
-		$fetch_emails = $this->app->stickyGET('fetch_emails');
-		
-		if($fetch_emails){
-			$this->add('xepan\communication\Controller_Cron',['debug'=>false]);
-		}
-
-
-
 	}
+
 	function formatRow(){
 		if($this->model['is_starred']){
 			$this->current_row['starred']='starred';
