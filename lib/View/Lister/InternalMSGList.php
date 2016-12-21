@@ -83,7 +83,7 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 			}
 		}
 
-		$this->current_row_html['message']  = strip_tags($this->model['description']);
+		$this->current_row_html['message']  = $this->model['description'];
 		
 		if($this->app->employee['scope'] != 'SuperUser'){
 			$this->current_row_html['trash_wrapper'] = '';			
