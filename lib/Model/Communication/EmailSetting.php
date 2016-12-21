@@ -87,7 +87,43 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 			return $q->expr('IF([0]=1,"Active","InActive")',[$q->getField('is_active')]);
 		});
 
+		$this->addHook('beforeInsert',[$this,'checkLimits']);
+		$this->addHook('beforeSave',[$this,'checkThresholdLimit']);
 	}
+
+	function checkLimits(){
+		$extra_info = $this->app->recall('epan_extra_info_array',false);
+
+        if((isset($extra_info ['specification']['email'])) AND ($extra_info ['specification']['email'] != 0)){
+        	$email_count = $this->add('xepan\communication\Model_Communication_EmailSetting')->count()->getOne();
+        	
+        	if($email_count >= $extra_info ['specification']['email']){
+        		throw $this->exception("Sorry ! You cannot add more email settings. Your usage limit is over")
+        				->addMoreInfo('Email Settings Count',$email_count)
+        				->addMoreInfo('Email Settings Limit',$extra_info ['specification']['email']);
+        	}
+        }
+	}
+
+	function checkThresholdLimit(){
+		$extra_info = $this->app->recall('epan_extra_info_array',false);
+
+        if((isset($extra_info ['specification']['threshold'])) AND ($extra_info ['specification']['threshold'] != 0)){
+        	$email_threshold = $this->add('xepan\communication\Model_Communication_EmailSetting')
+        							->addCondition('mass_mail',true)
+        							->addCondition('id','<>',$this->id)
+        							->sum('email_threshold')->getOne();
+        	$old_threshold = $email_threshold;
+        	$email_threshold += $this['email_threshold'];
+        									
+        	if($email_threshold >= $extra_info ['specification']['threshold']){
+        		throw $this->exception("Sorry ! You cannot add this much threshold. Your usage limit is over")
+        				->addMoreInfo('New Threshold',$email_threshold)
+        				->addMoreInfo('Threshold Limit',$extra_info ['specification']['threshold']);
+        	}
+        }
+	}
+
 	function page_duplicate($p){
 		$f = $p->add('Form');
 		$f->addField('line','name')->validate('required');
