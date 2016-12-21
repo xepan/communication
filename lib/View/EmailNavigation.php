@@ -4,6 +4,8 @@ namespace xepan\communication;
 class View_EmailNavigation extends \View{
 	function init(){
 		parent::init();
+		
+		$this->js('reload')->reload();
 		$my_email=$this->add('xepan\hr\Model_Post_Email_MyEmails');
 		$my_email->addExpression('post_email')->set(function($m,$q){
 			return $q->getField('email_username');

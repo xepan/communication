@@ -6,8 +6,8 @@ class View_Lister_EmailsList extends \CompleteLister{
 		parent::init();
 		$this->js('reload')->reload();
 
-
 	}
+
 	function formatRow(){
 		if($this->model['is_starred']){
 			$this->current_row['starred']='starred';

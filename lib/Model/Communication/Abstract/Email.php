@@ -115,8 +115,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	}
 
 	
+	/**
+	 reply_to_all param passed only true or false value
+	*/
 
-	function getReplyEmailFromTo(){
+	function getReplyEmailFromTo($reply_to_all=null){
 		$mail_box = explode('#',$this['mailbox']);
 		$mail_box = $mail_box[0];		
 
@@ -126,9 +129,11 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			'bcc'=>[],
 			'from'=>[$mail_box]
 		];
-		foreach ($this['to_raw'] as  $to_mail) {
-			if(trim($to_mail['email']) != $mail_box){
-				$return['to'][] = ['email'=>trim($to_mail['email'])];
+		if($reply_to_all){
+			foreach ($this['to_raw'] as  $to_mail) {
+				if(trim($to_mail['email']) != $mail_box){
+					$return['to'][] = ['email'=>trim($to_mail['email'])];
+				}
 			}
 		}
 
