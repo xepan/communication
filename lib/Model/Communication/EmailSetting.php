@@ -116,7 +116,7 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
         	$old_threshold = $email_threshold;
         	$email_threshold += $this['email_threshold'];
         									
-        	if($email_threshold >= $extra_info ['specification']['threshold']){
+        	if($email_threshold > $extra_info ['specification']['threshold']){
         		throw $this->exception("Sorry ! You cannot add this much threshold. Your usage limit is over")
         				->addMoreInfo('New Threshold',$email_threshold)
         				->addMoreInfo('Threshold Limit',$extra_info ['specification']['threshold']);
