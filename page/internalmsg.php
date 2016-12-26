@@ -22,7 +22,8 @@ class page_internalmsg extends \xepan\base\Page{
 		$msg_m = $this->add('xepan\communication\Model_Communication_AbstractMessage');
 		$msg_m->addCondition([
 			['from_raw','like','%"'.$this->app->employee->id.'"%'],
-			['to_raw','like','%"'.$this->app->employee->id.'"%']
+			['to_raw','like','%"'.$this->app->employee->id.'"%'],
+			['cc_raw','like','%"'.$this->app->employee->id.'"%']
 			]);
 
 		if($emp_id){
@@ -30,7 +31,8 @@ class page_internalmsg extends \xepan\base\Page{
 			$employee->load($emp_id);
 			$msg_m->addCondition([
 			['from_raw','like','%"'.$employee->id.'"%'],
-			['to_raw','like','%"'.$employee->id.'"%']
+			['to_raw','like','%"'.$employee->id.'"%'],
+			['cc_raw','like','%"'.$employee->id.'"%']
 			]);
 		}
 
