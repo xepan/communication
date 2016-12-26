@@ -33,9 +33,13 @@ class View_ComposeMessagePopup extends \View{
 		
 		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
 		$message_to_field->setModel($employee);
+		$cc_field = $f->addField('xepan\base\DropDown','cc')->addClass('xepan-push');
+		$cc_field->setModel($employee);
 
+		$f->addField('line','subject');
 		
 		$message_to_field->setAttr(['multiple'=>'multiple']);
+		$cc_field->setAttr(['multiple'=>'multiple']);
 		$message_field = $f->addField('xepan\base\RichText','message')->validate('required');
 		$message_field->options = ['toolbar1'=>"styleselect | bold italic fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor",'menubar'=>false];
 		
@@ -53,13 +57,20 @@ class View_ComposeMessagePopup extends \View{
 					$to_emp->load($id);
 					$to_raw[] = ['name'=>$to_emp['name'],'id'=>$id];
 			}
+			$cc_raw = [];
+				$cc_emp = $this->add('xepan\hr\Model_Employee');
+				foreach (explode(',', $f['cc']) as $name => $id) {
+					$cc_emp->load($id);
+					$cc_raw[] = ['name'=>$cc_emp['name'],'id'=>$id];
+			}
 					
 			$send_msg = $this->add('xepan\communication\Model_Communication_MessageSent');
 			$send_msg['mailbox'] = "InternalMessage";
 			$send_msg['from_id'] = $this->app->employee->id;
 			$send_msg['from_raw'] = ['name'=>$this->app->employee['name'],'id'=>$this->app->employee->id];
 			$send_msg['to_raw'] = json_encode($to_raw);
-			$send_msg['title'] = $this->app->employee['name'].  "Inter Communication";
+			$send_msg['cc_raw'] = json_encode($cc_raw);
+			$send_msg['title'] = $f['subject'];
 			$send_msg['description'] = $f['message'];
 			$send_msg->save();
 
