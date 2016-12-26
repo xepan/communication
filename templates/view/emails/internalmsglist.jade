@@ -12,7 +12,8 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
             {/}  
           .conversation-body
             a.name(class="{$unread}"  data-id="{$id}")
-              | {from_name}Ryan Gossling{/}
+              | {from_name}Ryan Gossling{/} 
+              small  {$subject}
               {trash_wrapper}
               a.table-link.danger.do-delete-conversion.pull-right(href="#" data-id="{$id}")
                 span.fa-stack
@@ -21,7 +22,9 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
               {/}
               br
             small.text-muted
-              |To: {$to_name}  
+              |To: {$to_name}
+              br  
+              |Cc: {$cc_name}  
             .time.hidden-xs
               | &nbsp;{callback_date}September 21, 2013 18:28{/}
             

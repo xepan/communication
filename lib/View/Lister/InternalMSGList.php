@@ -62,6 +62,13 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		$this->current_row_html['to_name'] = implode(", ", $to_array);
 		$this->current_row_html['from_name'] = $this->model['from_raw']['name'];
 
+		$cc_array=[];
+		foreach ($this->model['cc_raw'] as $cc) {
+			$cc_array[]=$cc['name'];
+		}
+		$this->current_row_html['cc_name'] = implode(", ", $cc_array);
+
+
 		
 		if($this->model['from_id'] === $this->app->employee->id)
 			$this->current_row_html['position'] = "left";
@@ -84,6 +91,7 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		}
 
 		$this->current_row_html['message']  = $this->model['description'];
+		$this->current_row_html['subject']  = $this->model['title']? " [ ". $this->model['title'] . " ]":"";
 		
 		if($this->app->employee['scope'] != 'SuperUser'){
 			$this->current_row_html['trash_wrapper'] = '';			
