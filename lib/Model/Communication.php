@@ -112,7 +112,9 @@ class Model_Communication extends \xepan\base\Model_Table{
 	function getAttachments($urls=true){
 		$attach_arry = array();
 		if($this->loaded()){
-			foreach ($this->ref('EmailAttachments') as $attach) {
+			$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+			$attach_m->addCondition('communication_id',$this->id);
+			foreach ($attach_m as $attach) {
 				$attach_arry[] = $urls?$attach['file']:$attach['id'];
 			}
 
