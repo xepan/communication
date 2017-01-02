@@ -272,15 +272,15 @@ class View_ComposeEmailPopup extends \View{
 			$mail->save();
 			
 			if($this->mode == "fwd_email"){
+				
 				$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
 				$attach_m->addCondition('communication_id', $this->communication_id);
 				$attach_m->addCondition('type','attach');
 				
 				foreach ($attach_m as  $existing_attachment_model) {
-						$upload_images_array[] = $existing_attachment_model->id;
+						$upload_images_array[] = $existing_attachment_model['file_id'];
 				}
 			}			
-			
 
 			foreach ($upload_images_array as $file_id) {
 				$mail->addAttachment($file_id,'attach');
