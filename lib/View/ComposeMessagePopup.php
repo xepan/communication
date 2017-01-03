@@ -31,7 +31,7 @@ class View_ComposeMessagePopup extends \View{
 		$employee->title_field = 'employee_message_to';
 		$f = $this->add('Form',null,'form');
 		
-		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
+		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->validate('required')->addClass('xepan-push');
 		$message_to_field->setModel($employee);
 		$cc_field = $f->addField('xepan\base\DropDown','cc')->addClass('xepan-push');
 		$cc_field->setModel($employee);
@@ -58,10 +58,12 @@ class View_ComposeMessagePopup extends \View{
 					$to_raw[] = ['name'=>$to_emp['name'],'id'=>$id];
 			}
 			$cc_raw = [];
-				$cc_emp = $this->add('xepan\hr\Model_Employee');
-				foreach (explode(',', $f['cc']) as $name => $id) {
-					$cc_emp->load($id);
-					$cc_raw[] = ['name'=>$cc_emp['name'],'id'=>$id];
+			if($f['cc']){
+					$cc_emp = $this->add('xepan\hr\Model_Employee');
+					foreach (explode(',', $f['cc']) as $name => $id) {
+						$cc_emp->load($id);
+						$cc_raw[] = ['name'=>$cc_emp['name'],'id'=>$id];
+				}
 			}
 					
 			$send_msg = $this->add('xepan\communication\Model_Communication_MessageSent');
