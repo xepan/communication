@@ -24,6 +24,7 @@ class View_EmailNavigation extends \View{
 		
 		
 		$contact_inbox->addCondition($or);
+		$contact_inbox->addCondition('status','Received');
 		$contact_inbox->addCondition('extra_info','not like','%'.$this->app->employee->id.'%');
 		$contact_count=$contact_inbox->count()->getOne();
 		$this->template->trySet('contat_inbox_count',$contact_count);
