@@ -144,14 +144,7 @@ class page_emails extends \xepan\base\Page{
 		// Populate links with js->on
 		$url = $this->api->url(null,['cut_object'=>$email_view->name]);
 		
-		// $mailboxes_view->on('click','a',function($js,$data)use($mailboxes_view,$email_view,$url){
-		// 	return [
-		// 			$mailboxes_view->js()->find('li')->removeClass('active'),
-		// 			$email_view->js()->reload(null,null,$this->app->url($url,['mailbox'=>$data['mailbox']])),
-		// 			$js->closest('li')->addClass('active')
-		// 	];
-
-		// });
+		
 		$email_detail=$this->add('xepan\communication\View_EmailDetail',null,'email_detail');
 		$mailboxes_view->on('click','a',function($js,$data)use($mailboxes_view,$email_view,$url,$email_detail){
 			$email_view->memorize('mailbox',$data['mailbox']);
@@ -170,21 +163,21 @@ class page_emails extends \xepan\base\Page{
 			];
 
 		});
+
 		$mailboxes_view->js('click',
 			[
-					$email_view->js()->reload(
-									[
-										'mailbox'=>$this->js()->_selectorThis()->closest('a')->data('mailbox'),
-										'show_unread_emails'=>true,
+				$email_view->js()->reload(
+					[
+						'mailbox'=>$this->js()->_selectorThis()->closest('a')->data('mailbox'),
+						'show_unread_emails'=>true,
 
-									]
-								),
-					$mailboxes_view->js()->find('li')->removeClass('active'),
-					$mailboxes_view->js()->_selectorThis()->closest('li')->addClass('active'),
-					$email_detail->js()->hide()
+					]
+				),
+				$mailboxes_view->js()->find('li')->removeClass('active'),
+				$mailboxes_view->js()->_selectorThis()->closest('li')->addClass('active'),
+				$email_detail->js()->hide()
 
 			]
-					
 			)
 		->_selector('#email-nav-items li a span.unread-email-view');
 
@@ -223,6 +216,7 @@ class page_emails extends \xepan\base\Page{
 			$email_detail->js()
 				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 				->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]),
+			$email_view->js()->_selectorThis()->closest("li")->removeClass("unread")	
 			])
 		->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
 		
@@ -233,7 +227,8 @@ class page_emails extends \xepan\base\Page{
 				->reload(['communication_id'=>$this->js()->_selectorThis()->data('id'),'mode'=>'DraftMessage'])])
 		->_selector('li.draft-message  div:not(.chbox, .star,.checkbox-nice)');
 
-		$email_view->js('click',$email_view->js()->reload())->_selector('button.back-inbox');
+		$email_view->js('click',[$email_view->js()->show(),$email_detail->js()->hide()])->_selector('button.back-inbox');
+		
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
 			// load data['id'] wala e,mail and mark starred or remove is_starred
 			$email_model->load($data['id']);
