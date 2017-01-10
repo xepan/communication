@@ -73,7 +73,10 @@ class page_emails extends \xepan\base\Page{
 		
 		$mail = $email_view->recall('mail')?:'%';
 		$mailbox = $email_view->recall('mailbox','_Received');
-		// $mailbox = $this->app->stickyGET('mailbox')?:'_ContactReceivedEmail';
+		
+		if($_GET['mailbox']){
+			$mailbox = $this->app->stickyGET('mailbox');
+		}
 
 		$email_model=$this->add('xepan\communication\Model_Communication_Email'.$mailbox);
 
@@ -99,7 +102,12 @@ class page_emails extends \xepan\base\Page{
 			$or->where('mailbox','like',$mail.'%');
 
 		$email_model->addCondition($or);
-		
+		if($_GET['show_unread_emails']){
+			$this->app->stickyGET('show_unread_emails');
+			$email_view->memorize('mailbox',$_GET['mailbox']);
+			$email_model->addCondition('extra_info','not like','%'.$this->app->employee->id.'%');
+		}
+
 		// $email_model->addCondition('mailbox','like',$mail.'%');
 		$email_model->setOrder('created_at','desc');
 
@@ -136,14 +144,7 @@ class page_emails extends \xepan\base\Page{
 		// Populate links with js->on
 		$url = $this->api->url(null,['cut_object'=>$email_view->name]);
 		
-		// $mailboxes_view->on('click','a',function($js,$data)use($mailboxes_view,$email_view,$url){
-		// 	return [
-		// 			$mailboxes_view->js()->find('li')->removeClass('active'),
-		// 			$email_view->js()->reload(null,null,$this->app->url($url,['mailbox'=>$data['mailbox']])),
-		// 			$js->closest('li')->addClass('active')
-		// 	];
-
-		// });
+		
 		$email_detail=$this->add('xepan\communication\View_EmailDetail',null,'email_detail');
 		$mailboxes_view->on('click','a',function($js,$data)use($mailboxes_view,$email_view,$url,$email_detail){
 			$email_view->memorize('mailbox',$data['mailbox']);
@@ -162,6 +163,23 @@ class page_emails extends \xepan\base\Page{
 			];
 
 		});
+
+		$mailboxes_view->js('click',
+			[
+				$email_view->js()->reload(
+					[
+						'mailbox'=>$this->js()->_selectorThis()->closest('a')->data('mailbox'),
+						'show_unread_emails'=>true,
+
+					]
+				),
+				$mailboxes_view->js()->find('li')->removeClass('active'),
+				$mailboxes_view->js()->_selectorThis()->closest('li')->addClass('active'),
+				$email_detail->js()->hide()
+
+			]
+			)
+		->_selector('#email-nav-items li a span.unread-email-view');
 
 		$label_view->on('click','a',function($js,$data)use($label_view,$email_view,$url,$email_detail){
 			$email_view->memorize('mail',$data['mail']);
@@ -198,6 +216,7 @@ class page_emails extends \xepan\base\Page{
 			$email_detail->js()
 				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 				->reload(['email_id'=>$this->js()->_selectorThis()->data('id')]),
+			$email_view->js()->_selectorThis()->closest("li")->removeClass("unread")	
 			])
 		->_selector('li.clickable-row  div:not(.chbox, .star,.checkbox-nice)');
 		
@@ -208,7 +227,8 @@ class page_emails extends \xepan\base\Page{
 				->reload(['communication_id'=>$this->js()->_selectorThis()->data('id'),'mode'=>'DraftMessage'])])
 		->_selector('li.draft-message  div:not(.chbox, .star,.checkbox-nice)');
 
-		$email_view->js('click',$email_view->js()->reload())->_selector('button.back-inbox');
+		$email_view->js('click',[$email_view->js()->show(),$email_detail->js()->hide()])->_selector('button.back-inbox');
+		
 		$email_view->on('click','li > .star > a',function($js,$data)use($email_model){
 			// load data['id'] wala e,mail and mark starred or remove is_starred
 			$email_model->load($data['id']);
@@ -304,24 +324,8 @@ class page_emails extends \xepan\base\Page{
 			')->_selector('.do-notspam');
 
 
-		// $email_view->on('click','button.fetch-refresh',function($js,$data){
-		// 	return $this->js()->univ()->location();
-		// });
-
 		$email_view->js('click')->_selector('button.fetch-refresh')->redirect($this->app->url(null,['fetch_emails'=>true]));
-
 		
-		// $email_view->js('click',
-		// 	[
-		// 	$email_view->js()
-		// 		->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
-		// 		->reload(['fetch_emails'=>true]),
-		// 	$mailboxes_view->js()->_selector('#email-navigation')->trigger('reload')	
-		// 	])
-		// ->_selector('button.fetch-refresh');
-
-
-
 	}
 	
 	function defaultTemplate(){

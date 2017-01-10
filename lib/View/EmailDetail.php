@@ -15,8 +15,12 @@ class View_EmailDetail extends \View{
 		$to_lister->setSource($to_raw);
 
 		$cc_raw=$m['cc_raw'];
-		$cc_lister=$this->add('CompleteLister',null,'cc_lister',['view/emails/email-detail','cc_lister']);
-		$cc_lister->setSource($cc_raw);
+		if($cc_raw){
+			$cc_lister=$this->add('CompleteLister',null,'cc_lister',['view/emails/email-detail','cc_lister']);
+			$cc_lister->setSource($cc_raw);
+		}else{
+			$this->template->set('cc_lister',"");
+		}
 
 		$this->template->setHTML('email_body',$model['description']);
 		$this->template->setHTML('attachment_count',$model['attachment_count']);
