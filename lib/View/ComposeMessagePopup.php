@@ -48,6 +48,11 @@ class View_ComposeMessagePopup extends \View{
 		$filestore_image=$this->add('xepan\filestore\Model_File',['policy_add_new_type'=>true]);
 		$multi_upload_field->setModel($filestore_image);
 		
+		$send_to_all_field->js(true)->univ()->bindConditionalShow([
+			''=>['message_to','cc'],
+			'*'=>[]
+		],'div.atk-form-row');
+
 		$f->addSubmit('Send message')->addClass('btn btn-success pull-right xepan-margin-top-small');
 		
 		if($f->isSubmitted()){
