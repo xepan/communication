@@ -55,6 +55,7 @@ class View_ComposeMessagePopup extends \View{
 			$cc_raw = [];
 			if($f['send_to_all']){
 				$all_emp = $this->add('xepan\hr\Model_Employee');
+				$all_emp->addCondition('status','Active');
 				foreach ($all_emp as $emp) {
 					$to_raw[] = ['name'=>$emp['name'],'id'=>$emp->id];
 				}
