@@ -30,7 +30,7 @@ class View_ComposeMessagePopup extends \View{
 
 		$employee->title_field = 'employee_message_to';
 		$f = $this->add('Form',null,'form');
-		$send_to_all_field = $f->addField('Checkbox','send_to_all', "Send to All Message");
+		$send_to_all_field = $f->addField('Checkbox','send_to_all', "Send Message to All Employee`s");
 		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
 		$message_to_field->setModel($employee);
 		$cc_field = $f->addField('xepan\base\DropDown','cc')->addClass('xepan-push');
