@@ -101,11 +101,11 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m->addCondition('mailbox',$this->email_setting['imap_email_username'].'#'.$mailbox_name);
 				$mail_m->tryLoadAny();
 				
-				// if($mail_m->loaded()){
-				// 	if($this->debug)
-				// 		echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
-					// continue;	
-				// } 
+				if($mail_m->loaded()){
+					if($this->debug)
+						echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
+					continue;	
+				} 
 				
 				$mail_m->setFrom($fetched_mail->fromAddress,$fetched_mail->fromName);
 
