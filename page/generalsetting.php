@@ -10,7 +10,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$email_setting= $this->add('xepan\communication\Model_Communication_EmailSetting');
 		$settingview=$this->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],'general_setting',['view/setting/email-setting-grid']);
 		$settingview->setModel($email_setting);
-
+		$settingview->grid->addQuickSearch(['name','email_username']);
 		
 		// /*SMS Setting*/
 		$sms_view_model = $this->add('xepan\communication\Model_Communication_SMSSetting');

@@ -3,7 +3,7 @@
 namespace xepan\communication;
 
 class page_general_emailcontent_usertool extends \xepan\communication\page_sidebar{
-	public $title="User Panel Setting";
+	public $title="User Panel Setting (For Website Users)";
 	function init(){
 		parent::init();
 
@@ -53,7 +53,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		$form=$this->add('Form',null,'reset_email');
 		$form->setModel($frontend_config_m,['reset_subject','reset_body']);
 		$form->getElement('reset_subject')->set($frontend_config_m['reset_subject']);
-		$form->getElement('reset_body')->set($frontend_config_m['reset_body'])->setFieldHint('{$name},{$email_id},{$password},{$click_here_to_activate}');
+		$form->getElement('reset_body')->set($frontend_config_m['reset_body'])->setFieldHint('{$username},{$email_id},{$click_here},{$url}');
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
@@ -68,7 +68,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		$form=$this->add('Form',null,'registration_view');
 		$form->setModel($frontend_config_m,['registration_subject','registration_body']);
 		$form->getElement('registration_subject')->set($frontend_config_m['registration_subject']);
-		$form->getElement('registration_body')->set($frontend_config_m['registration_body'])->setFieldHint('{$name},{$email_id},{$password},{$click_here_to_activate}');
+		$form->getElement('registration_body')->set($frontend_config_m['registration_body'])->setFieldHint('{$username},{$email_id},{$password},{$click_here},{$url}');
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
@@ -82,7 +82,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		$form=$this->add('Form',null,'verification_view');
 		$form->setModel($frontend_config_m,['verification_subject','verification_body']);
 		$form->getElement('verification_subject')->set($frontend_config_m['verification_subject']);
-		$form->getElement('verification_body')->set($frontend_config_m['verification_body']);
+		$form->getElement('verification_body')->set($frontend_config_m['verification_body'])->setFieldHint('{$username},{$email_id},{$password}');
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
@@ -97,7 +97,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		$form=$this->add('Form',null,'updatepassword_view');
 		$form->setModel($frontend_config_m,['update_subject','update_body']);
 		$form->getElement('update_subject')->set($frontend_config_m['update_subject']);
-		$form->getElement('update_body')->set($frontend_config_m['update_body'])->setFieldHint('{$name},{$email_id},{$password}');
+		$form->getElement('update_body')->set($frontend_config_m['update_body'])->setFieldHint('{$username},{$email_id},{$password}');
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
@@ -112,7 +112,7 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		$form=$this->add('Form',null,'subscription_view');
 		$form->setModel($frontend_config_m,['subscription_subject','subscription_body']);
 		$form->getElement('subscription_subject')->set($frontend_config_m['subscription_subject']);
-		$form->getElement('subscription_body')->set($frontend_config_m['subscription_body'])->setFieldHint('{$name},{$email_id}');
+		$form->getElement('subscription_body')->set($frontend_config_m['subscription_body'])->setFieldHint('{$username},{$email_id}');
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
