@@ -99,6 +99,7 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m = $this->add('xepan\communication\Model_Communication_Email_Received');
 				$mail_m->addCondition('uid',$fetched_mail->id);
 				$mail_m->addCondition('mailbox',$this->email_setting['imap_email_username'].'#'.$mailbox_name);
+				$mail_m->addCondition('created_at',$fetched_mail->date);
 				$mail_m->tryLoadAny();
 				
 				if($mail_m->loaded()){
@@ -146,14 +147,29 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m->findContact('from');
 				if($this->debug)
 					echo "Saving email <br/>";
-				$mail_m->save();
 
-
-				if($this->email_setting['auto_reply']){
-					if($this->debug)
-						echo "Doing auto reply <br/>";
-					$mail_m->reply($this->email_setting);
-				}
+				$reply_m = $this->add('xepan\communication\Model_Communication_Email_Received');
+				$reply_m->addCondition('title',$fetched_mail->subject);
+				$reply_m->addCondition('description',$email_content);
+				$reply_m->addCondition('created_at','>=',
+							date("Y-m-d H:i:s",
+							strtotime(date("Y-m-d H:i:s", 
+							strtotime($this->app->now)) . " -1 Hour")));
+				
+				$reply_m->debug()->tryLoadAny();
+				
+				if(!$reply_m->loaded()){
+					echo "Reply Auto ";
+					$mail_m->save();
+					if($this->email_setting['auto_reply']){
+						// echo "reply Email Bhejo";
+						if($this->debug)
+							echo "Doing auto reply <br/>";
+						$mail_m->reply($this->email_setting);
+					}
+				}/*else{
+					echo " Loaded :: reply Email mat Bhejo";
+				}*/				
 				$fetch_email_array[] = $mail_m->id;
 				
 				if(!isset($return['fetched_emails_from']))
