@@ -339,5 +339,43 @@ class View_EasySetupWizard extends \View{
 			->setHelpMessage('Need help ! click on the help icon')
 			->setHelpURL('#')
 			->setAction('Click Here',$action,$isDone);
+
+		/**
+		............. Communication Sub Types Coonfiguration ...............
+		*/
+
+		if($_GET[$this->name.'_communication_sub_type']){
+			$this->js(true)->univ()->frameURL("Communication Sub Type",$this->app->url('xepan_communication_generalsetting'));
+		}
+
+		$isDone = false;
+		
+		$action = $this->js()->reload([$this->name.'_communication_sub_type'=>1]);
+
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+		[
+			'fields'=>[
+						'sub_type'=>'text',
+						],
+				'config_key'=>'COMMUNICATION_SUB_TYPE',
+				'application'=>'Communication'
+		]);
+
+		$config_m->tryLoadAny();
+
+		if(!$config_m['sub_type']){
+			$isDone = false;
+		}else{
+			$isDone = true;
+			$action = $this->js()->univ()->dialogOK("Already have Data",' You already define sub type of communication, visit page ? <a href="'. $this->app->url('xepan_communication_generalsetting')->getURL().'"> click here to go </a>');
+		}
+
+		$company_view = $this->add('xepan\base\View_Wizard_Step')
+			->setAddOn('Application - Communication')
+			->setTitle('Communication Sub Type Configuration')
+			->setMessage('Please define sub type of communication. For define sub type click here and Go to tab of Communication Sub Type')
+			->setHelpMessage('Need help ! click on the help icon')
+			->setHelpURL('#')
+			->setAction('Click Here',$action,$isDone);
 	}
 }
