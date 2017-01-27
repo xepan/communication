@@ -39,33 +39,33 @@
   <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">From Number: {$from_number}</div>
   <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">To: {$sms_to}</div>
   <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12"></div>
+</div>{followup_form_wrapper}
+<div class="row xepan-push">
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">{$follow_up}</div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12 atk-form-row">Follow-Up: {$follow_up}</div>
-  <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12 atk-form-row">Follow-Up By: {$follow_up_type}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Title: </span>{$task_title}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Starting On: </span>{$starting_at}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Assign To: </span>{$assign_to}</div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">Follow-Up Title: {$task_title}</div>
-  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">Starting At: {$starting_at}</div>
-  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">Assign To: {$assign_to}</div>
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 atk-form-row"><span>Description:</span>{$description}</div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 atk-form-row">Description: {$description}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">{$set_reminder}</div>
 </div>
 <div class="row xepan-push">
-  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 atk-form-row">
-    <div class="row xepan-push">
-      <div class="col-md-12 atk-form-field atk-form-row"><span>Remind Medium:    </span>{$remind_via}</div>
-    </div>
-    <div class="row xepan-push">
-      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 atk-form-field atk-form-row"><span>Remind To:</span>{$notify_to}</div>
-    </div>
-    <div class="row xepan-push">
-      <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12 atk-form-field atk-form-row"><span>Remind Value:</span>{$remind_value}</div>
-      <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12 atk-form-field atk-form-row"><span>Remind Unit:</span>{$remind_unit}</div>
-    </div>
-  </div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Remind At:</span>{$reminder_time}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Remind Medium:</span>{$remind_via}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Remind To:</span>{$notify_to}</div>
 </div>
+<div class="row xepan-push">
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row">{$force_remind}</div>
+</div>
+<div class="row xepan-push">
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Snooze Duration:</span>{$snooze_duration}</div>
+  <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 atk-form-row"><span>Snooze Unit:</span>{$remind_unit}</div>
+</div>{/}
 <div class="row xepan-push">
   <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
     {$FormButtons}
