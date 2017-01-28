@@ -14,15 +14,24 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}else{
 			$this->current_row['starred']='';
 		}
-
-		$einfo =$this->model['extra_info'];
-		if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
-			if(in_array($this->app->employee->id, $einfo['seen_by'])){
+		$unread_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+		$unread_email->addCondition('communication_id',$this->model->id);
+		$unread_email->addCondition('contact_id',$this->app->employee->id);
+		$unread_email->addCondition('is_read',true);
+		$unread_email->tryLoadAny();
+		if($unread_email->loaded()){
 				$this->current_row['unread']='';
-			}else{
+		}else{
 				$this->current_row['unread']='unread';
-			}
+			
 		}
+		// $einfo =$this->model['extra_info'];
+		// if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
+		// 	if(in_array($this->app->employee->id, $einfo['seen_by'])){
+		// 		$this->current_row['unread']='';
+		// 	}else{
+		// 	}
+		// }
 		
 		if(!$this->model['attachment_count']){
 			$this->current_row['check_attach']='';
