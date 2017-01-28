@@ -105,6 +105,7 @@ class Form_Communication extends \Form {
 			FOLLOWUP BEGIN
 		************************************/
 		if($edit_model->loaded()){
+			$this->layout->template->del('score_button_wrapper');
 			$this->layout->template->del('followup_form_wrapper');
 		}
 
