@@ -23,7 +23,7 @@ class page_emails extends \xepan\base\Page{
 		}
 		if($_GET['mark_read']){
 			foreach ($_GET['mark_read'] as $mark_read_email) {
-				$read_email = $this->add('xepan\hr\Model_Contact_CommunicationReadEmail');
+				$read_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
 				$read_email->addCondition('communication_id',$mark_read_email);
 				$read_email->addCondition('contact_id',$this->app->employee->id);
 				$read_email->addCondition('is_read',true);
@@ -35,7 +35,7 @@ class page_emails extends \xepan\base\Page{
 		}
 		if($_GET['mark_unread']){
 			foreach ($_GET['mark_unread'] as $mark_unread_email) {
-				$unread_email = $this->add('xepan\hr\Model_Contact_CommunicationReadEmail');
+				$unread_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
 				$unread_email->addCondition('communication_id',$mark_unread_email);
 				$unread_email->addCondition('contact_id',$this->app->employee->id);
 				$unread_email->addCondition('is_read',false);
@@ -196,7 +196,7 @@ class page_emails extends \xepan\base\Page{
 			$email_model=$this->add('xepan\communication\Model_Communication_Email');
 			$email_model->load($_GET['email_id']);
 			/*Mark Read When Click to open Email Details*/
-			$read_email = $this->add('xepan\hr\Model_Contact_CommunicationReadEmail');
+			$read_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
 			$read_email->addCondition('communication_id',$email_model->id);
 			$read_email->addCondition('contact_id',$this->app->employee->id);
 			$read_email->addCondition('is_read',true);
