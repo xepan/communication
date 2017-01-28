@@ -97,7 +97,10 @@ class Form_Communication extends \Form {
 		$this->addField('line','from_number');//->set($edit_model['from_raw']['number']);
 		$this->addField('line','sms_to');
 
-
+		// SCORE BUTTONS START
+		$score_field = $this->addField('hidden','score');
+		
+		
 		/**********************************
 			FOLLOWUP BEGIN
 		************************************/
@@ -124,7 +127,7 @@ class Form_Communication extends \Form {
 
 			$force_remind_field = $this->addField('checkbox','force_remind','Enable Snoozing [Repetitive Reminder]');
 			$snooze_field = $this->addField('snooze_duration');
-			$remind_unit_field = $this->addField('DropDown','remind_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days','Weeks'=>'Weeks','months'=>'Months'])->setEmptyText('Please select a value');
+			$remind_unit_field = $this->addField('DropDown','remind_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
 			
 			$follow_up_field->js(true)->univ()->bindConditionalShow([
 				true=>['follow_up_type','task_title','starting_at','assign_to','description','set_reminder']
@@ -396,6 +399,14 @@ class Form_Communication extends \Form {
 		}else{
 			$communication['direction']='Out';
 			$communication->save();
+		}
+
+		// INSERTING SCORE
+		if($this['score']){
+			$model_point_system = $this->add('xepan\base\Model_PointSystem');
+			$model_point_system['contact_id'] = $this->contact->id;
+			$model_point_system['score'] = $this['score'];
+			$model_point_system->save();
 		}
 
 		/*************************************
