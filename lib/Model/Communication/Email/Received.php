@@ -17,6 +17,7 @@ class Model_Communication_Email_Received extends Model_Communication_Email{
 		$this->addCondition('status','Received');		
 		$this->addCondition('direction','In');
 
+		
 	}
 
 	function reply($email_setting){

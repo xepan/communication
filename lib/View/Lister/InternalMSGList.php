@@ -8,13 +8,14 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		$vp = $this->add('VirtualPage');
 	  	$vp->set(function($vp){
 			$this->app->stickyGET('mark_id');
-			$mark=$this->add('xepan\communication\Model_Communication_AbstractMessage');
-			$mark->load($_POST['mark_id']);
-
-			$einfo = $mark['extra_info'];
-			$einfo['seen_by'][] = $this->app->employee->id;
-			$mark['extra_info'] = $einfo;
-			$mark->save();
+			$unread_msg = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+			$unread_msg->addCondition('communication_id',$_POST['mark_id']);
+			$unread_msg->addCondition('contact_id',$this->app->employee->id);
+			$unread_msg->addCondition('is_read',true);
+			$unread_msg->tryLoadAny();
+			if(!$unread_msg->loaded()){
+					$unread_msg->save();
+			}
 			exit;
 	   	});
 
@@ -80,15 +81,24 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		// }else{
 		// 	$this->current_row['starred']='';
 		// }
-
-		$einfo =$this->model['extra_info'];
-		if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
-			if(in_array($this->app->employee->id, $einfo['seen_by'])){
-				$this->current_row['unread']='';
-			}else{
+		$unread_msg = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+		$unread_msg->addCondition('communication_id',$_POST['mark_id']);
+		$unread_msg->addCondition('contact_id',$this->app->employee->id);
+		$unread_msg->addCondition('is_read',true);
+		$unread_msg->tryLoadAny();
+		if($unread_msg->loaded()){
+			$this->current_row['unread']='';
+		}else{
 				$this->current_row['unread']='unread';
-			}
 		}
+		// $einfo =$this->model['extra_info'];
+		// if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
+		// 	if(in_array($this->app->employee->id, $einfo['seen_by'])){
+		// 		$this->current_row['unread']='';
+		// 	}else{
+		// 		$this->current_row['unread']='unread';
+		// 	}
+		// }
 
 		$this->current_row_html['message']  = $this->model['description'];
 		$this->current_row_html['subject']  = $this->model['title']? " [ ". $this->model['title'] . " ]":"";

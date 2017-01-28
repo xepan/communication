@@ -23,29 +23,26 @@ class page_emails extends \xepan\base\Page{
 		}
 		if($_GET['mark_read']){
 			foreach ($_GET['mark_read'] as $mark_read_email) {
-				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
-				->load($mark_read_email);
-				
-				$einfo = $mark['extra_info'];
-				$einfo['seen_by'][] = $this->app->employee->id;
-				$mark['extra_info'] = $einfo;
-				$mark->save();
+				$read_email = $this->add('xepan\hr\Model_Contact_CommunicationReadEmail');
+				$read_email->addCondition('communication_id',$mark_read_email);
+				$read_email->addCondition('contact_id',$this->app->employee->id);
+				$read_email->addCondition('is_read',true);
+				$read_email->tryLoadAny();
+				if(!$read_email->loaded()){
+					$read_email->save();
+				}
 			}
 		}
 		if($_GET['mark_unread']){
 			foreach ($_GET['mark_unread'] as $mark_unread_email) {
-				$mark=$this->add('xepan\communication\Model_Communication_Abstract_Email')
-				->load($mark_unread_email);
-
-				$einfo = $mark['extra_info'];
-				if(in_array($this->app->employee->id,$einfo['seen_by'])){
-					
-					$einfo['seen_by'] = array_diff($einfo['seen_by'], [$this->app->employee->id]);
-																									
-					$mark['extra_info'] = $einfo;
-					$mark->save();
-
-				}
+				$unread_email = $this->add('xepan\hr\Model_Contact_CommunicationReadEmail');
+				$unread_email->addCondition('communication_id',$mark_unread_email);
+				$unread_email->addCondition('contact_id',$this->app->employee->id);
+				$unread_email->addCondition('is_read',false);
+				$unread_email->tryLoadAny();
+				if($unread_email->loaded()){
+					$unread_email->delete();
+				}	
 			}
 		}
 
@@ -105,7 +102,8 @@ class page_emails extends \xepan\base\Page{
 		if($_GET['show_unread_emails']){
 			$this->app->stickyGET('show_unread_emails');
 			$email_view->memorize('mailbox',$_GET['mailbox']);
-			$email_model->addCondition('extra_info','not like','%'.$this->app->employee->id.'%');
+			// $email_model->addCondition('extra_info','not like','%'.$this->app->employee->id.'%');
+			$email_model->addCondition('is_read',false);
 		}
 
 		// $email_model->addCondition('mailbox','like',$mail.'%');
@@ -197,12 +195,15 @@ class page_emails extends \xepan\base\Page{
 		if($this->app->stickyGET('email_id')){
 			$email_model=$this->add('xepan\communication\Model_Communication_Email');
 			$email_model->load($_GET['email_id']);
-				/*Mark Read When Click to open Email Details*/
-				$einfo = $email_model['extra_info'];
-				$einfo['seen_by'][] = $this->app->employee->id;
-				
-				$email_model['extra_info'] = $einfo;
-				$email_model->save();
+			/*Mark Read When Click to open Email Details*/
+			$read_email = $this->add('xepan\hr\Model_Contact_CommunicationReadEmail');
+			$read_email->addCondition('communication_id',$email_model->id);
+			$read_email->addCondition('contact_id',$this->app->employee->id);
+			$read_email->addCondition('is_read',true);
+			$read_email->tryLoadAny();
+			if(!$read_email->loaded()){
+				$read_email->save();
+			}
 
 			$email_detail->setModel($email_model);
 			$this->app->stickyGET('communication_id');

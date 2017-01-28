@@ -66,13 +66,23 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('extra_info')->defaultValue(['seen_by'=>[]]);
 		
 		$this->addField('type');
- 
+ 	
 		$this->hasMany('xepan\communication\Communication_Attachment','communication_id',null,'EmailAttachments');
 		$this->hasMany('xepan\crm\Ticket_Comments','communication_id',null,'Comments');
 		$this->hasMany('xepan\crm\SupportTicket','communication_id',null,'SupportTicket');
-		
+		$this->hasMany('xepan\base\Contact_CommunicationReadEmail','communication_id',null,'UnreadEmails');
+
 		$this->addExpression('image')->set($this->refSQL('from_id')->fieldQuery('image'));
 		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->addCondition('type','attach')->count());
+
+		$this->addExpression('is_read')->set(function($m,$q){
+			return $unread_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail')
+								->addCondition('is_read',true)
+								->addCondition('communication_id',$q->getField('id'))
+								// ->addCondition('contact_id',$this->app->employee->id)
+								->count();
+
+		})->type('boolean');
 
 		$this->addHook('afterInsert',[$this,'throwHookNotification']);
 		$this->addHook('beforeDelete',[$this,'deleteAttachments']);
