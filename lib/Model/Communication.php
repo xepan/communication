@@ -72,6 +72,13 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->hasMany('xepan\crm\SupportTicket','communication_id',null,'SupportTicket');
 		$this->hasMany('xepan\base\Contact_CommunicationReadEmail','communication_id',null,'UnreadEmails');
 
+		$this->addExpression('is_read')->set(function($m,$q){
+			return $this->add('xepan\base\Model_Contact_CommunicationReadEmail')
+					->addCondition('communication_id',$q->getField('id'))
+					->addCondition('is_read',true)
+					->count();
+		})->type('boolean');
+
 		$this->addExpression('image')->set($this->refSQL('from_id')->fieldQuery('image'));
 		$this->addExpression('attachment_count')->set($this->refSQL('EmailAttachments')->addCondition('type','attach')->count());
 
