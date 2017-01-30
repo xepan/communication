@@ -79,7 +79,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 			return $unread_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail')
 								->addCondition('is_read',true)
 								->addCondition('communication_id',$q->getField('id'))
-								// ->addCondition('contact_id',$this->app->employee->id)
+								->addCondition('contact_id',$this->app->employee->id)
 								->count();
 
 		})->type('boolean');
@@ -138,6 +138,12 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$attach->addCondition('communication_id',$this->id);
 		foreach ($attach as  $m) {
 			$m->delete();
+		}
+
+		$unread_count_entry = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+		$unread_count_entry->addCondition('communication_id',$this->id);
+		foreach ($unread_count_entry as $email) {
+			$email->delete();
 		}
 	}
 
