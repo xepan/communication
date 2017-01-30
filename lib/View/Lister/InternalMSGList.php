@@ -82,7 +82,7 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		// 	$this->current_row['starred']='';
 		// }
 		$unread_msg = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
-		$unread_msg->addCondition('communication_id',$_POST['mark_id']);
+		$unread_msg->addCondition('communication_id',$this->model->id);
 		$unread_msg->addCondition('contact_id',$this->app->employee->id);
 		$unread_msg->addCondition('is_read',true);
 		$unread_msg->tryLoadAny();
