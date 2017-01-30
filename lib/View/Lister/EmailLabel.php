@@ -7,7 +7,7 @@ class View_Lister_EmailLabel extends \CompleteLister{
 		$email=$this->add('xepan\communication\Model_Communication_Email_Received');
 		$email->addCondition('direction','In');
 		$email->addCondition('mailbox',$this->model['email_username'].'#INBOX');
-		$email->addCondition('is_read',false);
+		// $email->addCondition('is_read',false);
 		$email_count=$email->count()->getOne();
 		
 		$unreademail=$this->add('xepan\communication\Model_Communication_Email_Received');

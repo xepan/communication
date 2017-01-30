@@ -38,7 +38,7 @@ class page_emails extends \xepan\base\Page{
 				$unread_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
 				$unread_email->addCondition('communication_id',$mark_unread_email);
 				$unread_email->addCondition('contact_id',$this->app->employee->id);
-				$unread_email->addCondition('is_read',false);
+				$unread_email->addCondition('is_read',true);
 				$unread_email->tryLoadAny();
 				if($unread_email->loaded()){
 					$unread_email->delete();
