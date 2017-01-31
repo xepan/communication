@@ -229,7 +229,7 @@ class Model_Communication extends \xepan\base\Model_Table{
  					'count'=>$personal_count,
  				];	
 
-		$cl = $report_view->add('CompleteLister',null,null,['view\marketingactivityreport']);
+		$cl = $report_view->add('CompleteLister',null,null,['view\communicationactivityreport']);
 		$cl->setSource($result_array);		
 	}
 
