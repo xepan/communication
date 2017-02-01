@@ -92,7 +92,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				'fields'=>[
 							'contact_no_duplcation_allowed'=>'DropDown'
 							],
-					'config_key'=>'Contact No Duplication Allowed Settings',
+					'config_key'=>'contact_no_duplication_allowed_settings',
 					'application'=>'base'
 			]);
 		$contactno_m->add('xepan\hr\Controller_ACL');
