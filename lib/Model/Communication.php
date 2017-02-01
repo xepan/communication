@@ -147,6 +147,98 @@ class Model_Communication extends \xepan\base\Model_Table{
 		}
 	}
 
+	function activityReport($app,$report_view,$emp,$start_date,$end_date){				
+		$employee = $this->add('xepan\hr\Model_Employee')->load($emp);
+							  					  
+		$message = $this->add('xepan\communication\Model_Communication_AbstractMessage');
+		$message->addCondition('created_at','>=',$start_date);
+		$message->addCondition('created_at','<=',$this->app->nextDate($end_date));
+		$message->addCondition('created_by_id',$emp);
+		$message_count = $message->count()->getOne();
+		
+		$result_array[] = [
+ 					'assign_to'=>$employee['name'],
+ 					'from_date'=>$start_date,
+ 					'to_date'=>$end_date,
+ 					'type'=> 'Message',
+ 					'count'=>$message_count,
+ 				];	
+
+		$call = $this->add('xepan\communication\Model_Communication_Call');
+		$call->addCondition('created_at','>=',$start_date);
+		$call->addCondition('created_at','<=',$this->app->nextDate($end_date));
+		$call->addCondition('created_by_id',$emp);
+		$call_count = $call->count()->getOne();
+		
+		$result_array[] = [
+ 					'assign_to'=>$employee['name'],
+ 					'from_date'=>$start_date,
+ 					'to_date'=>$end_date,
+ 					'type'=> 'Call',
+ 					'count'=>$call_count,
+ 				];	
+
+		$comment = $this->add('xepan\communication\Model_Communication_Comment');
+		$comment->addCondition('created_at','>=',$start_date);
+		$comment->addCondition('created_at','<=',$this->app->nextDate($end_date));
+		$comment->addCondition('created_by_id',$emp);
+		$comment_count = $comment->count()->getOne();
+		
+		$result_array[] = [
+ 					'assign_to'=>$employee['name'],
+ 					'from_date'=>$start_date,
+ 					'to_date'=>$end_date,
+ 					'type'=> 'Comment',
+ 					'count'=>$comment_count,
+ 				];	
+
+		$email = $this->add('xepan\communication\Model_Communication_Email');
+		$email->addCondition('created_at','>=',$start_date);
+		$email->addCondition('created_at','<=',$this->app->nextDate($end_date));
+		$email->addCondition('created_by_id',$emp);
+		$email_count = $email->count()->getOne();
+		
+		$result_array[] = [
+ 					'assign_to'=>$employee['name'],
+ 					'from_date'=>$start_date,
+ 					'to_date'=>$end_date,
+ 					'type'=> 'Email',
+ 					'count'=>$email_count,
+ 				];	
+
+
+		$sms = $this->add('xepan\communication\Model_Communication_SMS');
+		$sms->addCondition('created_at','>=',$start_date);
+		$sms->addCondition('created_at','<=',$this->app->nextDate($end_date));
+		$sms->addCondition('created_by_id',$emp);
+		$sms_count = $sms->count()->getOne();
+		
+		$result_array[] = [
+ 					'assign_to'=>$employee['name'],
+ 					'from_date'=>$start_date,
+ 					'to_date'=>$end_date,
+ 					'type'=> 'SMS',
+ 					'count'=>$sms_count,
+ 				];
+
+		$personal = $this->add('xepan\communication\Model_Communication_Personal');
+		$personal->addCondition('created_at','>=',$start_date);
+		$personal->addCondition('created_at','<=',$this->app->nextDate($end_date));
+		$personal->addCondition('created_by_id',$emp);
+		$personal_count = $personal->count()->getOne();
+		
+		$result_array[] = [
+ 					'assign_to'=>$employee['name'],
+ 					'from_date'=>$start_date,
+ 					'to_date'=>$end_date,
+ 					'type'=> 'Personal',
+ 					'count'=>$personal_count,
+ 				];	
+
+		$cl = $report_view->add('CompleteLister',null,null,['view\communicationactivityreport']);
+		$cl->setSource($result_array);		
+	}
+
 	function quickSearch($app,$search_string,&$result_array,$relevency_mode){
 		$this->addExpression('Relevance')->set('MATCH(title, description, communication_type) AGAINST ("'.$search_string.'" '.$relevency_mode.')');
 		$this->addCondition('Relevance','>',0.5);
