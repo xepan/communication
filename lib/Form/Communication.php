@@ -93,8 +93,11 @@ class Form_Communication extends \Form {
 			$emp_field->set($this->app->employee->id);
 		}
 		$emp_field->setModel($emp_model);
-		$this->addField('line','called_to')->set($edit_model['to_raw'][0]['number']);
-		$this->addField('line','from_number');//->set($edit_model['from_raw']['number']);
+		$called_to_field = $this->addField('xepan\base\DropDown','called_to')->set($edit_model['to_raw'][0]['number']);
+		$called_to_field->select_menu_options=['tags'=>true];
+		$called_to_field->validate_values=false;
+		// $called_to_field->setAttr(['multiple'=>'multiple']);
+		$this->addField('line','from_number');
 		$this->addField('line','sms_to');
 
 		// SCORE BUTTONS START
@@ -366,8 +369,8 @@ class Form_Communication extends \Form {
 		$communication->setSubject($this['title']);
 		$communication->setBody($this['body']);
 
-		if($_to_field){				
-			foreach (explode(',',$this[$_to_field]) as $to) {				
+		if($_to_field){
+			foreach (explode(',',$this[$_to_field]) as $to) {
 				$communication->addTo(trim($to));
 			}			
 		}

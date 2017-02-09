@@ -25,11 +25,13 @@ class View_Lister_Communication extends \CompleteLister{
 			$edit_id = $this->app->stickyGET('edit_communication_id');
 			$form = $p->add('xepan\communication\Form_Communication',['edit_communication_id'=>$edit_id],null,['form/empty']);
 			$form->setContact($model_contact);
-			$member_phones = array_reverse($model_contact->getPhones());
+			$member_phones = $model_contact->getPhones();
+			
 			$to_email_field = $form->getElement('email_to');
 			$form->getElement('notify_email_to')->set(implode(", ", $model_contact->getEmails()));
 			$called_to_field = $form->getElement('called_to');
 
+			// $called_to_field;
 			$edit_model = $this->add('xepan\communication\Model_Communication_Abstract_Email');
 			if($edit_id){
 				$edit_model->load($edit_id);
@@ -41,7 +43,12 @@ class View_Lister_Communication extends \CompleteLister{
 				$to_email_field->set(implode(", ", $edit_emails_to));	
 			}else{
 				$to_email_field->set(implode(", ", $model_contact->getEmails()));
-				$called_to_field->set(array_pop($member_phones));
+				// $called_to_field->set(array_pop($member_phones));
+				$nos=[];
+				foreach ($member_phones as $no) {
+					$nos[$no] = $no;
+				}
+				$called_to_field->setValueList($nos);
 				
 			}
 
