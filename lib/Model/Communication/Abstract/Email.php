@@ -231,6 +231,49 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 
 		$this['status']='Sent';
 		$this->save();
+		foreach ($this['to_raw'] as $to) {
+			$form = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+			$form['communication_id'] = $this->id;
+			$form['type'] = "FROM";
+			$form['row'] = $this['from_raw']['email'];
+			$form->save();
+
+			$row = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+			$row['communication_id'] = $this->id;
+			$row['type'] = "TO";
+			$row['row'] = $to['email'];
+			$row->save();
+		}
+
+		if($this['cc_raw'])
+			foreach ($this['cc_raw'] as $cc) {
+				$form = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+				$form['communication_id'] = $this->id;
+				$form['type'] = "FROM";
+				$form['row'] = $this['from_raw']['email'];
+				$form->save();
+
+				$row = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+				$row['communication_id'] = $this->id;
+				$row['type'] = "CC";
+				$row['row'] = $cc['email'];
+				$row->save();
+			}
+
+		if($this['bcc_raw'])
+			foreach ($this['bcc_raw'] as $bcc) {
+				$form = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+				$form['communication_id'] = $this->id;
+				$form['type'] = "FROM";
+				$form['row'] = $this['from_raw']['email'];
+				$form->save();
+
+				$row = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+				$row['communication_id'] = $this->id;
+				$row['type'] = "BCC";
+				$row['row'] = $bcc['email'];
+				$row->save();
+			}
 	}	
 
 	function verifyTo($to_field, $contact_id){
