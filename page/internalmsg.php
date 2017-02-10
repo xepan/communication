@@ -38,6 +38,9 @@ class page_internalmsg extends \xepan\base\Page{
 			]);
 		}
 
+			
+		$com_id = $this->app->stickyGET('communication_id');
+		$mode = $this->app->stickyGET('mode');
 
 		$msg_m->setOrder('id','desc');
 		$msg_list = $this->add('xepan\communication\View_Lister_InternalMSGList',null,'message_lister');
@@ -49,7 +52,7 @@ class page_internalmsg extends \xepan\base\Page{
 		$msg_list->addClass('xepan-internal-message-trigger-reload');
 		// $msg_list->js('reload')->reload();
 
-		$compose_msg = $this->add('xepan\communication\View_ComposeMessagePopup',['employee_id'=>$emp_id],'message_compose_view');
+		$compose_msg = $this->add('xepan\communication\View_ComposeMessagePopup',['employee_id'=>$emp_id,'communication_id'=>$com_id,'mode'=>$mode],'message_compose_view');
 
 		$emp_nav->js('click',[
 				$compose_msg->js()->html(' ')
@@ -57,6 +60,22 @@ class page_internalmsg extends \xepan\base\Page{
 				$msg_list->js()->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 					->reload(['employee_id'=>$this->js()->_selectorThis()->data('id')]),	
 			])->_selector('.internal-conversion-emp-list');
+
+		$msg_list->js('click',
+				$compose_msg->js()
+				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+				->reload(
+						[
+							'communication_id'=>$this->js()->_selectorThis()->data('id'),
+							'mode'=>'msg-reply'
+						]
+					)
+				)->_selector('.do-msg-reply');
+
+		$msg_list->js('click',
+				$compose_msg->js()
+				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+				->reload(['communication_id'=>$this->js()->_selectorThis()->data('id'),'mode'=>'msg-fwd']))->_selector('.do-msg-fwd');
 
 	}
 

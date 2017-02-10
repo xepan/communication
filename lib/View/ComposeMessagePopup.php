@@ -6,8 +6,16 @@ namespace xepan\communication;
 * 
 */
 class View_ComposeMessagePopup extends \View{
+	public $subject="";
+	public $message="";
 	function init(){
 		parent::init();
+		$communication_id = $this->app->stickyGET('communication_id');
+		$mode = $this->app->stickyGET('mode');
+		$msg_model = $this->add('xepan\communication\Model_Communication_AbstractMessage');
+		if($communication_id)
+			$msg_model->load($communication_id);
+
 		$emp_id = $this->app->stickyGET('employee_id');
 		$employee = $this->add('xepan\hr\Model_Employee');
 		$employee->addCondition('status','Active');
@@ -33,15 +41,45 @@ class View_ComposeMessagePopup extends \View{
 		$f = $this->add('Form',null,'form');
 		$send_to_all_field = $f->addField('Checkbox','send_to_all', "Send Message to All Employee`s");
 		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
-		$message_to_field->setModel($employee);
-		$cc_field = $f->addField('xepan\base\DropDown','cc')->addClass('xepan-push');
-		$cc_field->setModel($employee);
+		$message_to_field->validate_values=false;
 
-		$f->addField('line','subject');
+
+
+		$cc_field = $f->addField('xepan\base\DropDown','cc')->addClass('xepan-push');
+		$cc_field->validate_values=false;
+		
+		if($mode == 'msg-reply'){
+			$msg_to=$msg_model['to_raw'];
+			foreach ($msg_to as $to_field_msg) {
+				$msg_to [] = $to_field_msg['id'];
+				$message_to_field->js(true)->append("<option value='".$to_field_msg['id']."'>".$to_field_msg['name']." </option>")->trigger('change');
+			}
+			$message_to_field->set($msg_to);
+
+			$msg_cc=$msg_model['cc_raw'];
+			foreach ($msg_cc as $cc_field_msg) {
+				$msg_cc [] = $cc_field_msg['id'];
+				$cc_field->js(true)->append("<option value='".$cc_field_msg['id']."'>".$cc_field_msg['name']." </option>")->trigger('change');
+			}
+			$cc_field->set($msg_cc)->js(true)->trigger('changed');
+
+			$this->subject="Re: ".$msg_model['title'];
+			$this->message="<br/><br/><br/><br/><blockquote>".$msg_model['description']."<blockquote>";
+		}
+		if($mode != "msg-reply"){
+			$cc_field->setModel($employee);
+			$message_to_field->setModel($employee);
+		}
+		if($mode == 'msg-fwd'){
+			$this->subject="Fwd: ".$msg_model['title'];
+			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$msg_model['description']."<.blockquote>";
+		}
 		
 		$message_to_field->setAttr(['multiple'=>'multiple']);
 		$cc_field->setAttr(['multiple'=>'multiple']);
+		$f->addField('line','subject')->set($this->subject);
 		$message_field = $f->addField('xepan\base\RichText','message')->validate('required');
+		$message_field->set($this->message);
 		$message_field->options = ['toolbar1'=>"styleselect | bold italic fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor",'menubar'=>false];
 		
 		$multi_upload_field = $f->addField('xepan\base\Form_Field_Upload','attachment',"")
