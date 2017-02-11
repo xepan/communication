@@ -40,7 +40,9 @@ class View_ComposeMessagePopup extends \View{
 		});
 
 		$employee->title_field = 'employee_message_to';
-		$f = $this->add('Form',null,'form');
+		$f = $this->add('Form');
+		$f->setLayout(['view/emails/internalmsgcompose']);
+
 		$send_to_all_field = $f->addField('Checkbox','send_to_all', "Send Message to All Employee`s");
 		$message_to_field = $f->addField('xepan\base\DropDown','message_to')->addClass('xepan-push');
 		$message_to_field->validate_values=false;
@@ -76,10 +78,10 @@ class View_ComposeMessagePopup extends \View{
 			$this->subject="Fwd: ".$msg_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$msg_model['description']."<.blockquote>";
 
-			// $attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
-			// $attach_m->addCondition('communication_id', $this->communication_id);
-			// $attach=$f->add('xepan\communication\View_Lister_Attachment');
-			// $attach->setModel($attach_m);
+			$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+			$attach_m->addCondition('communication_id', $this->communication_id);
+			$attach=$f->layout->add('xepan\communication\View_Lister_Attachment',null,'existing_attachments');
+			$attach->setModel($attach_m);
 
 		}
 		
@@ -186,7 +188,7 @@ class View_ComposeMessagePopup extends \View{
 		$this->js('click',$this->js()->removeClass('slide-up')->_selector('.compose-message-view-popup'))->_selector('.close-compose-message-popup');
 	}
 
-	function defaultTemplate(){
-		return ['view/emails/internalmsgcompose'];
-	}
+	// function defaultTemplate(){
+	// 	return ['view/emails/internalmsgcompose'];
+	// }
 }
