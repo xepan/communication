@@ -22,9 +22,8 @@ class View_ComposeMessagePopup extends \View{
 		$employee = $this->add('xepan\hr\Model_Employee');
 		$employee->addCondition('status','Active');
 		$employee->addCondition('id','<>',$this->app->employee->id);
-		if($emp_id){
-			// throw new \Exception($emp_id, 1);
-			
+
+		if($emp_id && ($this->mode != "msg-fwd")){
 			$employee->addCondition('id',$emp_id);
 		}
 
