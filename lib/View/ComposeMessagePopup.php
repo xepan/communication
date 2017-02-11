@@ -8,13 +8,15 @@ namespace xepan\communication;
 class View_ComposeMessagePopup extends \View{
 	public $subject="";
 	public $message="";
+	public $mode="";
+	public $communication_id="";
 	function init(){
 		parent::init();
-		$communication_id = $this->app->stickyGET('communication_id');
-		$mode = $this->app->stickyGET('mode');
+		$this->communication_id = $this->app->stickyGET('communication_id');
+		$this->mode = $this->app->stickyGET('mode');
 		$msg_model = $this->add('xepan\communication\Model_Communication_AbstractMessage');
-		if($communication_id)
-			$msg_model->load($communication_id);
+		if($this->communication_id)
+			$msg_model->load($this->communication_id);
 
 		$emp_id = $this->app->stickyGET('employee_id');
 		$employee = $this->add('xepan\hr\Model_Employee');
@@ -48,7 +50,7 @@ class View_ComposeMessagePopup extends \View{
 		$cc_field = $f->addField('xepan\base\DropDown','cc')->addClass('xepan-push');
 		$cc_field->validate_values=false;
 		
-		if($mode == 'msg-reply'){
+		if($this->mode == 'msg-reply'){
 			$msg_to=$msg_model['to_raw'];
 			foreach ($msg_to as $to_field_msg) {
 				$msg_to [] = $to_field_msg['id'];
@@ -66,13 +68,19 @@ class View_ComposeMessagePopup extends \View{
 			$this->subject="Re: ".$msg_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote>".$msg_model['description']."<blockquote>";
 		}
-		if($mode != "msg-reply"){
+		if($this->mode != "msg-reply"){
 			$cc_field->setModel($employee);
 			$message_to_field->setModel($employee);
 		}
-		if($mode == 'msg-fwd'){
+		if($this->mode == 'msg-fwd'){
 			$this->subject="Fwd: ".$msg_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$msg_model['description']."<.blockquote>";
+
+			// $attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+			// $attach_m->addCondition('communication_id', $this->communication_id);
+			// $attach=$f->add('xepan\communication\View_Lister_Attachment');
+			// $attach->setModel($attach_m);
+
 		}
 		
 		$message_to_field->setAttr(['multiple'=>'multiple']);
@@ -152,7 +160,17 @@ class View_ComposeMessagePopup extends \View{
 				}	
 			}
 
-			$upload_images_array = explode(",",$f['attachment']);
+			$upload_images_array = array();
+			if($this->mode == "msg-fwd"){
+				$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
+				$attach_m->addCondition('communication_id', $this->communication_id);
+				foreach ($attach_m as  $existing_attachment_model) {
+						$upload_images_array [] = $existing_attachment_model['file_id'];
+				}
+			}else{
+				$upload_images_array = explode(",",$f['attachment']);
+			}
+
 			foreach ($upload_images_array as $file_id) {
 				$send_msg->addAttachment($file_id);
 			}
