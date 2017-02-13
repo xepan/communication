@@ -70,7 +70,7 @@ class View_ComposeMessagePopup extends \View{
 		if($this->mode == 'reply_msg_all'){
 		}
 
-		if($this->mode != "msg-reply"){
+		if($this->mode != "msg-reply" && $this->mode != 'reply_msg_all'){
 			$cc_field->setModel($employee);
 			$message_to_field->setModel($employee);
 		}
