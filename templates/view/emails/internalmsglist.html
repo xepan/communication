@@ -7,6 +7,7 @@
           <div class="conversation-user">{avatar}<img src="img/samples/kunis.png" alt=""/>{/}  </div>
           <div class="conversation-body"><a data-id="{$id}" class="name {$unread}">{from_name}Ryan Gossling{/} <small> {$subject}</small>{trash_wrapper}<a href="#" data-id="{$id}" class="table-link danger do-delete-conversion pull-right"><span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-trash-o"></i></span></a>{/}
               <div class="btns pull-right"><a href="#" data-id="{$id}" title="Reply Message" class="table-link danger do-msg-reply"><span class="fa-stack"><i class="fa fa-mail-reply"></i></span></a><a href="#" data-id="{$id}" title="Forward Message" class="table-link danger do-msg-fwd"><span class="fa-stack"><i class="fa fa-mail-forward"></i></span></a></div><br/></a><small class="text-muted">To: {$to_name}<br/>Cc: {$cc_name}</small>
+            <div class="btns pull-right"><a href="#" data-id="{$id}" title="Reply To ALL" class="table-link danger do-msg-reply-all"><span class="fa-stack"><i class="fa fa-mail-reply-all"></i></span></a></div>
             <div class="time hidden-xs">&nbsp;{callback_date}September 21, 2013 18:28{/}</div>
             <div data-id="{$id}" style="display:none" class="text">
               {message}

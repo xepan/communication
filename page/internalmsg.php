@@ -75,6 +75,17 @@ class page_internalmsg extends \xepan\base\Page{
 		$msg_list->js('click',
 				$compose_msg->js()
 				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
+				->reload(
+						[
+							'communication_id'=>$this->js()->_selectorThis()->data('id'),
+							'mode'=>'reply_msg_all'
+						]
+					)
+				)->_selector('.do-msg-reply-all');
+
+		$msg_list->js('click',
+				$compose_msg->js()
+				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 				->reload(['communication_id'=>$this->js()->_selectorThis()->data('id'),'mode'=>'msg-fwd']))->_selector('.do-msg-fwd');
 
 	}

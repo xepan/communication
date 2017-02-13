@@ -45,6 +45,10 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
               |To: {$to_name}
               br  
               |Cc: {$cc_name}
+            .btns.pull-right
+              a.table-link.danger.do-msg-reply-all(href="#" data-id="{$id}"  title="Reply To ALL")
+                  span.fa-stack
+                    i.fa.fa-mail-reply-all
 
             .time.hidden-xs
               | &nbsp;{callback_date}September 21, 2013 18:28{/}

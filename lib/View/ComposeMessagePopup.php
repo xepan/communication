@@ -50,25 +50,26 @@ class View_ComposeMessagePopup extends \View{
 
 		$cc_field = $f->addField('xepan\base\DropDown','cc')->addClass('xepan-push');
 		$cc_field->validate_values=false;
-		
-		if($this->mode == 'msg-reply'){
-			$msg_to=$msg_model['to_raw'];
-			foreach ($msg_to as $to_field_msg) {
-				$msg_to [] = $to_field_msg['id'];
-				$message_to_field->js(true)->append("<option value='".$to_field_msg['id']."'>".$to_field_msg['name']." </option>")->trigger('change');
-			}
-			$message_to_field->set($msg_to);
 
-			$msg_cc=$msg_model['cc_raw'];
-			foreach ($msg_cc as $cc_field_msg) {
-				$msg_cc [] = $cc_field_msg['id'];
-				$cc_field->js(true)->append("<option value='".$cc_field_msg['id']."'>".$cc_field_msg['name']." </option>")->trigger('change');
-			}
-			$cc_field->set($msg_cc)->js(true)->trigger('changed');
+		if($this->mode == 'msg-reply'){
+			$msg_to=$msg_model->getReplyMessageFromTo()['to'];
+			$message_to_field->js(true)->append("<option value='".$msg_to[0]['id']."'>".$msg_to[1]['name']." </option>")->trigger('change');
+			$message_to_field->set($msg_to[0]['id']);
+
+			// $msg_cc=$msg_model['cc_raw'];
+			// foreach ($msg_cc as $cc_field_msg) {
+			// 	$msg_cc [] = $cc_field_msg['id'];
+			// 	$cc_field->js(true)->append("<option value='".$cc_field_msg['id']."'>".$cc_field_msg['name']." </option>")->trigger('change');
+			// }
+			// $cc_field->set($msg_cc)->js(true)->trigger('changed');
 
 			$this->subject="Re: ".$msg_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote>".$msg_model['description']."<blockquote>";
 		}
+		
+		if($this->mode == 'reply_msg_all'){
+		}
+
 		if($this->mode != "msg-reply"){
 			$cc_field->setModel($employee);
 			$message_to_field->setModel($employee);
