@@ -30,15 +30,15 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
                   button.btn.btn-success.dropdown-toggle(type='button', data-toggle='dropdown')
                     span.caret
                   ul.dropdown-menu.dropdown-menu-right
-                    li.do-msg-reply(data-id="{$id}")
+                    li(style= "cursor:pointer; cursor: hand; max-width:600px;").do-msg-reply(data-id="{$id}")
                       a(data-id="{$id}")
                         i.fa.fa-mail-reply
                         |  Reply
-                    li.do-msg-reply-all(data-id="{$id}")
+                    li(style= "cursor:pointer; cursor: hand; max-width:600px;").do-msg-reply-all(data-id="{$id}")
                       a(data-id="{$id}")
                         i.fa.fa-mail-reply-all
                         |  Reply all
-                    li.do-msg-fwd(data-id="{$id}")
+                    li(style= "cursor:pointer; cursor: hand; max-width:600px;").do-msg-fwd(data-id="{$id}")
                       a(data-id="{$id}")
                         i.fa.fa-mail-forward
                         |  Forward
