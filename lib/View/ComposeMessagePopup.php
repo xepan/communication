@@ -52,25 +52,45 @@ class View_ComposeMessagePopup extends \View{
 		$cc_field->validate_values=false;
 
 		if($this->mode == 'msg-reply'){
-			$msg_to=$msg_model->getReplyMessageFromTo()['to'];
-			$message_to_field->js(true)->append("<option value='".$msg_to[0]['id']."'>".$msg_to[1]['name']." </option>")->trigger('change');
-			$message_to_field->set($msg_to[0]['id']);
+			$msg_to=$msg_model->getReplyMessageFromTo()['to'][0];
+			// $msg_to=$msg_model['from_raw'];
+			// var_dump($msg_to);
+			$message_to_field->js(true)->append("<option value='".$msg_to['id']."'>".$msg_to['name']." </option>")->trigger('change');
+			$message_to_field->set($msg_to['id']);
 
+
+			$this->subject="Re: ".$msg_model['title'];
+			$this->message="<br/><br/><br/><br/><blockquote>".$msg_model['description']."<blockquote>";
+		}
+		
 			// $msg_cc=$msg_model['cc_raw'];
 			// foreach ($msg_cc as $cc_field_msg) {
 			// 	$msg_cc [] = $cc_field_msg['id'];
 			// 	$cc_field->js(true)->append("<option value='".$cc_field_msg['id']."'>".$cc_field_msg['name']." </option>")->trigger('change');
 			// }
 			// $cc_field->set($msg_cc)->js(true)->trigger('changed');
+	
+		if($this->mode == 'msg-reply-all'){
+			$msg_to =[];		
+			foreach ($msg_model->getReplyMessageFromTo(true)['to'] as $to_field_msg) {
+				$msg_to [] = $to_field_msg['id'];
+				$message_to_field->js(true)->append("<option value='".$to_field_msg['id']."'>".$to_field_msg['name']." </option>")->trigger('change');
+			}
+			// var_dump($msg_to);
+			$message_to_field->set($msg_to);
+
+			$msg_cc =[];		
+			foreach ($msg_model->getReplyMessageFromTo()['cc'] as $cc_field_msg) {
+				$msg_cc [] = $cc_field_msg['id'];
+				$cc_field->js(true)->append("<option value='".$cc_field_msg['id']."'>".$cc_field_msg['name']." </option>")->trigger('change');
+			}
+			$cc_field->set($msg_cc);
 
 			$this->subject="Re: ".$msg_model['title'];
 			$this->message="<br/><br/><br/><br/><blockquote>".$msg_model['description']."<blockquote>";
 		}
-		
-		if($this->mode == 'reply_msg_all'){
-		}
 
-		if($this->mode != "msg-reply" && $this->mode != 'reply_msg_all'){
+		if($this->mode != "msg-reply" && $this->mode != 'msg-reply-all'){
 			$cc_field->setModel($employee);
 			$message_to_field->setModel($employee);
 		}
@@ -176,6 +196,9 @@ class View_ComposeMessagePopup extends \View{
 			foreach ($upload_images_array as $file_id) {
 				$send_msg->addAttachment($file_id);
 			}
+
+			$this->app->stickyForget('communication_id');
+			$this->app->stickyForget('mode');
 
 			$js=[
 					$f->js()->univ()->successMessage('Message Send'),

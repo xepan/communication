@@ -21,12 +21,38 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
                   i.fa.fa-stack-1x.fa-inverse.fa-trash-o
               {/}
               .btns.pull-right
-                  a.table-link.danger.do-msg-reply(href="#" data-id="{$id}" title="Reply Message")
-                    span.fa-stack
-                      i.fa.fa-mail-reply
-                  a.table-link.danger.do-msg-fwd(href="#" data-id="{$id}"  title="Forward Message")
-                    span.fa-stack
-                      i.fa.fa-mail-forward
+                .btn-group
+                  //- button.do-msg-reply.btn.btn-success(type='button')
+                    //- ul
+                    //-   li(data-id="{$id}")
+                    //-     a(data-id="{$id}")
+                    //-       i.fa.fa-mail-reply
+                  button.btn.btn-success.dropdown-toggle(type='button', data-toggle='dropdown')
+                    span.caret
+                  ul.dropdown-menu.dropdown-menu-right
+                    li.do-msg-reply(data-id="{$id}")
+                      a(data-id="{$id}")
+                        i.fa.fa-mail-reply
+                        |  Reply
+                    li.do-msg-reply-all(data-id="{$id}")
+                      a(data-id="{$id}")
+                        i.fa.fa-mail-reply-all
+                        |  Reply all
+                    li.do-msg-fwd(data-id="{$id}")
+                      a(data-id="{$id}")
+                        i.fa.fa-mail-forward
+                        |  Forward
+                    //- li.print
+                    //-   a(data-id="{$id}")
+                    //-     i.fa.fa-print
+                    //-     |  Print
+              //- .btns.pull-right
+              //-     a.table-link.danger.do-msg-reply(href="#" data-id="{$id}" title="Reply Message")
+              //-       span.fa-stack
+              //-         i.fa.fa-mail-reply
+              //-     a.table-link.danger.do-msg-fwd(href="#" data-id="{$id}"  title="Forward Message")
+              //-       span.fa-stack
+              //-         i.fa.fa-mail-forward
                     //- .btn-group
                     //-   button.msg-reply.btn.btn-success(type='button')
                     //-     ul
@@ -45,10 +71,10 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
               |To: {$to_name}
               br  
               |Cc: {$cc_name}
-            .btns.pull-right
-              a.table-link.danger.do-msg-reply-all(href="#" data-id="{$id}"  title="Reply To ALL")
-                  span.fa-stack
-                    i.fa.fa-mail-reply-all
+            //- .btns.pull-right
+            //-   a.table-link.danger.do-msg-reply-all(href="#" data-id="{$id}"  title="Reply To ALL")
+            //-       span.fa-stack
+            //-         i.fa.fa-mail-reply-all
 
             .time.hidden-xs
               | &nbsp;{callback_date}September 21, 2013 18:28{/}

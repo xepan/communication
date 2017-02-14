@@ -41,7 +41,9 @@ class page_internalmsg extends \xepan\base\Page{
 			
 		$com_id = $this->app->stickyGET('communication_id');
 		$mode = $this->app->stickyGET('mode');
-
+		if($com_id)
+			// throw new \Exception($com_id, 1);
+			
 		$msg_m->setOrder('id','desc');
 		$msg_list = $this->add('xepan\communication\View_Lister_InternalMSGList',null,'message_lister');
 		$msg_list->setModel($msg_m);
@@ -78,7 +80,7 @@ class page_internalmsg extends \xepan\base\Page{
 				->reload(
 						[
 							'communication_id'=>$this->js()->_selectorThis()->data('id'),
-							'mode'=>'reply_msg_all'
+							'mode'=>'msg-reply-all'
 						]
 					)
 				)->_selector('.do-msg-reply-all');
