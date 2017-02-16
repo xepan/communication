@@ -22,6 +22,7 @@ class page_internalmsg extends \xepan\base\Page{
 		$emp_id = $this->app->stickyGET('employee_id');
 		
 		$msg_m = $this->add('xepan\communication\Model_Communication_AbstractMessage');
+		$msg_m->setOrder('id','desc');
 		$msg_m->addCondition([
 			['from_raw','like','%"'.$this->app->employee->id.'"%'],
 			['to_raw','like','%"'.$this->app->employee->id.'"%'],
@@ -41,10 +42,9 @@ class page_internalmsg extends \xepan\base\Page{
 			
 		$com_id = $this->app->stickyGET('communication_id');
 		$mode = $this->app->stickyGET('mode');
-		if($com_id)
-			// throw new \Exception($com_id, 1);
+		// if($com_id)
+		// 	// throw new \Exception($com_id, 1);
 			
-		$msg_m->setOrder('id','desc');
 		$msg_list = $this->add('xepan\communication\View_Lister_InternalMSGList',null,'message_lister');
 		$msg_list->setModel($msg_m);
 		$msg_list->add('xepan\base\Controller_Avatar',['options'=>['size'=>50,'border'=>['width'=>0]],'name_field'=>'contact']);
