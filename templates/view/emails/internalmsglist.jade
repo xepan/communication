@@ -20,11 +20,62 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
                   i.fa.fa-square.fa-stack-2x
                   i.fa.fa-stack-1x.fa-inverse.fa-trash-o
               {/}
+              .btns.pull-right
+                .btn-group
+                  //- button.do-msg-reply.btn.btn-success(type='button')
+                    //- ul
+                    //-   li(data-id="{$id}")
+                    //-     a(data-id="{$id}")
+                    //-       i.fa.fa-mail-reply
+                  button.btn.btn-success.dropdown-toggle(type='button', data-toggle='dropdown')
+                    span.caret
+                  ul.dropdown-menu.dropdown-menu-right
+                    li(style= "cursor:pointer; cursor: hand; max-width:600px;").do-msg-reply(data-id="{$id}")
+                      a(data-id="{$id}")
+                        i.fa.fa-mail-reply
+                        |  Reply
+                    li(style= "cursor:pointer; cursor: hand; max-width:600px;").do-msg-reply-all(data-id="{$id}")
+                      a(data-id="{$id}")
+                        i.fa.fa-mail-reply-all
+                        |  Reply all
+                    li(style= "cursor:pointer; cursor: hand; max-width:600px;").do-msg-fwd(data-id="{$id}")
+                      a(data-id="{$id}")
+                        i.fa.fa-mail-forward
+                        |  Forward
+                    //- li.print
+                    //-   a(data-id="{$id}")
+                    //-     i.fa.fa-print
+                    //-     |  Print
+              //- .btns.pull-right
+              //-     a.table-link.danger.do-msg-reply(href="#" data-id="{$id}" title="Reply Message")
+              //-       span.fa-stack
+              //-         i.fa.fa-mail-reply
+              //-     a.table-link.danger.do-msg-fwd(href="#" data-id="{$id}"  title="Forward Message")
+              //-       span.fa-stack
+              //-         i.fa.fa-mail-forward
+                    //- .btn-group
+                    //-   button.msg-reply.btn.btn-success(type='button')
+                    //-     ul
+                    //-       li
+                    //-         a(data-id="{$id}")
+                    //-           i.fa.fa-mail-reply
+                    //-   button.btn.btn-success.dropdown-toggle(type='button', data-toggle='dropdown')
+                    //-     span.caret
+                    //-   ul.dropdown-menu.dropdown-menu-right
+                    //-     li.msg-forward
+                    //-       a(data-id="{$id}")
+                    //-         i.fa.fa-mail-forward
+                    //-         |  Forward
               br
             small.text-muted
               |To: {$to_name}
               br  
-              |Cc: {$cc_name}  
+              |Cc: {$cc_name}
+            //- .btns.pull-right
+            //-   a.table-link.danger.do-msg-reply-all(href="#" data-id="{$id}"  title="Reply To ALL")
+            //-       span.fa-stack
+            //-         i.fa.fa-mail-reply-all
+
             .time.hidden-xs
               | &nbsp;{callback_date}September 21, 2013 18:28{/}
             
@@ -33,7 +84,7 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
               | I don't think they tried to market it to the billionaire, spelunking,
               | base-jumping crowd.{/}
               br
-              br  
+              br
               #email-attachments-content.msg-attachment
                 {$Attachments}
         {/}{/}
@@ -45,6 +96,9 @@ style.
   }
   .conversation-wrapper .conversation-body > .name{
     font-weight:100;
+  }
+  .internal-conversion-lister .conversation-body .btn{
+    padding:1px 4px!important;
   }
   a.name{
     cursor:pointer;

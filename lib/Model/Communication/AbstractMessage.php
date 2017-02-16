@@ -48,4 +48,29 @@ class Model_Communication_AbstractMessage extends Model_Communication{
 		});
 
 	}
+
+	function getReplyMessageFromTo($reply_to_all=null){
+		$return =[
+			'to'=>[['id'=>$this['from_raw']['id'],'name'=>$this['from_raw']['name']]],
+			'cc'=>[],
+			'bcc'=>[],
+		];
+
+		if($reply_to_all){
+			foreach ($this['to_raw'] as  $to_msg) {
+					$return['to'][] = [
+										'id'=>trim($to_msg['id']),
+										'name'=>trim($to_msg['name'])];
+			}
+		}
+		if($this['cc_raw']){
+			foreach ($this['cc_raw'] as  $cc_msg) {
+				$return['cc'][] = [
+										'id'=>trim($cc_msg['id']),
+										'name'=>trim($cc_msg['name'])];
+			}	
+		}
+
+		return $return;
+	}
 }

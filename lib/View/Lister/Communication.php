@@ -124,6 +124,11 @@ class View_Lister_Communication extends \CompleteLister{
 		else
 			$this->current_row_html['attachment']='';
 
+		if($this->model['status'] == 'Called')
+			$this->current_row_html['to'] = $this->model['to'];
+		else
+			$this->current_row_html['to']=' ';
+
 		$this->current_row_html['to_lister'] = $to_lister->getHtml();
 		if($this->model['communication_type']==='Email'){
 			$this->current_row_html['cc_lister'] = $cc_lister->getHtml();

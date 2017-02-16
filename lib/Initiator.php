@@ -21,7 +21,7 @@ class Initiator extends \Controller_Addon {
 		$search_communication = $this->add('xepan\communication\Model_Communication');
 		$this->app->addHook('quick_searched',[$search_communication,'quickSearch']);
 		$this->app->addHook('activity_report',[$search_communication,'activityReport']);
-		$this->app->addHook('contact_info',[$search_communication,'set_old_communication_info']);
+		// $this->app->addHook('contact_info',[$search_communication,'set_old_communication_info']);
 		$this->app->addHook('widget_collection',[$this,'exportWidgets']);
         $this->app->addHook('entity_collection',[$this,'exportEntities']);
 		return $this;

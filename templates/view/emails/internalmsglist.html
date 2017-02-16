@@ -5,7 +5,17 @@
       <div class="main-box clearfix">{rows}{row}
         <div class="conversation-item clearfix item-{$position}">
           <div class="conversation-user">{avatar}<img src="img/samples/kunis.png" alt=""/>{/}  </div>
-          <div class="conversation-body"><a data-id="{$id}" class="name {$unread}">{from_name}Ryan Gossling{/} <small> {$subject}</small>{trash_wrapper}<a href="#" data-id="{$id}" class="table-link danger do-delete-conversion pull-right"><span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-trash-o"></i></span></a>{/}<br/></a><small class="text-muted">To: {$to_name}<br/>Cc: {$cc_name}  </small>
+          <div class="conversation-body"><a data-id="{$id}" class="name {$unread}">{from_name}Ryan Gossling{/} <small> {$subject}</small>{trash_wrapper}<a href="#" data-id="{$id}" class="table-link danger do-delete-conversion pull-right"><span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-trash-o"></i></span></a>{/}
+              <div class="btns pull-right">
+                <div class="btn-group">
+                  <button type="button" data-toggle="dropdown" class="btn btn-success dropdown-toggle"><span class="caret"></span></button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li style="cursor:pointer; cursor: hand; max-width:600px;" data-id="{$id}" class="do-msg-reply"><a data-id="{$id}"><i class="fa fa-mail-reply"></i> Reply</a></li>
+                    <li style="cursor:pointer; cursor: hand; max-width:600px;" data-id="{$id}" class="do-msg-reply-all"><a data-id="{$id}"><i class="fa fa-mail-reply-all"></i> Reply all</a></li>
+                    <li style="cursor:pointer; cursor: hand; max-width:600px;" data-id="{$id}" class="do-msg-fwd"><a data-id="{$id}"><i class="fa fa-mail-forward"></i> Forward</a></li>
+                  </ul>
+                </div>
+              </div><br/></a><small class="text-muted">To: {$to_name}<br/>Cc: {$cc_name}</small>
             <div class="time hidden-xs">&nbsp;{callback_date}September 21, 2013 18:28{/}</div>
             <div data-id="{$id}" style="display:none" class="text">
               {message}
@@ -26,6 +36,9 @@
   }
   .conversation-wrapper .conversation-body > .name{
     font-weight:100;
+  }
+  .internal-conversion-lister .conversation-body .btn{
+    padding:1px 4px!important;
   }
   a.name{
     cursor:pointer;

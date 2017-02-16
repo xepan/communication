@@ -258,7 +258,10 @@ class Model_Communication extends \xepan\base\Model_Table{
 		}
 	}	
 
-	function set_old_communication_info($app,$contact_info){	
+	function set_old_communication_info($app,$contact_info,$bypass_true){	
+		if($bypass_true)
+			return;		
+
 		$communication1 = $this->add('xepan\communication\Model_Communication'); 
 		$communication1->addCondition('direction','In');
 		$communication1->addCondition('from_id',null);

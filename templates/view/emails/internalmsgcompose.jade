@@ -1,31 +1,42 @@
 div(id="{$_name}")
-  //-   .row
-  //-     .col-lg-12
-  //-       .main-box.clearfix
-  //-         header.main-box-header.clearfix
-  //-           div(style="width:100%;margin-bottom:1%")
-  //-             h2.pull-left Create new Conversation
-  //-             i.fa.fa-close.pull-right.close-compose-message-popup 
-              //- .main-box-body.clearfix
-  //- .conversation-wrapper
   .conversation-new-message
     {form}
-    .row.xepan-push
-      .col-md-4.col-lg-4.col-xs-12.col-sm-12.atk-form-row
-        {$message_to}
-      .col-md-5.col-lg-5.col-xs-12.col-sm-12.atk-form-row   
-        {$attachment}
-    .row.xepan-push
-      .col-md-12.col-lg-12.col-xs-12.col-sm-12.atk-form-row
+    .row.form-group
+      .col-lg-12
+        {$send_to_all}
+    .row.form-group
+      div.atk-form-row
+        .col-lg-12
+          | Message To : 
+        .col-lg-12
+            {$message_to}
+    .row.form-group
+      div.atk-form-row  
+        .col-lg-12
+          | Cc : 
+        .col-lg-12
+            {$cc}
+    .row.form-group
+      .col-lg-12
+        | Subject : 
+      .col-lg-12
+        {$subject}
+    .row.form-group
+      .col-lg-12
+        | Message : 
+      .col-lg-12
         {$message}
-        //- {$body}
-    form
-      .form-group
-        textarea.form-control(rows='2', placeholder='Enter your message...')
-      .clearfix
-        button.btn.btn-success.pull-right(type='submit') Send message
+    .row.form-group
+      .col-lg-12
+        | Attachments : 
+      .col-lg-12
+        .existing-attachment
+          {$existing_attachments}
+        {$attachment}
     {/}
-  style.
-    .form-control{
-      border-color:#e7ebee!important;
-    }
+style.
+  .existing-attachment li{
+    width:20%;
+    float:left;
+    margin-right:5px;
+  }
