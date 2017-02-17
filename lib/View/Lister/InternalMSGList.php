@@ -44,6 +44,7 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 
         ));
 
+
 	}
 	function setModel($model){
 		$m = parent::setModel($model);
@@ -103,8 +104,9 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		$this->current_row_html['message']  = $this->model['description'];
 		$this->current_row_html['subject']  = $this->model['title']? " [ ". $this->model['title'] . " ]":"";
 		
-		if($this->app->employee['scope'] != 'SuperUser'){
-			$this->current_row_html['trash_wrapper'] = '';			
+		if($this->app->employee['scope'] !== 'SuperUser'){
+			$this->current_row_html['trash_wrapper'] = '<div>&nbsp; </div>';
+			$this->js(true,$this->js()->hide()->_selector('.do-delete-conversion'))->_selector('.do-delete-conversion');			
 		}
 		
 		parent::formatRow();

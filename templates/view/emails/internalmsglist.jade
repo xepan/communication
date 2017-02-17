@@ -14,19 +14,14 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
             a.name(class="{$unread}"  data-id="{$id}")
               | {from_name}Ryan Gossling{/} 
               small  {$subject}
-              {trash_wrapper}
               a.table-link.danger.do-delete-conversion.pull-right(href="#" data-id="{$id}")
+                {trash_wrapper}
                 span.fa-stack
                   i.fa.fa-square.fa-stack-2x
                   i.fa.fa-stack-1x.fa-inverse.fa-trash-o
-              {/}
+                {/}
               .btns.pull-right
                 .btn-group
-                  //- button.do-msg-reply.btn.btn-success(type='button')
-                    //- ul
-                    //-   li(data-id="{$id}")
-                    //-     a(data-id="{$id}")
-                    //-       i.fa.fa-mail-reply
                   button.btn.btn-success.dropdown-toggle(type='button', data-toggle='dropdown')
                     span.caret
                   ul.dropdown-menu.dropdown-menu-right
@@ -42,30 +37,6 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
                       a(data-id="{$id}")
                         i.fa.fa-mail-forward
                         |  Forward
-                    //- li.print
-                    //-   a(data-id="{$id}")
-                    //-     i.fa.fa-print
-                    //-     |  Print
-              //- .btns.pull-right
-              //-     a.table-link.danger.do-msg-reply(href="#" data-id="{$id}" title="Reply Message")
-              //-       span.fa-stack
-              //-         i.fa.fa-mail-reply
-              //-     a.table-link.danger.do-msg-fwd(href="#" data-id="{$id}"  title="Forward Message")
-              //-       span.fa-stack
-              //-         i.fa.fa-mail-forward
-                    //- .btn-group
-                    //-   button.msg-reply.btn.btn-success(type='button')
-                    //-     ul
-                    //-       li
-                    //-         a(data-id="{$id}")
-                    //-           i.fa.fa-mail-reply
-                    //-   button.btn.btn-success.dropdown-toggle(type='button', data-toggle='dropdown')
-                    //-     span.caret
-                    //-   ul.dropdown-menu.dropdown-menu-right
-                    //-     li.msg-forward
-                    //-       a(data-id="{$id}")
-                    //-         i.fa.fa-mail-forward
-                    //-         |  Forward
               br
             small.text-muted
               |To: {$to_name}
