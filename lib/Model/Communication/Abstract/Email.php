@@ -237,7 +237,6 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 			$form['type'] = "FROM";
 			$form['row'] = $this['from_raw']['email'];
 			$form->save();
-
 			$row = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
 			$row['communication_id'] = $this->id;
 			$row['type'] = "TO";

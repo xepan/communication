@@ -161,7 +161,21 @@ class View_ComposeMessagePopup extends \View{
 			$send_msg['description'] = $f['message'];
 			$send_msg->save();
 
-			if($f['message_to'] OR $f['send_to_all']){
+			if($f['send_to_all']){
+				$all_emp = $this->add('xepan\hr\Model_Employee');
+				$all_emp->addCondition('status','Active');
+				foreach ($all_emp as $emp) {
+					$to_raw[] = ['name'=>$emp['name'],'id'=>$emp->id];
+					$comm_read_model = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+					$comm_read_model['is_read'] = false;
+					$comm_read_model['communication_id'] = $send_msg->id;
+					$comm_read_model['contact_id'] = $emp->id;
+					$comm_read_model['type'] = "TO";
+					$comm_read_model->save();
+				}
+			}
+				
+			if($f['message_to']){
 				foreach (explode(',', $f['message_to']) as $name => $id) {
 					$comm_read_model = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
 					$comm_read_model['is_read'] = false;

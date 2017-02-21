@@ -26,21 +26,31 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 					$this->js()->_selectorThis()->univ()->ajaxec($vp->getURL(),['mark_id'=>$this->js()->_selectorThis()->data('id')])
 				])
 				->_selector('.internal-conversion-lister .name');
-		$delete_id = $this->app->stickyGET('do_delete_employee_id');		
+		$delete_id = $this->app->stickyGET('do_delete_msg_id');		
 		if($delete_id){
 			$delete_m = $this->add('xepan\communication\Model_Communication_AbstractMessage');
 			$delete_m->addCondition('id',$delete_id);
 			$delete_m->tryLoadAny();
 			if($delete_m->loaded()){
 				$delete_m->delete();
+
+					$comm_read_model = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+					$comm_read_model->addCondition('communication_id', $delete_id);
+					$comm_read_model->addCondition('contact_id',$delete_m['contact_id']);
+					$comm_read_model->addCondition('type', $delete_m['type']);
+					$comm_read_model->tryLoadAny();
+					if($comm_read_model->loaded()){
+						$comm_read_model->delete();
+					}
 			}
+			
 			$this->js(null,$this->js()->univ()->successMessage('Deleted Successfully'))->_selector('.internal-conversion-lister')->trigger('reload')->execute();
 		}
 
 		$this->on('click','.do-delete-conversion')->univ()->confirm('Are you sure?')
 			->ajaxec(array(
             	$this->app->url(),
-            	'do_delete_employee_id'=>$this->js()->_selectorThis()->data('id')
+            	'do_delete_msg_id'=>$this->js()->_selectorThis()->data('id')
 
         ));
 
