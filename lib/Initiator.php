@@ -32,6 +32,12 @@ class Initiator extends \Controller_Addon {
     }
 
     function exportEntities($app,&$array){
+    	 $array['Communication_EmailSetting'] = ['caption'=>'Communication_EmailSetting','type'=>'DropDown','model'=>'xepan\communication\Model_Communication_EmailSetting'];
+    	 $array['Communication_SMSSetting'] = ['caption'=>'Communication_SMSSetting','type'=>'DropDown','model'=>'xepan\communication\Model_Communication_SMSSetting'];
+    	 $array['COMPANY_AND_OWNER_INFORMATION'] = ['caption'=>'COMPANY_AND_OWNER_INFORMATION','type'=>'DropDown','model'=>'xepan\communication\Model_COMPANY_AND_OWNER_INFORMATION'];
+    	 $array['ADMIN_LOGIN_RELATED_EMAIL'] = ['caption'=>'ADMIN_LOGIN_RELATED_EMAIL','type'=>'DropDown','model'=>'xepan\communication\Model_ADMIN_LOGIN_RELATED_EMAIL'];
+    	 $array['FRONTEND_LOGIN_RELATED_EMAIL'] = ['caption'=>'FRONTEND_LOGIN_RELATED_EMAIL','type'=>'DropDown','model'=>'xepan\communication\Model_FRONTEND_LOGIN_RELATED_EMAIL'];
+    	 $array['COMMUNICATION_SUB_TYPE'] = ['caption'=>'COMMUNICATION_SUB_TYPE','type'=>'DropDown','model'=>'xepan\communication\Model_COMMUNICATION_SUB_TYPE'];
     }
 
 	function setup_frontend(){
