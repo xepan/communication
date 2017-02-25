@@ -80,7 +80,13 @@ class Controller_ReadEmail extends \AbstractController {
 			foreach ($mailsIds as $mailId) {
 				if($this->debug)
 					echo "Getting email <br/>";
-				$fetched_mail = $mailbox->getMail($mailId);
+				try{
+					$fetched_mail = $mailbox->getMail($mailId);
+				}catch(\Exception $e){
+					echo "error fetching email $mailId <br/>";
+					continue;
+				}
+
 				if($this->debug)
 					echo "got email <br/>";
 				
