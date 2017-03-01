@@ -1,0 +1,43 @@
+
+<div id="email-box" class="clearfix">
+  {compose_btn_header}
+  {/compose_btn_header}
+  <div class="row">
+    <div class="col-lg-12">
+      <div id="email-navigation" style="margin-top:45px" class="email-nav-nano has-scrollbar">
+        <div tabindex="0" style="overflow-y:hidden" class="email-nav-nano-content">
+          <div id="{$_name}" class="col-lg-12"></div>
+          <div class="mobile-email-navigation-tool mobile-email-navigation-tool-closed"><a class="mobile-email-navigation-tool-cog hidden-md hidden-lg"><i class="fa fa-filter fa-2x"></i></a>
+            <div class="mobile-email-navigation-tool-options">
+               
+              {$email_navigation}
+              {$email_labels}
+            </div>
+          </div>
+        </div>
+        <div style="display: none;" class="nano-pane">
+          <div style="transform: translate(0px, 0px);" class="nano-slider"></div>
+        </div>
+      </div>
+      <div id="email-content" style="" class="email-content-nano has-scrollbar">{$email_lister}
+        <div style="display:none" class="email-detail">{$email_detail}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(".mobile-email-navigation-tool-cog").click(function(){
+      $(this).parent('div.mobile-email-navigation-tool').toggleClass("mobile-email-navigation-tool-closed");
+  });
+  $('.mobile-email-navigation-tool-options li a').click(function(){
+      $('.mobile-email-navigation-tool').toggleClass("mobile-email-navigation-tool-closed");
+  });
+  $(document).ready(function() {
+      $('#page-wrapper').addClass('nav-small');
+    });      
+</script>
+<style>
+  #email-box{
+    margin-bottom:20px!important;
+  }
+</style>

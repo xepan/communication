@@ -1,0 +1,19 @@
+#email-header-mobile.visible-xs.visible-sm.clearfix(class="{$class}")
+    #email-header-title-mobile.pull-left
+      i.fa.fa-inbox
+      |  Inbox
+      a.user-link()
+        a.btn.btn-success.email-compose-btn.pull-right(href='{url}?page=xepan_communication_composeemail{/}')
+          i.fa.fa-pencil-square-o
+          |  Compose email
+  header#email-header.clearfix
+    #email-header-title.visible-md.visible-lg
+      i.fa.fa-inbox
+      |  Inbox  
+      a.btn.btn-success.email-compose-btn.hidden-xs.hidden-sm
+        i.fa.fa-pencil-square-o
+        |  Compose email
+  .row
+    .col-lg-12
+      .compose-email-view-popup(style="display:none")
+          {$Content}      
