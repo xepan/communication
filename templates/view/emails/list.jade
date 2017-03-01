@@ -2,49 +2,8 @@ div.xepan-communication-email-list(id="{$_name}" class="{$class}")
   .email-content-nano-content(tabindex='0', style='right: -13px;')
     header#email-header.clearfix
       .xepan-push {$search_form}
-      #email-header-tools
-        .btn-group
-          button.btn.btn-primary.back-inbox(style="display:none" data-placement='bottom', data-toggle='tooltip', title='Back to Inbox', type='button', data-original-title='back-inbox')
-            i.fa.fa-arrow-left
-        .btn-group
-          button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Select')
-            i.fa.fa-square-o
-            span.caret
-          ul.dropdown-menu
-            li
-              a.all-select(href='#') All
-            li
-              a.select-none(href='#') None
-            li
-              a.select-read(href='#') Read
-            li
-              a.select-unread(href='#') Unread
-            li
-              a.select-starred(href='#') Starred
-            li
-              a.select-unstarred(href='#') Unstarred
-        .btn-group
-          button.fetch-refresh.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title=' Fetch And Refresh Emails')
-            i.fa.fa-refresh
-          button.btn.btn-primary.do-spam(data-placement='bottom', data-toggle='tooltip', title='Mark Spam', type='button', data-original-title='Spam')
-            i.fa.fa-exclamation-circle
-          button.do-delete.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Erase')
-            i.fa.fa-trash-o
-          button.mark-allread.btn.btn-primary(data-placement='bottom', data-toggle='tooltip', title='', type='button', data-original-title='Mark All As Read')
-            i.fa.fa-check-square-o
-        .btn-group
-          button.btn.btn-primary.dropdown-toggle.has-tooltip(title='', type='button', data-toggle='dropdown', data-original-title='Select')
-            //- i.fa.fa-square-o
-            |More
-            span.caret
-          ul.dropdown-menu
-            li
-              a.do-unread(href='#') Mark as Unread
-            //- li
-            //-   a.select-none(href='#') Mark as Star
-            li
-              a.do-notspam(href='#') Mark as Not Spam
-
+      {email_header_tools}
+      {/email_header_tools}
       #email-header-pagination.pull-right
         .pull-right.xepan-push{$paginator}
         //- .btn-group.pagination.pull-right

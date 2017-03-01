@@ -6,6 +6,8 @@ class View_Lister_EmailsList extends \CompleteLister{
 		parent::init();
 		$this->js('reload')->reload();
 
+		$this->add('xepan\communication\View_EmailsTopMenu',null,'email_header_tools');
+
 	}
 
 	function formatRow(){

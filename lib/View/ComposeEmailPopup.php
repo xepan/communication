@@ -323,4 +323,8 @@ class View_ComposeEmailPopup extends \View{
 			]
 			)->_selector('.fa-expand');
 	}
+
+	function defaultTemplate(){
+		return ['view/emails/compose-btn'];
+	}
 }
