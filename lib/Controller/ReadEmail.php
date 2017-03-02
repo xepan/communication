@@ -105,6 +105,7 @@ class Controller_ReadEmail extends \AbstractController {
 				$mail_m = $this->add('xepan\communication\Model_Communication_Email_Received');
 				$mail_m->addCondition('uid',$fetched_mail->id);
 				$mail_m->addCondition('mailbox',$this->email_setting['imap_email_username'].'#'.$mailbox_name);
+				$mail_m->addCondition('emailsetting_id',$this->email_setting->id);
 				$mail_m->addCondition('created_at',$fetched_mail->date);
 				$mail_m->tryLoadAny();
 				
@@ -165,10 +166,56 @@ class Controller_ReadEmail extends \AbstractController {
 				$reply_m->debug()->tryLoadAny();
 				
 				if(!$reply_m->loaded()){
-					echo "Reply Auto ";
 					$mail_m->save();
+					$to_email_arry = $fetched_mail->to;
+					foreach ($to_email_arry as $email => $name) {
+						$form = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+						$form['communication_id'] = $mail_m->id;
+						$form['type'] = "FROM";
+						$form['row'] = $fetched_mail->fromAddress;;
+						$form->save();
+
+						$row = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+						$row['communication_id'] = $mail_m->id;
+						$row['type'] = "To";
+						$row['row'] = $email;
+						$row->save();
+					}
+
+					$cc_email_array=$fetched_mail->cc;
+					foreach ($cc_email_array as $email => $name) {
+						$form = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+						$form['communication_id'] = $mail_m->id;
+						$form['type'] = "FROM";
+						$form['row'] = $fetched_mail->fromAddress;;
+						$form->save();
+
+						$row = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+						$row['communication_id'] = $mail_m->id;
+						$row['type'] = "CC";
+						$row['row'] = $email;
+						$row->save();
+					}
+					if(isset($fetched_mail->bcc)){
+						$bcc_email_array=$fetched_mail->bcc;
+						foreach ($bcc_email_array as $email => $name) {
+							$form = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+							$form['communication_id'] = $mail_m->id;
+							$form['type'] = "FROM";
+							$form['row'] = $fetched_mail->fromAddress;;
+							$form->save();
+							$row = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
+							$row['communication_id'] = $mail_m->id;
+							$row['type'] = "BCC";
+							$row['row'] = $email;
+							$row->save();
+						}
+					}
+					
+
 					if($this->email_setting['auto_reply']){
 						// echo "reply Email Bhejo";
+						echo "Reply Auto ";
 						if($this->debug)
 							echo "Doing auto reply <br/>";
 						$mail_m->reply($this->email_setting);

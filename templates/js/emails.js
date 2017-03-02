@@ -4,8 +4,8 @@ jQuery.widget("ui.xepan_emails",{
 	},
 
 	_create : function(){
-		alert('ram lala');
 		this.setupTopBar();
+		this.setUpEmailOpen();
 	},
 
 	setupTopBar : function(){
@@ -79,7 +79,134 @@ jQuery.widget("ui.xepan_emails",{
 
 	     }); 
 
+	     // Mark Read Seleted Emails In array
+
+	     $('.mark-allread').click(function(){
+	     	var selected_mark_emails=[];
+			$("#email-list :checkbox").each(function (){
+				if(this.checked){
+					selected_mark_emails.push($(this).data("id"));
+					$(this).closest("li").removeClass("unread");
+				}
+			});
+
+
+			$.ajax({
+				type: 'POST',
+	    		url: 'index.php?page=xepan_communication_emails_reademail',
+				data:{
+					mark_read_emails: selected_mark_emails
+					
+				}	
+	    	})
+	    	.success(function(result) {
+	    		console.log(result);
+	    		$(".xepan-communication-email-list").trigger('reload');
+	    	})
+	    	.error(function() {
+	    		console.log("error");
+	    		alert('OOPS');
+	    	});
+
+	     });
+
+	     // Mark UN Read Seleted Emails In array
+
+	     $('.do-unread').click(function(){
+	     	var selected_mark_unread_emails=[];
+			$("#email-list :checkbox").each(function (){
+				if(this.checked){
+					selected_mark_unread_emails.push($(this).data("id"));
+					$(this).closest("li").addClass("unread");
+				}
+			});
+
+			$.ajax({
+				type: 'POST',
+	    		url: 'index.php?page=xepan_communication_emails_unreademail',
+				data:{
+					mark_unread_emails: selected_mark_unread_emails
+					
+				}	
+	    	})
+	    	.success(function(result) {
+	    		console.log(result);
+	    		$(".xepan-communication-email-list").trigger('reload');
+	    	})
+	    	.error(function() {
+	    		console.log("error");
+	    		alert('OOPS');
+	    	});
+
+	     }); 
+
+	     /*------------Mark As Spam / Junk Emails----------*/
+
+	     $('.do-spam').click(function(){
+	     	var selected_mark_spam_emails=[];
+			$("#email-list :checkbox").each(function () { 
+				if(this.checked) {
+					selected_mark_spam_emails.push($(this).data("id"));
+					$(this).closest("li").hide();
+				}
+			});
+
+			$.ajax({
+				type: 'POST',
+	    		url: 'index.php?page=xepan_communication_emails_spamemail',
+				data:{
+					mark_spam_emails:selected_mark_spam_emails
+					
+				}	
+	    	})
+	    	.success(function(result) {
+	    		console.log(result);
+	    		$(".xepan-communication-email-list").trigger('reload');
+	    	})
+	    	.error(function() {
+	    		console.log("error");
+	    		alert('OOPS');
+	    	});
+
+	     });
+
+	     /*------------Mark As Not Spam / Junk Emails----------*/
+
+	     $('.do-notspam').click(function(){
+	     	var selected_mark_not_spam_emails=[];
+			$("#email-list :checkbox").each(function () { 
+				if(this.checked) {
+					selected_mark_not_spam_emails.push($(this).data("id"));
+					$(this).closest("li").hide();
+				}
+			});
+			$.ajax("",{data: {mark_not_spam_emails:selected_mark_not_spam_emails}});
+
+			$.ajax({
+				type: 'POST',
+	    		url: 'index.php?page=xepan_communication_emails_unspamemail',
+				data:{
+					mark_not_spam_emails:selected_mark_not_spam_emails
+					
+				}	
+	    	})
+	    	.success(function(result) {
+	    		console.log(result);
+	    		$(".xepan-communication-email-list").trigger('reload');
+	    	})
+	    	.error(function() {
+	    		console.log("error");
+	    		alert('OOPS');
+	    	});
+
+	     }); 
+
 	},
+
+	setUpEmailOpen: function(){
+
+	},
+
 	setupComposePanel : function(){
 		alert('setupComposePanel');
 	},

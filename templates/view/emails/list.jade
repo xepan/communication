@@ -19,14 +19,14 @@ div.xepan-communication-email-list(id="{$_name}" class="{$class}")
       .col-md-4        
     ul#email-list
       {rows}{row}
-      li.clickable-row(data-id="{$id}" class="{$unread} {$draft}")
+      li.clickable-row(data-id="{$id}" class="{$unread} {$draft}" data-to-row="{$to_raw}"  data-cc-row="{$cc_row}"  data-body="{$description_clear}" data-message="{$title_clear}")  
         .chbox(data-id="{$id}")
           .checkbox-nice
             input(data-id="{$id}" id='m-checkbox-{$id}' type='checkbox' )
             label(for='m-checkbox-{$id}')
         .star(data-id="{$id}")
           a(data-id="{$id}" data-starred="{$is_starred}" class="{$starred}")
-        .name(style='overflow:hidden' data-id="{$id}") {communication_with}Mila Kunis{/}
+        .name(style='overflow:hidden' data-id="{$id}")  {name}Mila Kunis{/}
         .message(data-id="{$id}")
           span.label.label-success {$email_name}
           span.subject {subject}Like your new movie -{/}&nbsp;

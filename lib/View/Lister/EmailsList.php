@@ -16,12 +16,7 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}else{
 			$this->current_row['starred']='';
 		}
-		$unread_email = $this->add('xepan\base\Model_Contact_CommunicationReadEmail');
-		$unread_email->addCondition('communication_id',$this->model->id);
-		$unread_email->addCondition('contact_id',$this->app->employee->id);
-		$unread_email->addCondition('is_read',true);
-		$unread_email->tryLoadAny();
-		if($unread_email->loaded()){
+		if($this->model['is_read']){
 				$this->current_row['unread']='';
 		}else{
 				$this->current_row['unread']='unread';
@@ -50,12 +45,16 @@ class View_Lister_EmailsList extends \CompleteLister{
 		$email_model->tryLoadBy('email_username',$mailbox);
 
 
-		$this->current_row['body'] = strip_tags($this->current_row['body']);
+		$this->current_row['name'] = substr(strip_tags($this->current_row['communication_with']), 0, 15);
+		$this->current_row['body'] = substr(strip_tags($this->current_row['body']), 0, 150);
 		if($this->model['status']=='Sent'){
 			$this->current_row['email_name'] =$email_model['name']." / ".$this->model['status'];
 		}else{
 			$this->current_row['email_name'] =$email_model['name'];
 		}
+
+		$this->current_row_html['description_clear'] = htmlentities($this->model['description']);
+		$this->current_row_html['title_clear'] = htmlentities($this->model['title']);
 
 		parent::formatRow();
 	}

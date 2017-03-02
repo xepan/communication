@@ -81,6 +81,7 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$this->addField('mass_mail')->caption('Use For Mass Mailing')->type('boolean');
 		
 		$this->hasMany('xepan\hr\Post_Email_Association','emailsetting_id',null,'EmailAssociation');
+		$this->hasMany('xepan\communication\Communication','emailsetting_id',null,'EmailCommunications');
 
 		$this->addExpression('status')->set(function($m,$q){
 			// return '"Active"';

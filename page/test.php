@@ -7,8 +7,22 @@ namespace xepan\communication;
 */
 class page_test extends \xepan\base\Page{
 	
-	function init(){
-		parent::init();
+
+	function page_setemailsettingid(){
+		$email_set = $this->add('xepan\communication\Model_Communication_EmailSetting')
+							->addCondition('imap_email_username','<>',null)
+							->addCondition('imap_email_username','<>','')
+							;
+		
+		foreach ($email_set as $s) {
+			$this->app->db->dsql()->table('communication')
+						->set('emailsetting_id',$s->id)
+						->where('mailbox','like',$s['imap_email_username'].'%')
+						->update();
+		}
+	}
+
+	function page_markmsgread(){
 
 		$message_model = $this->add('xepan\communication\Model_Communication_AbstractMessage');
 		$to_raw = [];
@@ -35,4 +49,5 @@ class page_test extends \xepan\base\Page{
 
 		}
 	}
+
 }

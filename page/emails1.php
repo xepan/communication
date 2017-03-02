@@ -20,8 +20,12 @@ class page_emails1 extends \xepan\base\Page{
 
 		$email_view = $this->add('xepan\communication\View_Lister_EmailsList',null,'email_lister');
 		// $email_model=$this->add('xepan\communication\Model_Communication_Email'.$mailbox);
-		$email_model=$this->add('xepan\communication\Model_Communication_Email_Received')->setLimit(100);
+		$email_model=$this->add('xepan\hr\Model_MyReceivedEmails')->setLimit(100);
+		// $email_model->setOrder('created_at','desc');
 		$email_view->setModel($email_model);
+
+		// $paginator = $email_view->add('xepan\base\Paginator',null,'paginator');
+		// $paginator->setRowsPerPage(50);
 
 		$email_detail = $this->add('xepan\communication\View_EmailDetail',null,'email_detail');
 
