@@ -63,7 +63,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				'fields'=>[
 							'email_duplication_allowed'=>'DropDown'
 							],
-					'config_key'=>'Email Duplication Allowed Settings',
+					'config_key'=>'Email_Duplication_Allowed_Settings',
 					'application'=>'base'
 			]);
 		$email_m->add('xepan\hr\Controller_ACL');
