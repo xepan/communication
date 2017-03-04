@@ -101,7 +101,7 @@ class Form_Communication extends \Form {
 		$this->addField('line','sms_to');
 
 		// SCORE BUTTONS START
-		$score_field = $this->addField('hidden','score');
+		$score_field = $this->addField('hidden','score')->set('0');
 		
 		
 		/**********************************
@@ -288,6 +288,7 @@ class Form_Communication extends \Form {
 		$communication['from_id']=$this['from_person'];
 		$communication['to_id']=$this->contact->id;
 		$communication['sub_type']=$this['sub_type'];
+		$communication['score']=$this['score'];
 
 		switch ($commtype) {
 			case 'Email':
