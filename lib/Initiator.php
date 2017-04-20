@@ -10,8 +10,7 @@ class Initiator extends \Controller_Addon {
 		$this->addLocation(array('template'=>'templates','js'=>'templates/js'))
 			->setBaseURL('../vendor/xepan/communication/');
 
-		if(!$this->app->isAjaxOutput()){
-			
+		if(!$this->app->isAjaxOutput() && !$this->app->getConfig('hidden_xepan_communication',false)){
 			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails'])->addClass('contact-and-all-email-count');
 			$this->app->side_menu->addItem(['Message','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_internalmsg')->setAttr(['title'=>'Internal Communication'])->addClass('contact-and-all-message-count');
 			$this->app->side_menu->addItem(['General Setting','icon'=>'fa fa-cog'],'xepan_communication_generalsetting')->setAttr(['title'=>'General Setting']);
