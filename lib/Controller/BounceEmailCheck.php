@@ -49,6 +49,8 @@ class Controller_BounceEmailCheck extends \AbstractController  {
 
 		$emails_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
 		$emails_setting->addCondition('is_active',true);
+		$emails_setting->addCondition('bounce_imap_email_host','<>','');
+		
 		$invalid_email = [];
 		foreach ($emails_setting as  $setting) {
 			if(in_array($setting['bounce_imap_email_host'], $mail_box_checked)) continue;
