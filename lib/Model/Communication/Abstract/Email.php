@@ -237,6 +237,21 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	}	
 
 	function verifyTo($to_field, $contact_id){
+		// Support Ticket Reply exisiting contact Communication Setting
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+			[
+				'fields'=>[
+							'varify_to_field_as_contact'=>'DropDown'
+							],
+					'config_key'=>'Varify_To_Field_As_Exisiting_Conact',
+					'application'=>'communication'
+			]);
+		$config_m->add('xepan\hr\Controller_ACL');
+		$config_m->tryLoadAny();
+
+		if($config_m['varify_to_field_as_contact'] === "No")
+			return true;
+
 		
 		$model_contact = $this->add('xepan\base\Model_Contact')->load($contact_id);
 		$contact_email=$model_contact->getEmails();

@@ -13,6 +13,8 @@
             a(data-toggle='tab', href='#basic-info') Company Info
           li
             a(data-toggle='tab', href='#communication-subtype') Communication Sub Types
+          li
+            a(data-toggle='tab', href='#Verify-contact') Email`s Verify Contact  
         .tab-content
           #tab-general_setting.tab-pane.active
             {Content}
@@ -36,6 +38,9 @@
             {Content}
             {$comm_subtype}
             {/}
+           #Verify-contact.tab-pane
+            {$verify_to_contact}
+
 style.
   .select2{
     width:100%!important;
