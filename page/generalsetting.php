@@ -178,6 +178,34 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 			$sub_type_form->js(null,$sub_type_form->js()->reload())->univ()->successMessage('Information Saved')->execute();
 		}
 
+		// Support Ticket Reply exisiting contact Communication Setting
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+			[
+				'fields'=>[
+							'varify_to_field_as_contact'=>'DropDown'
+							],
+					'config_key'=>'Varify_To_Field_As_Exisiting_Conact',
+					'application'=>'communication'
+			]);
+		$config_m->add('xepan\hr\Controller_ACL');
+		$config_m->tryLoadAny();		
+
+		$form = $this->add('Form_Stacked',null,'verify_to_contact');
+		$form->setModel($config_m);
+		$check_existing_contact = array('YES' =>'YES',
+									 'No' =>'No',);
+		$check_existing_contact_field =$form->getElement('varify_to_field_as_contact')->set($config_m['varify_to_field_as_contact']);
+		$check_existing_contact_field->setValueList($check_existing_contact);
+		$form->addSubmit('Update')->addClass('btn btn-primary');
+
+		if($form->isSubmitted()){
+			$form->save();
+			$config_m->app->employee
+			    ->addActivity("'Varify to Field As Contact' Updated as '".$form['varify_to_field_as_contact']."'", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$config_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
+		}
+
 
 	}
 	
