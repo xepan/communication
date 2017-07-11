@@ -25,6 +25,7 @@ class Form_Communication extends \Form {
 		[
 			'fields'=>[
 						'sub_type'=>'text',
+						'calling_status'=>'text',
 						],
 				'config_key'=>'COMMUNICATION_SUB_TYPE',
 				'application'=>'Communication'
@@ -35,6 +36,8 @@ class Form_Communication extends \Form {
 		$sub_type_field = $this->addField('dropdown','sub_type')->set($edit_model['sub_type'])->setEmptyText('Please Select');
 		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
 		
+		
+
 		if($this->app->auth->model->isSuperUser()){
 			$date_field = $this->addField('DateTimePicker','date')->set($edit_model['created_at']);
 		}		
@@ -275,7 +278,7 @@ class Form_Communication extends \Form {
     }
 
     function process(){
-
+    	
     	if(!$this->contact || ! $this->contact instanceof \xepan\base\Model_Contact)
     		throw $this->exception('Please setContact() on this form first');
 
@@ -396,7 +399,8 @@ class Form_Communication extends \Form {
 			$communication['created_at'] = $this['date'];
 		}
 
-		if(isset($send_settings)){			
+		if(isset($send_settings)){
+									
 			$communication->send(
 					$send_settings,
 					$this['notify_email']?$this['notify_email_to']:''

@@ -21,11 +21,14 @@ class Model_Communication extends \xepan\base\Model_Table{
 		[
 			'fields'=>[
 						'sub_type'=>'text',
+						'calling_status'=>'text',
 						],
 				'config_key'=>'COMMUNICATION_SUB_TYPE',
 				'application'=>'Communication'
 		]);
 		$config_m->tryLoadAny();
+
+
 		
 		$this->hasOne('xepan\base\Contact','from_id');
 		$this->hasOne('xepan\base\Contact','to_id');
@@ -48,6 +51,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('tags');
 
 		$this->addField('sub_type')->enum(explode(',', $config_m['sub_type']));
+		$this->addField('calling_status')->enum(explode(',', $config_m['calling_status']));
 		
 		$this->addField('direction')->enum(['In','Out']);
 		$this->addField('communication_type');
