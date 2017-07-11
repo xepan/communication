@@ -159,6 +159,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		[
 			'fields'=>[
 						'sub_type'=>'text',
+						'calling_status'=>'text',
 						],
 				'config_key'=>'COMMUNICATION_SUB_TYPE',
 				'application'=>'Communication'
@@ -169,8 +170,9 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 		$this->add('View',null,'comm_subtype')->set('Enter comma seperated values with no space');
 		$sub_type_form = $this->add('Form_Stacked',null,'comm_subtype');
-		$sub_type_form->setModel($config_m,['sub_type']);
+		$sub_type_form->setModel($config_m,['sub_type','calling_status']);
 		$sub_type_form->getElement('sub_type')->set($config_m['sub_type']);
+		$sub_type_form->getElement('calling_status')->set($config_m['calling_status']);
 		$sub_type_form->addSubmit('Save')->addClass('btn btn-primary');
 		
 		if($sub_type_form->isSubmitted()){
