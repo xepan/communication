@@ -10,7 +10,7 @@ div.internal-conversion-lister(id="{$_name}" class="{$class}" style="{$style}")
             {avatar}
             img(src='img/samples/kunis.png', alt='')
             {/}  
-          .conversation-body
+          .conversation-body(class=" bg-{$class}")
             a.name(class="{$unread}"  data-id="{$id}")
               | {from_name}Ryan Gossling{/} 
               small  {$subject}
@@ -73,6 +73,12 @@ style.
   }
   a.name{
     cursor:pointer;
+  }
+  .conversation-wrapper .bg-success{
+    background:#dff0d8!important;
+  }
+  .conversation-wrapper .bg-danger{
+    background:#f2dede!important;
   }
 script.
         //- jQuery(document).ready(function(){

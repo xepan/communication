@@ -10,14 +10,16 @@ class page_internalmsg extends \xepan\base\Page{
 	function init(){
 		parent::init();
 
+		$search_string = $this->app->stickyGET('search_string');
+			
 		// $emp->addCondition('status','Active');
 		$emp = $this->add('xepan\hr\Model_Employee');
 		$emp->addCondition('status','Active');
 		$emp->addCondition('id','<>',$this->app->employee->id);
 
+
 		$emp_nav = $this->add('xepan\communication\View_InternalMessageEmployeeList',null,'message_navigation');
 		$emp_nav->setModel($emp,['name']);
-
 
 		$emp_id = $this->app->stickyGET('employee_id');
 		
@@ -42,8 +44,12 @@ class page_internalmsg extends \xepan\base\Page{
 			
 		$com_id = $this->app->stickyGET('communication_id');
 		$mode = $this->app->stickyGET('mode');
-		// if($com_id)
-		// 	// throw new \Exception($com_id, 1);
+
+		if($search_string){
+			$msg_m->addExpression('Relevance')->set('MATCH(title,description,communication_type) AGAINST ("'.$search_string.'")');
+			$msg_m->addCondition('Relevance','>',0);
+ 			$msg_m->setOrder('Relevance','Desc');
+		}
 			
 		$msg_list = $this->add('xepan\communication\View_Lister_InternalMSGList',null,'message_lister');
 		$msg_list->setModel($msg_m);
@@ -89,6 +95,14 @@ class page_internalmsg extends \xepan\base\Page{
 				$compose_msg->js()
 				->html('<div style="width:100%"><img style="width:20%;display:block;margin:auto auto 50%;" src="vendor\xepan\communication\templates\images\email-loader.gif"/></div>')
 				->reload(['communication_id'=>$this->js()->_selectorThis()->data('id'),'mode'=>'msg-fwd']))->_selector('.do-msg-fwd');
+
+		/*filter Form */
+		$f = $this->add('Form',null,'form',['form\empty']);
+		$f->addField('line','search');
+		$f->addSubmit('Search');
+		if($f->isSubmitted()){
+			$f->js(null,$msg_list->js()->reload(['search_string'=>$f['search']]))->execute();
+		}
 
 	}
 
