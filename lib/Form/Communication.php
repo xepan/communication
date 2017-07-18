@@ -36,7 +36,9 @@ class Form_Communication extends \Form {
 		$sub_type_field = $this->addField('dropdown','sub_type')->set($edit_model['sub_type'])->setEmptyText('Please Select');
 		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
 		
-		
+		$calling_status_array = explode(",",$config_m['calling_status']);
+		$calling_status_field = $this->addField('dropdown','calling_status')->set($edit_model['calling_status'])->setEmptyText('Please Select');
+		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
 
 		if($this->app->auth->model->isSuperUser()){
 			$date_field = $this->addField('DateTimePicker','date')->set($edit_model['created_at']);
@@ -155,7 +157,7 @@ class Form_Communication extends \Form {
 
 		$type_field->js(true)->univ()->bindConditionalShow([
 			'Email'=>['from_email','email_to','cc_mails','bcc_mails'],
-			'Call'=>['from_email','from_phone','from_person','called_to','notify_email','notify_email_to','status'],
+			'Call'=>['from_email','from_phone','from_person','called_to','notify_email','notify_email_to','status','calling_status'],
 			'TeleMarketing'=>['from_phone','called_to'],
 			'Personal'=>['from_person'],
 			'Comment'=>['from_person'],
@@ -239,6 +241,8 @@ class Form_Communication extends \Form {
 					$this->displayError('called_to','called_to is required');
 				if(!$this['status'])
 					$this->displayError('status','Status is required');
+				if(!$this['calling_status'])
+					$this->displayError('calling_status','Status is required');
 				
 				if($this['notify_email']){
 					if(!$this['notify_email_to'])
@@ -291,6 +295,7 @@ class Form_Communication extends \Form {
 		$communication['from_id']=$this['from_person'];
 		$communication['to_id']=$this->contact->id;
 		$communication['sub_type']=$this['sub_type'];
+		$communication['calling_status']=$this['calling_status'];
 		$communication['score']=$this['score'];
 
 		switch ($commtype) {
