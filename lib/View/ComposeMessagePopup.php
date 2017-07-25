@@ -96,7 +96,7 @@ class View_ComposeMessagePopup extends \View{
 		}
 		if($this->mode == 'msg-fwd'){
 			$this->subject="Fwd: ".$msg_model['title'];
-			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$msg_model['description']."<.blockquote>";
+			$this->message="<br/><br/><br/><br/><blockquote> ---------- Forwarded message ----------<br>".$msg_model['description']."</blockquote>";
 
 			$attach_m = $this->add('xepan\communication\Model_Communication_Attachment');
 			$attach_m->addCondition('communication_id', $this->communication_id);

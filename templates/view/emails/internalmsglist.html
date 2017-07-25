@@ -5,7 +5,7 @@
       <div class="main-box clearfix">{rows}{row}
         <div class="conversation-item clearfix item-{$position}">
           <div class="conversation-user">{avatar}<img src="img/samples/kunis.png" alt=""/>{/}  </div>
-          <div class="conversation-body"><a data-id="{$id}" class="name {$unread}">{from_name}Ryan Gossling{/} <small> {$subject}</small><a href="#" data-id="{$id}" class="table-link danger do-delete-conversion pull-right">{trash_wrapper}<span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-trash-o"></i></span>{/}</a>
+          <div class="conversation-body  bg-{$class}"><a data-id="{$id}" class="name {$unread}">{from_name}Ryan Gossling{/} <small> {$subject}</small><a href="#" data-id="{$id}" class="table-link danger do-delete-conversion pull-right">{trash_wrapper}<span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-trash-o"></i></span>{/}</a>
               <div class="btns pull-right">
                 <div class="btn-group">
                   <button type="button" data-toggle="dropdown" class="btn btn-success dropdown-toggle"><span class="caret"></span></button>
@@ -42,6 +42,12 @@
   }
   a.name{
     cursor:pointer;
+  }
+  .conversation-wrapper .bg-success{
+    background:#dff0d8!important;
+  }
+  .conversation-wrapper .bg-danger{
+    background:#f2dede!important;
   }
 </style>
 <script>

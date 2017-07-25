@@ -89,8 +89,10 @@ class View_Lister_InternalMSGList extends \CompleteLister{
 		$unread_msg->tryLoadAny();
 		if($unread_msg->loaded()){
 			$this->current_row['unread']='';
+			$this->current_row['class']='danger';
 		}else{
 				$this->current_row['unread']='unread';
+				$this->current_row['class']='success';
 		}
 		// $einfo =$this->model['extra_info'];
 		// if(isset($einfo['seen_by']) And is_array($einfo['seen_by'])){
