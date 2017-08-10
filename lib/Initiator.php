@@ -16,6 +16,7 @@ class Initiator extends \Controller_Addon {
 			$this->app->side_menu->addItem(['General Setting','icon'=>'fa fa-cog'],'xepan_communication_generalsetting')->setAttr(['title'=>'General Setting']);
 
 		}
+		$this->app->report_menu->addItem(['Employee Communication','icon'=>'fa fa-users'],'xepan_communication_report_employeecommunication');
 
 		$search_communication = $this->add('xepan\communication\Model_Communication');
 		$this->app->addHook('quick_searched',[$search_communication,'quickSearch']);
