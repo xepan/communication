@@ -44,6 +44,6 @@ class Model_EmployeeCommunication extends \xepan\hr\Model_Employee{
 									->count();
 				});
 
-
+		
 	}
 }
