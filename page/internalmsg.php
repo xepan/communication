@@ -46,7 +46,7 @@ class page_internalmsg extends \xepan\base\Page{
 		$mode = $this->app->stickyGET('mode');
 
 		if($search_string){
-			$msg_m->addExpression('Relevance')->set('MATCH(title,description,communication_type) AGAINST ("'.$search_string.'")');
+			$msg_m->addExpression('Relevance')->set('MATCH(title,from_raw,description,communication_type) AGAINST ("'.$search_string.'")');
 			$msg_m->addCondition('Relevance','>',0);
  			$msg_m->setOrder('Relevance','Desc');
 		}
