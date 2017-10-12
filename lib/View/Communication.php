@@ -19,6 +19,8 @@ class View_Communication extends \View {
 
 	public $contact=null;
 
+	public $is_editing = false;
+
 	function init(){
 		parent::init();
 		$this->template->loadTemplateFromString($this->myTemplate());
@@ -43,6 +45,7 @@ class View_Communication extends \View {
 
 
 	function setModel($model){
+		if($model->loaded()) $this->is_editing = true;
 		return parent::setModel($model);
 	}
 
@@ -131,8 +134,8 @@ class View_Communication extends \View {
 				'assigned_to'=>'c5~6',
 				'followup_detail'=>'c6~12',
 				'set_reminder'=>'c7~12',
-				'reminder_at'=>'c8~4',
-				'remind_via'=>'c9~4',
+				'reminder_at'=>'c8~2',
+				'remind_via'=>'c9~2',
 				'notify_to'=>'c10~4',
 				'snooze_duration'=>'c11~2',
 				'snooze_unit~'=>'c12~2',
@@ -152,7 +155,7 @@ class View_Communication extends \View {
 		
 		$form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
-		$form->addField('xepan\hr\Employee','assigned_to');
+		$form->addField('xepan\hr\Employee','assigned_to')->setCurrent();;
 		$form->addField('Text','followup_detail');
 
 		$follow_title = $form->addField('task_title');
@@ -162,21 +165,69 @@ class View_Communication extends \View {
 		$down_btn = $set->add('Button')->set('DOWN')->addClass('btn');
 		
 
-		$form->addField('CheckBox','set_reminder');
+		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
 		$form->addField('DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
-		$form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple']);
+		$form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
 		$form->addField('snooze_duration');
 		$form->addField('DropDown','snooze_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
 
+		$reminder->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
+		],'div.col-md-2,div.col-md-4');
+
 		if($form->isSubmitted()){
+			$communication = $this->add('xepan\communication\Model_Communication_Email');
+			$communication['from_id']=$this->app->employee->id;
+			$communication['to_id']=$this->contact->id;
+			$communication['score']=$form['score'];
+
+			$send_settings = $this->add('xepan\communication\Model_Communication_EmailSetting');
+			$send_settings->tryLoad($form['from_email_id']?:-1);
+			$_from = $send_settings['from_email'];
+			$_from_name = $send_settings['from_name'];
+			
+			$communication->setSubject($form['subject']);
+			$communication->setBody($form['body']);
+			$communication->setFrom($_from,$_from_name);
+
+			$communication['direction']='Out';
+			foreach (explode(',',$form['to']) as $to) {
+					if( ! filter_var(trim($to), FILTER_VALIDATE_EMAIL))
+						$form->displayError('to',$to.' is not a valid email');
+				$communication->addTo($to);
+			}
+
+			if($form['cc']){
+				foreach (explode(',',$form['cc']) as $cc) {
+						if( ! filter_var(trim($cc), FILTER_VALIDATE_EMAIL))
+							$form->displayError('cc',$cc.' is not a valid email');
+					$communication->addCc($cc);
+				}
+			}
+
+			if($form['bcc']){
+				foreach (explode(',',$form['bcc']) as $bcc) {
+						if( ! filter_var(trim($bcc), FILTER_VALIDATE_EMAIL))
+							$form->displayError('bcc',$bcc.' is not a valid email');
+					$communication->addBcc($bcc);
+				}
+			}
+
+			if($form->hasElement('date')){
+				$communication['created_at'] = $form['date'];
+			}
+
+			$communication->send($send_settings);
+			$form->js()->reload()->univ()->successMessage('Email Sent')->execute();
 
 		}
 
 		// JAVASCRIP SECTION
 		$subject->js('change',"\$('#$follow_title->name').val('".$this->contact['name']." : ' + \$('#$subject->name').val())");
-		$up_btn->js('click',[$score->js()->val(1),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
-		$down_btn->js('click',[$score->js()->val(-1),$up_btn->js()->removeClass('btn-success'),$this->js()->_selectorThis()->addClass('btn-danger')]);
+		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
+		$down_btn->js('click',[$score->js()->val(-10),$up_btn->js()->removeClass('btn-success'),$this->js()->_selectorThis()->addClass('btn-danger')]);
 		$email_icon->js('click',[ // show event
 			$email_popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
 			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();'),
@@ -187,7 +238,7 @@ class View_Communication extends \View {
 
 	function manageCalled($called_icon){
 		$called_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
-		$called_popup->setTitle('Log Phone Called');
+		$called_popup->setTitle('Phone Called - Log Communication');
 
 		$called_icon->js('click',$called_popup->js()->modal(['backdrop'=>true,'keyboard'=>true]));
 	}
@@ -202,7 +253,13 @@ class View_Communication extends \View {
 		$template='
 			<div id="{$_name}" class="{$class}">
 				<div class="top-bar">
-					{$icons}
+					<div class="row">
+						<div class="col-md-8">
+						</div>
+						<div class="col-md-4">
+							{$icons}
+						</div>
+					</div>
 				</div>
 				{$Content}
 			</div>
