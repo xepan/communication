@@ -87,7 +87,8 @@ class View_Lister_NewCommunication extends \CompleteLister{
 	function myTemplate(){
 		$template = '
 			<div id="{$_name}" class="xepan-communication-lister {$class}">
-			  <div class="row xepan-push-small"><span>
+			  <div class="row xepan-push-small">
+			  	<span>
 			      <div class="panel panel-default panel-body">
 			        <div class="row xepan-push"> 
 			          <div class="col-md-6">
@@ -97,52 +98,71 @@ class View_Lister_NewCommunication extends \CompleteLister{
 			            <div class="btn btn-primary btn-sm create btn-block">Create Communication</div>
 			          </div>
 			        </div>{$form}
-			      </div></span></div>{rows}{row}
-			  <div id="accordion" class="panel-group accordion">
-			    <div class="panel panel-default">
-			      <div class="panel-heading">
-			        <h4 style="height: 20px;overflow: hidden;" class="panel-title"><a href="#details{$id}" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed">
-			            <div class="col-md-5">
-			               
-			              {title}title of communication should come here{/}
-			              {$attachment}
-			            </div>
-			            <div class="col-md-2"><span class="pull-right">{$created_at}</span></div>
-			            <div class="col-md-2"><span class="text-small">{$status} &nbsp; {$to}</span></div>
-			            <div class="col-md-1"><span class="pull-right">{$communication_type}</span></div>
-			            <div class="col-md-2"><a data-id="{$id}" class="do-view-delete-communication pull-right xepan-communication-action"><i class="fa fa-trash">      </i></a><a data-id="{$id}" class="do-view-edit-communication pull-right xepan-communication-action"><i class="fa fa-edit">      </i></a></div></a></h4>
 			      </div>
-			      <div style="height: 2px;" id="details{$id}" class="panel-collapse collapse">
-			        <div class="panel-body">
-			          <div class="row">{from_lister}<span class="small">From: </span>{rows}{row} <span class="small">{$name} &nbsp;&nbsp;</span>{/}{/}
-			            {/}
-			          </div>
-			          <div class="row">{to_lister}<span class="small">To:</span>{rows}{row} <span class="small">{$name}{$email}&nbsp;{$number} &nbsp; &nbsp;</span>{/}{/}
-			            {/}
-			          </div>
-			          <div class="row">{cc_lister}<span class="small">CC: </span>{rows}{row} <span class="small">{$name}{$email}&nbsp;{$number} &nbsp;&nbsp;</span>{/}{/}
-			            {/}
-			          </div>
-			          <div class="row xepan-push-large">
-			            <hr/>
-			          </div>
-			          <div class="row xepan-push-large">
-			               
-			            {description}  
-			            Description should come here simpley for now
-			            {/}
-			          </div>
-			          <div class="row">
-			               
-			            {Attachments}
-			            {rows}{row}<span>    
-			              <div class="img"><a href="{$file}"><img alt="" src="{$file}"/></a></div><span class="name"></span><a href="{$file}" download="download">Download Attachment</a></span>{/}{/}
-			            {/}
-			          </div>
-			        </div>
-			      </div>
-			    </div>
-			  </div>{/}{/}
+			    </span>
+			  </div>
+			  <div class="timeline">
+    			<div class="line text-muted"></div>
+			  	{rows}{row}
+			  		<article class="panel panel-primary">
+			  			<div class="panel-heading icon">
+            				<i class="glyphicon glyphicon-info-sign"></i>
+        				</div>
+			  			<div class="panel-heading">
+	                    	<h4 class="panel-title row">
+	                    		<a href="#details{$id}" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed" style="color:white !important;font-weight:bold !important;">
+			                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">  
+			                          {title}title of communication should come here{/}
+			                          {$attachment}
+			                        </div>
+	                        		<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
+	                        			<span class="pull-right">{$created_at}</span>
+	                        		</div>
+	                        		<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
+	                        			<span class="text-small">{$status} &nbsp; {$to}</span>
+	                        		</div>
+	                        		<div class="col-md-1 col-lg-1 col-xs-12 col-sm-12">
+	                        			<span class="pull-right">{$communication_type}</span>
+	                        		</div>
+	                        		<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
+	                        			<a data-id="{$id}" class="do-view-delete-communication pull-right xepan-communication-action"><i class="fa fa-trash">      </i></a><a data-id="{$id}" class="do-view-edit-communication pull-right xepan-communication-action">
+	                        				<i class="fa fa-edit">&nbsp;</i>
+	                        			</a>
+	                        		</div>
+	                        </a></h4>
+	                  </div>
+	                <div style="height: 2px;" id="details{$id}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="row">{from_lister}<span class="small">From: </span>{rows}{row} <span class="small">{$name} &nbsp;&nbsp;</span>{/}{/}
+                        {/}
+                      </div>
+                      <div class="row">{to_lister}<span class="small">To:</span>{rows}{row} <span class="small">{$name}{$email}&nbsp;{$number} &nbsp; &nbsp;</span>{/}{/}
+                        {/}
+                      </div>
+                      <div class="row">{cc_lister}<span class="small">CC: </span>{rows}{row} <span class="small">{$name}{$email}&nbsp;{$number} &nbsp;&nbsp;</span>{/}{/}
+                        {/}
+                      </div>
+                      <div class="row xepan-push-large">
+                        <hr/>
+                      </div>
+                      <div class="row xepan-push-large">
+                           
+                        {description}  
+                        Description should come here simpley for now
+                        {/}
+                      </div>
+                      <div class="row">
+                           
+                        {Attachments}
+                        {rows}{row}<span>    
+                          <div class="img"><a href="{$file}"><img alt="" src="{$file}"/></a></div><span class="name"></span><a href="{$file}" download="download">Download Attachment</a></span>{/}{/}
+                        {/}
+                      </div>
+                    </div>
+                  </div>
+			  		</article>
+			  	{/}{/}
+			  </div>
 			  {$Paginator}
 			</div>
 			<style>
