@@ -101,13 +101,31 @@ class View_Communication extends \View {
 			$called_icon = $this->add('Icon',null,'icons')->set('fa fa-upload fa-3x');
 			$this->manageCalled($called_icon);
 		}
-		if($this->channel_call_received) $this->add('Icon',null,'icons')->set('fa fa-users');
+		if($this->channel_call_received) $this->add('Icon',null,'icons')->set('fa fa-download fa-3x');
 		if($this->channel_meeting) $this->add('Icon',null,'icons')->set('fa fa-users');
 		if($this->channel_comment) $this->add('Icon',null,'icons')->set('fa fa-users');
 	}
 
 	function addCommunicationHistory(){
+		$communication = $this->model;
+		$lister=$this->add('xepan\communication\View_Lister_NewCommunication',['contact_id'=>$this->contact->id],null,null);
+		if($_GET['comm_type']){
+			$communication->addCondition('communication_type',explode(",", $_GET['comm_type']));
+		}
 
+		if($search = $this->app->stickyGET('search')){
+			$communication->addExpression('Relevance')->set('MATCH(title,description,communication_type) AGAINST ("'.$search.'")');
+			$communication->addCondition('Relevance','>',0);
+ 			$communication->setOrder('Relevance','Desc');
+		}
+
+		$lister->setModel($communication)->setOrder(['created_at desc','id desc']);
+		$p = $lister->add('Paginator',null,'Paginator');
+		$p->setRowsPerPage(10);
+
+		// $grid = $this->add('xepan\base\Grid');
+		// $grid->setModel($this->model);
+		// $grid->addPaginator(100);
 	}
 
 	function manageEmail($email_icon, $edit_communication= null){
@@ -159,7 +177,7 @@ class View_Communication extends \View {
 		$form->addField('Text','followup_detail');
 
 		$follow_title = $form->addField('task_title');
-		$score = $form->addField('Hidden','score');
+		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
 		$up_btn = $set->add('Button')->set('UP')->addClass('btn');
 		$down_btn = $set->add('Button')->set('DOWN')->addClass('btn');

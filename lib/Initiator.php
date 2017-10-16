@@ -38,6 +38,7 @@ class Initiator extends \Controller_Addon {
     	 $array['ADMIN_LOGIN_RELATED_EMAIL'] = ['caption'=>'ADMIN_LOGIN_RELATED_EMAIL','type'=>'DropDown','model'=>'xepan\communication\Model_ADMIN_LOGIN_RELATED_EMAIL'];
     	 $array['FRONTEND_LOGIN_RELATED_EMAIL'] = ['caption'=>'FRONTEND_LOGIN_RELATED_EMAIL','type'=>'DropDown','model'=>'xepan\communication\Model_FRONTEND_LOGIN_RELATED_EMAIL'];
     	 $array['COMMUNICATION_SUB_TYPE'] = ['caption'=>'COMMUNICATION_SUB_TYPE','type'=>'DropDown','model'=>'xepan\communication\Model_COMMUNICATION_SUB_TYPE'];
+    	 $array['Miscellaneous_Technical_Settings'] = ['caption'=>'Miscellaneous_Technical_Settings','type'=>'DropDown','model'=>'xepan\communication\Miscellaneous_Technical_Settings'];
     }
 
 	function setup_frontend(){
