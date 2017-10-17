@@ -172,7 +172,7 @@ class View_Communication extends \View {
 		$bcc_me = $form->addField('Checkbox','bcc_me');
 		$bcc_me->js('click',$bcc->js()->val($this->app->employee->getEmails()));
 		
-		$form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id');
+		$allwed_emails = $form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
 		$form->addField('xepan\hr\Employee','assigned_to')->setCurrent();;
 		$form->addField('Text','followup_detail');
@@ -282,12 +282,12 @@ class View_Communication extends \View {
 				if($form['set_reminder']){
 					$model_task['set_reminder'] = true;
 					$model_task['reminder_time'] = $form['reminder_at'];
-					$model_task['remind_via'] = $this['remind_via'];
-					$model_task['notify_to'] = $this['notify_to'];
+					$model_task['remind_via'] = $form['remind_via'];
+					$model_task['notify_to'] = $form['notify_to'];
 					
 					if($form['snooze_duration']){
 						$model_task['snooze_duration'] = $form['snooze_duration'];
-						$model_task['remind_unit'] = $this['snooze_unit'];
+						$model_task['remind_unit'] = $form['snooze_unit'];
 					}
 				}
 				$model_task->save();
@@ -306,6 +306,7 @@ class View_Communication extends \View {
 			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();'),
 			$followup_on->js()->val(''),
 			$reminder_at->js()->val(''),
+			$allwed_emails->js()->select2('val','')
 		]);
 	}
 
