@@ -32,7 +32,7 @@ class View_Lister_NewCommunication extends \CompleteLister{
 				$del_model->delete();
 			}	
 
-			 $this->app->page_action_result = $this->js(null,$this->js()->univ()->successMessage('Deleted Successfully'))->_selector('.xepan-communication-lister')->trigger('reload');
+			$this->app->page_action_result = $this->js(null,$this->js()->univ()->successMessage('Deleted Successfully'))->_selector('.xepan-communication-lister')->trigger('reload');
 		}
 
 		$this->on('click','.do-view-delete-communication')->univ()->confirm('Are you sure?')
@@ -81,6 +81,38 @@ class View_Lister_NewCommunication extends \CompleteLister{
 		}
 		$this->current_row_html['from_lister'] = $from_lister->getHtml();
 		$this->current_row_html['Attachments'] = $attach->getHtml();
+
+		// Communication icon
+		$icon = [
+			'AbstractMessage'=>'fa fa-info',
+			'AbstractMessageIn'=>'fa fa-info',
+			'AbstractMessageOut'=>'fa fa-info',
+			'Email'=>'glyphicon glyphicon-envelope',
+			'EmailIn'=>'glyphicon glyphicon-inbox',
+			'EmailOut'=>'fa fa-paper-plane-o',
+			'Call'=>'fa fa-phone-square',
+			'CallIn'=>'fa fa-phone-square',
+			'CallOut'=>'fa fa-phone-square',
+			'Comment'=>'fa fa-comments-o',
+			'CommentIn'=>'fa fa-comments-o',
+			'CommentOut'=>'fa fa-comments-o',
+			'Newsletter'=>'fa fa-newspaper-o',
+			'NewsletterIn'=>'fa fa-newspaper-o',
+			'NewsletterOut'=>'fa fa-newspaper-o',
+			'Personal'=>'fa fa-male',
+			'PersonalIn'=>'fa fa-male',
+			'PersonalOut'=>'fa fa-male',
+			'ReminderEmail'=>'fa fa-bell-o',
+			'ReminderEmailIn'=>'fa fa-bell-o',
+			'ReminderEmailOut'=>'fa fa-bell-o',
+			'TeleMarketing'=>'fa fa-info',
+			'TeleMarketingIn'=>'fa fa-info',
+			'TeleMarketingOut'=>'fa fa-info'
+		];
+		
+		$this->current_row_html['communication_icon'] = $icon[$this->model['communication_type'].$this->model['direction']]?:($this->model['communication_type'].$this->model['direction']);
+				
+		$this->current_row_html['created_at'] = date('F jS, Y h:i:s',strtotime($this->model['created_at']));
 		return parent::formatRow();
 	}
 
@@ -104,25 +136,22 @@ class View_Lister_NewCommunication extends \CompleteLister{
 			  <div class="timeline">
     			<div class="line text-muted"></div>
 			  	{rows}{row}
-			  		<article class="panel panel-primary">
-			  			<div class="panel-heading icon">
-            				<i class="glyphicon glyphicon-info-sign"></i>
+			  		<article class="panel panel-default accordion">
+			  			<div class="panel-heading icon" title="{$communication_type} {$direction}">
+            				<i class="{$communication_icon} {$communication_type}"></i>
         				</div>
-			  			<div class="panel-heading">
+			  			<div class="panel-heading ">
 	                    	<h4 class="panel-title row">
-	                    		<a href="#details{$id}" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed" style="color:white !important;font-weight:bold !important;">
-			                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">  
+	                    		<a href="#details{$id}" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed" style="">
+			                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-bold">
 			                          {title}title of communication should come here{/}
 			                          {$attachment}
 			                        </div>
 	                        		<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
-	                        			<span class="pull-right">{$created_at}</span>
+	                        			<span class="pull-left">{$created_at}</span>
 	                        		</div>
 	                        		<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
-	                        			<span class="text-small">{$status} &nbsp; {$to}</span>
-	                        		</div>
-	                        		<div class="col-md-1 col-lg-1 col-xs-12 col-sm-12">
-	                        			<span class="pull-right">{$communication_type}</span>
+	                        			<span class="pull-right">{$communication_type} ({$status} {$to})</span>
 	                        		</div>
 	                        		<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
 	                        			<a data-id="{$id}" class="do-view-delete-communication pull-right xepan-communication-action"><i class="fa fa-trash">      </i></a><a data-id="{$id}" class="do-view-edit-communication pull-right xepan-communication-action">
