@@ -174,7 +174,7 @@ class View_Communication extends \View {
 		
 		$allwed_emails = $form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
-		$form->addField('xepan\hr\Employee','assigned_to')->setCurrent();;
+		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();;
 		$form->addField('Text','followup_detail');
 
 		$follow_title = $form->addField('task_title');
@@ -186,10 +186,10 @@ class View_Communication extends \View {
 
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
-		$form->addField('DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
-		$form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
+		$remind_via = $form->addField('DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
+		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
 		$form->addField('snooze_duration');
-		$form->addField('DropDown','snooze_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
+		$snooz_unit= $form->addField('DropDown','snooze_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
 
 		$reminder->js(true)->univ()->bindConditionalShow([
 			''=>[],
@@ -306,7 +306,11 @@ class View_Communication extends \View {
 			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();'),
 			$followup_on->js()->val(''),
 			$reminder_at->js()->val(''),
-			$allwed_emails->js()->select2('val','')
+			$allwed_emails->js()->select2('val',''),
+			$assigned_to->js()->select2('val',$this->app->employee->id),
+			$remind_via->js()->select2('val',''),
+			$notify_to->js()->select2('val',''),
+			$snooz_unit->js()->select2('val','')
 		]);
 	}
 
