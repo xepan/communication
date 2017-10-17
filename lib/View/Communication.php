@@ -97,6 +97,7 @@ class View_Communication extends \View {
 			$email_icon = $this->add('Icon',null,'icons')->set('fa fa-envelope fa-3x')->addStyle('cursor:hand');
 			$this->manageEmail($email_icon);
 		}
+
 		if($this->channel_call_sent){
 			$called_icon = $this->add('Icon',null,'icons')->set('fa fa-upload fa-3x');
 			$this->manageCalled($called_icon);
@@ -179,8 +180,8 @@ class View_Communication extends \View {
 		$follow_title = $form->addField('task_title');
 		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
-		$up_btn = $set->add('Button')->set('UP')->addClass('btn');
-		$down_btn = $set->add('Button')->set('DOWN')->addClass('btn');
+		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
+		$down_btn = $set->add('Button')->set('-10')->addClass('btn');
 		
 
 		$reminder = $form->addField('CheckBox','set_reminder');
@@ -196,6 +197,28 @@ class View_Communication extends \View {
 		],'div.col-md-2,div.col-md-4');
 
 		if($form->isSubmitted()){
+
+			// check validation
+			if($form['task_title'] && !$form['followup_on']){
+				$form->error('followup_on','must not be empty');
+			}elseif(!$form['task_title'] && $form['followup_on']){
+				$form->error('task_title','must not be empty');
+			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['task_title'])){
+				$form->error('task_title','must not be empty');
+			}
+			// reminder validation
+			if($form['set_reminder']){
+				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+
+				if($form['snooze_duration'] && !$form['snooze_unit'])
+					$form->error('snooze_unit','must not be empty');
+
+				if($form['snooze_unit'] && !$form['snooze_duration'])
+					$form->error('snooze_duration','must not be empty');
+			}
+
 			$communication = $this->add('xepan\communication\Model_Communication_Email');
 			$communication['from_id']=$this->app->employee->id;
 			$communication['to_id']=$this->contact->id;
@@ -236,8 +259,40 @@ class View_Communication extends \View {
 			if($form->hasElement('date')){
 				$communication['created_at'] = $form['date'];
 			}
-
 			$communication->send($send_settings);
+
+			// SCORE
+			if($form['score']){
+				$model_point_system = $this->add('xepan\base\Model_PointSystem');
+				$model_point_system['contact_id'] = $this->contact->id;
+				$model_point_system['score'] = $form['score'];
+				$model_point_system->save();
+			}
+
+			// FOLLOW UP
+			if($form['task_title']){
+				$model_task = $this->add('xepan\projects\Model_Task');
+				$model_task['type'] = 'Followup';
+				$model_task['task_name'] = $form['task_title'];
+				$model_task['created_by_id'] = $form->app->employee->id;
+				$model_task['starting_date'] = $form['followup_on'];
+				$model_task['assign_to_id'] = $form['assigned_to'];
+				$model_task['description'] = $form['followup_detail'];
+				$model_task['related_id'] = $this->contact->id;
+				if($form['set_reminder']){
+					$model_task['set_reminder'] = true;
+					$model_task['reminder_time'] = $form['reminder_at'];
+					$model_task['remind_via'] = $this['remind_via'];
+					$model_task['notify_to'] = $this['notify_to'];
+					
+					if($form['snooze_duration']){
+						$model_task['snooze_duration'] = $form['snooze_duration'];
+						$model_task['remind_unit'] = $this['snooze_unit'];
+					}
+				}
+				$model_task->save();
+			}
+
 			$form->js()->reload()->univ()->successMessage('Email Sent')->execute();
 
 		}
