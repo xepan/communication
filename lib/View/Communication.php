@@ -108,7 +108,8 @@ class View_Communication extends \View {
 		}
 
 		if($this->channel_meeting){
-			$this->add('Icon',null,'icons')->set('fa fa-users');
+			$meeting_icon = $this->add('Icon',null,'icons')->set('fa fa-users');
+			$this->manageMeeting($meeting_icon);
 		}
 
 		if($this->channel_comment){
@@ -144,7 +145,7 @@ class View_Communication extends \View {
 		$default_to_ids=implode(",",$this->contact->getEmails());
 		$form = $email_popup->add('Form');
 		$form->add('xepan\base\Controller_FLC')
-			->makePanelsCoppalsible()
+			->makePanelCollepsible()
 			->closeOtherPanels()
 			->layout([
 				'subject'=>'Email Content|danger~c1~8',
@@ -321,6 +322,7 @@ class View_Communication extends \View {
 			$notify_to->js()->select2('val',''),
 			$snooz_unit->js()->select2('val','')
 		]);
+		
 	}
 
 	function manageCalled($called_icon){
@@ -329,7 +331,7 @@ class View_Communication extends \View {
 		
 		$form = $called_popup->add('Form');
 		$form->add('xepan\base\Controller_FLC')
-			->makePanelsCoppalsible()
+			->makePanelCollepsible()
 			->closeOtherPanels()
 			->addContentSpot()
 			->layout([
@@ -575,6 +577,7 @@ class View_Communication extends \View {
 			$notify_to->js()->select2('val',''),
 			$snooz_unit->js()->select2('val','')
 		]);		
+		
 	}
 
 	function manageCallReceived($call_received_icon){
@@ -584,7 +587,7 @@ class View_Communication extends \View {
 		
 		$form = $popup->add('Form');
 		$form->add('xepan\base\Controller_FLC')
-			->makePanelsCoppalsible()
+			->makePanelCollepsible()
 			->closeOtherPanels()
 			->addContentSpot()
 			->layout([
@@ -826,6 +829,225 @@ class View_Communication extends \View {
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
 		$down_btn->js('click',[$score->js()->val(-10),$up_btn->js()->removeClass('btn-success'),$this->js()->_selectorThis()->addClass('btn-danger')]);
 		$call_received_icon->js('click',[ // show event
+			$popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
+			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();'),
+			$followup_on->js()->val(''),
+			$reminder_at->js()->val(''),
+			$notify_from_email_id_field->js()->select2('val',''),
+			$assigned_to->js()->select2('val',$this->app->employee->id),
+			$remind_via->js()->select2('val',''),
+			$notify_to->js()->select2('val',''),
+			$snooz_unit->js()->select2('val','')
+		]);		
+		
+	}
+
+	function manageMeeting($meeting_icon){
+
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup->setTitle('Meeting/Personal - Log Communication with '.$this->contact['name']);
+		
+		$form = $popup->add('Form');
+		$form->add('xepan\base\Controller_FLC')
+			->makePanelCollepsible()
+			->closeOtherPanels()
+			->addContentSpot()
+			->layout([
+				'communication_sub_type'=>'Meeting/Personal Content~c1~3',
+				'calling_status~status'=>'c2~3',
+				'date'=>'c3~3',
+				'employee'=>'c4~3',
+				'description'=>'c5~12',
+
+				'notify_via_email~'=>'c6~12',
+				'notify_email_subject'=>'c7~4',
+				'notify_from_email_id'=>'c8~4',
+				'notify_to_email_ids'=>'c11~4',	
+
+				'followup_title'=>'Meeting/Personal Followup/Score~c1~8~closed',
+				'score_buttons~Score'=>'c2~2',
+				'score~'=>'c23',
+				'followup_on'=>'c24~6',
+				'assigned_to'=>'c25~6',
+				'followup_detail'=>'c26~12',
+				'set_reminder'=>'c27~12',
+				'reminder_at'=>'c28~2',
+				'remind_via'=>'c29~2',
+				'notify_to'=>'c30~4',
+				'snooze_duration'=>'c31~2',
+				'snooze_unit~'=>'c32~2'
+			]);
+
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+		[
+			'fields'=>[
+						'sub_type'=>'text',
+						'calling_status'=>'text',
+						],
+				'config_key'=>'COMMUNICATION_SUB_TYPE',
+				'application'=>'Communication'
+		]);
+		$config_m->tryLoadAny();
+		$sub_type_array = explode(",",$config_m['sub_type']);
+
+		// fields
+		$sub_type_field = $form->addField('xepan\base\DropDown','communication_sub_type')->setEmptyText("Please Select");
+		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
+		
+		$calling_status_array = explode(",",$config_m['calling_status']);
+		$calling_status_field = $form->addField('xepan\base\DropDown','calling_status')->setEmptyText('Please Select');
+		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
+		
+		$form->addField('xepan\hr\Employee','employee')->setCurrent();
+
+		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
+
+		$form->addField('xepan\base\RichText','description');
+
+		$notify_via_email_field = $form->addField('checkbox','notify_via_email');
+		$form->addField('notify_email_subject');
+
+		// Notify_from_email_id
+		$notify_from_email_id_field = $form->addField('xepan\hr\EmployeeAllowedEmail','notify_from_email_id');
+		$contact_emails = $this->contact->getEmails();
+		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
+
+		$form->addField('followup_title');
+		$score = $form->addField('Hidden','score')->set(0);
+		$set = $form->layout->add('ButtonSet',null,'score_buttons');
+		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
+		$down_btn = $set->add('Button')->set('-10')->addClass('btn');
+		
+		$followup_on = $form->addField('DateTimePicker','followup_on');
+		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
+		$form->addField('Text','followup_detail');
+
+		$reminder = $form->addField('CheckBox','set_reminder');
+		$reminder_at = $form->addField('DateTimePicker','reminder_at');
+		$remind_via = $form->addField('xepan\base\DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
+		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
+		$form->addField('snooze_duration');
+		$snooz_unit= $form->addField('xepan\base\DropDown','snooze_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
+
+		$notify_via_email_field->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['notify_email_subject','notify_from_email_id','notify_to_email_ids']
+		],'div.col-md-2,div.col-md-4');
+
+		$reminder->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
+		],'div.col-md-2,div.col-md-4');
+
+		
+		if($form->isSubmitted()){
+			
+			if($form['notify_via_email']){
+				if(!$form['notify_email_subject']) $form->error('notify_email_subject','must not be empty');
+				if(!$form['notify_from_email_id']) $form->error('notify_from_email_id','must not be empty');
+				if(!$form['notify_to_email_ids']) $form->error('notify_to_email_ids','must not be empty');
+			}
+
+			// check validation
+			if($form['followup_title'] && !$form['followup_on']){
+				$form->error('followup_on','must not be empty');
+			}elseif(!$form['followup_title'] && $form['followup_on']){
+				$form->error('followup_title','must not be empty');
+			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['followup_title'])){
+				$form->error('followup_title','must not be empty');
+			}
+			// reminder validation
+			if($form['set_reminder']){
+				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+
+				if($form['snooze_duration'] && !$form['snooze_unit'])
+					$form->error('snooze_unit','must not be empty');
+
+				if($form['snooze_unit'] && !$form['snooze_duration'])
+					$form->error('snooze_duration','must not be empty');
+			}
+
+			// end checking vaidation
+
+			$communication = $this->add('xepan\communication\Model_Communication_Personal');
+			$communication->addCondition('status','Personal');
+			
+			$communication['to_id'] = $this->contact->id;
+			$communication['from_id'] = $form['employee'];
+			$communication['direction'] = "Out";
+
+			$communication['sub_type'] = $form['communication_sub_type'];
+			$communication['calling_status'] = $form['calling_status'];
+			$communication['score'] = $form['score'];
+			$communication['description'] = $form['description'];
+			
+			$communication->addTo($this->contact->id,$this->contact['name']);
+			$employee_name = $this->add('xepan\hr\Model_Employee')
+	                         ->load($form['employee'])
+	                         ->get('name');
+			$communication->setFrom($form['employee'],$employee_name);
+			$communication->setBody($form['description']);
+
+			if($form['notify_via_email']){
+				$communication['title'] = $form['notify_email_subject'];
+
+				$communication->setSubject($form['notify_email_subject']);
+				$send_settings = $this->add('xepan\communication\Model_Communication_EmailSetting');
+				$send_settings->tryLoad($form['notify_from_email_id']?:-1);
+				$communication->send(
+					$send_settings,
+					$form['notify_to_email_ids']
+				);
+			}elseif($form['description']){
+				$communication['title'] = substr(strip_tags($form['description']),0,35)." ...";
+
+			}else{
+				$communication['title'] = "Called to ".$this->contact['name']." - type: ".$form['communication_sub_type']." - status: ".$form['calling_status'];
+			}
+
+			$communication->setSubject($communication['title']);
+			$communication->save();
+
+			// SCORE
+			if($form['score']){
+				$model_point_system = $this->add('xepan\base\Model_PointSystem');
+				$model_point_system['contact_id'] = $this->contact->id;
+				$model_point_system['score'] = $form['score'];
+				$model_point_system->save();
+			}
+
+			// FOLLOW UP
+			if($form['followup_title']){
+				$model_task = $this->add('xepan\projects\Model_Task');
+				$model_task['type'] = 'Followup';
+				$model_task['task_name'] = $form['followup_title'];
+				$model_task['created_by_id'] = $this->app->employee->id;
+				$model_task['starting_date'] = $form['followup_on'];
+				$model_task['assign_to_id'] = $form['assigned_to'];
+				$model_task['description'] = $form['followup_detail'];
+				$model_task['related_id'] = $this->contact->id;
+				if($form['set_reminder']){
+					$model_task['set_reminder'] = true;
+					$model_task['reminder_time'] = $form['reminder_at'];
+					$model_task['remind_via'] = $form['remind_via'];
+					$model_task['notify_to'] = $form['notify_to'];
+					
+					if($form['snooze_duration']){
+						$model_task['snooze_duration'] = $form['snooze_duration'];
+						$model_task['remind_unit'] = $form['snooze_unit'];
+					}
+				}
+				$model_task->save();
+			}
+
+			$form->js()->reload()->univ()->successMessage('Communication added')->execute();
+		}
+			
+		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
+		$down_btn->js('click',[$score->js()->val(-10),$up_btn->js()->removeClass('btn-success'),$this->js()->_selectorThis()->addClass('btn-danger')]);
+		$meeting_icon->js('click',[ // show event
 			$popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
 			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();'),
 			$followup_on->js()->val(''),
