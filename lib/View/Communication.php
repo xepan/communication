@@ -152,7 +152,7 @@ class View_Communication extends \View {
 				'followup_on'=>'c4~6',
 				'assigned_to'=>'c5~6',
 				'followup_detail'=>'c6~12',
-				'set_reminder'=>'c7~12',
+				'set_reminder~'=>'c7~12',
 				'reminder_at'=>'c8~2',
 				'remind_via'=>'c9~2',
 				'notify_to'=>'c10~4',
@@ -174,7 +174,7 @@ class View_Communication extends \View {
 		
 		$allwed_emails = $form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
-		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();;
+		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
 		$follow_title = $form->addField('task_title');
@@ -362,7 +362,33 @@ class View_Communication extends \View {
 		]);
 		$config_m->tryLoadAny();
 		
+		$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
+				[
+					'fields'=>[
+								'company_name'=>"Line",
+								'company_owner'=>"Line",
+								'mobile_no'=>"Line",
+								'company_email'=>"Line",
+								'company_address'=>"Line",
+								'company_pin_code'=>"Line",
+								'company_description'=>"xepan\base\RichText",
+								'company_logo_absolute_url'=>"Line",
+								'company_twitter_url'=>"Line",
+								'company_facebook_url'=>"Line",
+								'company_google_url'=>"Line",
+								'company_linkedin_url'=>"Line",
+								],
+					'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
+					'application'=>'communication'
+				]);
+		
+		$company_m->add('xepan\hr\Controller_ACL');
+		$company_m->tryLoadAny();
+		$company_number = explode(",", $company_m['mobile_no']);
+		$company_number = array_combine($company_number, $company_number);
+
 		$sub_type_array = explode(",",$config_m['sub_type']);
+
 		$sub_type_field = $form->addField('DropDown','communication_sub_type')->setEmptyText("Please Select");
 		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
 		
@@ -370,26 +396,38 @@ class View_Communication extends \View {
 		$calling_status_field = $form->addField('DropDown','calling_status')->setEmptyText('Please Select');
 		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
 		
-		$form->addField('DateTimePicker','date')->validate('required');
-		$form->addField('from_number');
+		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
+
+		$from_number_field = $form->addField('DropDown','from_number');
+		$emp_phones = $this->app->employee->getPhones();
+		$emp_phones = array_combine($emp_phones, $emp_phones);
+		$from_number_field->setValueList(array_merge(array_filter($company_number),array_filter($emp_phones)));
+		$from_number_field->select_menu_options = ['tags'=>true];
+		$from_number_field->validate_values = false;
+
 		$phones = $this->contact->getPhones();
 		$to_number_field = $form->addField('xepan\base\DropDown','to_number');
 		$to_number_field->setValueList(array_combine($phones,$phones));
 		$to_number_field->select_menu_options = ['tags'=>true];
 		$to_number_field->validate_values = false;
 
-		$call_by_emp_field = $form->addField('DropDown','call_by_employee');
-		$emp_model = $this->add('xepan\hr\Model_Employee');
-		$call_by_emp_field->setModel($emp_model);
+		$call_by_emp_field = $form->addField('xepan\hr\Employee','call_by_employee')->setCurrent();
 
 		$form->addField('xepan\base\RichText','description');
 
-		$form->addField('checkbox','notify_via_email');
+		$notify_via_email_field = $form->addField('checkbox','notify_via_email');
 		$form->addField('notify_email_subject');
-		$form->addField('notify_from_email_id');
-		$form->addField('notify_to_email_ids');
 
-		$follow_title = $form->addField('followup_title');
+		// Notify_from_email_id
+		$notify_from_email_id_field = $form->addField('DropDown','notify_from_email_id');
+		$my_email = $this->add('xepan\hr\Model_Post_Email_MyEmails');
+		$notify_from_email_id_field->setModel($my_email);
+		$email_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
+
+		$contact_emails = $this->contact->getEmails();
+		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
+
+		$form->addField('followup_title');
 		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
 		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
@@ -406,12 +444,128 @@ class View_Communication extends \View {
 		$form->addField('snooze_duration');
 		$snooz_unit= $form->addField('DropDown','snooze_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
 
-		// $reminder->js(true)->univ()->bindConditionalShow([
-		// 	''=>[],
-		// 	'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
-		// ],'div.col-md-2,div.col-md-4');
+		$notify_via_email_field->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['notify_email_subject','notify_from_email_id','notify_to_email_ids']
+		],'div.col-md-2,div.col-md-4');
 
-		$called_icon->js('click',$called_popup->js()->modal(['backdrop'=>true,'keyboard'=>true]));
+		$reminder->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
+		],'div.col-md-2,div.col-md-4');
+
+		
+		if($form->isSubmitted()){
+
+			// check validation
+			if($form['followup_title'] && !$form['followup_on']){
+				$form->error('followup_on','must not be empty');
+			}elseif(!$form['followup_title'] && $form['followup_on']){
+				$form->error('followup_title','must not be empty');
+			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['followup_title'])){
+				$form->error('followup_title','must not be empty');
+			}
+			// reminder validation
+			if($form['set_reminder']){
+				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+
+				if($form['snooze_duration'] && !$form['snooze_unit'])
+					$form->error('snooze_unit','must not be empty');
+
+				if($form['snooze_unit'] && !$form['snooze_duration'])
+					$form->error('snooze_duration','must not be empty');
+			}
+
+			if($form['notify_via_email']){
+				if(!$form['notify_email_subject']) $form->error('notify_email_subject','must not be empty');
+				if(!$form['notify_from_email_id']) $form->error('notify_from_email_id','must not be empty');
+				if(!$form['notify_to_email_ids']) $form->error('notify_to_email_ids','must not be empty');
+			}
+			// end checking vaidation
+
+			$communication = $this->add('xepan\communication\Model_Communication_Call');
+			$communication->addCondition('status','Called');
+
+			$communication['from_id'] = $form['call_by_employee'];
+			$communication['to_id'] = $this->contact->id;
+			$communication['sub_type'] = $form['communication_sub_type'];
+			$communication['calling_status'] = $form['calling_status'];
+			$communication['score'] = $form['score'];
+			$communication['direction'] = 'Out';
+			$communication['description'] = $form['description'];
+
+			$communication->setSubject($form['title']);
+			$communication->setBody($form['description']);
+			$communication->addTo($form['to_number']);
+			$employee_name = $this->add('xepan\hr\Model_Employee')
+	                         ->load($form['call_by_employee'])
+	                         ->get('name');
+			$communication->setFrom($form['from_number'],$employee_name);
+			
+			if($form['notify_via_email']){
+				$communication['title'] = $form['notify_email_subject'];
+				$send_settings = $this->add('xepan\communication\Model_Communication_EmailSetting');
+				$send_settings->tryLoad($form['notify_from_email_id']?:-1);
+				$communication->send(
+					$send_settings,
+					$form['notify_to_email_ids']
+				);
+			}elseif($form['description']){
+				$communication['title'] = substr(strip_tags($form['description']),0,35)." ...";
+			}else{
+				$communication['title'] = "Called to ".$this->contact['name']." - type: ".$form['communication_sub_type']." - status: ".$form['calling_status'];
+			}
+			$communication->save();
+			// SCORE
+			if($form['score']){
+				$model_point_system = $this->add('xepan\base\Model_PointSystem');
+				$model_point_system['contact_id'] = $this->contact->id;
+				$model_point_system['score'] = $form['score'];
+				$model_point_system->save();
+			}
+
+			// FOLLOW UP
+			if($form['followup_title']){
+				$model_task = $this->add('xepan\projects\Model_Task');
+				$model_task['type'] = 'Followup';
+				$model_task['task_name'] = $form['followup_title'];
+				$model_task['created_by_id'] = $this->app->employee->id;
+				$model_task['starting_date'] = $form['followup_on'];
+				$model_task['assign_to_id'] = $form['assigned_to'];
+				$model_task['description'] = $form['followup_detail'];
+				$model_task['related_id'] = $this->contact->id;
+				if($form['set_reminder']){
+					$model_task['set_reminder'] = true;
+					$model_task['reminder_time'] = $form['reminder_at'];
+					$model_task['remind_via'] = $form['remind_via'];
+					$model_task['notify_to'] = $form['notify_to'];
+					
+					if($form['snooze_duration']){
+						$model_task['snooze_duration'] = $form['snooze_duration'];
+						$model_task['remind_unit'] = $form['snooze_unit'];
+					}
+				}
+				$model_task->save();
+			}
+
+			$form->js()->reload()->univ()->successMessage('Communication added')->execute();
+		}
+			
+		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
+		$down_btn->js('click',[$score->js()->val(-10),$up_btn->js()->removeClass('btn-success'),$this->js()->_selectorThis()->addClass('btn-danger')]);
+		$called_icon->js('click',[ // show event
+			$called_popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
+			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();'),
+			$followup_on->js()->val(''),
+			$reminder_at->js()->val(''),
+			$notify_from_email_id_field->js()->select2('val',''),
+			$assigned_to->js()->select2('val',$this->app->employee->id),
+			$remind_via->js()->select2('val',''),
+			$notify_to->js()->select2('val',''),
+			$snooz_unit->js()->select2('val','')
+		]);		
 	}
 
 	function recursiveRender(){

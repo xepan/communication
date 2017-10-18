@@ -149,6 +149,8 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$company_m->add('xepan\hr\Controller_ACL');
 		$company_m->tryLoadAny();
 
+		$company_m->getElement('mobile_no')->caption('contact number')->hint('comma(,) seperated multiple values');
+
 		$c_form = $company_info_tab->add('Form_Stacked');
 		$c_form->setModel($company_m);
 		$c_form->addSubmit('Save')->addClass('btn btn-primary');
