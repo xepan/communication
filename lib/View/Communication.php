@@ -316,7 +316,100 @@ class View_Communication extends \View {
 
 	function manageCalled($called_icon){
 		$called_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
-		$called_popup->setTitle('Phone Called - Log Communication');
+		$called_popup->setTitle('Phone Called - Log Communication of '.$this->contact['name']);
+		
+		$form = $called_popup->add('Form');
+		$form->add('xepan\base\Controller_FLC')
+			->makePanelsCoppalsible()
+			->closeOtherPanels()
+			->addContentSpot()
+			->layout([
+				'communication_sub_type'=>'Called Content~c1~4',
+				'calling_status'=>'c2~4',
+				'date'=>'c3~4',
+				'from_number'=>'c1~4',
+				'to_number'=>'c2~4',
+				'call_by_employee'=>'c3~4',
+				'description'=>'c4~12',
+
+				'notify_via_email~'=>'c5~12',
+				'notify_email_subject'=>'c6~4',
+				'notify_from_email_id'=>'c7~4',
+				'notify_to_email_ids'=>'c11~4',	
+
+				'followup_title'=>'Called Followup/Score~c1~8~closed',
+				'score_buttons~Score'=>'c2~2',
+				'score~'=>'c23',
+				'followup_on'=>'c24~6',
+				'assigned_to'=>'c25~6',
+				'followup_detail'=>'c26~12',
+				'set_reminder'=>'c27~12',
+				'reminder_at'=>'c28~2',
+				'remind_via'=>'c29~2',
+				'notify_to'=>'c30~4',
+				'snooze_duration'=>'c31~2',
+				'snooze_unit~'=>'c32~2'
+			]);
+
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+		[
+			'fields'=>[
+						'sub_type'=>'text',
+						'calling_status'=>'text',
+						],
+				'config_key'=>'COMMUNICATION_SUB_TYPE',
+				'application'=>'Communication'
+		]);
+		$config_m->tryLoadAny();
+		
+		$sub_type_array = explode(",",$config_m['sub_type']);
+		$sub_type_field = $form->addField('DropDown','communication_sub_type')->setEmptyText("Please Select");
+		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
+		
+		$calling_status_array = explode(",",$config_m['calling_status']);
+		$calling_status_field = $form->addField('DropDown','calling_status')->setEmptyText('Please Select');
+		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
+		
+		$form->addField('DateTimePicker','date')->validate('required');
+		$form->addField('from_number');
+		$phones = $this->contact->getPhones();
+		$to_number_field = $form->addField('xepan\base\DropDown','to_number');
+		$to_number_field->setValueList(array_combine($phones,$phones));
+		$to_number_field->select_menu_options = ['tags'=>true];
+		$to_number_field->validate_values = false;
+
+		$call_by_emp_field = $form->addField('DropDown','call_by_employee');
+		$emp_model = $this->add('xepan\hr\Model_Employee');
+		$call_by_emp_field->setModel($emp_model);
+
+		$form->addField('xepan\base\RichText','description');
+
+		$form->addField('checkbox','notify_via_email');
+		$form->addField('notify_email_subject');
+		$form->addField('notify_from_email_id');
+		$form->addField('notify_to_email_ids');
+
+		$follow_title = $form->addField('followup_title');
+		$score = $form->addField('Hidden','score')->set(0);
+		$set = $form->layout->add('ButtonSet',null,'score_buttons');
+		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
+		$down_btn = $set->add('Button')->set('-10')->addClass('btn');
+		
+		$followup_on = $form->addField('DateTimePicker','followup_on');
+		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
+		$form->addField('Text','followup_detail');
+
+		$reminder = $form->addField('CheckBox','set_reminder');
+		$reminder_at = $form->addField('DateTimePicker','reminder_at');
+		$remind_via = $form->addField('DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
+		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
+		$form->addField('snooze_duration');
+		$snooz_unit= $form->addField('DropDown','snooze_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
+
+		// $reminder->js(true)->univ()->bindConditionalShow([
+		// 	''=>[],
+		// 	'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
+		// ],'div.col-md-2,div.col-md-4');
 
 		$called_icon->js('click',$called_popup->js()->modal(['backdrop'=>true,'keyboard'=>true]));
 	}
