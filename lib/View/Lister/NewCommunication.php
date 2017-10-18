@@ -118,21 +118,7 @@ class View_Lister_NewCommunication extends \CompleteLister{
 
 	function myTemplate(){
 		$template = '
-			<div id="{$_name}" class="xepan-communication-lister {$class}">
-			  <div class="row xepan-push-small">
-			  	<span>
-			      <div class="panel panel-default panel-body">
-			        <div class="row xepan-push"> 
-			          <div class="col-md-6">
-			            <div class="btn btn-primary btn-sm inform btn-block">Inform Customer</div>
-			          </div>
-			          <div class="col-md-6"> 
-			            <div class="btn btn-primary btn-sm create btn-block">Create Communication</div>
-			          </div>
-			        </div>{$form}
-			      </div>
-			    </span>
-			  </div>
+			<div id="'.$this->name.'" class="xepan-communication-lister {$class}">
 			  <div class="timeline">
     			<div class="line text-muted"></div>
 			  	{rows}{row}

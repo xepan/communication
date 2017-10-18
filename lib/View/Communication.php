@@ -16,18 +16,50 @@ class View_Communication extends \View {
 
 	public $showCommunicationHistory = true;
 	public $showAddCommunications = true;
+	public $showFilter = true;
+
 
 	public $contact=null;
 
 	public $is_editing = false;
 
+	public $historyLister;
 	function init(){
 		parent::init();
 		$this->template->loadTemplateFromString($this->myTemplate());
 	}
 
-	function filter($from_ids=null,$to_ids=null,$related_document_ids=null,$created_by_ids=null){
+	function filter(){
 
+		if($start_date = $this->app->stickyGET('start_date')){
+			$this->model->addCondition('created_at','>=',$start_date);
+		}
+
+		if($end_date = $this->app->stickyGET('end_date')){
+			$this->model->addCondition('created_at','<',$this->app->nextDate($end_date));
+		}
+
+		if($related_contact_id = $this->app->stickyGET('related_contact_id')){
+			$this->model->addCondition([
+								['from_id',$related_contact_id],
+								['to_id',$related_contact_id]
+							]);
+		}
+
+		if($comm_type = $this->app->stickyGET('communication_type')){
+			$this->model->addCondition('communication_type',explode(",", $comm_type));
+		}
+
+		if($direction = $this->app->stickyGET('direction')){
+			$this->model->addCondition('direction',$direction);
+		}
+
+		if($search = $this->app->stickyGET('search_string')){
+			$this->model->addExpression('Relevance')
+					->set('MATCH(title,description,communication_type) AGAINST ("'.$search.'")');
+			$this->model->addCondition('Relevance','>',0);
+ 			$this->model->setOrder('Relevance','Desc');
+		}
 	}
 
 	function setCommunicationsWith($contact){
@@ -94,50 +126,51 @@ class View_Communication extends \View {
 
 	function addTopBar(){
 		if($this->channel_email) {
-			$email_icon = $this->add('Icon',null,'icons')->set('fa fa-envelope fa-3x')->addStyle('cursor:hand');
-			$this->manageEmail($email_icon);
+			$html = '<i class="fa fa-envelope fa-3x"></i>';
+			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$this->manageEmail($icon);
 		}
 
 		if($this->channel_call_sent){
-			$called_icon = $this->add('Icon',null,'icons')->set('fa fa-upload fa-3x');
-			$this->manageCalled($called_icon);
+			$html = '<i class="fa fa-upload fa-3x"></i>';
+			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$this->manageCalled($icon);
 		}
+
 		if($this->channel_call_received){
-			$call_received_icon = $this->add('Icon',null,'icons')->set('fa fa-download fa-3x');
-			$this->manageCallReceived($call_received_icon);
+			$html = '<i class="fa fa-download fa-3x"></i>';
+			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$this->manageCallReceived($icon);
 		}
 
 		if($this->channel_meeting){
-			$meeting_icon = $this->add('Icon',null,'icons')->set('fa fa-users');
-			$this->manageMeeting($meeting_icon);
+			$html = '<i class="fa fa-users fa-3x"></i>';
+			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$this->manageMeeting($icon);
 		}
 
 		if($this->channel_comment){
-			$comment_icon = $this->add('Icon',null,'icons')->set('fa fa-users');
-			$this->manageComment($comment_icon);
+			$html = '<div class="btn-group" role="group"><i class="fa fa-comments fa-3x"></i></div>';
+			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$this->manageComment($icon);
+		}
+
+		if($this->showFilter){
+			$this->addFilter();
 		}
 	}
 
 	function addCommunicationHistory(){
 		$communication = $this->model;
-		$lister=$this->add('xepan\communication\View_Lister_NewCommunication',['contact_id'=>$this->contact->id],null,null);
-		if($_GET['comm_type']){
-			$communication->addCondition('communication_type',explode(",", $_GET['comm_type']));
-		}
 
-		if($search = $this->app->stickyGET('search')){
-			$communication->addExpression('Relevance')->set('MATCH(title,description,communication_type) AGAINST ("'.$search.'")');
-			$communication->addCondition('Relevance','>',0);
- 			$communication->setOrder('Relevance','Desc');
+		$this->historyLister = $lister=$this->add('xepan\communication\View_Lister_NewCommunication',['contact_id'=>$this->contact->id],null,null);
+		if($this->app->stickyGET('communication_filter')){
+			$this->filter();
 		}
 
 		$lister->setModel($communication)->setOrder(['created_at desc','id desc']);
 		$p = $lister->add('Paginator',null,'Paginator');
-		$p->setRowsPerPage(10);
-
-		// $grid = $this->add('xepan\base\Grid');
-		// $grid->setModel($this->model);
-		// $grid->addPaginator(100);
+		$p->setRowsPerPage(15);
 	}
 
 	function manageEmail($email_icon, $edit_communication= null){
@@ -1281,9 +1314,60 @@ class View_Communication extends \View {
 		]);		
 		
 	}
+
+	function addFilter(){
+		$form = $this->add('Form',null,'filter');
+
+		$form->add('xepan\base\Controller_FLC')
+			->makePanelCollepsible()
+			->closeOtherPanels()
+			->addContentSpot()
+			->layout([
+					'date_range'=>'Filter~c1~6~closed',
+					'related_contact'=>'c2~6',
+					'communication_type'=>'c3~6',
+					'direction'=>'c4~2',
+					'search'=>'c5~4',
+					'FormButtons~'=>'c6~12'
+				]);
+
+	    $fld_date_range = $form->addField('DateRangePicker','date_range')
+            // ->setStartDate('2016-04-07')
+            // ->setEndDate('2016-04-30')
+            ->showTimer(15)
+            ->getBackDatesSet() // or set to false to remove
+            ->getFutureDatesSet() // or skip to not include
+            ;
+        $fld_contact = $form->addField('xepan\base\Contact','related_contact');
+		$fld_contact->includeAll();
+
+		$fld_type = $form->addField('xepan\base\DropDown','communication_type');
+		$fld_type->setValueList(['Email'=>'Email','Called'=>'Called','Received'=>'Received','TeleMarketing'=>'TeleMarketing','Personal'=>'Personal','Comment'=>'Comment','SMS'=>'SMS','Newsletter'=>'Newsletter','Support'=>'Support']);
+		$fld_type->setAttr(['multiple'=>'multiple']);
+
+		$fld_direction = $form->addField('xepan\base\DropDown','direction');
+		$fld_direction->setValueList(['In'=>'In','Out'=>'Out']);
+		$fld_direction->setEmptyText('Please Select');
+
+		$form->addField('search');
+		$form->addSubmit('Filter')->addClass('btn btn-primary btn-block');
+		
+		if($form->isSubmitted()){
+			$this->historyLister->js()->reload([
+					'communication_filter'=>1,
+					'start_date'=>$fld_date_range->getStartDate(),
+					'end_date'=>$fld_date_range->getEndDate(),
+					'related_contact_id'=>$form['related_contact'],
+					'communication_type'=>$form['communication_type'],
+					'direction'=>$form['direction'],
+					'search_string'=>$form['search']
+				])->execute();
+		}		
+	}
+
 	function recursiveRender(){
-		if($this->showAddCommunications) $this->addTopBar();
 		if($this->showCommunicationHistory) $this->addCommunicationHistory();
+		if($this->showAddCommunications) $this->addTopBar();
 		parent::recursiveRender();
 	} 
 
@@ -1291,11 +1375,14 @@ class View_Communication extends \View {
 		$template='
 			<div id="{$_name}" class="{$class}">
 				<div class="top-bar">
-					<div class="row">
+					<div class="row main-box">
 						<div class="col-md-8">
+							{$filter}
 						</div>
 						<div class="col-md-4">
-							{$icons}
+							<div class="btn-group btn-group-justified" role="group" aria-label="Communication Action">
+								{$icons}
+							</div>
 						</div>
 					</div>
 				</div>
