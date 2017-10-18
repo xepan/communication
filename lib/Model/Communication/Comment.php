@@ -45,11 +45,29 @@ class Model_Communication_Comment extends Model_Communication {
 		$this['description']=$body;
 	}
 
-	function send(){
+	function send($email_settings,$notify_to=''){
 		$this->save();
-	}	
+		if(trim($notify_to)){
+			$this->notifyToEmail($email_settings,$notify_to);
+		}
+	}
 
 	function verifyTo(){
 		return true;
+	}
+
+	function notifyToEmail($email_setting,$to_emails=''){
+		$notify = $this->add('xepan\communication\Model_Communication_Email_Sent');
+		$notify->setFrom($email_setting['from_email'],$email_setting['from_name']);
+		
+		foreach (explode(",", $to_emails) as $to) {
+			$notify->addTo(trim($to));
+		}
+
+		$notify->setSubject($this['title']);
+		$notify->setBody($this['description']);
+		$notify->findContact('to');
+
+		$notify->send($email_setting);
 	}
 }
