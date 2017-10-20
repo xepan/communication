@@ -126,31 +126,31 @@ class View_Communication extends \View {
 
 	function addTopBar(){
 		if($this->channel_email) {
-			$html = '<i class="fa fa-envelope fa-3x"></i>';
+			$html = '<i class="fa fa-envelope fa-2x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageEmail($icon);
 		}
 
 		if($this->channel_call_sent){
-			$html = '<i class="fa fa-upload fa-3x"></i>';
+			$html = '<i class="fa fa-upload fa-2x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageCalled($icon);
 		}
 
 		if($this->channel_call_received){
-			$html = '<i class="fa fa-download fa-3x"></i>';
+			$html = '<i class="fa fa-download fa-2x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageCallReceived($icon);
 		}
 
 		if($this->channel_meeting){
-			$html = '<i class="fa fa-users fa-3x"></i>';
+			$html = '<i class="fa fa-users fa-2x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageMeeting($icon);
 		}
 
 		if($this->channel_comment){
-			$html = '<div class="btn-group" role="group"><i class="fa fa-comments fa-3x"></i></div>';
+			$html = '<div class="btn-group" role="group"><i class="fa fa-comments fa-2x"></i></div>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageComment($icon);
 		}
@@ -346,7 +346,7 @@ class View_Communication extends \View {
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
 		$down_btn->js('click',[$score->js()->val(-10),$up_btn->js()->removeClass('btn-success'),$this->js()->_selectorThis()->addClass('btn-danger')]);
 		$email_icon->js('click',[ // show event
-			$email_popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
+			$email_popup->js()->modal('show',['backdrop'=>'static','keyboard'=>false]),
 			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();'),
 			$followup_on->js()->val(''),
 			$reminder_at->js()->val(''),
@@ -1336,7 +1336,7 @@ class View_Communication extends \View {
             // ->setEndDate('2016-04-30')
             ->showTimer(15)
             ->getBackDatesSet() // or set to false to remove
-            ->getFutureDatesSet() // or skip to not include
+            // ->getFutureDatesSet() // or skip to not include
             ;
         $fld_contact = $form->addField('xepan\base\Contact','related_contact');
 		$fld_contact->includeAll();
