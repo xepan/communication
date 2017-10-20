@@ -27,6 +27,199 @@ class View_Communication extends \View {
 	function init(){
 		parent::init();
 		$this->template->loadTemplateFromString($this->myTemplate());
+
+		$this->app->stickyGET('edit_communication_id');
+		$this->edit_vp = $this->add('VirtualPage')
+			->set(function($page){
+				$id = $_GET['edit_communication_id'];
+				
+				$form_fields = [
+							'communication_sub_type'=>'Edit Communication~c1~4',
+							'calling_status~Status'=>'c2~4',
+							'created_at'=>'c3~4',
+							'from_number'=>'c1~4',
+							'to_number'=>'c2~4',
+							'employee'=>'c3~4',
+							'description'=>'c4~12'
+						];
+
+				$m = $this->add('xepan\communication\Model_Communication');
+				$m->load($id);
+				if($m['status'] == "Called"){
+					$comm_model = $this->add('xepan\communication\Model_Communication_Call');
+					$comm_model->addCondition('status','Called');
+					$comm_model->addCondition('id',$id);
+					$comm_model->tryLoadAny();
+
+					$form_fields = [
+							'communication_sub_type'=>'Edit Called Communication~c1~4',
+							'calling_status'=>'c2~4',
+							'created_at'=>'c3~4',
+							'from_number'=>'c1~4',
+							'to_number'=>'c2~4',
+							'employee'=>'c3~4',
+							'description'=>'c4~12'
+						];
+
+				}elseif($m['status'] == "Received"){
+					$comm_model = $this->add('xepan\communication\Model_Communication_Call');
+					$comm_model->addCondition('status','Received');
+					$comm_model->addCondition('id',$id);
+					$comm_model->tryLoadAny();
+
+					$form_fields = [
+							'communication_sub_type'=>'Edit Call Received Communication~c1~4',
+							'calling_status'=>'c2~4',
+							'created_at'=>'c3~4',
+							'from_number'=>'c1~4',
+							'to_number'=>'c2~4',
+							'employee'=>'c3~4',
+							'description'=>'c4~12'
+						];
+				}elseif($m['status'] == "Personal"){
+					$comm_model = $this->add('xepan\communication\Model_Communication_Personal');
+					$comm_model->addCondition('status','Personal');
+					$comm_model->addCondition('id',$id);
+					$comm_model->tryLoadAny();
+
+					$form_fields = [
+							'communication_sub_type'=>'Edit Personal Communication~c1~3',
+							'calling_status~Status'=>'c2~3',
+							'created_at'=>'c3~3',
+							'employee'=>'c4~3',
+							'description'=>'c5~12'
+						];
+				}elseif($m['status'] == "Commented"){
+					$comm_model = $this->add('xepan\communication\Model_Communication_Comment');
+					$comm_model->addCondition('status','Commented');
+					$comm_model->addCondition('id',$id);
+					$comm_model->tryLoadAny();
+
+					$form_fields = [
+							'communication_sub_type'=>'Edit Comment Communication~c1~3',
+							'calling_status~Status'=>'c2~3',
+							'created_at'=>'c3~3',
+							'employee'=>'c4~3',
+							'description'=>'c5~12'
+						];
+				}
+
+				$contact = $this->add('xepan\base\Model_Contact');
+				$contact->load($comm_model['to_id']);
+				
+				$form = $page->add('Form');
+				$form->add('xepan\base\Controller_FLC')
+					->makePanelCollepsible()
+					->closeOtherPanels()
+					->addContentSpot()
+					->layout($form_fields);
+
+				$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
+				[
+					'fields'=>[
+								'sub_type'=>'text',
+								'calling_status'=>'text',
+								],
+						'config_key'=>'COMMUNICATION_SUB_TYPE',
+						'application'=>'Communication'
+				]);
+				$config_m->tryLoadAny();
+				
+				$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
+						[
+							'fields'=>[
+										'company_name'=>"Line",
+										'company_owner'=>"Line",
+										'mobile_no'=>"Line",
+										'company_email'=>"Line",
+										'company_address'=>"Line",
+										'company_pin_code'=>"Line",
+										'company_description'=>"xepan\base\RichText",
+										'company_logo_absolute_url'=>"Line",
+										'company_twitter_url'=>"Line",
+										'company_facebook_url'=>"Line",
+										'company_google_url'=>"Line",
+										'company_linkedin_url'=>"Line",
+										],
+							'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
+							'application'=>'communication'
+						]);
+
+							
+				$company_m->add('xepan\hr\Controller_ACL');
+				$company_m->tryLoadAny();
+
+				$company_number = explode(",", $company_m['mobile_no']);
+				$company_number = array_combine($company_number, $company_number);
+
+				$sub_type_array = explode(",",$config_m['sub_type']);
+				$sub_type_field = $form->addField('xepan\base\DropDown','communication_sub_type')->setEmptyText("Please Select");
+				$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
+				$sub_type_field->set($comm_model['sub_type']);
+
+				$status_array = explode(",",$config_m['calling_status']);
+				$status_field = $form->addField('xepan\base\DropDown','calling_status')->setEmptyText('Please Select');
+				$status_field->setValueList(array_combine($status_array,$status_array));
+				$status_field->set($comm_model['calling_status']);
+
+				$form->addField('DateTimePicker','created_at')->validate('required')->set($comm_model['created_at']);
+				
+				$employee_field = $form->addField('xepan\hr\Employee','employee')->set($comm_model['from_id']);
+
+				$form->addField('xepan\base\RichText','description')
+						->set($comm_model['description']);
+
+				if(isset($form_fields['from_number'])){
+					$from_number_field = $form->addField('xepan\base\DropDown','from_number');
+					$emp_phones = $this->app->employee->getPhones();
+					$emp_phones = array_combine($emp_phones, $emp_phones);
+					$from_number_field->setValueList(array_merge(array_filter($company_number),array_filter($emp_phones)));
+					$from_number_field->select_menu_options = ['tags'=>true];
+					$from_number_field->validate_values = false;
+
+					$from_raw = json_decode($comm_model['from_raw'],true);
+					$from_number_field->set($from_raw['number']);
+				}
+
+				if(isset($form_fields['to_number'])){
+
+					$phones = [];
+					$phones = $contact->getPhones();
+					$to_number_field = $form->addField('xepan\base\DropDown','to_number');
+					$to_number_field->setValueList(array_combine($phones,$phones));
+					$to_number_field->select_menu_options = ['tags'=>true];
+					$to_number_field->validate_values = false;
+
+					$to_raw = json_decode($comm_model['to_raw'],true);
+					$to_number_field->set($to_raw['number']);
+				}
+
+				$form->addSubmit('Update Communication')->addClass('btn btn-primary');
+
+				if($form->isSubmitted()){
+
+					foreach ($form_fields as $key => $value) {
+						$comm_model[$key] = $form[$key];
+					}
+					// $comm_model['created_at'] = $form['created_at'];
+
+					if(isset($form_fields['to_number'])){
+						$comm_model->addTo($form['to_number'],$contact['name']);
+					}
+
+					if(isset($form_fields['from_number'])){
+						$emp = $this->add('xepan\hr\Model_Employee')->load($form['employee']);
+						// $comm_model->setFrom($form['from_number'],$emp['name']);
+						$to=['name'=>$emp['name'],'number'=>$form['from_number']];
+						$comm_model->set('from_raw',$to);
+					}
+					$comm_model['from_id'] = $form['employee'];
+					$comm_model->save();
+
+					$form->js(null,$form->js()->reload())->univ()->successMessage('communication updated')->execute();
+				}
+
+			});
 	}
 
 	function filter(){
@@ -170,8 +363,11 @@ class View_Communication extends \View {
 		}
 
 		$lister->setModel($communication)->setOrder(['created_at desc','id desc']);
-		$p = $lister->add('Paginator',null,'Paginator');
-		$p->setRowsPerPage(15);
+		$p = $lister->add('xepan\base\Paginator',null,'Paginator');
+		$p->setRowsPerPage($this->ipp = 10);
+
+		$lister->js('click',$this->js()->univ()->frameURL('Edit Communication',[$this->app->url($this->edit_vp->getURL()),'edit_communication_id'=>$this->js()->_selectorThis()->data('id')]))
+			->_selector('.do-view-edit-communication');
 	}
 
 	function manageEmail($email_icon, $edit_communication= null){
@@ -1377,10 +1573,10 @@ class View_Communication extends \View {
 			<div id="{$_name}" class="{$class}">
 				<div class="communication-top-bar">
 					<div class="row main-box" style="padding-top:15px;">
-						<div class="col-md-8">
+						<div class="col-md-7 col-lg-7 col-sm-12 col-xs-12">
 							{$filter}
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
 							<div class="btn-group btn-group-justified" role="group" aria-label="Communication Action">
 								{$icons}
 							</div>

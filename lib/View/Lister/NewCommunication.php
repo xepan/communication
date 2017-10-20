@@ -113,6 +113,10 @@ class View_Lister_NewCommunication extends \CompleteLister{
 		$this->current_row_html['communication_icon'] = $icon[$this->model['communication_type'].$this->model['direction']]?:($this->model['communication_type'].$this->model['direction']);
 				
 		$this->current_row_html['created_at'] = date('F jS, Y h:i:s',strtotime($this->model['created_at']));
+		
+		if($this->model['communication_type'] == "Email")
+			$this->current_row_html['edit_action'] = "";
+
 		return parent::formatRow();
 	}
 
@@ -140,9 +144,16 @@ class View_Lister_NewCommunication extends \CompleteLister{
 	                        			<span class="pull-right">{$communication_type} ({$status} {$to})</span>
 	                        		</div>
 	                        		<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
-	                        			<a data-id="{$id}" class="do-view-delete-communication pull-right xepan-communication-action"><i class="fa fa-trash">      </i></a><a data-id="{$id}" class="do-view-edit-communication pull-right xepan-communication-action">
+	                        			{delete_action}
+	                        			<a data-id="{$id}" class="do-view-delete-communication pull-right xepan-communication-action">
+	                        				<i class="fa fa-trash"> </i>
+	                        			</a>
+	                        			{/delete_action}
+	                        			{edit_action}
+	                        			<a data-id="{$id}" class="do-view-edit-communication pull-right xepan-communication-action">
 	                        				<i class="fa fa-edit">&nbsp;</i>
 	                        			</a>
+	                        			{/edit_action}
 	                        		</div>
 	                        </a></h4>
 	                  </div>
