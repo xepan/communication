@@ -8,7 +8,6 @@ class View_Lister_NewCommunication extends \CompleteLister{
 	function init(){
 		$this->template->loadTemplatefromString($this->myTemplate());
 		parent::init();
-		
 
 		if(!$this->contact_id)
 			return;			
@@ -116,6 +115,12 @@ class View_Lister_NewCommunication extends \CompleteLister{
 		
 		if($this->model['communication_type'] == "Email")
 			$this->current_row_html['edit_action'] = "";
+		else{
+			$clone_region = '<a data-id="'.$this->model->id.'" class="do-view-edit-communication pull-right xepan-communication-action">
+								<i class="fa fa-edit">&nbsp;</i>
+							</a>';
+			$this->current_row_html['edit_action'] = $clone_region;
+		}
 
 		return parent::formatRow();
 	}
@@ -150,9 +155,6 @@ class View_Lister_NewCommunication extends \CompleteLister{
 	                        			</a>
 	                        			{/delete_action}
 	                        			{edit_action}
-	                        			<a data-id="{$id}" class="do-view-edit-communication pull-right xepan-communication-action">
-	                        				<i class="fa fa-edit">&nbsp;</i>
-	                        			</a>
 	                        			{/edit_action}
 	                        		</div>
 	                        </a></h4>
