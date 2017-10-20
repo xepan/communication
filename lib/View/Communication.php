@@ -191,7 +191,7 @@ class View_Communication extends \View {
 					$to_number_field->validate_values = false;
 
 					$to_raw = json_decode($comm_model['to_raw'],true);
-					$to_number_field->set($to_raw['number']);
+					$to_number_field->set($to_raw[0]['number']);
 				}
 
 				$form->addSubmit('Update Communication')->addClass('btn btn-primary');
