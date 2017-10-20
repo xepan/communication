@@ -125,33 +125,34 @@ class View_Communication extends \View {
 	}
 
 	function addTopBar(){
+
 		if($this->channel_email) {
-			$html = '<i class="fa fa-envelope fa-3x"></i>';
-			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-envelope"></i><br/>Email</button>';
+			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Create Email Communication')->setHtml($html);
 			$this->manageEmail($icon);
 		}
 
 		if($this->channel_call_sent){
-			$html = '<i class="fa fa-upload fa-3x"></i>';
-			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i><br/>Called</button>';
+			$icon = $this->add('View',null,'icons')->addClass('btn-group ')->setAttr('role','group')->setAttr('title','Create Phone Called Communication')->setHtml($html);
 			$this->manageCalled($icon);
 		}
 
 		if($this->channel_call_received){
-			$html = '<i class="fa fa-download fa-3x"></i>';
-			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-download "></i><br/>Received</button>';
+			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Create Phone Received Communication')->setHtml($html);
 			$this->manageCallReceived($icon);
 		}
 
 		if($this->channel_meeting){
-			$html = '<i class="fa fa-users fa-3x"></i>';
-			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-users"></i><br/>Meeting</button>';
+			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Create Personal/Meeting Communication')->setHtml($html);
 			$this->manageMeeting($icon);
 		}
 
 		if($this->channel_comment){
-			$html = '<div class="btn-group" role="group"><i class="fa fa-comments fa-3x"></i></div>';
-			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-comments "></i><br/>Comment</button>';
+			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Create Comment Communication')->setHtml($html);
 			$this->manageComment($icon);
 		}
 
@@ -1328,7 +1329,7 @@ class View_Communication extends \View {
 					'communication_type'=>'c3~6',
 					'direction'=>'c4~2',
 					'search'=>'c5~4',
-					'FormButtons~'=>'c6~12'
+					'FormButtons~<br/>'=>'c6~12'
 				]);
 
 	    $fld_date_range = $form->addField('DateRangePicker','date_range')
@@ -1374,8 +1375,8 @@ class View_Communication extends \View {
 	function myTemplate(){
 		$template='
 			<div id="{$_name}" class="{$class}">
-				<div class="top-bar">
-					<div class="row main-box">
+				<div class="communication-top-bar">
+					<div class="row main-box" style="padding-top:15px;">
 						<div class="col-md-8">
 							{$filter}
 						</div>
