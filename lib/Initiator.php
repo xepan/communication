@@ -32,6 +32,7 @@ class Initiator extends \Controller_Addon {
     }
 
     function exportEntities($app,&$array){
+    	 $array['Communication'] = ['caption'=>'Communication','type'=>'DropDown','model'=>'xepan\communication\Model_Communication'];
     	 $array['Communication_EmailSetting'] = ['caption'=>'Communication_EmailSetting','type'=>'DropDown','model'=>'xepan\communication\Model_Communication_EmailSetting'];
     	 $array['Communication_SMSSetting'] = ['caption'=>'Communication_SMSSetting','type'=>'DropDown','model'=>'xepan\communication\Model_Communication_SMSSetting'];
     	 $array['COMPANY_AND_OWNER_INFORMATION'] = ['caption'=>'COMPANY_AND_OWNER_INFORMATION','type'=>'DropDown','model'=>'xepan\communication\Model_COMPANY_AND_OWNER_INFORMATION'];

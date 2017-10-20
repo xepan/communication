@@ -23,6 +23,8 @@ class View_Communication extends \View {
 
 	public $is_editing = false;
 
+	public $acl_controller = null;
+
 	public $historyLister;
 	function init(){
 		parent::init();
@@ -146,7 +148,6 @@ class View_Communication extends \View {
 						]);
 
 							
-				$company_m->add('xepan\hr\Controller_ACL');
 				$company_m->tryLoadAny();
 
 				$company_number = explode(",", $company_m['mobile_no']);
@@ -220,6 +221,9 @@ class View_Communication extends \View {
 				}
 
 			});
+	
+		$this->acl_controller = $this->add('xepan\hr\Controller_ACL',['based_on_model'=>'xepan\communication\Model_Communication']);
+
 	}
 
 	function filter(){
@@ -318,6 +322,8 @@ class View_Communication extends \View {
 	}
 
 	function addTopBar(){
+
+		if(!$this->acl_controller->canAdd()) return;
 
 		if($this->channel_email) {
 			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-envelope"></i><br/>Email</button>';
@@ -624,7 +630,6 @@ class View_Communication extends \View {
 					'application'=>'communication'
 				]);
 		
-		$company_m->add('xepan\hr\Controller_ACL');
 		$company_m->tryLoadAny();
 		$company_number = explode(",", $company_m['mobile_no']);
 		$company_number = array_combine($company_number, $company_number);
@@ -880,7 +885,6 @@ class View_Communication extends \View {
 					'application'=>'communication'
 				]);
 		
-		$company_m->add('xepan\hr\Controller_ACL');
 		$company_m->tryLoadAny();
 		$company_number = explode(",", $company_m['mobile_no']);
 		$company_number = array_combine($company_number, $company_number);

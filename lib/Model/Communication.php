@@ -13,7 +13,9 @@ namespace xepan\communication;
 
 class Model_Communication extends \xepan\base\Model_Table{
 	public $table="communication";
-	public $acl=false;
+	// public $acl=false;
+	public $acl_type = 'Communication';
+	public $actions = ['All'=>['view','edit','delete']];
 	function init(){
 		parent::init();
 
