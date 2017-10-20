@@ -126,31 +126,31 @@ class View_Communication extends \View {
 
 	function addTopBar(){
 		if($this->channel_email) {
-			$html = '<i class="fa fa-envelope fa-2x"></i>';
+			$html = '<i class="fa fa-envelope fa-3x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageEmail($icon);
 		}
 
 		if($this->channel_call_sent){
-			$html = '<i class="fa fa-upload fa-2x"></i>';
+			$html = '<i class="fa fa-upload fa-3x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageCalled($icon);
 		}
 
 		if($this->channel_call_received){
-			$html = '<i class="fa fa-download fa-2x"></i>';
+			$html = '<i class="fa fa-download fa-3x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageCallReceived($icon);
 		}
 
 		if($this->channel_meeting){
-			$html = '<i class="fa fa-users fa-2x"></i>';
+			$html = '<i class="fa fa-users fa-3x"></i>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageMeeting($icon);
 		}
 
 		if($this->channel_comment){
-			$html = '<div class="btn-group" role="group"><i class="fa fa-comments fa-2x"></i></div>';
+			$html = '<div class="btn-group" role="group"><i class="fa fa-comments fa-3x"></i></div>';
 			$icon = $this->add('View',null,'icons')->addClass('btn btn-group')->setAttr('role','group')->setHtml($html);
 			$this->manageComment($icon);
 		}
