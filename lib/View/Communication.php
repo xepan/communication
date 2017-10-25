@@ -26,6 +26,7 @@ class View_Communication extends \View {
 	public $acl_controller = null;
 
 	public $historyLister;
+
 	function init(){
 		parent::init();
 		$this->template->loadTemplateFromString($this->myTemplate());
@@ -540,7 +541,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js()->reload()->univ()->successMessage('Email Sent')->execute();
+			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Email Sent')->execute();
 
 		}
 
@@ -797,7 +798,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js()->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1058,7 +1059,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js()->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1277,7 +1278,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js()->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1497,7 +1498,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js()->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
