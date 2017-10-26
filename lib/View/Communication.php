@@ -420,7 +420,7 @@ class View_Communication extends \View {
 		$bcc_me = $form->addField('Checkbox','bcc_me');
 		$bcc_me->js('click',$bcc->js()->val($this->app->employee->getEmails()));
 		
-		$allwed_emails = $form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id');
+		$allwed_emails = $form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id')->validate('required');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
@@ -448,11 +448,11 @@ class View_Communication extends \View {
 
 			// check validation
 			if($form['task_title'] && !$form['followup_on']){
-				$form->error('followup_on','must not be empty');
+				$form->error('followup_on','Followup on must not be empty');
 			}elseif(!$form['task_title'] && $form['followup_on']){
-				$form->error('task_title','must not be empty');
+				$form->error('task_title','Task Title must not be empty');
 			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['task_title'])){
-				$form->error('task_title','must not be empty');
+				$form->error('task_title','Task Title must not be empty');
 			}
 			// reminder validation
 			if($form['set_reminder']){
@@ -798,7 +798,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$called_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1059,7 +1059,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1278,7 +1278,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1498,7 +1498,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
