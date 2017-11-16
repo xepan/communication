@@ -32,13 +32,16 @@ class page_internalmsg extends \xepan\base\Page{
 			]);
 
 		if($emp_id){
-			// $employee = $this->add('xepan\hr\Model_Employee');
-			// $employee->load($emp_id);
-			$msg_m->addCondition([
-				['from_id',[$emp_id,$this->app->employee->id]],
-				['to_id',[$emp_id,$this->app->employee->id]],
-				['cc_raw','like','%"'.$emp_id.'"%']
-			]);
+			$msg_m->addCondition('from_id',[$emp_id,$this->app->employee->id]);
+			$msg_m->addCondition(
+				[	
+					['to_raw','like','%"'.$emp_id.'"%'],
+					['cc_raw','like','%"'.$emp_id.'"%'],
+					['to_raw','like','%"'.$this->app->employee->id.'"%'],
+					['cc_raw','like','%"'.$this->app->employee->id.'"%']
+				]
+			);
+			// $msg_m->addCondition([['cc_raw','like','%"'.$emp_id.'"%'],['to_raw','like','%"'.$this->app->employee->id.'"%']]);
 		}
 
 			
