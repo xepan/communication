@@ -66,7 +66,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		$this->addField('status');
 		$this->addField('mailbox');
 		$this->addField('communication_channel_id'); // Cna be used for email_settings or sms settings etc.
-		$this->addField('score')->type('int'); 
+		$this->addField('score')->type('int')->defaultValue(0); 
 		$this->addField('is_starred')->type('boolean')->defaultValue(false);
 
 		$this->addField('detailed')->type('boolean')->defaultValue(false);
