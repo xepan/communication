@@ -12,10 +12,22 @@ class page_report_employeecommunication extends \xepan\base\Page{
 	
 	function init(){
 		parent::init();
+
 		$emp_id = $this->app->stickyGET('employee_id');
 		$from_date = $this->app->stickyGET('from_date');
 		$to_date = $this->app->stickyGET('to_date');
-		$form = $this->add('Form',null,null,['form/empty']);
+		$department = $this->app->stickyGET('department');
+
+		$form = $this->add('Form');
+		$form->add('xepan\base\Controller_FLC')
+			->makePanelsCoppalsible(true)
+			->layout([
+				'date_range'=>'Filter~c1~3',
+				'employee'=>'c2~3',
+				'department'=>'c3~3',
+				'FormButtons~&nbsp;'=>'c4~3'
+			]);
+
 		$date = $form->addField('DateRangePicker','date_range');
 		$set_date = $this->app->today." to ".$this->app->today;
 		if($from_date){
@@ -35,6 +47,14 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		if($_GET['to_date']){
 			$emp_model->to_date = $_GET['to_date'];
 		}
+		if($department){
+			$emp_model->addCondition('department_id',$department);
+		}
+
+		$dept_field = $form->addField('xepan\base\DropDown','department');
+		$dept_field->setModel('xepan\hr\Model_Department');
+		$dept_field->setEmptyText('All');
+
 		$form->addSubmit('Get Details')->addClass('btn btn-primary');
 		$grid = $this->add('xepan\hr\Grid'/*,null,null,['view/report/emp-communication-grid-view']*/);
 
@@ -98,7 +118,8 @@ class page_report_employeecommunication extends \xepan\base\Page{
 						[
 						'employee_id'=>$form['employee'],
 						'from_date'=>$date->getStartDate()?:0,
-						'to_date'=>$date->getEndDate()?:0
+						'to_date'=>$date->getEndDate()?:0,
+						'department'=>$form['department']
 						]
 			)->execute();
 		}
