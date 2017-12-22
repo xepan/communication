@@ -24,6 +24,7 @@ class Initiator extends \Controller_Addon {
 		// $this->app->addHook('contact_info',[$search_communication,'set_old_communication_info']);
 		$this->app->addHook('widget_collection',[$this,'exportWidgets']);
         $this->app->addHook('entity_collection',[$this,'exportEntities']);
+        $this->app->addHook('collect_shortcuts',[$this,'collect_shortcuts']);
 		return $this;
 	}
 
@@ -41,6 +42,23 @@ class Initiator extends \Controller_Addon {
     	 $array['COMMUNICATION_SUB_TYPE'] = ['caption'=>'COMMUNICATION_SUB_TYPE','type'=>'DropDown','model'=>'xepan\communication\Model_COMMUNICATION_SUB_TYPE'];
     	 $array['Miscellaneous_Technical_Settings'] = ['caption'=>'Miscellaneous_Technical_Settings','type'=>'DropDown','model'=>'xepan\communication\Miscellaneous_Technical_Settings'];
     }
+
+    function collect_shortcuts($app,&$shortcuts){
+		// $shortcuts[]=["title"=>"New Email","keywords"=>"new email send","description"=>"Send New Email","normal_access"=>"My Menu -> Tasks / New Task Button","url"=>$this->app->url('xepan/projects/mytasks',['admin_layout_cube_mytasks_virtualpage'=>'true']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Emails","keywords"=>"check email","description"=>"Your Emails","normal_access"=>"SideBar -> Emails","url"=>$this->app->url('xepan/communication/emails'),/*'mode'=>'fullframe'*/];
+		$shortcuts[]=["title"=>"Internal Messages","keywords"=>"check message internal in house premises staff inbox","description"=>"Your Internal Messages Page","normal_access"=>"SideBar -> Message","url"=>$this->app->url('xepan/communication/internalmsg'),'mode'=>'fullframe'];
+		$shortcuts[]=["title"=>"General Settings","keywords"=>"general settings","description"=>"Manage your general settings","normal_access"=>"SideBar -> General Settings","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1]),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Manage Email Accounts","keywords"=>"add new email account setting imap pop2 smtp transport","description"=>"Manage your email accounts","normal_access"=>"SideBar -> General Settings/Email Settings","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1,'cut_object'=>'admin_layout_cube_generalsetting_tabs_email-settings']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Manage SMS Accounts","keywords"=>"add new sms account setting gateway","description"=>"Manage your sms gateway accounts","normal_access"=>"SideBar -> General Settings/SMS Settings","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1,'cut_object'=>'admin_layout_cube_generalsetting_tabs_sms-settings']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Edit Your Time Zone","keywords"=>"timezone date time GMT Misc settings","description"=>"Manage your timezone settings","normal_access"=>"SideBar -> General Settings/MISC Settings","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1,'cut_object'=>'admin_layout_cube_generalsetting_tabs_misc-settings']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Duplicate Email Settings","keywords"=>"duplicate existing email configuration","description"=>"Configure how system should work for duplicate email entered","normal_access"=>"SideBar -> General Settings/Duplicate Emails","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1,'cut_object'=>'admin_layout_cube_generalsetting_tabs_dupemail-settings']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Duplicate Contact Number Settings","keywords"=>"duplicate existing number phone mobile contact configuration","description"=>"Configure how system should work for duplicate contact number entered","normal_access"=>"SideBar -> General Settings/Duplicate Contact","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1,'cut_object'=>'admin_layout_cube_generalsetting_tabs_dupcont-settings']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Basic Company Information","keywords"=>"configuring company name address organization system details","description"=>"Configure your companies basic details","normal_access"=>"SideBar -> General Settings/Company Info","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1,'cut_object'=>'admin_layout_cube_generalsetting_tabs_company-info-settings']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Communication Sub Types","keywords"=>"configuring communication sub types","description"=>"Configure your companies basic details","normal_access"=>"SideBar -> General Settings/Communication Sub Types","url"=>$this->app->url('xepan/communication/generalsetting',['cut_page'=>1,'cut_object'=>'admin_layout_cube_generalsetting_tabs_commsubtypes-settings']),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Admin Email Content","keywords"=>"admin user password reset update forgot forget email","description"=>"Configure Admin User forgot password & password updated notification email content","normal_access"=>"SideBar -> General Settings/ SideBar -> Email Content -> Admin User Settings","url"=>$this->app->url('xepan_communication_general_emailcontent_admin',['cut_page'=>1]),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"User Registration mode & Frontend Email Content","keywords"=>"frontend website customer user password reset update forgot forget verification subscribe email","description"=>"Configuration of Frontend user registration type forgot password & password updated notification ","normal_access"=>"SideBar -> General Settings/ SideBar -> Email Content -> FrontEnd User Settings","url"=>$this->app->url('xepan_communication_general_emailcontent_usertool',['cut_page'=>1]),'mode'=>'frame'];
+		$shortcuts[]=["title"=>"Manage Country State List","keywords"=>"country state list manage","description"=>"Configuration of Countries and States","normal_access"=>"SideBar -> General Settings/ SideBar -> country & State","url"=>$this->app->url('xepan_communication_general_countrystate',['cut_page'=>1]),'mode'=>'frame'];
+	}
 
 	function setup_frontend(){
 		$this->routePages('xepan_communication');

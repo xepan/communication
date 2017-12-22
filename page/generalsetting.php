@@ -9,7 +9,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$tabs = $this->add('Tabs');
 		
 		/*General Email Setting*/
-		$email_settings_tab = $tabs->addTab('Email Settings');
+		$email_settings_tab = $tabs->addTab('Email Settings','email-settings');
 		$email_setting= $email_settings_tab->add('xepan\communication\Model_Communication_EmailSetting');
 		$settingview=$email_settings_tab->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],null,['view/setting/email-setting-grid']);
 		$settingview->setModel($email_setting);
@@ -17,7 +17,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		
 
 		// /*SMS Setting*/
-		$sms_settings_tab = $tabs->addTab('SMS Settings');
+		$sms_settings_tab = $tabs->addTab('SMS Settings','sms-settings');
 		$sms_view_model = $sms_settings_tab->add('xepan\communication\Model_Communication_SMSSetting');
 		$sms_view=$sms_settings_tab->add('xepan\hr\CRUD',null,null,['view/setting/sms-setting-grid']);
 		if($sms_view->isEditing()){
@@ -34,7 +34,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$sms_view->setModel($sms_view_model);
 		
 		// MISC Setting
-		$misc_tab = $tabs->addTab('MISC Settings');
+		$misc_tab = $tabs->addTab('MISC Settings','misc-settings');
 		$misc_m = $misc_tab->add('xepan\base\Model_ConfigJsonModel',
 			[
 				'fields'=>[
@@ -64,7 +64,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		}
 
 		// Email Setting
-		$duplicate_email_settings_tab = $tabs->addTab('Duplicate Emails');
+		$duplicate_email_settings_tab = $tabs->addTab('Duplicate Emails','dupemail-settings');
 		$email_m = $duplicate_email_settings_tab->add('xepan\base\Model_ConfigJsonModel',
 			[
 				'fields'=>[
@@ -94,7 +94,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		}
 
 		// Contact No Setting
-		$dupicate_contact_tab = $tabs->addTab('Duplicate Contact');
+		$dupicate_contact_tab = $tabs->addTab('Duplicate Contact','dupcont-settings');
 		$contactno_m = $dupicate_contact_tab->add('xepan\base\Model_ConfigJsonModel',
 			[
 				'fields'=>[
@@ -125,7 +125,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 
 		/*Company Info*/
-		$company_info_tab = $tabs->addTab('Company Info');
+		$company_info_tab = $tabs->addTab('Company Info','company-info-settings');
 		$company_m = $company_info_tab->add('xepan\base\Model_ConfigJsonModel',
 				[
 					'fields'=>[
@@ -164,7 +164,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		}
 		// $this->add('View',null,'company_info',['view/schema-micro-data','person_info'])->setModel($company_m);
 
-		$communication_sub_type_tab = $tabs->addTab('Communication Sub Types');
+		$communication_sub_type_tab = $tabs->addTab('Communication Sub Types','commsubtypes-settings');
 		/*Communication Sub Type Form */
 		$config_m = $communication_sub_type_tab->add('xepan\base\Model_ConfigJsonModel',
 		[
