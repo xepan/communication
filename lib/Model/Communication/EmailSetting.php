@@ -20,8 +20,8 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 	
 	public $status="";
 	public $actions=[
-		'Active'=>['view','edit','delete','duplicate','checkConnection'],
-		'InActive'=>['view','edit','delete'],
+		'Active'=>['view','edit','delete','deactivate','duplicate','checkConnection'],
+		'InActive'=>['view','edit','delete','activate'],
 	];
 	function init(){
 		parent::init();
@@ -235,6 +235,16 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 		echo $this['name']." is un-usable<br/>";
 		return false;
+	}
+
+	function deactivate(){
+		$this['is_active']=false;
+		$this->save();
+	}
+
+	function activate(){
+		$this['is_active']=true;
+		$this->save();
 	}
 
 	function loadNextMassEmail(){
