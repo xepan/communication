@@ -20,8 +20,8 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 	
 	public $status="";
 	public $actions=[
-		'Active'=>['view','edit','delete','deactivate','duplicate','checkConnection'],
-		'InActive'=>['view','edit','delete','activate'],
+		'Active'=>['view','edit','delete','deactivate','toggle_mass_email_use','duplicate','checkConnection'],
+		'InActive'=>['view','edit','delete','activate','toggle_mass_email_use'],
 	];
 	function init(){
 		parent::init();
@@ -244,6 +244,11 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 
 	function activate(){
 		$this['is_active']=true;
+		$this->save();
+	}
+
+	function toggle_mass_email_use(){
+		$this['mass_mail'] = !$this['mass_mail'];
 		$this->save();
 	}
 
