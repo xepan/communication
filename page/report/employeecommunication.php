@@ -32,12 +32,14 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		$set_date = $this->app->today." to ".$this->app->today;
 		if($from_date){
 			$set_date = $from_date." to ".$to_date;
-			$date->set($set_date);	
+			$date->set($set_date);
 		}
 		$emp_field = $form->addField('xepan\base\Basic','employee');
-		$emp_field->setModel('xepan\hr\Model_Employee')->addCondition('status','Active');
+		$emp_field->setModel('xepan\hr\Model_Employee')
+					->addCondition('status','Active');
 		
 		$emp_model = $this->add('xepan\communication\Model_EmployeeCommunication',['from_date'=>$from_date,'to_date'=>$to_date]);
+		$emp_model->addCondition('status','Active');
 		if($emp_id){
 			$emp_model->addCondition('id',$emp_id);
 		}
