@@ -221,6 +221,38 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		}
 
 
+		/**
+		Contact Other Info to be asked
+		**/
+
+		$contact_other_info_config = $tabs->addTab('Contacts Other Info Fields','contact-info-fields');
+		$contact_other_info_config_m = $contact_other_info_config->add('xepan\base\Model_ConfigJsonModel',
+						[
+							'fields'=>[
+										'contact_other_info_fields'=>"Text",
+										],
+							'config_key'=>'Contact_Other_Info_Fields',
+							'application'=>'base'
+						]);
+		$contact_other_info_config_m->add('xepan\hr\Controller_ACL');
+		$contact_other_info_config_m->tryLoadAny();
+
+		$contact_other_info_form = $contact_other_info_config->add('Form');
+		$field = $contact_other_info_form->addField('Line','contact_other_info_fields')
+					->setFieldHint('Comma separated fields');
+				
+
+		if($contact_other_info_config_m['contact_other_info_fields'])
+			$field->set($contact_other_info_config_m['contact_other_info_fields']);
+
+		$contact_other_info_form->addSubmit("Save")->addClass('btn btn-primary');
+		if($contact_other_info_form->isSubmitted()){
+			$contact_other_info_config_m['contact_other_info_fields'] = $contact_other_info_form['contact_other_info_fields'];
+			$contact_other_info_config_m->save();
+			$contact_other_info_form->js(null,$contact_other_info_form->js()->univ()->successMessage('Information successfully updated'))->reload()->execute();
+		}
+
+
 	}
 	
 	// function defaultTemplate(){
