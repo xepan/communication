@@ -138,7 +138,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 							;
 
 			$grid = $page->add('xepan\hr\Grid');
-			$grid->setModel($all_call,['from','to','title','description','sub_type','calling_status','status']);
+			$grid->setModel($all_call,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
 			$grid->addPaginator(50);
 			$grid->addHook('formatRow',function($g){
 				$g->current_row_html['description'] = $g->model['description'];
@@ -165,7 +165,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 							;
 
 			$grid = $page->add('xepan\hr\Grid');
-			$grid->setModel($all_call,['from','to','title','description','sub_type','calling_status','status']);
+			$grid->setModel($all_call,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
 			$grid->addPaginator(50);
 
 			$grid->addHook('formatRow',function($g){
@@ -193,7 +193,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 							;
 
 			$grid = $page->add('xepan\hr\Grid');
-			$grid->setModel($all_call,['from','to','title','description','sub_type','calling_status','status']);
+			$grid->setModel($all_call,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
 			$grid->addPaginator(50);
 
 			$grid->addHook('formatRow',function($g){
@@ -222,7 +222,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 							;
 
 				$grid = $page->add('xepan\hr\Grid');
-				$grid->setModel($subtype_m,['from','to','title','description','sub_type','calling_status','status']);
+				$grid->setModel($subtype_m,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
 				$grid->addPaginator(50);
 				$grid->addHook('formatRow',function($g){
 					$g->current_row_html['description'] = $g->model['description'];
@@ -259,7 +259,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 								;
 
 				$grid = $page->add('xepan\hr\Grid');
-				$grid->setModel($calling_m,['from','to','title','description','sub_type','calling_status','status']);
+				$grid->setModel($calling_m,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
 				$grid->addPaginator(50);
 				$grid->addHook('formatRow',function($g){
 					$g->current_row_html['description'] = $g->model['description'];
