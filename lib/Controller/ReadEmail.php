@@ -192,7 +192,7 @@ class Controller_ReadEmail extends \AbstractController {
 			
 		}catch(\Exception $e){
 			$mailbox->disconnect();
-			echo $e->getMessage().'<br/>';
+			echo $this->email_setting['name'].' Error: '. $e->getMessage().'<br/>';
 		}
 
 		$mailbox->disconnect();

@@ -68,8 +68,14 @@ class Controller_BounceEmailCheck extends \AbstractController  {
 			//$cwsMailBounceHandler->boxname = 'TEST'; // the mailbox to access ; default 'INBOX'
 
 			// $cwsMailBounceHandler->imap_opt = $this->api->current_website['bounce_imap_flags'];
-			if ($cwsMailBounceHandler->openImapRemote()) {
-				$cwsMailBounceHandler->processMails();
+			try{
+				if ($cwsMailBounceHandler->openImapRemote()) {
+					$cwsMailBounceHandler->processMails();
+				}
+			}catch(\Exception $e){
+				echo "bounce email check error on ".$setting['name'].'<br/>';
+				$setting['bounce_imap_email_host']='';
+				$setting->save();
 			}
 
 			// echo "<pre>";
