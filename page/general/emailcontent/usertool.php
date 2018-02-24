@@ -34,13 +34,9 @@ class page_general_emailcontent_usertool extends \xepan\communication\page_sideb
 		$frontend_config_m->tryLoadAny();
 
 		$f = $this->add('Form',null,'frontend_user_config');
-		$f->setModel($frontend_config_m,['user_registration_type','username_validation_regular_expression','send_email_on_field','send_sms_on_field']);
+		$f->setModel($frontend_config_m,['user_registration_type']);
 		$user_registration_type = $f->getElement('user_registration_type')->set($frontend_config_m['user_registration_type']);
 		$user_registration_type->setValueList(['self_activated'=>'Self Activation Via Email','admin_activated'=>'Admin Activated',"default_activated"=>'Default Activated'])->validate('required');
-
-		$f->getElement('username_validation_regular_expression')->setFieldHint("leave empty for accept all");
-		$f->getElement('send_email_on_field')->setValueList(['username'=>'user name','mobile_no'=>'mobile_no'])->setEmptyText('None');
-		$f->getElement('send_sms_on_field')->setValueList(['username'=>'user name','mobile_no'=>'mobile_no'])->setEmptyText('None');
 
 		$f->addSubmit('Update')->addClass('btn btn-primary');
 		
