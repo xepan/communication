@@ -273,5 +273,12 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$grid->addFormatter($this->app->normalizeName($callingstatus),$this->app->normalizeName($callingstatus."c"));
 		}	
 
+		// don't show zero fields
+		$grid->addHook('formatRow',function($g){
+			foreach ($g->columns as $key => $value) {
+				if(!$g->model[$key]) $g->current_row[$key]='';
+			}
+		});
+
 	}
 }
