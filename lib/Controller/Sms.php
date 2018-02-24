@@ -7,7 +7,7 @@ class Controller_Sms extends \AbstractController{
 	function sendMessage($no,$msg,$sms_setting=[]){
 		$curl=$this->add('xepan\communication\Controller_CURL');
 
-		if($this->app->getConfig('send_sms')){
+		if($this->app->getConfig('send_sms',false)){
 
 			if(is_array($sms_setting) && !sizeof($sms_setting)){
 				$sms_setting = $this->add('xepan\communication\Model_Communication_SMSSetting')->tryLoadAny();
