@@ -9,6 +9,7 @@ class View_Communication extends \View {
 	public $allowed_channels = ['email','call','call_sent','call_received','meeting','personal','comment'];
 
 	public $channel_email=true;
+	public $channel_sms=false;
 	public $channel_call_sent=true;
 	public $channel_call_received=true;
 	public $channel_meeting=true;
@@ -302,6 +303,9 @@ class View_Communication extends \View {
 			case 'email':
 				$this->channel_email = true;
 				break;
+			case 'sms':
+				$this->channel_sms = true;
+				break;
 			case 'call':
 				$this->channel_call_sent = true;
 				$this->channel_call_received = true;
@@ -330,6 +334,12 @@ class View_Communication extends \View {
 			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-envelope"></i><br/>Email</button>';
 			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Create Email Communication')->setHtml($html);
 			$this->manageEmail($icon);
+		}
+
+		if($this->channel_sms) {
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-envelope"></i><br/>SMS</button>';
+			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Send SMS')->setHtml($html);
+			$this->manageSms($icon);
 		}
 
 		if($this->channel_call_sent){
@@ -1514,6 +1524,63 @@ class View_Communication extends \View {
 			$notify_to->js()->select2('val',''),
 			$snooz_unit->js()->select2('val','')
 		]);		
+		
+	}
+
+
+	function manageSms($comment_icon){
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup->setTitle('SMS - Log Communication of '.$this->contact['name']);
+		
+		$form = $popup->add('Form');
+		$form->add('xepan\base\Controller_FLC')
+			->makePanelCollepsible()
+			->closeOtherPanels()
+			->addContentSpot()
+			->layout([
+				'sms_settings'=>'c1~6',
+				'employee'=>'c2~6',
+				'sms'=>'c3~12',
+			]);
+
+
+		$form->addField('DropDown','sms_settings')->setModel('xepan\communication\Model_Communication_SMSSetting');
+		$emp_field = $form->addField('xepan\hr\Employee','employee')->setCurrent();
+
+		$form->addField('Text','sms');
+		
+		if($form->isSubmitted()){
+
+			
+			// end checking vaidation
+
+			$communication = $this->add('xepan\communication\Model_Communication_SMS');
+			$communication->addCondition('status','Commented');
+
+			$communication['from_id'] = $form['employee'];
+			$communication['to_id'] = $this->contact->id;
+			$communication['direction'] = 'Out';
+			$communication['description'] = $form['sms'];
+			$communication->addTo($this->contact->id,$this->contact['name']);
+			$employee_name = $this->add('xepan\hr\Model_Employee')
+	                         ->load($form['employee'])
+	                         ->get('name');
+			$communication->setFrom($form['employee'],$employee_name);
+			
+			$communication['title'] = 'SMS: '.substr(strip_tags($form['description']),0,35)." ...";
+			
+
+			$communication['created_at'] = $form['date'];
+			$communication->save();
+			
+
+			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+		}	
+
+		$comment_icon->js('click',[ // show event
+			$popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
+			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();')
+		]);
 		
 	}
 

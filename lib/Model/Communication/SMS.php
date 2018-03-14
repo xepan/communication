@@ -42,7 +42,12 @@ class Model_Communication_SMS extends Model_Communication {
 		$this['description']=$body;
 	}
 
-	function send(){
+	function send($sms_settings=null){
+		$c = $this->add('xepan\communication\Controller_Sms');
+		foreach ($this['to_raw'] as $to) {
+			$c->sendMessage(trim($to['number']),$this['description'],$sms_settings);
+		}
+
 		$this->post();
 	}
 
