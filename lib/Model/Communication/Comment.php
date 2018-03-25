@@ -70,4 +70,22 @@ class Model_Communication_Comment extends Model_Communication {
 
 		$notify->send($email_setting);
 	}
+
+	function createNew(\xepan\base\Model_Contact $from_contact,\xepan\base\Model_Contact $to_contact_model,$subject,$description=null,$on_date=null,$sub_type=null,$score=null){
+
+		$this['from_id'] = $from_contact->id;
+		$this['to_id'] = $to_contact_model->id;
+		$this['description'] = $description;
+
+		$this['sub_type'] = $sub_type;
+		$this['score'] = $score;
+		$this['direction'] = 'Out';
+		$this->addTo($to_contact_model->id,$to_contact_model['name']);
+
+		$this->setFrom($from_contact->id,$from_contact['name']);
+		
+		$this['created_at'] = $on_date?:$this->app->now;
+		$this->setSubject($subject);
+		return $this->save();
+	}
 }
