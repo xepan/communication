@@ -32,6 +32,7 @@ class Model_Communication_SMS extends Model_Communication {
 		$to=['name'=>$name,'number'=>$number];
 		$tmp[] = $to;
 		$this->set('to_raw',$tmp);
+		
 	}
 
 	function setSubject($subject){
@@ -43,17 +44,23 @@ class Model_Communication_SMS extends Model_Communication {
 	}
 
 	function send($sms_settings=null){
-		$c = $this->add('xepan\communication\Controller_Sms');
+		if($sms_settings && is_numeric($sms_settings)) $sms_settings = $this->add('xepan\communication\Model_Communication_SMSSetting')->load($sms_settings);
+		$c = $this->add('xepan\communication\Controller_Sms',['debug'=>false]);
+
+		$reply=[];
 		foreach ($this['to_raw'] as $to) {
-			$c->sendMessage(trim($to['number']),$this['description'],$sms_settings);
+			$reply[] = $c->sendMessage(trim($to['number']),$this['description'],$sms_settings);
+			$this['description'] .= "<br/>===== Gateway Reply for (".$to['number'].") =====<br/>".$reply[count($reply)-1];
 		}
+		
 
 		$this->post();
+		return $reply;
 	}
 
 	function post(){
 		$this['status']='Sent';
-		$this->save();
+		$this->saveAs('xepan\communication\Model_Communication_SMS');
 	}
 
 	function verifyTo($to_field, $contact_id){

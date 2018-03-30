@@ -9,7 +9,7 @@ class View_Communication extends \View {
 	public $allowed_channels = ['email','call','call_sent','call_received','meeting','personal','comment'];
 
 	public $channel_email=true;
-	public $channel_sms=false;
+	public $channel_sms=true;
 	public $channel_call_sent=true;
 	public $channel_call_received=true;
 	public $channel_meeting=true;
@@ -1519,14 +1519,19 @@ class View_Communication extends \View {
 			->closeOtherPanels()
 			->addContentSpot()
 			->layout([
-				'sms_settings'=>'c1~6',
-				'employee'=>'c2~6',
-				'sms'=>'c3~12',
+				'to_number'=>'c1~6',
+				'sms_settings'=>'c2~6',
+				'sms'=>'c4~12',
 			]);
 
+		$phones = $this->contact->getPhones();
+		$to_number_field = $form->addField('xepan\base\DropDown','to_number');
+		$to_number_field->setAttr('multiple','multiple');
+		$to_number_field->setValueList(array_combine($phones,$phones));
+		$to_number_field->select_menu_options = ['tags'=>true];
+		$to_number_field->validate_values = false;
 
-		$form->addField('DropDown','sms_settings')->setModel('xepan\communication\Model_Communication_SMSSetting');
-		$emp_field = $form->addField('xepan\hr\Employee','employee')->setCurrent();
+		$form->addField('DropDown','sms_settings')->validate('required')->setModel('xepan\communication\Model_Communication_SMSSetting');
 
 		$form->addField('Text','sms');
 		
@@ -1538,24 +1543,27 @@ class View_Communication extends \View {
 			$communication = $this->add('xepan\communication\Model_Communication_SMS');
 			$communication->addCondition('status','Commented');
 
-			$communication['from_id'] = $form['employee'];
+			$communication['from_id'] = $this->app->employee->id;;
 			$communication['to_id'] = $this->contact->id;
 			$communication['direction'] = 'Out';
 			$communication['description'] = $form['sms'];
-			$communication->addTo($this->contact->id,$this->contact['name']);
-			$employee_name = $this->add('xepan\hr\Model_Employee')
-	                         ->load($form['employee'])
-	                         ->get('name');
-			$communication->setFrom($form['employee'],$employee_name);
+			
+			foreach (explode(",", $form['to_number']) as $nos) {
+				$communication->addTo($nos,$this->contact['name']);
+				
+			}
+
+			$communication->setFrom($this->app->employee->id,$this->app->employee['name']);
 			
 			$communication['title'] = 'SMS: '.substr(strip_tags($form['sms']),0,35)." ...";
 			
 
-			$communication['created_at'] = $form['date'];
-			$communication->save();
-			
+			$communication['created_at'] = $this->app->now;
+			$communication['communication_channel_id'] = $form['sms_settings'];
+			// throw new \Exception(print_r($communication['to_raw'],true), 1);
+			$reply = $communication->send($form['sms_settings']);			
 
-			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('SMS Sent to Gateway')->execute();
+			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('SMS Gateway reply: '.implode("<br/>", $reply))->execute();
 		}	
 
 		$comment_icon->js('click',[ // show event
