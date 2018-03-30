@@ -303,26 +303,7 @@ class View_EasySetupWizard extends \View{
 		
 		$action = $this->js()->reload([$this->name.'_company_info'=>1]);
 
-		$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
-				[
-					'fields'=>[
-								'company_name'=>"Line",
-								'company_owner'=>"Line",
-								'mobile_no'=>"Line",
-								'company_email'=>"Line",
-								'company_address'=>"Line",
-								'company_pin_code'=>"Line",
-								'company_description'=>"xepan\base\RichText",
-								'company_logo_absolute_url'=>"Line",
-								'company_twitter_url'=>"Line",
-								'company_facebook_url'=>"Line",
-								'company_google_url'=>"Line",
-								'company_linkedin_url'=>"Line",
-								],
-					'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
-					'application'=>'communication'
-				]);
-		
+		$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
 		$company_m->tryLoadAny();
 
 		if(!$company_m['company_name'] || !$company_m['company_owner'] || !$company_m['mobile_no'] || !$company_m['company_email'] || !$company_m['company_address'] || !$company_m['company_pin_code'] || !$company_m['company_logo_absolute_url']){
