@@ -1548,14 +1548,14 @@ class View_Communication extends \View {
 	                         ->get('name');
 			$communication->setFrom($form['employee'],$employee_name);
 			
-			$communication['title'] = 'SMS: '.substr(strip_tags($form['description']),0,35)." ...";
+			$communication['title'] = 'SMS: '.substr(strip_tags($form['sms']),0,35)." ...";
 			
 
 			$communication['created_at'] = $form['date'];
 			$communication->save();
 			
 
-			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('SMS Sent to Gateway')->execute();
 		}	
 
 		$comment_icon->js('click',[ // show event

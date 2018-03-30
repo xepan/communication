@@ -97,7 +97,7 @@ class Model_Communication extends \xepan\base\Model_Table{
 		
 		$this->addhook('beforeSave',function($m){
 			$m['extra_info'] = json_encode($m['extra_info']);
-			if($m['direction'] == 'Out' || $m['communication_type'] == "Comment") $this->ref('to_id')->set('last_communication_before_days','0')->save();
+			if($m['to_id'] && ($m['direction'] == 'Out' || $m['communication_type'] == "Comment")) $this->ref('to_id')->set('last_communication_before_days','0')->save();
 		});
 		
 		$this->addhook('afterLoad',function($m){
