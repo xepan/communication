@@ -95,12 +95,13 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		$extra_info = $this->app->recall('epan_extra_info_array',false);
 
 		// check email account are allowed or not
-        if((isset($extra_info ['specification']['Email Accounts']))){
+		// 0 means unlimitted value
+        if((isset($extra_info ['specification']['Email Accounts'])) AND ($extra_info ['specification']['Backend User Limit'] > 0) ){
         	$email_count = $this->add('xepan\communication\Model_Communication_EmailSetting')
         					->addCondition('id','<>',$this->id)
         					->count()->getOne();
         	
-        	if($email_count >= $extra_info ['specification']['Email Accounts']){
+        	if($email_count > $extra_info ['specification']['Email Accounts']){
         		throw $this->exception("Sorry ! You cannot add more email settings. Your usage limit is over")
         				->addMoreInfo('Email Settings Count',$email_count)
         				->addMoreInfo('Email Settings Limit',$extra_info ['specification']['Email Accounts']);
@@ -108,12 +109,12 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
         }
 
         // check email imap is allowed or not -- Email IMAP Account Allowed
-     	if(isset($extra_info['specification']['Email IMAP Account Allowed'])){
+     	if(isset($extra_info['specification']['Email IMAP Account Allowed']) AND ($extra_info['specification']['Email IMAP Account Allowed'] > 0)){
 			$imap_count = $this->add('xepan\communication\Model_Communication_EmailSetting')
 							->addCondition('is_imap_enabled',true)
 							->count()->getOne();
 
-			if(($imap_count >= $extra_info['specification']['Email IMAP Account Allowed']) AND $this['is_imap_enabled']){
+			if(($imap_count > $extra_info['specification']['Email IMAP Account Allowed']) AND $this['is_imap_enabled']){
 				throw $this->exception("Sorry ! You cannot add more email IMAP settings. Your usage limit is over")
 					->addMoreInfo('Email Setting IMAP Count',$imap_count)
 					->addMoreInfo('Email Setting IMAP Limit',$extra_info ['specification']['Email IMAP Account Allowed']);
@@ -121,12 +122,12 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		}
 
 		// check email Mass Email Setting Allowed
-     	if(isset($extra_info['specification']['Mass Email Setting Allowed'])){
+     	if(isset($extra_info['specification']['Mass Email Setting Allowed']) AND AND ($extra_info['specification']['Mass Email Setting Allowed'] > 0) ){
 			$mass_email_count = $this->add('xepan\communication\Model_Communication_EmailSetting')
 							->addCondition('mass_mail',true)
 							->count()->getOne();
 			
-			if(($mass_email_count >= $extra_info['specification']['Mass Email Setting Allowed']) AND $this['mass_mail']){
+			if(($mass_email_count > $extra_info['specification']['Mass Email Setting Allowed']) AND $this['mass_mail']){
 				throw $this->exception("Sorry ! You cannot add more email account with mass mailling options . Your usage limit is over")
 					->addMoreInfo('Email Mass Mailling Count',$mass_email_count)
 					->addMoreInfo('Email Setting IMAP Limit',$extra_info['specification']['Mass Email Setting Allowed']);
