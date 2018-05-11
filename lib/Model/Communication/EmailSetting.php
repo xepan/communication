@@ -122,7 +122,7 @@ class Model_Communication_EmailSetting extends \xepan\base\Model_Table{
 		}
 
 		// check email Mass Email Setting Allowed
-     	if(isset($extra_info['specification']['Mass Email Setting Allowed']) AND AND ($extra_info['specification']['Mass Email Setting Allowed'] > 0) ){
+     	if(isset($extra_info['specification']['Mass Email Setting Allowed']) AND ($extra_info['specification']['Mass Email Setting Allowed'] > 0) ){
 			$mass_email_count = $this->add('xepan\communication\Model_Communication_EmailSetting')
 							->addCondition('mass_mail',true)
 							->count()->getOne();
