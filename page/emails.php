@@ -8,6 +8,7 @@ class page_emails extends \xepan\base\Page{
 	function init(){
 		parent::init();
 		$fetch_emails = $this->app->stickyGET('fetch_emails');
+		$search_value = $this->app->stickyGET('search');
 		
 		if($fetch_emails){
 			$this->add('xepan\communication\Controller_Cron',['debug'=>false]);
@@ -111,7 +112,7 @@ class page_emails extends \xepan\base\Page{
 
 		$form = $email_view->add('Form',null,'search_form',['form\empty']);
 		$search_field = $form->addField('search');
-		$search_field->setAttr('placeholder','Search');
+		$search_field->setAttr('placeholder','Search')->set($search_value);
 
 		if($form->isSubmitted()){
 			$email_view->js()->reload(['search'=>$form['search']])->execute();
