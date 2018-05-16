@@ -35,14 +35,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		
 		// MISC Setting
 		$misc_tab = $tabs->addTab('MISC Settings','misc-settings');
-		$misc_m = $misc_tab->add('xepan\base\Model_ConfigJsonModel',
-			[
-				'fields'=>[
-							'time_zone'=>'DropDown'
-							],
-					'config_key'=>'Miscellaneous_Technical_Settings',
-					'application'=>'base'
-			]);
+		$misc_m = $misc_tab->add('xepan\base\Model_Config_Misc');
 		$misc_m->add('xepan\hr\Controller_ACL');
 		$misc_m->tryLoadAny();		
 
