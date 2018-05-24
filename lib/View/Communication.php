@@ -379,24 +379,28 @@ class View_Communication extends \View {
 			->layout([
 				'subject'=>'Email Content|danger~c1~8',
 				'from_email_id'=>'c3~4',
+
 				'body'=>'c4~12',
+				
+				'follow_up'=>'c5~6',
+				'score_buttons~Score'=>'c7~6',
+				'score~'=>'c7~',
+				
+				'assigned_to'=>'c10~6',
+				'followup_on'=>'c9~6',
+
+				'followup_detail'=>'c11~12',
+				'set_reminder~'=>'c12~12',
+				'reminder_at'=>'c13~2',
+				'remind_via'=>'c14~2',
+				'notify_to'=>'c15~4',
+				'snooze_duration'=>'c16~2',
+				'snooze_unit~'=>'c17~2',
 				'to'=>'Send To (' .$default_to_ids.  ')~c1~8~closed',
 				'cc'=>'c3~5',
 				'cc_me'=>'c35~1',
 				'bcc'=>'c4~5',
 				'bcc_me'=>'c5~1',
-				'task_title'=>'Followup/Score~c1~8~closed',
-				'score_buttons~Score'=>'c2~2',
-				'score~'=>'c3',
-				'followup_on'=>'c4~6',
-				'assigned_to'=>'c5~6',
-				'followup_detail'=>'c6~12',
-				'set_reminder~'=>'c7~12',
-				'reminder_at'=>'c8~2',
-				'remind_via'=>'c9~2',
-				'notify_to'=>'c10~4',
-				'snooze_duration'=>'c11~2',
-				'snooze_unit~'=>'c12~2',
 
 			]);
 		$subject = $form->addField('subject')->validate('required');
@@ -412,11 +416,12 @@ class View_Communication extends \View {
 		$bcc_me->js('click',$bcc->js()->val($this->app->employee->getEmails()));
 		
 		$allwed_emails = $form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id')->validate('required');
+		
+		$follow_up = $form->addField('Checkbox','follow_up');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
-		$follow_title = $form->addField('task_title');
 		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
 		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
@@ -435,18 +440,25 @@ class View_Communication extends \View {
 			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
 		],'div.col-md-2,div.col-md-4');
 
+		$follow_up->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['followup_on','assigned_to','followup_detail']
+		],'div.col-md-12,div.col-md-6');
+
+
+
 		if($form->isSubmitted()){
 
 			// check validation
-			if($form['task_title'] && !$form['followup_on']){
+			if($form['follow_up'] && !$form['followup_on']){
 				$form->error('followup_on','Followup on must not be empty');
-			}elseif(!$form['task_title'] && $form['followup_on']){
-				$form->error('task_title','Task Title must not be empty');
-			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['task_title'])){
-				$form->error('task_title','Task Title must not be empty');
+			}elseif($form['followup_detail'] && (!$form['followup_on'])){
+				$form->error('followup_on','Followup on must not be empty');
 			}
+
 			// reminder validation
 			if($form['set_reminder']){
+				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
 				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
 				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
 				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
@@ -509,10 +521,10 @@ class View_Communication extends \View {
 			}
 
 			// FOLLOW UP
-			if($form['task_title']){
+			if($form['follow_up']){
 				$model_task = $this->add('xepan\projects\Model_Task');
 				$model_task['type'] = 'Followup';
-				$model_task['task_name'] = $form['task_title'];
+				$model_task['task_name'] = 'Followup '. $this->contact['name_with_type'];
 				$model_task['created_by_id'] = $form->app->employee->id;
 				$model_task['starting_date'] = $form['followup_on'];
 				$model_task['assign_to_id'] = $form['assigned_to'];
@@ -577,18 +589,18 @@ class View_Communication extends \View {
 				'notify_from_email_id'=>'c7~4',
 				'notify_to_email_ids'=>'c11~4',	
 
-				'followup_title'=>'Called Followup/Score~c1~8~closed',
-				'score_buttons~Score'=>'c2~2',
-				'score~'=>'c23',
-				'followup_on'=>'c24~6',
-				'assigned_to'=>'c25~6',
-				'followup_detail'=>'c26~12',
-				'set_reminder'=>'c27~12',
-				'reminder_at'=>'c28~2',
-				'remind_via'=>'c29~2',
-				'notify_to'=>'c30~4',
-				'snooze_duration'=>'c31~2',
-				'snooze_unit~'=>'c32~2'
+				'follow_up'=>'f1~8',
+				'score_buttons~Score'=>'f2~2',
+				'score~'=>'f23',
+				'assigned_to'=>'f25~6',
+				'followup_on'=>'f24~6',
+				'followup_detail'=>'f26~12',
+				'set_reminder'=>'f27~12',
+				'reminder_at'=>'f28~2',
+				'remind_via'=>'f29~2',
+				'notify_to'=>'f30~4',
+				'snooze_duration'=>'f31~2',
+				'snooze_unit~'=>'f32~2'
 			]);
 
 		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
@@ -666,7 +678,7 @@ class View_Communication extends \View {
 		$contact_emails = $this->contact->getEmails();
 		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
 
-		$form->addField('followup_title');
+		$follow_up = $form->addField('Checkbox','follow_up');
 		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
 		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
@@ -693,19 +705,22 @@ class View_Communication extends \View {
 			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
 		],'div.col-md-2,div.col-md-4');
 
+		$follow_up->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['followup_on','assigned_to','followup_detail']
+		],'div.col-md-12,div.col-md-6');
 		
 		if($form->isSubmitted()){
 
 			// check validation
-			if($form['followup_title'] && !$form['followup_on']){
+			if($form['follow_up'] && !$form['followup_on']){
 				$form->error('followup_on','must not be empty');
-			}elseif(!$form['followup_title'] && $form['followup_on']){
-				$form->error('followup_title','must not be empty');
-			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['followup_title'])){
+			}elseif($form['followup_detail'] && (!$form['followup_on'])){
 				$form->error('followup_title','must not be empty');
 			}
 			// reminder validation
 			if($form['set_reminder']){
+				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
 				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
 				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
 				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
@@ -766,10 +781,10 @@ class View_Communication extends \View {
 			}
 
 			// FOLLOW UP
-			if($form['followup_title']){
+			if($form['follow_up']){
 				$model_task = $this->add('xepan\projects\Model_Task');
 				$model_task['type'] = 'Followup';
-				$model_task['task_name'] = $form['followup_title'];
+				$model_task['task_name'] = 'Followup '. $this->contact['name_with_type'];
 				$model_task['created_by_id'] = $this->app->employee->id;
 				$model_task['starting_date'] = $form['followup_on'];
 				$model_task['assign_to_id'] = $form['assigned_to'];
@@ -832,18 +847,18 @@ class View_Communication extends \View {
 				'notify_from_email_id'=>'c7~4',
 				'notify_to_email_ids'=>'c11~4',	
 
-				'followup_title'=>'Call Received Followup/Score~c1~8~closed',
-				'score_buttons~Score'=>'c2~2',
-				'score~'=>'c23',
-				'followup_on'=>'c24~6',
-				'assigned_to'=>'c25~6',
-				'followup_detail'=>'c26~12',
-				'set_reminder'=>'c27~12',
-				'reminder_at'=>'c28~2',
-				'remind_via'=>'c29~2',
-				'notify_to'=>'c30~4',
-				'snooze_duration'=>'c31~2',
-				'snooze_unit~'=>'c32~2'
+				'follow_up'=>'f1~8',
+				'score_buttons~Score'=>'f2~2',
+				'score~'=>'f23',
+				'followup_on'=>'f24~6',
+				'assigned_to'=>'f25~6',
+				'followup_detail'=>'f26~12',
+				'set_reminder'=>'f27~12',
+				'reminder_at'=>'f28~2',
+				'remind_via'=>'f29~2',
+				'notify_to'=>'f30~4',
+				'snooze_duration'=>'f31~2',
+				'snooze_unit~'=>'f32~2'
 			]);
 
 		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
@@ -926,7 +941,7 @@ class View_Communication extends \View {
 		$contact_emails = $this->contact->getEmails();
 		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
 
-		$form->addField('followup_title');
+		$follow_up = $form->addField('Checkbox','follow_up');
 		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
 		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
@@ -953,19 +968,22 @@ class View_Communication extends \View {
 			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
 		],'div.col-md-2,div.col-md-4');
 
-		
+		$follow_up->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['followup_on','assigned_to','followup_detail']
+		],'div.col-md-12,div.col-md-6');
+
 		if($form->isSubmitted()){
 
 			// check validation
-			if($form['followup_title'] && !$form['followup_on']){
+			if($form['follow_up'] && !$form['followup_on']){
 				$form->error('followup_on','must not be empty');
-			}elseif(!$form['followup_title'] && $form['followup_on']){
-				$form->error('followup_title','must not be empty');
-			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['followup_title'])){
+			}elseif($form['followup_detail'] && (!$form['followup_on'])){
 				$form->error('followup_title','must not be empty');
 			}
 			// reminder validation
 			if($form['set_reminder']){
+				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
 				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
 				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
 				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
@@ -1027,10 +1045,10 @@ class View_Communication extends \View {
 			}
 
 			// FOLLOW UP
-			if($form['followup_title']){
+			if($form['follow_up']){
 				$model_task = $this->add('xepan\projects\Model_Task');
 				$model_task['type'] = 'Followup';
-				$model_task['task_name'] = $form['followup_title'];
+				$model_task['task_name'] = 'Followup '. $this->contact['name_with_type'];
 				$model_task['created_by_id'] = $this->app->employee->id;
 				$model_task['starting_date'] = $form['followup_on'];
 				$model_task['assign_to_id'] = $form['assigned_to'];
@@ -1091,18 +1109,18 @@ class View_Communication extends \View {
 				'notify_from_email_id'=>'c8~4',
 				'notify_to_email_ids'=>'c11~4',	
 
-				'followup_title'=>'Meeting/Personal Followup/Score~c1~8~closed',
-				'score_buttons~Score'=>'c2~2',
-				'score~'=>'c23',
-				'followup_on'=>'c24~6',
-				'assigned_to'=>'c25~6',
-				'followup_detail'=>'c26~12',
-				'set_reminder'=>'c27~12',
-				'reminder_at'=>'c28~2',
-				'remind_via'=>'c29~2',
-				'notify_to'=>'c30~4',
-				'snooze_duration'=>'c31~2',
-				'snooze_unit~'=>'c32~2'
+				'follow_up'=>'f1~8',
+				'score_buttons~Score'=>'f2~2',
+				'score~'=>'f23',
+				'followup_on'=>'f24~6',
+				'assigned_to'=>'f25~6',
+				'followup_detail'=>'f26~12',
+				'set_reminder'=>'f27~12',
+				'reminder_at'=>'f28~2',
+				'remind_via'=>'f29~2',
+				'notify_to'=>'f30~4',
+				'snooze_duration'=>'f31~2',
+				'snooze_unit~'=>'f32~2'
 			]);
 
 		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
@@ -1139,7 +1157,7 @@ class View_Communication extends \View {
 		$contact_emails = $this->contact->getEmails();
 		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
 
-		$form->addField('followup_title');
+		$follow_up = $form->addField('Checkbox','follow_up');
 		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
 		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
@@ -1166,6 +1184,10 @@ class View_Communication extends \View {
 			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
 		],'div.col-md-2,div.col-md-4');
 
+		$follow_up->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['followup_on','assigned_to','followup_detail']
+		],'div.col-md-12,div.col-md-6');
 		
 		if($form->isSubmitted()){
 			
@@ -1176,15 +1198,15 @@ class View_Communication extends \View {
 			}
 
 			// check validation
-			if($form['followup_title'] && !$form['followup_on']){
+			if($form['follow_up'] && !$form['followup_on']){
 				$form->error('followup_on','must not be empty');
-			}elseif(!$form['followup_title'] && $form['followup_on']){
-				$form->error('followup_title','must not be empty');
-			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['followup_title'])){
+			}elseif($form['followup_detail'] && (!$form['followup_on'])){
 				$form->error('followup_title','must not be empty');
 			}
+
 			// reminder validation
 			if($form['set_reminder']){
+				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
 				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
 				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
 				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
@@ -1246,10 +1268,10 @@ class View_Communication extends \View {
 			}
 
 			// FOLLOW UP
-			if($form['followup_title']){
+			if($form['follow_up']){
 				$model_task = $this->add('xepan\projects\Model_Task');
 				$model_task['type'] = 'Followup';
-				$model_task['task_name'] = $form['followup_title'];
+				$model_task['task_name'] = 'Followup '. $this->contact['name_with_type'];
 				$model_task['created_by_id'] = $this->app->employee->id;
 				$model_task['starting_date'] = $form['followup_on'];
 				$model_task['assign_to_id'] = $form['assigned_to'];
@@ -1309,18 +1331,18 @@ class View_Communication extends \View {
 				'notify_from_email_id'=>'c8~4',
 				'notify_to_email_ids'=>'c11~4',	
 
-				'followup_title'=>'Comment Followup/Score~c1~8~closed',
-				'score_buttons~Score'=>'c2~2',
-				'score~'=>'c23',
-				'followup_on'=>'c24~6',
-				'assigned_to'=>'c25~6',
-				'followup_detail'=>'c26~12',
-				'set_reminder'=>'c27~12',
-				'reminder_at'=>'c28~2',
-				'remind_via'=>'c29~2',
-				'notify_to'=>'c30~4',
-				'snooze_duration'=>'c31~2',
-				'snooze_unit~'=>'c32~2'
+				'follow_up'=>'f1~8',
+				'score_buttons~Score'=>'f2~2',
+				'score~'=>'f23',
+				'assigned_to'=>'f25~6',
+				'followup_on'=>'f24~6',
+				'followup_detail'=>'f26~12',
+				'set_reminder'=>'f27~12',
+				'reminder_at'=>'f28~2',
+				'remind_via'=>'f29~2',
+				'notify_to'=>'f30~4',
+				'snooze_duration'=>'f31~2',
+				'snooze_unit~'=>'f32~2'
 			]);
 
 		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
@@ -1363,7 +1385,7 @@ class View_Communication extends \View {
 		$contact_emails = $this->contact->getEmails();
 		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
 
-		$form->addField('followup_title');
+		$follow_up = $form->addField('Checkbox','follow_up');
 		$score = $form->addField('Hidden','score')->set(0);
 		$set = $form->layout->add('ButtonSet',null,'score_buttons');
 		$up_btn = $set->add('Button')->set('+10')->addClass('btn');
@@ -1390,19 +1412,23 @@ class View_Communication extends \View {
 			'*'=>['reminder_at','remind_via','notify_to','snooze_duration','snooze_unit']
 		],'div.col-md-2,div.col-md-4');
 
+		$follow_up->js(true)->univ()->bindConditionalShow([
+			''=>[],
+			'*'=>['followup_on','assigned_to','followup_detail']
+		],'div.col-md-12,div.col-md-6');
 		
 		if($form->isSubmitted()){
 
 			// check validation
-			if($form['followup_title'] && !$form['followup_on']){
+			if($form['follow_up'] && !$form['followup_on']){
 				$form->error('followup_on','must not be empty');
-			}elseif(!$form['followup_title'] && $form['followup_on']){
-				$form->error('followup_title','must not be empty');
-			}elseif($form['followup_detail'] && (!$form['followup_on'] OR !$form['followup_title'])){
+			}elseif($form['followup_detail'] && (!$form['followup_on'])){
 				$form->error('followup_title','must not be empty');
 			}
+
 			// reminder validation
 			if($form['set_reminder']){
+				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
 				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
 				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
 				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
@@ -1466,10 +1492,10 @@ class View_Communication extends \View {
 			}
 
 			// FOLLOW UP
-			if($form['followup_title']){
+			if($form['follow_up']){
 				$model_task = $this->add('xepan\projects\Model_Task');
 				$model_task['type'] = 'Followup';
-				$model_task['task_name'] = $form['followup_title'];
+				$model_task['task_name'] = 'Followup '. $this->contact['name_with_type'];
 				$model_task['created_by_id'] = $this->app->employee->id;
 				$model_task['starting_date'] = $form['followup_on'];
 				$model_task['assign_to_id'] = $form['assigned_to'];
