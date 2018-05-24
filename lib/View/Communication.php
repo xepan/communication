@@ -517,6 +517,7 @@ class View_Communication extends \View {
 				$model_point_system = $this->add('xepan\base\Model_PointSystem');
 				$model_point_system['contact_id'] = $this->contact->id;
 				$model_point_system['score'] = $form['score'];
+				$model_point_system['remarks'] = 'Comm: Email: '.$form['subject'];
 				$model_point_system->save();
 			}
 
@@ -777,6 +778,7 @@ class View_Communication extends \View {
 				$model_point_system = $this->add('xepan\base\Model_PointSystem');
 				$model_point_system['contact_id'] = $this->contact->id;
 				$model_point_system['score'] = $form['score'];
+				$model_point_system['remarks'] = 'Comm: Called: '.($form['communication_sub_type']?:'').' '.($form['calling_status']?:'').' '.substr(strip_tags($form['description']),0,35)." ...";
 				$model_point_system->save();
 			}
 
@@ -1041,6 +1043,7 @@ class View_Communication extends \View {
 				$model_point_system = $this->add('xepan\base\Model_PointSystem');
 				$model_point_system['contact_id'] = $this->contact->id;
 				$model_point_system['score'] = $form['score'];
+				$model_point_system['remarks'] = 'Comm: Called: '.($form['communication_sub_type']?:'').' '.($form['calling_status']?:'').' '.substr(strip_tags($form['description']),0,35)." ...";
 				$model_point_system->save();
 			}
 
@@ -1264,6 +1267,7 @@ class View_Communication extends \View {
 				$model_point_system = $this->add('xepan\base\Model_PointSystem');
 				$model_point_system['contact_id'] = $this->contact->id;
 				$model_point_system['score'] = $form['score'];
+				$model_point_system['remarks'] = 'Comm: Called: '.($form['communication_sub_type']?:'').' '.($form['calling_status']?:'').' '.substr(strip_tags($form['description']),0,35)." ...";
 				$model_point_system->save();
 			}
 
@@ -1488,6 +1492,7 @@ class View_Communication extends \View {
 				$model_point_system = $this->add('xepan\base\Model_PointSystem');
 				$model_point_system['contact_id'] = $this->contact->id;
 				$model_point_system['score'] = $form['score'];
+				$model_point_system['remarks'] = 'Comm: Called: '.($form['communication_sub_type']?:'').' '.($form['calling_status']?:'').' '.substr(strip_tags($form['description']),0,35)." ...";
 				$model_point_system->save();
 			}
 
