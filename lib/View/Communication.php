@@ -118,16 +118,9 @@ class View_Communication extends \View {
 					->addContentSpot()
 					->layout($form_fields);
 
-				$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
-				[
-					'fields'=>[
-								'sub_type'=>'text',
-								'calling_status'=>'text',
-								],
-						'config_key'=>'COMMUNICATION_SUB_TYPE',
-						'application'=>'Communication'
-				]);
+				$config_m = $this->add('xepan\communication\Model_Config_SubType');
 				$config_m->tryLoadAny();
+
 				
 				$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
 							
@@ -395,7 +388,7 @@ class View_Communication extends \View {
 				'remind_via'=>'c14~2',
 				'notify_to'=>'c15~4',
 				'snooze_duration'=>'c16~2',
-				'snooze_unit~'=>'c17~2',
+				'snooze_unit'=>'c17~2',
 				'to'=>'Send To (' .$default_to_ids.  ')~c1~8~closed',
 				'cc'=>'c3~5',
 				'cc_me'=>'c35~1',
@@ -419,6 +412,7 @@ class View_Communication extends \View {
 		
 		$follow_up = $form->addField('Checkbox','follow_up');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
+		$followup_on->js(true)->val('');
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
@@ -430,6 +424,7 @@ class View_Communication extends \View {
 
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
+		$reminder_at->js(true)->val('');
 		$remind_via = $form->addField('xepan\base\DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
 		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
 		$form->addField('snooze_duration');
@@ -458,10 +453,10 @@ class View_Communication extends \View {
 
 			// reminder validation
 			if($form['set_reminder']){
-				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
-				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
-				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
-				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+				if(!$form['follow_up']) $form->error('follow_up','Followup must be set to put on reminder');
+				if(!$form['reminder_at']) $form->error('reminder_at','Reminder at must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','Remind Via must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','Notify To must not be empty');
 
 				if($form['snooze_duration'] && !$form['snooze_unit'])
 					$form->error('snooze_unit','must not be empty');
@@ -601,40 +596,13 @@ class View_Communication extends \View {
 				'remind_via'=>'f29~2',
 				'notify_to'=>'f30~4',
 				'snooze_duration'=>'f31~2',
-				'snooze_unit~'=>'f32~2'
+				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
-		[
-			'fields'=>[
-						'sub_type'=>'text',
-						'calling_status'=>'text',
-						],
-				'config_key'=>'COMMUNICATION_SUB_TYPE',
-				'application'=>'Communication'
-		]);
+		$config_m = $this->add('xepan\communication\Model_Config_SubType');
 		$config_m->tryLoadAny();
 		
-		$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
-				[
-					'fields'=>[
-								'company_name'=>"Line",
-								'company_owner'=>"Line",
-								'mobile_no'=>"Line",
-								'company_email'=>"Line",
-								'company_address'=>"Line",
-								'company_pin_code'=>"Line",
-								'company_description'=>"xepan\base\RichText",
-								'company_logo_absolute_url'=>"Line",
-								'company_twitter_url'=>"Line",
-								'company_facebook_url'=>"Line",
-								'company_google_url'=>"Line",
-								'company_linkedin_url'=>"Line",
-								],
-					'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
-					'application'=>'communication'
-				]);
-		
+		$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
 		$company_m->tryLoadAny();
 		$company_number = explode(",", $company_m['mobile_no']);
 		$company_number = array_combine($company_number, $company_number);
@@ -686,11 +654,13 @@ class View_Communication extends \View {
 		$down_btn = $set->add('Button')->set('-10')->addClass('btn');
 		
 		$followup_on = $form->addField('DateTimePicker','followup_on');
+		$followup_on->js(true)->val('');
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
+		$reminder_at->js(true)->val('');
 		$remind_via = $form->addField('xepan\base\DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
 		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
 		$form->addField('snooze_duration');
@@ -721,10 +691,10 @@ class View_Communication extends \View {
 			}
 			// reminder validation
 			if($form['set_reminder']){
-				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
-				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
-				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
-				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+				if(!$form['follow_up']) $form->error('follow_up','Followup must be set to put on reminder');
+				if(!$form['reminder_at']) $form->error('reminder_at','Reminder at must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','Remind Via must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','Notify To must not be empty');
 
 				if($form['snooze_duration'] && !$form['snooze_unit'])
 					$form->error('snooze_unit','must not be empty');
@@ -852,49 +822,23 @@ class View_Communication extends \View {
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
-				'followup_on'=>'f24~6',
 				'assigned_to'=>'f25~6',
+				'followup_on'=>'f24~6',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
 				'notify_to'=>'f30~4',
 				'snooze_duration'=>'f31~2',
-				'snooze_unit~'=>'f32~2'
+				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
-		[
-			'fields'=>[
-						'sub_type'=>'text',
-						'calling_status'=>'text',
-						],
-				'config_key'=>'COMMUNICATION_SUB_TYPE',
-				'application'=>'Communication'
-		]);
+		$config_m = $this->add('xepan\communication\Model_Config_SubType');
 		$config_m->tryLoadAny();
 		
-		$company_m = $this->add('xepan\base\Model_ConfigJsonModel',
-				[
-					'fields'=>[
-								'company_name'=>"Line",
-								'company_owner'=>"Line",
-								'mobile_no'=>"Line",
-								'company_email'=>"Line",
-								'company_address'=>"Line",
-								'company_pin_code'=>"Line",
-								'company_description'=>"xepan\base\RichText",
-								'company_logo_absolute_url'=>"Line",
-								'company_twitter_url'=>"Line",
-								'company_facebook_url'=>"Line",
-								'company_google_url'=>"Line",
-								'company_linkedin_url'=>"Line",
-								],
-					'config_key'=>'COMPANY_AND_OWNER_INFORMATION',
-					'application'=>'communication'
-				]);
-		
+		$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
 		$company_m->tryLoadAny();
+		
 		$company_number = explode(",", $company_m['mobile_no']);
 		$company_number = array_combine($company_number, $company_number);
 
@@ -950,11 +894,13 @@ class View_Communication extends \View {
 		$down_btn = $set->add('Button')->set('-10')->addClass('btn');
 		
 		$followup_on = $form->addField('DateTimePicker','followup_on');
+		$followup_on->js(true)->val('');
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
+		$reminder_at->js(true)->val('');
 		$remind_via = $form->addField('xepan\base\DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
 		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
 		$form->addField('snooze_duration');
@@ -985,10 +931,10 @@ class View_Communication extends \View {
 			}
 			// reminder validation
 			if($form['set_reminder']){
-				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
-				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
-				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
-				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+				if(!$form['follow_up']) $form->error('follow_up','Followup must be set to put on reminder');
+				if(!$form['reminder_at']) $form->error('reminder_at','Reminder at must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','Remind Via must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','Notify To must not be empty');
 
 				if($form['snooze_duration'] && !$form['snooze_unit'])
 					$form->error('snooze_unit','must not be empty');
@@ -1115,26 +1061,18 @@ class View_Communication extends \View {
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
-				'followup_on'=>'f24~6',
 				'assigned_to'=>'f25~6',
+				'followup_on'=>'f24~6',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
 				'notify_to'=>'f30~4',
 				'snooze_duration'=>'f31~2',
-				'snooze_unit~'=>'f32~2'
+				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
-		[
-			'fields'=>[
-						'sub_type'=>'text',
-						'calling_status'=>'text',
-						],
-				'config_key'=>'COMMUNICATION_SUB_TYPE',
-				'application'=>'Communication'
-		]);
+		$config_m = $this->add('xepan\communication\Model_Config_SubType');
 		$config_m->tryLoadAny();
 		$sub_type_array = explode(",",$config_m['sub_type']);
 
@@ -1167,11 +1105,13 @@ class View_Communication extends \View {
 		$down_btn = $set->add('Button')->set('-10')->addClass('btn');
 		
 		$followup_on = $form->addField('DateTimePicker','followup_on');
+		$followup_on->js(true)->val('');
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
+		$reminder_at->js(true)->val('');
 		$remind_via = $form->addField('xepan\base\DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
 		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
 		$form->addField('snooze_duration');
@@ -1209,10 +1149,10 @@ class View_Communication extends \View {
 
 			// reminder validation
 			if($form['set_reminder']){
-				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
-				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
-				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
-				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+				if(!$form['follow_up']) $form->error('follow_up','Followup must be set to put on reminder');
+				if(!$form['reminder_at']) $form->error('reminder_at','Reminder at must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','Remind Via must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','Notify To must not be empty');
 
 				if($form['snooze_duration'] && !$form['snooze_unit'])
 					$form->error('snooze_unit','must not be empty');
@@ -1346,18 +1286,10 @@ class View_Communication extends \View {
 				'remind_via'=>'f29~2',
 				'notify_to'=>'f30~4',
 				'snooze_duration'=>'f31~2',
-				'snooze_unit~'=>'f32~2'
+				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
-		[
-			'fields'=>[
-						'sub_type'=>'text',
-						'calling_status'=>'text',
-						],
-				'config_key'=>'COMMUNICATION_SUB_TYPE',
-				'application'=>'Communication'
-		]);
+		$config_m = $this->add('xepan\communication\Model_Config_SubType');
 		$config_m->tryLoadAny();
 
 		$sub_type_array = explode(",",$config_m['sub_type']);
@@ -1396,11 +1328,13 @@ class View_Communication extends \View {
 		$down_btn = $set->add('Button')->set('-10')->addClass('btn');
 		
 		$followup_on = $form->addField('DateTimePicker','followup_on');
+		$followup_on->js(true)->val('');
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
+		$reminder_at->js(true)->val('');
 		$remind_via = $form->addField('xepan\base\DropDown','remind_via')->setValueList(['Email'=>'Email','SMS'=>'SMS','Notification'=>'Notification'])->setAttr(['multiple'=>'multiple'])->setEmptyText('Please Select A Value');
 		$notify_to = $form->addField('xepan\hr\Employee','notify_to')->setAttr(['multiple'=>'multiple'])->setCurrent();
 		$form->addField('snooze_duration');
@@ -1425,17 +1359,17 @@ class View_Communication extends \View {
 
 			// check validation
 			if($form['follow_up'] && !$form['followup_on']){
-				$form->error('followup_on','must not be empty');
+				$form->error('followup_on','Followup Date must not be empty');
 			}elseif($form['followup_detail'] && (!$form['followup_on'])){
 				$form->error('followup_title','must not be empty');
 			}
 
 			// reminder validation
 			if($form['set_reminder']){
-				if(!$form['follow_up']) $form->error('follow_up','must be set to put on reminder');
-				if(!$form['reminder_at']) $form->error('reminder_at','must not be empty');
-				if(!$form['remind_via']) $form->error('remind_via','must not be empty');
-				if(!$form['notify_to']) $form->error('notify_to','must not be empty');
+				if(!$form['follow_up']) $form->error('follow_up','Followup must be set to put on reminder');
+				if(!$form['reminder_at']) $form->error('reminder_at','Reminder at must not be empty');
+				if(!$form['remind_via']) $form->error('remind_via','Remind Via must not be empty');
+				if(!$form['notify_to']) $form->error('notify_to','Notify To must not be empty');
 
 				if($form['snooze_duration'] && !$form['snooze_unit'])
 					$form->error('snooze_unit','must not be empty');

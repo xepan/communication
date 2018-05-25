@@ -141,16 +141,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 		$communication_sub_type_tab = $tabs->addTab('Communication Sub Types','commsubtypes-settings');
 		/*Communication Sub Type Form */
-		$config_m = $communication_sub_type_tab->add('xepan\base\Model_ConfigJsonModel',
-		[
-			'fields'=>[
-						'sub_type'=>'text',
-						'calling_status'=>'text',
-						],
-				'config_key'=>'COMMUNICATION_SUB_TYPE',
-				'application'=>'Communication'
-		]);
-
+		$config_m = $this->add('xepan\communication\Model_Config_SubType');
 		$config_m->add('xepan\hr\Controller_ACL');
 		$config_m->tryLoadAny();
 
@@ -201,14 +192,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		**/
 
 		$contact_other_info_config = $tabs->addTab('Contacts Other Info Fields','contact-info-fields');
-		$contact_other_info_config_m = $contact_other_info_config->add('xepan\base\Model_ConfigJsonModel',
-						[
-							'fields'=>[
-										'contact_other_info_fields'=>"Text",
-										],
-							'config_key'=>'Contact_Other_Info_Fields',
-							'application'=>'base'
-						]);
+		$contact_other_info_config_m = $contact_other_info_config->add('xepan\base\Model_Config_ContactOtherInfo');
 		$contact_other_info_config_m->add('xepan\hr\Controller_ACL');
 		$contact_other_info_config_m->tryLoadAny();
 

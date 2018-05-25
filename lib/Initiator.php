@@ -10,6 +10,8 @@ class Initiator extends \Controller_Addon {
 		$this->addLocation(array('template'=>'templates','js'=>'templates/js'))
 			->setBaseURL('../vendor/xepan/communication/');
 
+		$this->app->jui->addStaticInclude('sip-0.10.0.min');
+
 		if(!$this->app->isAjaxOutput() && !$this->app->getConfig('hidden_xepan_communication',false)){
 			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails'])->addClass('contact-and-all-email-count');
 			$this->app->side_menu->addItem(['Message','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_internalmsg')->setAttr(['title'=>'Internal Communication'])->addClass('contact-and-all-message-count');
@@ -39,7 +41,7 @@ class Initiator extends \Controller_Addon {
     	 $array['COMPANY_AND_OWNER_INFORMATION'] = ['caption'=>'COMPANY_AND_OWNER_INFORMATION','type'=>'DropDown','model'=>'xepan\base\Model_Config_CompanyInfo'];
     	 $array['ADMIN_LOGIN_RELATED_EMAIL'] = ['caption'=>'ADMIN_LOGIN_RELATED_EMAIL','type'=>'DropDown','model'=>'xepan\communication\Model_ADMIN_LOGIN_RELATED_EMAIL'];
     	 $array['FRONTEND_LOGIN_RELATED_EMAIL'] = ['caption'=>'FRONTEND_LOGIN_RELATED_EMAIL','type'=>'DropDown','model'=>'xepan\communication\Model_FRONTEND_LOGIN_RELATED_EMAIL'];
-    	 $array['COMMUNICATION_SUB_TYPE'] = ['caption'=>'COMMUNICATION_SUB_TYPE','type'=>'DropDown','model'=>'xepan\communication\Model_COMMUNICATION_SUB_TYPE'];
+    	 $array['COMMUNICATION_SUB_TYPE'] = ['caption'=>'COMMUNICATION_SUB_TYPE','type'=>'DropDown','model'=>'xepan\communication\Model_Config_Subtype'];
     	 $array['Miscellaneous_Technical_Settings'] = ['caption'=>'Miscellaneous_Technical_Settings','type'=>'DropDown','model'=>'xepan\communication\Miscellaneous_Technical_Settings'];
     }
 

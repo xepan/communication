@@ -165,6 +165,8 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 		if(!$this['to_id']) $this->findContact('to');
 		$this['communication_channel_id'] = $email_setting->id;
 		
+		
+
 		// in case of index existing error, means this email is already sent.. let error be thrown
 		$this->save();
 

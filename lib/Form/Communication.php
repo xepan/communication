@@ -21,15 +21,7 @@ class Form_Communication extends \Form {
 		$type_field->setValueList(['Email'=>'Email','Call'=>'Call','TeleMarketing'=>'TeleMarketing','Personal'=>'Personal','Comment'=>'Comment','SMS'=>'SMS']);
 		$type_field->set($edit_model['communication_type']);
 
-		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
-		[
-			'fields'=>[
-						'sub_type'=>'text',
-						'calling_status'=>'text',
-						],
-				'config_key'=>'COMMUNICATION_SUB_TYPE',
-				'application'=>'Communication'
-		]);
+		$config_m = $this->add('xepan\communication\Model_Config_SubType');
 		$config_m->tryLoadAny();
 		$sub_type_array = explode(",",$config_m['sub_type']);
 		
@@ -347,11 +339,19 @@ class Form_Communication extends \Form {
 					$this->displayError('sms_to','sms_to is required');
 				$send_settings = $this->add('xepan\communication\Model_Epan_SMSSetting');
 				$send_settings->load($this['from_sms']);
-				$_from = $email_settings['from_number'];
-				$_from_name = $email_settings['from_sms_code'];
+				$communication['from_id'] = $this->app->employee->id;
+				$communication['description'] = $this['body'];
+				$_from = $this->app->employee->id;
+				$_from_name = $this->app->employee['name'];
 				$_to_field='sms_to';
+				foreach (explode(",", $this[$_to_field]) as $nos) {
+					$communication->addTo($nos,$this->contact['name']);
+					
+				}
 				$communication->setFrom($_from,$_from_name);
 				$communication['direction']='Out';
+				$communication['communication_channel_id'] = $this['from_sms'];
+				$communication['title'] = 'SMS: '.substr(strip_tags($this['body']),0,35)." ...";
 				break;
 			case 'Personal':
 				$_from = $this->app->employee->id;
