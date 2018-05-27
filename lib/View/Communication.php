@@ -302,7 +302,7 @@ class View_Communication extends \View {
 
 	function addTopBar(){
 
-		if(!$this->acl_controller->canAdd()) return;
+		if($this->acl_controller->hasMethod('canAdd') &&  !$this->acl_controller->canAdd()) return;
 
 		if($this->channel_email) {
 			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-envelope"></i><br/>Email</button>';
