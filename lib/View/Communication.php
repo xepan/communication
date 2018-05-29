@@ -383,6 +383,7 @@ class View_Communication extends \View {
 				'followup_on'=>'c9~6',
 
 				'followup_detail'=>'c11~12',
+				'existing_schedule~'=>'s1~12',
 				'set_reminder~'=>'c12~12',
 				'reminder_at'=>'c13~2',
 				'remind_via'=>'c14~2',
@@ -440,7 +441,7 @@ class View_Communication extends \View {
 			'*'=>['followup_on','assigned_to','followup_detail']
 		],'div.col-md-12,div.col-md-6');
 
-
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 
 		if($form->isSubmitted()){
 
@@ -591,6 +592,7 @@ class View_Communication extends \View {
 				'assigned_to'=>'f25~6',
 				'followup_on'=>'f24~6',
 				'followup_detail'=>'f26~12',
+				'existing_schedule~'=>'s1~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
@@ -681,6 +683,8 @@ class View_Communication extends \View {
 			'*'=>['followup_on','assigned_to','followup_detail']
 		],'div.col-md-12,div.col-md-6');
 		
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+
 		if($form->isSubmitted()){
 
 			// check validation
@@ -825,6 +829,7 @@ class View_Communication extends \View {
 				'assigned_to'=>'f25~6',
 				'followup_on'=>'f24~6',
 				'followup_detail'=>'f26~12',
+				'existing_schedule~'=>'s1~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
@@ -920,6 +925,8 @@ class View_Communication extends \View {
 			''=>[],
 			'*'=>['followup_on','assigned_to','followup_detail']
 		],'div.col-md-12,div.col-md-6');
+
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 
 		if($form->isSubmitted()){
 
@@ -1065,6 +1072,7 @@ class View_Communication extends \View {
 				'followup_on'=>'f24~6',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
+				'existing_schedule~'=>'s1~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
 				'notify_to'=>'f30~4',
@@ -1131,7 +1139,9 @@ class View_Communication extends \View {
 			''=>[],
 			'*'=>['followup_on','assigned_to','followup_detail']
 		],'div.col-md-12,div.col-md-6');
-		
+			
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+
 		if($form->isSubmitted()){
 			
 			if($form['notify_via_email']){
@@ -1281,6 +1291,7 @@ class View_Communication extends \View {
 				'assigned_to'=>'f25~6',
 				'followup_on'=>'f24~6',
 				'followup_detail'=>'f26~12',
+				'existing_schedule~'=>'s1~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
@@ -1354,6 +1365,8 @@ class View_Communication extends \View {
 			''=>[],
 			'*'=>['followup_on','assigned_to','followup_detail']
 		],'div.col-md-12,div.col-md-6');
+
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 		
 		if($form->isSubmitted()){
 
