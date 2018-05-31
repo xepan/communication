@@ -3,45 +3,65 @@ namespace xepan\communication;
 
 class page_generalsetting extends \xepan\communication\page_sidebar{
 	public $title="General Settings";
-	function init(){
-		parent::init();
+	
+	function page_index(){
+		// parent::init();
 		
 		$tabs = $this->add('Tabs');
 		
 		/*General Email Setting*/
-		$email_settings_tab = $tabs->addTab('Email Settings','email-settings');
-		$email_setting= $email_settings_tab->add('xepan\communication\Model_Communication_EmailSetting');
-		$settingview=$email_settings_tab->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],null,['view/setting/email-setting-grid']);
+		$email_settings_tab = $tabs->addTabURL('./emailsetting','Email Settings');
+		// /*SMS Setting*/
+		$sms_settings_tab = $tabs->addTabURL('./smssettings','SMS Settings');
+		// MISC Setting
+		$misc_tab = $tabs->addTabURL('./miscsetting','MISC Settings');
+		// Email Setting
+		$duplicate_email_settings_tab = $tabs->addTabURL('./duplicateemailsetting','Duplicate Emails');
+		// Contact No Setting
+		$dupicate_contact_tab = $tabs->addTabURL('./duplicatecontactsetting','Duplicate Contact');	
+		/*Company Info*/
+		$company_info_tab = $tabs->addTabURL('./companyinfo','Company Info');
+
+		$communication_sub_type_tab = $tabs->addTabURL('./commsubtype','Communication Sub Types');
+		// Support Ticket Reply exisiting contact Communication Setting
+		$verify_tab = $tabs->addTabURL('./supportverify','Verify?');
+		/**
+		Contact Other Info to be asked
+		**/
+		$contact_other_info_config = $tabs->addTabURL('./contactsetting','Contacts Other Info');
+
+	}
+	
+	function page_emailsetting(){
+		$email_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
+		$settingview = $this->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],null,['view/setting/email-setting-grid']);
 		$settingview->setModel($email_setting);
 		$settingview->grid->addQuickSearch(['name','email_username']);
 		
+	}
 
-		// /*SMS Setting*/
-		$sms_settings_tab = $tabs->addTab('SMS Settings','sms-settings');
-		$sms_view_model = $sms_settings_tab->add('xepan\communication\Model_Communication_SMSSetting');
-		$sms_view=$sms_settings_tab->add('xepan\hr\CRUD',null,null,['view/setting/sms-setting-grid']);
+
+	function page_smssettings(){
+		$sms_view_model = $this->add('xepan\communication\Model_Communication_SMSSetting');
+		$sms_view = $this->add('xepan\hr\CRUD',null,null,['view/setting/sms-setting-grid']);
 		if($sms_view->isEditing()){
 			$form=$sms_view->form;
 			$form->setLayout('view/setting/form/sms-setting');
 			$form->js(true)->find('button')->addClass('btn btn-primary');
-		}	
-
+		}
 		if($sms_view->isEditing()){
 		if($emp_id= $this->app->employee->id)
 			$sms_view_model->addCondition('created_by_id',$emp_id);
 		}
-
 		$sms_view->setModel($sms_view_model);
-		
-		// MISC Setting
-		$misc_tab = $tabs->addTab('MISC Settings','misc-settings');
-		$misc_m = $misc_tab->add('xepan\base\Model_Config_Misc');
+	}
+
+	function page_miscsetting(){
+		$misc_m = $this->add('xepan\base\Model_Config_Misc');
 		$misc_m->add('xepan\hr\Controller_ACL');
 		$misc_m->tryLoadAny();		
 
-		// $misc_config = $this->app->epan->config;
-		// $misc_time_zone = $misc_config->getConfig('TIME_ZONE');
-		$form = $misc_tab->add('Form_Stacked');
+		$form = $this->add('Form_Stacked');
 		$form->setModel($misc_m);
 
 		$time_zone_field=$form->getElement('time_zone')->set($misc_m['time_zone']);
@@ -55,10 +75,10 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				->notifyWhoCan(' ',' ',$misc_m);
 			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
+	}
 
-		// Email Setting
-		$duplicate_email_settings_tab = $tabs->addTab('Duplicate Emails','dupemail-settings');
-		$email_m = $duplicate_email_settings_tab->add('xepan\base\Model_ConfigJsonModel',
+	function page_duplicateemailsetting(){
+		$email_m = $this->add('xepan\base\Model_ConfigJsonModel',
 			[
 				'fields'=>[
 							'email_duplication_allowed'=>'DropDown'
@@ -69,7 +89,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$email_m->add('xepan\hr\Controller_ACL');
 		$email_m->tryLoadAny();		
 
-		$form = $duplicate_email_settings_tab->add('Form_Stacked');
+		$form = $this->add('Form_Stacked');
 		$form->setModel($email_m);
 		$allow_email_permission = array('duplication_allowed' =>'Duplication Allowed',
 									 'no_duplication_allowed_for_same_contact_type' =>'No Duplication Allowed For Same Contact Type',
@@ -85,10 +105,10 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				->notifyWhoCan(' ',' ',$email_m);
 			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
+	}
 
-		// Contact No Setting
-		$dupicate_contact_tab = $tabs->addTab('Duplicate Contact','dupcont-settings');
-		$contactno_m = $dupicate_contact_tab->add('xepan\base\Model_ConfigJsonModel',
+	function page_duplicatecontactsetting(){
+		$contactno_m = $this->add('xepan\base\Model_ConfigJsonModel',
 			[
 				'fields'=>[
 							'contact_no_duplcation_allowed'=>'DropDown'
@@ -99,7 +119,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$contactno_m->add('xepan\hr\Controller_ACL');
 		$contactno_m->tryLoadAny();		
 
-		$form = $dupicate_contact_tab->add('Form_Stacked');
+		$form = $this->add('Form_Stacked');
 		$form->setModel($contactno_m);
 		$allow_contactno_permission = array('duplication_allowed' =>'Duplication Allowed',
 									 'no_duplication_allowed_for_same_contact_type' =>'No Duplication Allowed For Same Contact Type',
@@ -115,18 +135,17 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				->notifyWhoCan(' ',' ',$contactno_m);
 			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
+	}
 
-
-		/*Company Info*/
-		$company_info_tab = $tabs->addTab('Company Info','company-info-settings');
-		$company_m = $company_info_tab->add('xepan\base\Model_Config_CompanyInfo');
+	function page_companyinfo(){
+		$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
 		
 		$company_m->add('xepan\hr\Controller_ACL');
 		$company_m->tryLoadAny();
 
 		$company_m->getElement('mobile_no')->caption('contact number')->hint('comma(,) seperated multiple values');
 
-		$c_form = $company_info_tab->add('Form_Stacked');
+		$c_form = $this->add('Form_Stacked');
 		$c_form->setModel($company_m);
 		$c_form->addSubmit('Save')->addClass('btn btn-primary');
 		
@@ -137,16 +156,16 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				->notifyWhoCan(' ',' ',$company_m);
 			$c_form->js(null,$c_form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
-		// $this->add('View',null,'company_info',['view/schema-micro-data','person_info'])->setModel($company_m);
+	}
 
-		$communication_sub_type_tab = $tabs->addTab('Communication Sub Types','commsubtypes-settings');
+	function page_commsubtype(){
 		/*Communication Sub Type Form */
 		$config_m = $this->add('xepan\communication\Model_Config_SubType');
 		$config_m->add('xepan\hr\Controller_ACL');
 		$config_m->tryLoadAny();
 
-		$communication_sub_type_tab->add('View')->set('Enter comma seperated values with no space');
-		$sub_type_form = $communication_sub_type_tab->add('Form_Stacked');
+		$this->add('View')->set('Enter comma seperated values with no space');
+		$sub_type_form = $this->add('Form_Stacked');
 		$sub_type_form->setModel($config_m,['sub_type','calling_status']);
 		$sub_type_form->getElement('sub_type')->set($config_m['sub_type']);
 		$sub_type_form->getElement('calling_status')->set($config_m['calling_status']);
@@ -156,10 +175,10 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 			$sub_type_form->save();
 			$sub_type_form->js(null,$sub_type_form->js()->reload())->univ()->successMessage('Information Saved')->execute();
 		}
+	}
 
-		// Support Ticket Reply exisiting contact Communication Setting
-		$verify_tab = $tabs->addTab('Verify?');
-		$config_m = $verify_tab->add('xepan\base\Model_ConfigJsonModel',
+	function page_supportverify(){
+		$config_m = $this->add('xepan\base\Model_ConfigJsonModel',
 			[
 				'fields'=>[
 							'varify_to_field_as_contact'=>'DropDown'
@@ -170,11 +189,11 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$config_m->add('xepan\hr\Controller_ACL');
 		$config_m->tryLoadAny();		
 
-		$form = $verify_tab->add('Form_Stacked');
+		$form = $this->add('Form_Stacked');
 		$form->setModel($config_m);
 		$check_existing_contact = array('YES' =>'YES',
 									 'No' =>'No',);
-		$check_existing_contact_field =$form->getElement('varify_to_field_as_contact')->set($config_m['varify_to_field_as_contact']);
+		$check_existing_contact_field = $form->getElement('varify_to_field_as_contact')->set($config_m['varify_to_field_as_contact']);
 		$check_existing_contact_field->setValueList($check_existing_contact);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
@@ -185,21 +204,22 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 				->notifyWhoCan(' ',' ',$config_m);
 			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
+	}
 
 
-		/**
-		Contact Other Info to be asked
-		**/
+	function page_contactsetting(){
 
-		$contact_other_info_config = $tabs->addTab('Contacts Other Info Fields','contact-info-fields');
-		$contact_other_info_config_m = $contact_other_info_config->add('xepan\base\Model_Config_ContactOtherInfo');
+		$tab = $this->add('Tabs');
+		$field_tab = $tab->addTab('Other Info Fields');
+		$tag_tab = $tab->addTab('Contact Tags');
+
+		// field tabs
+		$contact_other_info_config_m = $field_tab->add('xepan\base\Model_Config_ContactOtherInfo');
 		$contact_other_info_config_m->add('xepan\hr\Controller_ACL');
 		$contact_other_info_config_m->tryLoadAny();
-
-		$contact_other_info_form = $contact_other_info_config->add('Form');
+		$contact_other_info_form = $field_tab->add('Form');
 		$field = $contact_other_info_form->addField('Line','contact_other_info_fields')
 					->setFieldHint('Comma separated fields');
-				
 
 		if($contact_other_info_config_m['contact_other_info_fields'])
 			$field->set($contact_other_info_config_m['contact_other_info_fields']);
@@ -211,9 +231,14 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 			$contact_other_info_form->js(null,$contact_other_info_form->js()->univ()->successMessage('Information successfully updated'))->reload()->execute();
 		}
 
-
+		// contact tags
+		$tag_model = $tag_tab->add('xepan\base\Model_Contact_Tag');
+		$tag_model->add('xepan\hr\Controller_ACL');
+		
+		$crud = $tag_tab->add('xepan\hr\CRUD');
+		$crud->setModel($tag_model,null,['name']);
+		$crud->grid->removeColumn('id');
 	}
-	
 	// function defaultTemplate(){
 	// 	return ['page/general-setting'];
 	// }
