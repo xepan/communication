@@ -30,6 +30,9 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		**/
 		$contact_other_info_config = $tabs->addTabURL('./contactsetting','Contacts Other Info');
 
+		// Document Other Info to be asked
+
+		$document_other_info_config = $tabs->addTabURL('./documentsetting','Documents Other Info');
 	}
 	
 	function page_emailsetting(){
@@ -214,22 +217,30 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$tag_tab = $tab->addTab('Contact Tags');
 
 		// field tabs
-		$contact_other_info_config_m = $field_tab->add('xepan\base\Model_Config_ContactOtherInfo');
-		$contact_other_info_config_m->add('xepan\hr\Controller_ACL');
-		$contact_other_info_config_m->tryLoadAny();
-		$contact_other_info_form = $field_tab->add('Form');
-		$field = $contact_other_info_form->addField('Line','contact_other_info_fields')
-					->setFieldHint('Comma separated fields');
+		// contact tags
+		$other_fields_model = $field_tab->add('xepan\base\Model_Config_ContactOtherInfo');
+		$other_fields_model->add('xepan\hr\Controller_ACL');
+		
+		$crud = $field_tab->add('xepan\hr\CRUD');
+		$crud->setModel($other_fields_model,null,['for','contact_other_info_fields']);
+		$crud->grid->removeColumn('id');
 
-		if($contact_other_info_config_m['contact_other_info_fields'])
-			$field->set($contact_other_info_config_m['contact_other_info_fields']);
+		// $contact_other_info_config_m = $field_tab->add('xepan\base\Model_Config_ContactOtherInfo');
+		// $contact_other_info_config_m->add('xepan\hr\Controller_ACL');
+		// $contact_other_info_config_m->tryLoadAny();
+		// $contact_other_info_form = $field_tab->add('Form');
+		// $field = $contact_other_info_form->addField('Line','contact_other_info_fields')
+		// 			->setFieldHint('Comma separated fields');
 
-		$contact_other_info_form->addSubmit("Save")->addClass('btn btn-primary');
-		if($contact_other_info_form->isSubmitted()){
-			$contact_other_info_config_m['contact_other_info_fields'] = $contact_other_info_form['contact_other_info_fields'];
-			$contact_other_info_config_m->save();
-			$contact_other_info_form->js(null,$contact_other_info_form->js()->univ()->successMessage('Information successfully updated'))->reload()->execute();
-		}
+		// if($contact_other_info_config_m['contact_other_info_fields'])
+		// 	$field->set($contact_other_info_config_m['contact_other_info_fields']);
+
+		// $contact_other_info_form->addSubmit("Save")->addClass('btn btn-primary');
+		// if($contact_other_info_form->isSubmitted()){
+		// 	$contact_other_info_config_m['contact_other_info_fields'] = $contact_other_info_form['contact_other_info_fields'];
+		// 	$contact_other_info_config_m->save();
+		// 	$contact_other_info_form->js(null,$contact_other_info_form->js()->univ()->successMessage('Information successfully updated'))->reload()->execute();
+		// }
 
 		// contact tags
 		$tag_model = $tag_tab->add('xepan\base\Model_Contact_Tag');
@@ -239,6 +250,16 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$crud->setModel($tag_model,null,['name']);
 		$crud->grid->removeColumn('id');
 	}
+
+	function page_documentsetting(){
+		$other_fields_model = $this->add('xepan\base\Model_Config_DocumentOtherInfo',['sort_by'=>'for']);
+		$other_fields_model->add('xepan\hr\Controller_ACL');
+
+		$crud = $this->add('xepan\hr\CRUD');
+		$crud->setModel($other_fields_model);
+		$crud->grid->removeColumn('id');
+	}
+
 	// function defaultTemplate(){
 	// 	return ['page/general-setting'];
 	// }
