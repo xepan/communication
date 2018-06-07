@@ -218,11 +218,11 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 		// field tabs
 		// contact tags
-		$other_fields_model = $field_tab->add('xepan\base\Model_Config_ContactOtherInfo');
+		$other_fields_model = $field_tab->add('xepan\base\Model_Config_ContactOtherInfo',['sort_by'=>'for']);
 		$other_fields_model->add('xepan\hr\Controller_ACL');
 		
 		$crud = $field_tab->add('xepan\hr\CRUD');
-		$crud->setModel($other_fields_model,null,['for','contact_other_info_fields']);
+		$crud->setModel($other_fields_model,null);
 		$crud->grid->removeColumn('id');
 
 		// $contact_other_info_config_m = $field_tab->add('xepan\base\Model_Config_ContactOtherInfo');
