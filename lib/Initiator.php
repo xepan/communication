@@ -12,12 +12,12 @@ class Initiator extends \Controller_Addon {
 
 		$this->app->jui->addStaticInclude('sip-0.10.0.min');
 
-		if(!$this->app->isAjaxOutput() && !$this->app->getConfig('hidden_xepan_communication',false)){
-			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails'])->addClass('contact-and-all-email-count');
-			$this->app->side_menu->addItem(['Message','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_internalmsg')->setAttr(['title'=>'Internal Communication'])->addClass('contact-and-all-message-count');
-			$this->app->side_menu->addItem(['General Setting','icon'=>'fa fa-cog'],'xepan_communication_generalsetting')->setAttr(['title'=>'General Setting']);
+		if($this->app->inConfigurationMode)
+			$this->populateConfigurationMenus();
+		else
+			$this->populateApplicationMenus();
 
-		}
+		
 		$this->app->report_menu->addItem(['Employee Communication','icon'=>'fa fa-users'],'xepan_communication_report_employeecommunication');
 
 		$search_communication = $this->add('xepan\communication\Model_Communication');
@@ -28,6 +28,31 @@ class Initiator extends \Controller_Addon {
         $this->app->addHook('entity_collection',[$this,'exportEntities']);
         $this->app->addHook('collect_shortcuts',[$this,'collect_shortcuts']);
 		return $this;
+	}
+
+	function populateConfigurationMenus(){
+		$m = $this->app->top_menu->addMenu('Basic Configurations');
+    	$m->addItem(['Company Information','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_companyinfo'));
+    	$m->addItem(['Email Settings','icon'=>'fa fa-envelope'],$this->app->url('xepan_communication_generalsetting_emailsetting'));
+    	$m->addItem(['SMS Settings','icon'=>'fa fa-mobile'],$this->app->url('xepan_communication_generalsetting_smssettings'));
+    	$m->addItem(['TimeZone Setting','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_timezone'));
+    	$m->addItem(['IP Restrictions (For Admin Access)','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_iprestrictions'));
+    	$m->addItem(['Duplicate Email Settings','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_duplicateemailsetting'));
+    	$m->addItem(['Duplicate Numbers Settings','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_duplicatecontactsetting'));
+    	$m->addItem(['Communication Sub Types','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_commsubtype'));
+    	$m->addItem(['Contacts Other Info and Tags','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_contactsetting'));
+    	$m->addItem(['Documents Other Info and Tags','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_documentsetting'));
+    	$m->addItem(['Country/State Management','icon'=>' fa fa-users'],$this->app->url('xepan_communication_general_countrystate'));
+    	$m->addItem(['Admin User Setting','icon'=>' fa fa-users'],$this->app->url('xepan_communication_general_emailcontent_admin'));
+        $m->addItem(['Frontend User Setting','icon'=>' fa fa-users'],$this->app->url('xepan_communication_general_emailcontent_usertool'));
+	}
+
+	function populateApplicationMenus(){
+		if(!$this->app->isAjaxOutput() && !$this->app->getConfig('hidden_xepan_communication',false)){
+			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails'])->addClass('contact-and-all-email-count');
+			$this->app->side_menu->addItem(['Message','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_internalmsg')->setAttr(['title'=>'Internal Communication'])->addClass('contact-and-all-message-count');
+			// $this->app->side_menu->addItem(['General Setting','icon'=>'fa fa-cog'],'xepan_communication_generalsetting')->setAttr(['title'=>'General Setting']);
+		}
 	}
 
 	function exportWidgets($app,&$array){
