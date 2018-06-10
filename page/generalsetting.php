@@ -14,7 +14,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		// /*SMS Setting*/
 		$sms_settings_tab = $tabs->addTabURL('./smssettings','SMS Settings');
 		// MISC Setting
-		$misc_tab = $tabs->addTabURL('./miscsetting','MISC Settings');
+		$misc_tab = $tabs->addTabURL('./timezone','TimeZone Settings');
 		// Email Setting
 		$duplicate_email_settings_tab = $tabs->addTabURL('./duplicateemailsetting','Duplicate Emails');
 		// Contact No Setting
@@ -59,13 +59,13 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$sms_view->setModel($sms_view_model);
 	}
 
-	function page_miscsetting(){
+	function page_timezone(){
 		$misc_m = $this->add('xepan\base\Model_Config_Misc');
 		$misc_m->add('xepan\hr\Controller_ACL');
 		$misc_m->tryLoadAny();		
 
 		$form = $this->add('Form_Stacked');
-		$form->setModel($misc_m);
+		$form->setModel($misc_m,['time_zone']);
 
 		$time_zone_field=$form->getElement('time_zone')->set($misc_m['time_zone']);
 		$time_zone_field->setValueList(array_combine(timezone_identifiers_list(),timezone_identifiers_list()));
@@ -75,6 +75,25 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 			$form->save();
 			$misc_m->app->employee
 			    ->addActivity("'Time Zone' Updated as '".$form['time_zone']."'", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
+				->notifyWhoCan(' ',' ',$misc_m);
+			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
+		}
+	}
+
+	function page_iprestrictions(){
+		$misc_m = $this->add('xepan\base\Model_Config_Misc');
+		$misc_m->add('xepan\hr\Controller_ACL');
+		$misc_m->tryLoadAny();		
+
+		$form = $this->add('Form_Stacked');
+		$form->setModel($misc_m,['admin_restricted_ip']);
+
+		$form->addSubmit('Update')->addClass('btn btn-primary');
+
+		if($form->isSubmitted()){
+			$form->save();
+			$misc_m->app->employee
+			    ->addActivity("'IP Restriction Updated'".$form['admin_restricted_ip']."'", null/* Related Document ID*/, null /*Related Contact ID*/,null,null,"xepan_communication_general_emailcontent_usertool")
 				->notifyWhoCan(' ',' ',$misc_m);
 			$form->js(null,$form->js()->reload())->univ()->successMessage('Information Successfully Updated')->execute();
 		}
