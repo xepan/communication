@@ -277,6 +277,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$crud = $this->add('xepan\hr\CRUD');
 		$crud->setModel($other_fields_model);
 		$crud->grid->removeColumn('id');
+		$crud->grid->addFormatter('conditional_binding','Wrap');
 	}
 
 	// function defaultTemplate(){
