@@ -6,7 +6,7 @@ namespace xepan\communication;
 
 class View_Communication extends \View {
 	
-	public $allowed_channels = ['email','call','call_sent','call_received','meeting','personal','comment'];
+	public $allowed_channels = ['email','call','call_sent','call_received','meeting','personal','comment','internal_chat'];
 
 	public $channel_email=true;
 	public $channel_sms=true;
@@ -14,6 +14,7 @@ class View_Communication extends \View {
 	public $channel_call_received=true;
 	public $channel_meeting=true;
 	public $channel_comment=true;
+	public $channel_internal_chat=true;
 
 	public $showCommunicationHistory = true;
 	public $showAddCommunications = true;
@@ -297,6 +298,9 @@ class View_Communication extends \View {
 			case 'comment':
 				$this->channel_comment = true;
 				break;
+			case 'internal_chat':
+				$this->channel_internal_chat = true;
+				break;
 		}
 	}
 
@@ -335,9 +339,15 @@ class View_Communication extends \View {
 		}
 
 		if($this->channel_comment){
-			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-comments "></i><br/>Comment</button>';
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-commenting"></i><br/>Comment</button>';
 			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Create Comment Communication')->setHtml($html);
 			$this->manageComment($icon);
+		}
+
+		if($this->channel_internal_chat){
+			$html = '<button type="button" class="btn btn-primary"><i class="fa fa-comments "></i><br/>Message</button>';
+			$icon = $this->add('View',null,'icons')->addClass('btn-group')->setAttr('role','group')->setAttr('title','Send Internal Message Related to this contact')->setHtml($html);
+			$this->manageInternalChat($icon);
 		}
 
 		if($this->showFilter){
@@ -1547,6 +1557,80 @@ class View_Communication extends \View {
 		$comment_icon->js('click',[ // show event
 			$popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
 			$form->js(null,'$("#'.$form->name.'").find("form")[0].reset();')
+		]);
+		
+	}
+
+	function manageInternalChat($chat_icon){
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup->setTitle('Internal Message - Related To  '.$this->contact['name']);
+
+		$compose_msg = $popup->add('xepan\communication\View_ComposeMessagePopup',['related_contact_id'=>$this->contact->id]);
+
+		$msg_m = $this->add('xepan\communication\Model_Communication_AbstractMessage',['related_contact_id'=>$this->contact->id]);
+		$msg_m->addCondition('related_contact_id',$this->contact->id);
+		$msg_m->setOrder('id','desc');
+
+		$msg_list = $popup->add('xepan\communication\View_Lister_InternalMSGList');
+		$msg_list->setModel($msg_m);
+		
+		// $form = $popup->add('Form');
+		// $form->add('xepan\base\Controller_FLC')
+		// 	->makePanelCollepsible()
+		// 	->closeOtherPanels()
+		// 	->addContentSpot()
+		// 	->layout([
+		// 		'to_number'=>'c1~6',
+		// 		'sms_settings'=>'c2~6',
+		// 		'sms'=>'c4~12',
+		// 	]);
+
+		// $phones = $this->contact->getPhones();
+		// $to_number_field = $form->addField('xepan\base\DropDown','to_number');
+		// $to_number_field->setAttr('multiple','multiple');
+		// $to_number_field->setValueList(array_combine($phones,$phones));
+		// $to_number_field->select_menu_options = ['tags'=>true];
+		// $to_number_field->validate_values = false;
+
+		// $form->addField('DropDown','sms_settings')->validate('required')->setModel('xepan\communication\Model_Communication_SMSSetting');
+
+		// $form->addField('Text','sms');
+		
+		// if($form->isSubmitted()){
+
+			
+		// 	// end checking vaidation
+
+		// 	$communication = $this->add('xepan\communication\Model_Communication_SMS');
+		// 	$communication->addCondition('status','Commented');
+
+		// 	$communication['from_id'] = $this->app->employee->id;;
+		// 	$communication['to_id'] = $this->contact->id;
+		// 	$communication['direction'] = 'Out';
+		// 	$communication['description'] = $form['sms'];
+			
+		// 	foreach (explode(",", $form['to_number']) as $nos) {
+		// 		$communication->addTo($nos,$this->contact['name']);
+				
+		// 	}
+
+		// 	$communication->setFrom($this->app->employee->id,$this->app->employee['name']);
+			
+		// 	$communication['title'] = 'SMS: '.substr(strip_tags($form['sms']),0,35)." ...";
+			
+
+		// 	$communication['created_at'] = $this->app->now;
+		// 	$communication['communication_channel_id'] = $form['sms_settings'];
+		// 	// throw new \Exception(print_r($communication['to_raw'],true), 1);
+		// 	$reply = $communication->send($form['sms_settings']);			
+
+		// 	$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('SMS Gateway reply: '.implode("<br/>", $reply))->execute();
+		// }	
+
+		$chat_icon->js('click',[ // show event
+			$popup->js()->modal(['backdrop'=>true,'keyboard'=>true]),
+			$msg_list->js()->reload(),
+			// $form->js(null,'$("#'.$form->name.'").find("form")[0].reset();')
 		]);
 		
 	}

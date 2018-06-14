@@ -10,6 +10,9 @@ class View_ComposeMessagePopup extends \View{
 	public $message="";
 	public $mode="";
 	public $communication_id="";
+
+	public $related_contact_id=null;
+
 	function init(){
 		parent::init();
 		$this->communication_id = $this->app->stickyGET('communication_id');
@@ -17,6 +20,10 @@ class View_ComposeMessagePopup extends \View{
 		$msg_model = $this->add('xepan\communication\Model_Communication_AbstractMessage');
 		if($this->communication_id)
 			$msg_model->load($this->communication_id);
+
+		if($this->related_contact_id){
+			$msg_model->addCondition('related_contact_id',$this->related_contact_id);
+		}
 
 		$emp_id = $this->app->stickyGET('employee_id');
 		$employee = $this->add('xepan\hr\Model_Employee');
@@ -125,6 +132,7 @@ class View_ComposeMessagePopup extends \View{
 		$f->addSubmit('Send message')->addClass('btn btn-success pull-right xepan-margin-top-small');
 		
 		if($f->isSubmitted()){
+
 			$to_raw = [];
 			$cc_raw = [];
 			if($f['send_to_all']){
@@ -152,6 +160,10 @@ class View_ComposeMessagePopup extends \View{
 			}
 			
 			$send_msg = $this->add('xepan\communication\Model_Communication_MessageSent');
+			if($this->related_contact_id)
+				$send_msg['related_contact_id'] = $this->related_contact_id;
+				
+			$send_msg['related_contact_id'] = $msg_model['related_contact_id']; // if communication is around some contact
 			$send_msg['mailbox'] = "InternalMessage";
 			$send_msg['from_id'] = $this->app->employee->id;
 			$send_msg['from_raw'] = ['name'=>$this->app->employee['name'],'id'=>$this->app->employee->id];
