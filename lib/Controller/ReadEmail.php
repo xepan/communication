@@ -90,6 +90,18 @@ class Controller_ReadEmail extends \AbstractController {
 				if($this->debug)
 					echo "got email <br/>";
 				
+				$mail_m = $this->add('xepan\communication\Model_Communication_Email_Received');
+				$mail_m->addCondition('uid',$fetched_mail->id);
+				$mail_m->addCondition('mailbox',$this->email_setting['imap_email_username'].'#'.$mailbox_name);
+				$mail_m->addCondition('created_at',$fetched_mail->date);
+				$mail_m->tryLoadAny();
+				
+				if($mail_m->loaded()){
+					if($this->debug)
+						echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
+					continue;	
+				} 
+
 				$attach_email_files=[];
 				//MAIL ATTACHME  NT 
 				$attachments = $fetched_mail->getAttachments();
@@ -102,17 +114,6 @@ class Controller_ReadEmail extends \AbstractController {
 				}
 
 				
-				$mail_m = $this->add('xepan\communication\Model_Communication_Email_Received');
-				$mail_m->addCondition('uid',$fetched_mail->id);
-				$mail_m->addCondition('mailbox',$this->email_setting['imap_email_username'].'#'.$mailbox_name);
-				$mail_m->addCondition('created_at',$fetched_mail->date);
-				$mail_m->tryLoadAny();
-				
-				if($mail_m->loaded()){
-					if($this->debug)
-						echo "<br/> UID ".$fetched_mail->id." found existed in ".$this->email_setting['imap_email_username'].'#'.$mailbox_name. " continuing <br/>";
-					continue;	
-				} 
 				
 				$mail_m->setFrom($fetched_mail->fromAddress,$fetched_mail->fromName);
 
@@ -154,15 +155,18 @@ class Controller_ReadEmail extends \AbstractController {
 				if($this->debug)
 					echo "Saving email <br/>";
 
+				
+				// Chec for multiple same emails fetcing to try to stop reply reply game
 				$reply_m = $this->add('xepan\communication\Model_Communication_Email_Received');
 				$reply_m->addCondition('title',$fetched_mail->subject);
 				$reply_m->addCondition('description',$email_content);
+				$reply_m->addCondition('mailbox',$this->email_setting['imap_email_username'].'#'.$mailbox_name);
 				$reply_m->addCondition('created_at','>=',
 							date("Y-m-d H:i:s",
 							strtotime(date("Y-m-d H:i:s", 
 							strtotime($this->app->now)) . " -1 Hour")));
 				
-				$reply_m->debug()->tryLoadAny();
+				$reply_m->tryLoadAny();
 				
 				if(!$reply_m->loaded()){
 					echo "Reply Auto ";
