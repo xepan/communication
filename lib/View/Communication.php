@@ -1573,6 +1573,7 @@ class View_Communication extends \View {
 
 		$msg_list = $popup->add('xepan\communication\View_Lister_InternalMSGList');
 		$msg_list->setModel($msg_m);
+		$msg_list->add('xepan\base\Controller_Avatar',['options'=>['size'=>50,'border'=>['width'=>0]],'name_field'=>'contact']);
 		
 		// $form = $popup->add('Form');
 		// $form->add('xepan\base\Controller_FLC')
