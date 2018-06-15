@@ -239,7 +239,7 @@ class View_Communication extends \View {
 	function setCommunicationsWith($contact){
 		$this->contact = $contact;
 		$communication = $this->add('xepan\communication\Model_Communication');
-		$communication->addCondition([['from_id',$contact->id],['to_id',$contact->id]]);
+		$communication->addCondition([['from_id',$contact->id],['to_id',$contact->id],['related_contact_id',$contact->id]]);
 		$communication->setOrder('created_at','desc');
 
 		return $this->setModel($communication);
