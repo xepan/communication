@@ -45,6 +45,7 @@ class Initiator extends \Controller_Addon {
     	$m->addItem(['Country/State Management','icon'=>' fa fa-users'],$this->app->url('xepan_communication_general_countrystate'));
     	$m->addItem(['Admin User Setting','icon'=>' fa fa-users'],$this->app->url('xepan_communication_general_emailcontent_admin'));
         $m->addItem(['Frontend User Setting','icon'=>' fa fa-users'],$this->app->url('xepan_communication_general_emailcontent_usertool'));
+        $m->addItem(['Backup & Update','icon'=>' fa fa-users'],$this->app->url('xepan_base_update'));
 	}
 
 	function populateApplicationMenus(){
