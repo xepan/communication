@@ -81,6 +81,16 @@ class View_Lister_NewCommunication extends \CompleteLister{
 		$this->current_row_html['from_lister'] = $from_lister->getHtml();
 		$this->current_row_html['Attachments'] = $attach->getHtml();
 
+		if($this->model['communication_type'] == "Personal"){
+			$rel_emp = $this->model->getCommunicationRelatedEmployee('employee_name');
+			$rel_emp_lister = $this->app->add('CompleteLister',null,null,['view/communication1','communication_related_employee']);
+			$rel_emp_lister->setSource($rel_emp);
+
+			$this->current_row_html['communication_related_employee'] = $rel_emp_lister->getHtml();
+		}else{
+			$this->current_row_html['communication_related_employee'] = "";
+		}
+
 		// Communication icon
 		$icon = [
 			'AbstractMessage'=>'fa fa-info',
@@ -168,6 +178,9 @@ class View_Lister_NewCommunication extends \CompleteLister{
                         {/}
                       </div>
                       <div class="row">{cc_lister}<span class="small">CC: </span>{rows}{row} <span class="small">{$name}{$email}&nbsp;{$number} &nbsp;&nbsp;</span>{/}{/}
+                        {/}
+                      </div>
+                      <div class="row">{communication_related_employee}<span class="small">Related Employee: </span>{rows}{row} <span class="small">{$name}&nbsp;</span>{/}{/}
                         {/}
                       </div>
                       <div class="row xepan-push-large">

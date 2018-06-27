@@ -92,7 +92,8 @@ class View_Communication extends \View {
 							'calling_status~Status'=>'c2~3',
 							'created_at'=>'c3~3',
 							'employee'=>'c4~3',
-							'description'=>'c5~12'
+							'related_employee'=>'c5~12',
+							'description'=>'c6~12'
 						];
 				}elseif($m['status'] == "Commented"){
 					$comm_model = $this->add('xepan\communication\Model_Communication_Comment');
@@ -170,6 +171,14 @@ class View_Communication extends \View {
 
 					$to_raw = json_decode($comm_model['to_raw'],true);
 					$to_number_field->set($to_raw[0]['number']);
+				}
+
+				if($m['status'] == "Personal"){
+					$related_employees = $form->addField('dropDown','related_employee');
+					$related_employees->addClass('multiselect-full-width')
+									->setAttr(['multiple'=>'multiple']);
+					$related_employees->setModel('xepan\hr\Model_Employee_Active');
+					$related_employees->set($m->getCommunicationRelatedEmployee());
 				}
 
 				$form->addSubmit('Update Communication')->addClass('btn btn-primary');
@@ -1068,6 +1077,7 @@ class View_Communication extends \View {
 				'calling_status~status'=>'c2~3',
 				'date'=>'c3~3',
 				'employee'=>'c4~3',
+				'related_employee'=>'b1~12',
 				'description'=>'c5~12',
 
 				'notify_via_email~'=>'c6~12',
@@ -1110,6 +1120,12 @@ class View_Communication extends \View {
 
 		$notify_via_email_field = $form->addField('checkbox','notify_via_email');
 		$form->addField('notify_email_subject');
+
+
+		$related_employees = $form->addField('dropDown','related_employee');
+		$related_employees->addClass('multiselect-full-width')
+						->setAttr(['multiple'=>'multiple']);
+		$related_employees->setModel('xepan\hr\Model_Employee_Active');
 
 		// Notify_from_email_id
 		$notify_from_email_id_field = $form->addField('xepan\hr\EmployeeAllowedEmail','notify_from_email_id');
@@ -1253,6 +1269,18 @@ class View_Communication extends \View {
 					}
 				}
 				$model_task->save();
+			}
+
+			// related _employee
+			if($form['related_employee']){
+				foreach(explode(",",$form['related_employee']) as $emp_id) {
+					$ece = $this->add('xepan\communication\Model_CommunicationRelatedEmployee');
+					$ece->addCondition('communication_id',$communication->id);
+					$ece->addCondition('employee_id',$emp_id);
+					$ece->tryLoadAny();
+					$ece->save();
+				}
+
 			}
 
 			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
@@ -1697,10 +1725,10 @@ class View_Communication extends \View {
 			<div id="{$_name}" class="{$class}">
 				<div class="communication-top-bar">
 					<div class="row main-box" style="padding-top:15px;">
-						<div class="col-md-7 col-lg-7 col-sm-12 col-xs-12">
+						<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
 							{$filter}
 						</div>
-						<div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+						<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
 							<div class="btn-group btn-group-justified" role="group" aria-label="Communication Action">
 								{$icons}
 							</div>
