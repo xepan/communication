@@ -1166,7 +1166,7 @@ class View_Communication extends \View {
 			'*'=>['followup_on','assigned_to','followup_detail']
 		],'div.col-md-12,div.col-md-6');
 			
-		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to->name,'date_field'=>$followup_on->name],'existing_schedule');
 
 		if($form->isSubmitted()){
 			
