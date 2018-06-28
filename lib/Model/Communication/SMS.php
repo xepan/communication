@@ -17,7 +17,8 @@ class Model_Communication_SMS extends Model_Communication {
 
 	function init(){
 		parent::init();
-		$this->addCondition('communication_type','Sms');	
+		$this->addCondition('communication_type','Sms');
+		$this->addCondition('direction','Out');
 		$this->getElement('status')->defaultValue('Draft');
 	}
 
