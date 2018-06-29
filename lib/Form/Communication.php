@@ -131,7 +131,7 @@ class Form_Communication extends \Form {
 			$remind_unit_field = $this->addField('DropDown','remind_unit')->setValueList(['Minutes'=>'Minutes','hours'=>'Hours','day'=>'Days'])->setEmptyText('Please select a value');
 			
 			$follow_up_field->js(true)->univ()->bindConditionalShow([
-				true=>['follow_up_type','task_title','starting_at','assign_to','description','set_reminder']
+				true=>['follow_up_type','task_title','starting_at','assign_to','description','set_reminder','existing_schedule']
 			],'div.atk-form-row');
 
 			$set_reminder_field->js(true)->univ()->bindConditionalShow([
