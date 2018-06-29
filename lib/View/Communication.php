@@ -19,7 +19,8 @@ class View_Communication extends \View {
 	public $showCommunicationHistory = true;
 	public $showAddCommunications = true;
 	public $showFilter = true;
-
+	
+	public $success_js = null;
 
 	public $contact=null;
 
@@ -262,6 +263,12 @@ class View_Communication extends \View {
 
 	function setCommunicationsWith($contact){
 		$this->contact = $contact;
+
+		$this->contact_emails = $this->contact->getEmails();
+		$this->contact_phones = $this->contact->getPhones();
+		$this->employee_emails = $this->app->employee->getEmails();
+		$this->employee_phones = $this->app->employee->getPhones();
+
 		$communication = $this->add('xepan\communication\Model_Communication');
 		$communication->addCondition([['from_id',$contact->id],['to_id',$contact->id],['related_contact_id',$contact->id]]);
 		$communication->setOrder('created_at','desc');
@@ -379,6 +386,10 @@ class View_Communication extends \View {
 		}
 	}
 
+	function addSuccessJs($js){
+		$this->success_js = $js;
+	}
+
 	function addCommunicationHistory(){
 		$communication = $this->model;
 
@@ -399,7 +410,7 @@ class View_Communication extends \View {
 
 		$email_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Send Email');
 		$email_popup->setTitle('Send New Email');
-		$default_to_ids=implode(",",$this->contact->getEmails());
+		$default_to_ids=implode(",",$this->contact_emails);
 		$form = $email_popup->add('Form');
 		$form->add('xepan\base\Controller_FLC')
 			->makePanelCollepsible()
@@ -438,11 +449,11 @@ class View_Communication extends \View {
 		
 		$cc = $form->addField('cc');
 		$cc_me = $form->addField('Checkbox','cc_me');
-		$cc_me->js('click',$cc->js()->val($this->app->employee->getEmails()));
+		$cc_me->js('click',$cc->js()->val($this->employee_emails));
 		
 		$bcc = $form->addField('bcc');
 		$bcc_me = $form->addField('Checkbox','bcc_me');
-		$bcc_me->js('click',$bcc->js()->val($this->app->employee->getEmails()));
+		$bcc_me->js('click',$bcc->js()->val($this->employee_emails));
 		
 		$allwed_emails = $form->addField('xepan\hr\EmployeeAllowedEmail','from_email_id')->validate('required');
 		
@@ -576,7 +587,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$email_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Email Sent')->execute();
+			$form->js(null,[$email_popup->js(null,$this->success_js)->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Email Sent')->execute();
 
 		}
 
@@ -662,13 +673,13 @@ class View_Communication extends \View {
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
 
 		$from_number_field = $form->addField('xepan\base\DropDown','from_number');
-		$emp_phones = $this->app->employee->getPhones();
+		$emp_phones = $this->employee_phones;
 		$emp_phones = array_combine($emp_phones, $emp_phones);
 		$from_number_field->setValueList(array_merge(array_filter($company_number),array_filter($emp_phones)));
 		$from_number_field->select_menu_options = ['tags'=>true];
 		$from_number_field->validate_values = false;
 
-		$phones = $this->contact->getPhones();
+		$phones = $this->contact_phones;
 		$to_number_field = $form->addField('xepan\base\DropDown','to_number');
 		$to_number_field->setValueList(array_combine($phones,$phones));
 		$to_number_field->select_menu_options = ['tags'=>true];
@@ -687,7 +698,7 @@ class View_Communication extends \View {
 		$notify_from_email_id_field->setModel($my_email);
 		$email_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
 
-		$contact_emails = $this->contact->getEmails();
+		$contact_emails = $this->contact_emails;
 		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
 
 		$follow_up = $form->addField('Checkbox','follow_up');
@@ -821,7 +832,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$called_popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$called_popup->js(null,$this->success_js)->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -888,11 +899,11 @@ class View_Communication extends \View {
 
 		$sub_type_array = explode(",",$config_m['sub_type']);
 
-		$emp_phones = $this->app->employee->getPhones();
+		$emp_phones = $this->employee_emails;
 		$emp_phones = array_combine($emp_phones, $emp_phones);
 		$emp_phones = array_merge(array_filter($company_number),array_filter($emp_phones));
 
-		$phones = $this->contact->getPhones();
+		$phones = $this->contact_phones;
 		$contact_phones = array_combine($phones,$phones);
 
 		// fields
@@ -934,7 +945,7 @@ class View_Communication extends \View {
 		$notify_from_email_id_field->setModel($my_email);
 		$email_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
 
-		$contact_emails = $this->contact->getEmails();
+		$contact_emails = $this->contact_emails;
 		$form->addField('notify_to_email_ids')->set(implode(",", $contact_emails));
 
 		$follow_up = $form->addField('Checkbox','follow_up');
@@ -1069,7 +1080,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$popup->js(null,$this->success_js)->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1316,7 +1327,7 @@ class View_Communication extends \View {
 
 			}
 
-			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$popup->js(null,$this->success_js)->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1545,7 +1556,7 @@ class View_Communication extends \View {
 				$model_task->save();
 			}
 
-			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
+			$form->js(null,[$popup->js(null,$this->success_js)->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('Communication added')->execute();
 		}
 			
 		$up_btn->js('click',[$score->js()->val(10),$down_btn->js()->removeClass('btn-danger'),$this->js()->_selectorThis()->addClass('btn-success')]);
@@ -1619,7 +1630,7 @@ class View_Communication extends \View {
 			// throw new \Exception(print_r($communication['to_raw'],true), 1);
 			$reply = $communication->send($form['sms_settings']);			
 
-			$form->js(null,[$popup->js()->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('SMS Gateway reply: '.implode("<br/>", $reply))->execute();
+			$form->js(null,[$popup->js(null,$this->success_js)->modal('hide'),$this->historyLister->js()->reload()])->reload()->univ()->successMessage('SMS Gateway reply: '.implode("<br/>", $reply))->execute();
 		}	
 
 		$comment_icon->js('click',[ // show event
@@ -1755,7 +1766,11 @@ class View_Communication extends \View {
 	}
 
 	function recursiveRender(){
-		if($this->showCommunicationHistory) $this->addCommunicationHistory();
+		if($this->showCommunicationHistory) 
+			$this->addCommunicationHistory();
+		else
+			$this->historyLister = $this->add('View')->setElement('span');
+
 		if($this->showAddCommunications) $this->addTopBar();
 		parent::recursiveRender();
 	} 
