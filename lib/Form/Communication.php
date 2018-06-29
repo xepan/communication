@@ -111,7 +111,7 @@ class Form_Communication extends \Form {
 
 		if(!$edit_model->loaded()){
 			$follow_up_field = $this->addField('checkbox','follow_up','Add Followup');
-			$task_title_field = $this->addField('task_title');
+			// $task_title_field = $this->addField('task_title');
 			$starting_date_field = $this->addField('DateTimePicker','starting_at');
 			$starting_date_field->js(true)->val('');
 			$assign_to_field = $this->addField('DropDown','assign_to');
@@ -143,6 +143,8 @@ class Form_Communication extends \Form {
 			],'div.atk-form-row');
 		}
 
+		$this->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assign_to_field,'date_field'=>$starting_date_field],'existing_schedule');
+
 		/**********************************
 			FOLLOWUP END
 		************************************/
@@ -169,17 +171,17 @@ class Form_Communication extends \Form {
        	**********************************/
        	if(!$this->edit_communication_id){
 	       	if($this['follow_up']){
-				if($this['task_title'] == ''){
-					$this->displayError('task_title','Task title field is required');
-				}
+				// if($this['task_title'] == ''){
+				// 	$this->displayError('task_title','Task title field is required');
+				// }
 
 				if($this['starting_at'] == ''){
 					$this->displayError('starting_at','Starting date title field is required');
 				}
 
-				if($this['task_title'] == ''){
-					$this->displayError('task_title','Task title field is required');
-				}
+				// if($this['task_title'] == ''){
+				// 	$this->displayError('task_title','Task title field is required');
+				// }
 
 				if($this['set_reminder']){
 					if($this['remind_via'] == null){
@@ -430,7 +432,7 @@ class Form_Communication extends \Form {
 			if($this['follow_up']){
 				$model_task = $this->add('xepan\projects\Model_Task');
 				$model_task['type'] = 'Followup';
-				$model_task['task_name'] = $this['task_title'];
+				$model_task['task_name'] = 'Followup '. $this->contact['name_with_type'];
 				$model_task['created_by_id'] = $this->app->employee->id;
 				$model_task['starting_date'] = $this['starting_at'];
 				$model_task['assign_to_id'] = $this['assign_to'];
