@@ -381,7 +381,7 @@ class View_Communication extends \View {
 	}
 
 	function manageEmail($email_icon, $edit_communication= null){
-		$email_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$email_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Send Email');
 		$email_popup->setTitle('Send New Email');
 		$default_to_ids=implode(",",$this->contact->getEmails());
 		$form = $email_popup->add('Form');
@@ -399,10 +399,10 @@ class View_Communication extends \View {
 				'score~'=>'c7~',
 				
 				'assigned_to'=>'c10~6',
-				'followup_on'=>'c9~6',
+				'followup_on'=>'c9~4',
+				'existing_schedule~ '=>'x1~2',
 
 				'followup_detail'=>'c11~12',
-				'existing_schedule~'=>'s1~12',
 				'set_reminder~'=>'c12~12',
 				'reminder_at'=>'c13~2',
 				'remind_via'=>'c14~2',
@@ -457,8 +457,8 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail']
-		],'div.col-md-12,div.col-md-6');
+			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 
@@ -583,7 +583,7 @@ class View_Communication extends \View {
 	}
 
 	function manageCalled($called_icon){
-		$called_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$called_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Log Called Communication');;
 		$called_popup->setTitle('Phone Called - Log Communication of '.$this->contact['name']);
 		
 		$form = $called_popup->add('Form');
@@ -609,9 +609,9 @@ class View_Communication extends \View {
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
 				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~6',
+				'followup_on'=>'f24~4',
+				'existing_schedule~ '=>'x1~2',
 				'followup_detail'=>'f26~12',
-				'existing_schedule~'=>'s1~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
@@ -699,8 +699,8 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail']
-		],'div.col-md-12,div.col-md-6');
+			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 		
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 
@@ -820,7 +820,7 @@ class View_Communication extends \View {
 
 	function manageCallReceived($call_received_icon){
 
-		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('LOg Received Call');;
 		$popup->setTitle('Phone Received - Log Communication of '.$this->contact['name']);
 		
 		$form = $popup->add('Form');
@@ -846,9 +846,9 @@ class View_Communication extends \View {
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
 				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~6',
+				'followup_on'=>'f24~4',
+				'existing_schedule~'=>'x1~2',
 				'followup_detail'=>'f26~12',
-				'existing_schedule~'=>'s1~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
@@ -942,8 +942,8 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail']
-		],'div.col-md-12,div.col-md-6');
+			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 
@@ -1064,7 +1064,7 @@ class View_Communication extends \View {
 
 	function manageMeeting($meeting_icon){
 
-		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Log Meeting Information');;
 		$popup->setTitle('Meeting/Personal - Log Communication with '.$this->contact['name']);
 		
 		$form = $popup->add('Form');
@@ -1089,10 +1089,10 @@ class View_Communication extends \View {
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
 				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~6',
+				'followup_on'=>'f24~4',
+				'existing_schedule~ '=>'f44~2',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
-				'existing_schedule~'=>'s1~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
 				'notify_to'=>'f30~4',
@@ -1163,10 +1163,10 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail']
-		],'div.col-md-12,div.col-md-6');
+			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 			
-		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to->name,'date_field'=>$followup_on->name],'existing_schedule');
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 
 		if($form->isSubmitted()){
 			
@@ -1303,7 +1303,7 @@ class View_Communication extends \View {
 
 	function manageComment($comment_icon){
 
-		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Log Comment');;
 		$popup->setTitle('Comment - Log Communication of '.$this->contact['name']);
 		
 		$form = $popup->add('Form');
@@ -1327,9 +1327,9 @@ class View_Communication extends \View {
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
 				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~6',
+				'followup_on'=>'f24~4',
+				'existing_schedule~'=>'x1~2',
 				'followup_detail'=>'f26~12',
-				'existing_schedule~'=>'s1~12',
 				'set_reminder'=>'f27~12',
 				'reminder_at'=>'f28~2',
 				'remind_via'=>'f29~2',
@@ -1401,8 +1401,8 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail']
-		],'div.col-md-12,div.col-md-6');
+			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
 		
@@ -1526,7 +1526,7 @@ class View_Communication extends \View {
 
 
 	function manageSms($comment_icon){
-		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Send SMS');;
 		$popup->setTitle('SMS - Log Communication of '.$this->contact['name']);
 		
 		$form = $popup->add('Form');
@@ -1590,7 +1590,7 @@ class View_Communication extends \View {
 	}
 
 	function manageInternalChat($chat_icon){
-		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full');
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Send And Close');;
 		$popup->setTitle('Internal Message - Related To  '.$this->contact['name']);
 
 		$compose_msg = $popup->add('xepan\communication\View_ComposeMessagePopup',['related_contact_id'=>$this->contact->id]);
