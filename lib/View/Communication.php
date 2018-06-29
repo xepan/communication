@@ -28,24 +28,37 @@ class View_Communication extends \View {
 	public $acl_controller = null;
 
 	public $historyLister;
+	public $config_subtype;
+	public $config_company;
 
 	function init(){
 		parent::init();
+
 		$this->template->loadTemplateFromString($this->myTemplate());
+
+		$this->config_subtype = $this->add('xepan\communication\Model_Config_SubType');
+		$this->config_subtype->tryLoadAny();
+
+		$this->config_company = $this->add('xepan\base\Model_Config_CompanyInfo');			
+		$this->config_company->tryLoadAny();
 
 		$this->app->stickyGET('edit_communication_id');
 		$this->edit_vp = $this->add('VirtualPage')
 			->set(function($page){
 				$id = $_GET['edit_communication_id'];
 				
+				$config_m = $this->config_subtype;
+				$company_m = $this->config_company;
+
 				$form_fields = [
-							'communication_sub_type'=>'Edit Communication~c1~4',
-							'calling_status~Status'=>'c2~4',
-							'created_at'=>'c3~4',
-							'from_number'=>'c1~4',
-							'to_number'=>'c2~4',
-							'employee'=>'c3~4',
-							'description'=>'c4~12'
+							'communication_sub_type~'.$config_m['sub_type_1_label_name']=>'Edit Communication~c1~4',
+							'calling_status~'.$config_m['sub_type_2_label_name']=>'c2~4',
+							'sub_type_3~'.$config_m['sub_type_3_label_name']=>'c3~4',
+							'created_at'=>'c4~3',
+							'from_number'=>'c5~3',
+							'to_number'=>'c6~3',
+							'employee'=>'c7~3',
+							'description'=>'c8~12'
 						];
 
 				$m = $this->add('xepan\communication\Model_Communication');
@@ -57,13 +70,14 @@ class View_Communication extends \View {
 					$comm_model->tryLoadAny();
 
 					$form_fields = [
-							'communication_sub_type'=>'Edit Called Communication~c1~4',
-							'calling_status'=>'c2~4',
-							'created_at'=>'c3~4',
-							'from_number'=>'c1~4',
-							'to_number'=>'c2~4',
-							'employee'=>'c3~4',
-							'description'=>'c4~12'
+							'communication_sub_type~'.$config_m['sub_type_1_label_name']=>'Edit Call Received Communication~c1~4',
+							'calling_status~'.$config_m['sub_type_2_label_name']=>'c2~4',
+							'sub_type_3~'.$config_m['sub_type_3_label_name']=>'c3~4',
+							'created_at'=>'c4~3',
+							'from_number'=>'c5~3',
+							'to_number'=>'c6~3',
+							'employee'=>'c7~3',
+							'description'=>'c8~12'
 						];
 
 				}elseif($m['status'] == "Received"){
@@ -73,13 +87,14 @@ class View_Communication extends \View {
 					$comm_model->tryLoadAny();
 
 					$form_fields = [
-							'communication_sub_type'=>'Edit Call Received Communication~c1~4',
-							'calling_status'=>'c2~4',
-							'created_at'=>'c3~4',
-							'from_number'=>'c1~4',
-							'to_number'=>'c2~4',
-							'employee'=>'c3~4',
-							'description'=>'c4~12'
+							'communication_sub_type~'.$config_m['sub_type_1_label_name']=>'Edit Call Received Communication~c1~4',
+							'calling_status~'.$config_m['sub_type_2_label_name']=>'c2~4',
+							'sub_type_3~'.$config_m['sub_type_3_label_name']=>'c3~4',
+							'created_at'=>'c1~3',
+							'from_number'=>'c2~3',
+							'to_number'=>'c3~3',
+							'employee'=>'c4~3',
+							'description'=>'c5~12'
 						];
 				}elseif($m['status'] == "Personal"){
 					$comm_model = $this->add('xepan\communication\Model_Communication_Personal');
@@ -88,12 +103,13 @@ class View_Communication extends \View {
 					$comm_model->tryLoadAny();
 
 					$form_fields = [
-							'communication_sub_type'=>'Edit Personal Communication~c1~3',
-							'calling_status~Status'=>'c2~3',
-							'created_at'=>'c3~3',
-							'employee'=>'c4~3',
-							'related_employee'=>'c5~12',
-							'description'=>'c6~12'
+							'communication_sub_type~'.$config_m['sub_type_1_label_name']=>'Edit Call Received Communication~c1~4',
+							'calling_status~'.$config_m['sub_type_2_label_name']=>'c2~4',
+							'sub_type_3~'.$config_m['sub_type_3_label_name']=>'c3~4',
+							'created_at'=>'c4~4',
+							'employee'=>'c5~4',
+							'related_employee'=>'c6~12',
+							'description'=>'c7~12'
 						];
 				}elseif($m['status'] == "Commented"){
 					$comm_model = $this->add('xepan\communication\Model_Communication_Comment');
@@ -102,11 +118,12 @@ class View_Communication extends \View {
 					$comm_model->tryLoadAny();
 
 					$form_fields = [
-							'communication_sub_type'=>'Edit Comment Communication~c1~3',
-							'calling_status~Status'=>'c2~3',
-							'created_at'=>'c3~3',
-							'employee'=>'c4~3',
-							'description'=>'c5~12'
+							'communication_sub_type~'.$config_m['sub_type_1_label_name']=>'Edit Call Received Communication~c1~4',
+							'calling_status~'.$config_m['sub_type_2_label_name']=>'c2~4',
+							'sub_type_3~'.$config_m['sub_type_3_label_name']=>'c3~4',
+							'created_at'=>'c4~4',
+							'employee'=>'c5~4',
+							'description'=>'c6~12'
 						];
 				}
 
@@ -120,13 +137,6 @@ class View_Communication extends \View {
 					->addContentSpot()
 					->layout($form_fields);
 
-				$config_m = $this->add('xepan\communication\Model_Config_SubType');
-				$config_m->tryLoadAny();
-
-				
-				$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
-							
-				$company_m->tryLoadAny();
 
 				$company_number = explode(",", $company_m['mobile_no']);
 				$company_number = array_combine($company_number, $company_number);
@@ -140,6 +150,11 @@ class View_Communication extends \View {
 				$status_field = $form->addField('xepan\base\DropDown','calling_status')->setEmptyText('Please Select');
 				$status_field->setValueList(array_combine($status_array,$status_array));
 				$status_field->set($comm_model['calling_status']);
+
+				$sub_type_3_array = explode(",",$config_m['sub_type_3']);
+				$sub_type_3_field = $form->addField('xepan\base\DropDown','sub_type_3')->setEmptyText('Please Select');
+				$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
+				$sub_type_3_field->set($comm_model['sub_type_3']);
 
 				$form->addField('DateTimePicker','created_at')->validate('required')->set($comm_model['created_at']);
 				
@@ -207,7 +222,7 @@ class View_Communication extends \View {
 				}
 
 			});
-	
+		
 		$this->acl_controller = $this->add('xepan\hr\Controller_ACL',['based_on_model'=>'xepan\communication\Model_Communication']);
 
 	}
@@ -381,6 +396,7 @@ class View_Communication extends \View {
 	}
 
 	function manageEmail($email_icon, $edit_communication= null){
+
 		$email_popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Send Email');
 		$email_popup->setTitle('Send New Email');
 		$default_to_ids=implode(",",$this->contact->getEmails());
@@ -592,18 +608,19 @@ class View_Communication extends \View {
 			->closeOtherPanels()
 			->addContentSpot()
 			->layout([
-				'communication_sub_type'=>'Called Content~c1~4',
-				'calling_status'=>'c2~4',
-				'date'=>'c3~4',
-				'from_number'=>'c1~4',
-				'to_number'=>'c2~4',
-				'call_by_employee'=>'c3~4',
-				'description'=>'c4~12',
+				'communication_sub_type~'.$this->config_subtype['sub_type_1_label_name']=>'Called Content~c1~3',
+				'calling_status~'.$this->config_subtype['sub_type_2_label_name']=>'c2~3',
+				'sub_type_3~'.$this->config_subtype['sub_type_3_label_name']=>'c3~3',
+				'date'=>'c4~3',
+				'from_number'=>'c5~4',
+				'to_number'=>'c6~4',
+				'call_by_employee'=>'c7~4',
+				'description'=>'b1~12',
 
-				'notify_via_email~'=>'c5~12',
-				'notify_email_subject'=>'c6~4',
-				'notify_from_email_id'=>'c7~4',
-				'notify_to_email_ids'=>'c11~4',	
+				'notify_via_email~'=>'b5~12',
+				'notify_email_subject'=>'b6~4',
+				'notify_from_email_id'=>'b7~4',
+				'notify_to_email_ids'=>'b11~4',	
 
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
@@ -620,11 +637,9 @@ class View_Communication extends \View {
 				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\communication\Model_Config_SubType');
-		$config_m->tryLoadAny();
+		$config_m = $this->config_subtype;
+		$company_m = $this->config_company;
 		
-		$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
-		$company_m->tryLoadAny();
 		$company_number = explode(",", $company_m['mobile_no']);
 		$company_number = array_combine($company_number, $company_number);
 
@@ -637,6 +652,13 @@ class View_Communication extends \View {
 		$calling_status_field = $form->addField('xepan\base\DropDown','calling_status')->setEmptyText('Please Select');
 		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
 		
+		$sub_type_3_array = explode(",",$config_m['sub_type_3']);
+		$sub_type_3_field = $form->addField('xepan\base\DropDown','sub_type_3');
+		if(count($sub_type_3_array))
+			$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
+		$sub_type_3_field->setEmptyText('Please Select');
+		
+
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
 
 		$from_number_field = $form->addField('xepan\base\DropDown','from_number');
@@ -829,18 +851,19 @@ class View_Communication extends \View {
 			->closeOtherPanels()
 			->addContentSpot()
 			->layout([
-				'communication_sub_type'=>'Call Received Content~c1~4',
-				'calling_status'=>'c2~4',
-				'date'=>'c3~4',
-				'from_number'=>'c1~4',
-				'to_number'=>'c2~4',
-				'call_received_by_employee'=>'c3~4',
-				'description'=>'c4~12',
+				'communication_sub_type~'.$this->config_subtype['sub_type_1_label_name']=>'Call Received Content~c1~4',
+				'calling_status~'.$this->config_subtype['sub_type_2_label_name']=>'c2~4',
+				'sub_type_3~'.$this->config_subtype['sub_type_3_label_name']=>'c3~4',
+				'date'=>'c4~4',
+				'from_number'=>'c5~4',
+				'to_number'=>'c6~4',
+				'call_received_by_employee'=>'c7~4',
+				'description'=>'c8~12',
 
-				'notify_via_email~'=>'c5~12',
-				'notify_email_subject'=>'c6~4',
-				'notify_from_email_id'=>'c7~4',
-				'notify_to_email_ids'=>'c11~4',	
+				'notify_via_email~'=>'b5~12',
+				'notify_email_subject'=>'b6~4',
+				'notify_from_email_id'=>'b7~4',
+				'notify_to_email_ids'=>'b11~4',	
 
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
@@ -857,11 +880,8 @@ class View_Communication extends \View {
 				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\communication\Model_Config_SubType');
-		$config_m->tryLoadAny();
-		
-		$company_m = $this->add('xepan\base\Model_Config_CompanyInfo');
-		$company_m->tryLoadAny();
+		$config_m = $this->config_subtype;
+		$company_m = $this->config_company;
 		
 		$company_number = explode(",", $company_m['mobile_no']);
 		$company_number = array_combine($company_number, $company_number);
@@ -883,6 +903,12 @@ class View_Communication extends \View {
 		$calling_status_field = $form->addField('xepan\base\DropDown','calling_status')->setEmptyText('Please Select');
 		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
 		
+		$sub_type_3_array = explode(",",$config_m['sub_type_3']);
+		$sub_type_3_field = $form->addField('xepan\base\DropDown','sub_type_3');
+		if(count($sub_type_3_array))
+			$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
+		$sub_type_3_field->setEmptyText('Please Select');
+
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
 
 		$from_number_field = $form->addField('xepan\base\DropDown','from_number');
@@ -1073,12 +1099,13 @@ class View_Communication extends \View {
 			->closeOtherPanels()
 			->addContentSpot()
 			->layout([
-				'communication_sub_type'=>'Meeting/Personal Content~c1~3',
-				'calling_status~status'=>'c2~3',
-				'date'=>'c3~3',
-				'employee'=>'c4~3',
+				'communication_sub_type~'.$this->config_subtype['sub_type_1_label_name']=>'Meeting/Personal Content~c1~4',
+				'calling_status~'.$this->config_subtype['sub_type_2_label_name']=>'c2~4',
+				'sub_type_3~'.$this->config_subtype['sub_type_3_label_name']=>'c3~4',
+				'date'=>'c4~4',
+				'employee'=>'c5~4',
 				'related_employee'=>'b1~12',
-				'description'=>'c5~12',
+				'description'=>'c15~12',
 
 				'notify_via_email~'=>'c6~12',
 				'notify_email_subject'=>'c7~4',
@@ -1100,8 +1127,7 @@ class View_Communication extends \View {
 				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\communication\Model_Config_SubType');
-		$config_m->tryLoadAny();
+		$config_m = $this->config_subtype;
 		$sub_type_array = explode(",",$config_m['sub_type']);
 
 		// fields
@@ -1112,6 +1138,13 @@ class View_Communication extends \View {
 		$calling_status_field = $form->addField('xepan\base\DropDown','calling_status')->setEmptyText('Please Select');
 		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
 		
+		$sub_type_3_array = explode(",",$config_m['sub_type_3']);
+		$sub_type_3_field = $form->addField('xepan\base\DropDown','sub_type_3');
+		if(count($sub_type_3_array))
+			$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
+		$sub_type_3_field->setEmptyText('Please Select');
+
+
 		$form->addField('xepan\hr\Employee','employee')->setCurrent();
 
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
@@ -1312,16 +1345,17 @@ class View_Communication extends \View {
 			->closeOtherPanels()
 			->addContentSpot()
 			->layout([
-				'communication_sub_type'=>'Comment Content~c1~3',
-				'calling_status'=>'c2~3',
-				'date'=>'c3~3',
-				'employee'=>'c4~3',
-				'description'=>'c5~12',
+				'communication_sub_type~'.$this->config_subtype['sub_type_2_label_name']=>'Comment Content~c1~4',
+				'calling_status~'.$this->config_subtype['sub_type_2_label_name']=>'c2~4',
+				'sub_type_3~'.$this->config_subtype['sub_type_3_label_name']=>'c3~4',
+				'date'=>'c4~4',
+				'employee'=>'c5~4',
+				'description'=>'c6~12',
 
-				'notify_via_email~'=>'c6~12',
-				'notify_email_subject'=>'c7~4',
-				'notify_from_email_id'=>'c8~4',
-				'notify_to_email_ids'=>'c11~4',	
+				'notify_via_email~'=>'d6~12',
+				'notify_email_subject'=>'d7~4',
+				'notify_from_email_id'=>'d8~4',
+				'notify_to_email_ids'=>'d11~4',	
 
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
@@ -1338,8 +1372,8 @@ class View_Communication extends \View {
 				'snooze_unit'=>'f32~2'
 			]);
 
-		$config_m = $this->add('xepan\communication\Model_Config_SubType');
-		$config_m->tryLoadAny();
+		$config_m = $this->config_subtype;
+		// $config_m->tryLoadAny();
 
 		$sub_type_array = explode(",",$config_m['sub_type']);
 		$sub_type_field = $form->addField('xepan\base\DropDown','communication_sub_type')->setEmptyText("Please Select");
@@ -1349,6 +1383,12 @@ class View_Communication extends \View {
 		$calling_status_field = $form->addField('xepan\base\DropDown','calling_status')->setEmptyText('Please Select');
 		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
 		
+		$sub_type_3_array = explode(",",$config_m['sub_type_3']);
+		$sub_type_3_field = $form->addField('xepan\base\DropDown','sub_type_3');
+		if(count($sub_type_3_array))
+			$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
+		$sub_type_3_field->setEmptyText('Please Select');
+
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
 
 		$emp_field = $form->addField('xepan\hr\Employee','employee')->setCurrent();

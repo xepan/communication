@@ -186,17 +186,36 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$config_m->add('xepan\hr\Controller_ACL');
 		$config_m->tryLoadAny();
 
-		$this->add('View')->set('Enter comma seperated values with no space');
-		$sub_type_form = $this->add('Form_Stacked');
-		$sub_type_form->setModel($config_m,['sub_type','calling_status']);
+		$sub_type_form = $this->add('Form');
+		$sub_type_form->add('xepan\base\Controller_FLC')
+			->showLables(true)
+			->makePanelsCoppalsible(true)
+			->addContentSpot()
+			->layout([
+					'sub_type_1_label_name~Sub Type 1 Label Name'=>'Sub Types and its Label~c1~4',
+					'sub_type~Sub Type 1'=>'c2~8~Enter comma seperated values with no space',
+					'sub_type_2_label_name~Sub Type 2 Label Name'=>'c3~4',
+					'calling_status~Sub Type 2'=>'c4~8~Enter comma seperated values with no space',
+					'sub_type_3_label_name~Sub Type 3 Label Name'=>'c5~4',
+					'sub_type_3~Sub Type 2'=>'c6~8~Enter comma seperated values with no space',
+					'FormButtons~&nbsp;'=>'c10~4'
+				]);
+
+		$sub_type_form->setModel($config_m,['sub_type_1_label_name','sub_type','sub_type_2_label_name','calling_status','sub_type_3_label_name','sub_type_3']);
 		$sub_type_form->getElement('sub_type')->set($config_m['sub_type']);
 		$sub_type_form->getElement('calling_status')->set($config_m['calling_status']);
+		$sub_type_form->getElement('sub_type_3')->set($config_m['sub_type_3']);
+		$sub_type_form->getElement('sub_type_1_label_name')->set($config_m['sub_type_1_label_name']?:"Product/ Service/ Related To");
+		$sub_type_form->getElement('sub_type_2_label_name')->set($config_m['sub_type_2_label_name']?:"Communication Result");
+		$sub_type_form->getElement('sub_type_3_label_name')->set($config_m['sub_type_3_label_name']?:"Communication Remark");
+
 		$sub_type_form->addSubmit('Save')->addClass('btn btn-primary');
 		
 		if($sub_type_form->isSubmitted()){
 			$sub_type_form->save();
 			$sub_type_form->js(null,$sub_type_form->js()->reload())->univ()->successMessage('Information Saved')->execute();
 		}
+
 	}
 
 	function page_supportverify(){
