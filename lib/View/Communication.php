@@ -43,6 +43,11 @@ class View_Communication extends \View {
 		$this->config_company = $this->add('xepan\base\Model_Config_CompanyInfo');			
 		$this->config_company->tryLoadAny();
 
+		$task_subtype_m = $this->add('xepan\projects\Model_Config_TaskSubtype');
+		$task_subtype_m->tryLoadAny();
+		$this->task_subtype = explode(",",$task_subtype_m['value']);
+		$this->task_subtype = array_combine($this->task_subtype, $this->task_subtype);
+
 		$this->app->stickyGET('edit_communication_id');
 		$this->edit_vp = $this->add('VirtualPage')
 			->set(function($page){
@@ -425,8 +430,9 @@ class View_Communication extends \View {
 				'score_buttons~Score'=>'c7~6',
 				'score~'=>'c7~',
 				
-				'assigned_to'=>'c10~6',
-				'followup_on'=>'c9~4',
+				'assigned_to'=>'c10~4',
+				'followup_on'=>'c8~3',
+				'followup_type'=>'c9~3',
 				'existing_schedule~ '=>'x1~2',
 
 				'followup_detail'=>'c11~12',
@@ -460,6 +466,9 @@ class View_Communication extends \View {
 		$follow_up = $form->addField('Checkbox','follow_up');
 		$followup_on = $form->addField('DateTimePicker','followup_on');
 		$followup_on->js(true)->val('');
+
+		$followup_type = $form->addField('DropDown','followup_type')->setValueList($this->task_subtype)->setEmptyText('Please Select ...');
+
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
@@ -484,7 +493,7 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+			'*'=>['followup_on','followup_type','assigned_to','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
@@ -573,6 +582,7 @@ class View_Communication extends \View {
 				$model_task['assign_to_id'] = $form['assigned_to'];
 				$model_task['description'] = $form['followup_detail'];
 				$model_task['related_id'] = $this->contact->id;
+				$model_task['sub_type'] = $form['followup_type'];
 				if($form['set_reminder']){
 					$model_task['set_reminder'] = true;
 					$model_task['reminder_time'] = $form['reminder_at'];
@@ -636,8 +646,10 @@ class View_Communication extends \View {
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
-				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~4',
+				'assigned_to'=>'f25~4',
+				'followup_on'=>'f24~3',
+				'followup_type'=>'g27~3',
+
 				'existing_schedule~ '=>'x1~2',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
@@ -669,6 +681,7 @@ class View_Communication extends \View {
 			$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
 		$sub_type_3_field->setEmptyText('Please Select');
 		
+		$followup_type = $form->addField('DropDown','followup_type')->setValueList($this->task_subtype)->setEmptyText('Please Select ...');
 
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
 
@@ -732,7 +745,7 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+			'*'=>['followup_on','followup_type','assigned_to','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 		
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
@@ -818,6 +831,7 @@ class View_Communication extends \View {
 				$model_task['assign_to_id'] = $form['assigned_to'];
 				$model_task['description'] = $form['followup_detail'];
 				$model_task['related_id'] = $this->contact->id;
+				$model_task['sub_type'] = $form['followup_type'];
 				if($form['set_reminder']){
 					$model_task['set_reminder'] = true;
 					$model_task['reminder_time'] = $form['reminder_at'];
@@ -879,8 +893,9 @@ class View_Communication extends \View {
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
-				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~4',
+				'assigned_to'=>'f25~4',
+				'followup_on'=>'f24~3',
+				'followup_type'=>'g24~3',
 				'existing_schedule~'=>'x1~2',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
@@ -919,6 +934,8 @@ class View_Communication extends \View {
 		if(count($sub_type_3_array))
 			$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
 		$sub_type_3_field->setEmptyText('Please Select');
+
+		$followup_type = $form->addField('DropDown','followup_type')->setValueList($this->task_subtype)->setEmptyText('Please Select ...');
 
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
 
@@ -979,7 +996,7 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+			'*'=>['followup_on','assigned_to','followup_type','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
@@ -1066,6 +1083,7 @@ class View_Communication extends \View {
 				$model_task['assign_to_id'] = $form['assigned_to'];
 				$model_task['description'] = $form['followup_detail'];
 				$model_task['related_id'] = $this->contact->id;
+				$model_task['sub_type'] = $form['followup_type'];
 				if($form['set_reminder']){
 					$model_task['set_reminder'] = true;
 					$model_task['reminder_time'] = $form['reminder_at'];
@@ -1126,8 +1144,9 @@ class View_Communication extends \View {
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
-				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~4',
+				'assigned_to'=>'f25~4',
+				'followup_on'=>'f24~3',
+				'followup_type'=>'g24~3',
 				'existing_schedule~ '=>'f44~2',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
@@ -1187,6 +1206,8 @@ class View_Communication extends \View {
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
+		$followup_type = $form->addField('DropDown','followup_type')->setValueList($this->task_subtype)->setEmptyText('Please Select ...');
+
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
 		$reminder_at->js(true)->val('');
@@ -1207,7 +1228,7 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+			'*'=>['followup_on','assigned_to','followup_type','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 			
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
@@ -1301,6 +1322,8 @@ class View_Communication extends \View {
 				$model_task['assign_to_id'] = $form['assigned_to'];
 				$model_task['description'] = $form['followup_detail'];
 				$model_task['related_id'] = $this->contact->id;
+				$model_task['sub_type'] = $form['followup_type'];
+
 				if($form['set_reminder']){
 					$model_task['set_reminder'] = true;
 					$model_task['reminder_time'] = $form['reminder_at'];
@@ -1371,8 +1394,9 @@ class View_Communication extends \View {
 				'follow_up'=>'f1~8',
 				'score_buttons~Score'=>'f2~2',
 				'score~'=>'f23',
-				'assigned_to'=>'f25~6',
-				'followup_on'=>'f24~4',
+				'assigned_to'=>'f25~4',
+				'followup_on'=>'f24~3',
+				'followup_type'=>'g24~3',
 				'existing_schedule~'=>'x1~2',
 				'followup_detail'=>'f26~12',
 				'set_reminder'=>'f27~12',
@@ -1432,6 +1456,8 @@ class View_Communication extends \View {
 		$assigned_to = $form->addField('xepan\hr\Employee','assigned_to')->setCurrent();
 		$form->addField('Text','followup_detail');
 
+		$followup_type = $form->addField('DropDown','followup_type')->setValueList($this->task_subtype)->setEmptyText('Please Select ...');
+
 		$reminder = $form->addField('CheckBox','set_reminder');
 		$reminder_at = $form->addField('DateTimePicker','reminder_at');
 		$reminder_at->js(true)->val('');
@@ -1452,7 +1478,7 @@ class View_Communication extends \View {
 
 		$follow_up->js(true)->univ()->bindConditionalShow([
 			''=>[],
-			'*'=>['followup_on','assigned_to','followup_detail','existing_schedule']
+			'*'=>['followup_on','assigned_to','followup_type','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
 		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
@@ -1542,6 +1568,7 @@ class View_Communication extends \View {
 				$model_task['assign_to_id'] = $form['assigned_to'];
 				$model_task['description'] = $form['followup_detail'];
 				$model_task['related_id'] = $this->contact->id;
+				$model_task['sub_type'] = $form['followup_type'];
 				if($form['set_reminder']){
 					$model_task['set_reminder'] = true;
 					$model_task['reminder_time'] = $form['reminder_at'];
