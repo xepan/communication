@@ -7,7 +7,7 @@ class Model_Communication_SMSSetting extends \xepan\base\Model_Table{
 	public $acl_type="Communication_SMSSetting";
 	function init(){
 		parent::init();
-		$this->hasOne('xepan\base\Contact','created_by_id');
+		$this->hasOne('xepan\base\Contact','created_by_id')->set(@$this->app->employee->id);
 		$this->addField('name');
 		$this->addField('gateway_url')->caption('GateWay Url');
 		$this->addField('sms_username')->caption('Gateway User Name');

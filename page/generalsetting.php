@@ -45,18 +45,15 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 
 
 	function page_smssettings(){
+		
 		$sms_view_model = $this->add('xepan\communication\Model_Communication_SMSSetting');
 		$sms_view = $this->add('xepan\hr\CRUD',null,null,['view/setting/sms-setting-grid']);
 		if($sms_view->isEditing()){
-			$form=$sms_view->form;
+			$form = $sms_view->form;
 			$form->setLayout('view/setting/form/sms-setting');
 			$form->js(true)->find('button')->addClass('btn btn-primary');
 		}
-		if($sms_view->isEditing()){
-		if($emp_id= $this->app->employee->id)
-			$sms_view_model->addCondition('created_by_id',$emp_id);
-		}
-		$sms_view->setModel($sms_view_model);
+		$sms_view->setModel($sms_view_model,['name','gateway_url','sms_username','sms_password','sms_user_name_qs_param','sms_password_qs_param','sms_number_qs_param','sm_message_qs_param','sms_prefix','sms_postfix']);
 	}
 
 	function page_timezone(){
