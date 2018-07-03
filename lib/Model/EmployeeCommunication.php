@@ -2,48 +2,88 @@
 
 namespace xepan\communication;
 
-/**
-* 
-*/
 class Model_EmployeeCommunication extends \xepan\hr\Model_Employee{
+
 	public $from_date;
 	public $to_date;
+
 	function init(){
 		parent::init();
+
 		$this->addCondition('status','Active');
-		// throw new \Exception($this->from_date, 1);
-		
+
 		$this->addExpression('total_call')->set(function($m,$q){
 			// return $q->getField('id');
 			$all_call = $this->add('xepan\communication\Model_Communication_Call',['table_alias'=>'employee_commni_all_calls']);
-				return 	$all_call->addCondition('created_by_id',$q->getField('id'))
-							->addCondition('communication_type','Call')
-							->addCondition('created_at','>=',$this->from_date)
-							->addCondition('created_at','<',$this->api->nextDate($this->to_date))
-							->count();
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('communication_type','Call')
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
 		});
 
 		$this->addExpression('dial_call')->set(function($m,$q){
-			// return $q->getField('id');
 			$all_call = $this->add('xepan\communication\Model_Communication_Call',['table_alias'=>'employee_commni_all_calls']);
-				return 	$all_call->addCondition('created_by_id',$q->getField('id'))
-							->addCondition('communication_type','Call')
-							->addCondition('status','Called')
-							->addCondition('created_at','>=',$this->from_date)
-							->addCondition('created_at','<',$this->api->nextDate($this->to_date))
-							->count();
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('communication_type','Call')
+						->addCondition('status','Called')
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
 		});
+
 		$this->addExpression('received_call')->set(function($m,$q){
-					// return $q->getField('id');
-					$all_call = $this->add('xepan\communication\Model_Communication_Call',['table_alias'=>'employee_commni_all_calls']);
-						return 	$all_call->addCondition('created_by_id',$q->getField('id'))
-									->addCondition('communication_type','Call')
-									->addCondition('status','Received')
-									->addCondition('created_at','>=',$this->from_date)
-									->addCondition('created_at','<',$this->api->nextDate($this->to_date))
-									->count();
-				});
+			$all_call = $this->add('xepan\communication\Model_Communication_Call',['table_alias'=>'employee_commni_all_calls']);
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('communication_type','Call')
+						->addCondition('status','Received')
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
+		});
+
+		$this->addExpression('total_email')->set(function($m,$q){
+			$all_call = $this->add('xepan\communication\Model_Communication_Email',['table_alias'=>'employee_commni_all_emails']);
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						// ->addCondition('status','Received')
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
+		});
+
+		$this->addExpression('total_comment')->set(function($m,$q){
+			$all_call = $this->add('xepan\communication\Model_Communication_Comment',['table_alias'=>'employee_commni_all_comment']);
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
+		});
+
+		$this->addExpression('total_meeting')->set(function($m,$q){
+			$all_call = $this->add('xepan\communication\Model_Communication_Personal',['table_alias'=>'employee_commni_all_personal']);
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
+		});
+
+		$this->addExpression('total_sms')->set(function($m,$q){
+			$all_call = $this->add('xepan\communication\Model_Communication_SMS',['table_alias'=>'employee_commni_all_sms']);
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
+		});
+
+		$this->addExpression('total_telemarketing')->set(function($m,$q){
+			$all_call = $this->add('xepan\communication\Model_Communication_TeleMarketing',['table_alias'=>'employee_commni_all_telemarketing']);
+			return 	$all_call->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->count();
+		});
 
 		
+
 	}
 }
