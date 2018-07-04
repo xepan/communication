@@ -113,9 +113,9 @@ class Initiator extends \Controller_Addon {
 		        		'icon'=>'fa fa-cog',
 		        		'url'=>'xepan_base_documentactionnotification'
 		        	],
-		        	[	'name'=>'Custom Menu Designer',
+		        	[	'name'=>'Document Action Notification',
 		        		'icon'=>'fa fa-cog',
-		        		'url'=>'xepan_base_menudesigner'
+		        		'url'=>'xepan_base_documentactionnotification'
 		        	]
 				]
 			];
