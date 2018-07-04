@@ -49,6 +49,74 @@ class Initiator extends \Controller_Addon {
         $m->addItem(['Document Action Notification','icon'=>' fa fa-cog'],$this->app->url('xepan_base_documentactionnotification'));
 	}
 
+	function getConfigTopApplicationMenu(){
+
+		return [
+				'System'=>[
+					[	'name'=>'Company Information',
+						'icon'=>'fa fa-cog',
+						'url'=>'xepan_communication_generalsetting_companyinfo'
+					],
+		    		[	'name'=>'Email Settings',
+		    			'icon'=>'fa fa-envelope',
+		    			'url'=>'xepan_communication_generalsetting_emailsetting'
+		    		],
+		    		[	'name'=>'SMS Settings',
+		    			'icon'=>'fa fa-mobile',
+		    			'url'=>'xepan_communication_generalsetting_smssettings'
+		    		],
+		    		[	'name'=>'TimeZone Setting',
+		    			'icon'=>'fa fa-cog',
+		    			'url'=>'xepan_communication_generalsetting_timezone'
+		    		],
+		    		[	'name'=>'IP Restrictions (For Admin Access)',
+		    			'icon'=>'fa fa-cog',
+		    			'url'=>'xepan_communication_generalsetting_iprestrictions'
+		    		],
+		    		[	'name'=>'Duplicate Email Settings',
+		    			'icon'=>'fa fa-cog',
+		    			'url'=>'xepan_communication_generalsetting_duplicateemailsetting'
+		    		],
+		    		[	'name'=>'Duplicate Numbers Settings',
+		    			'icon'=>'fa fa-cog',
+		    			'url'=>'xepan_communication_generalsetting_duplicatecontactsetting'
+		    		],
+		    		[	'name'=>'Communication Sub Types',
+		    			'icon'=>'fa fa-cog',
+		    			'url'=>'xepan_communication_generalsetting_commsubtype'
+		    		],
+		    		[	'name'=>'Contacts Other Info and Tags',
+		    			'icon'=>'fa fa-cog',
+		    			'url'=>'xepan_communication_generalsetting_contactsetting'
+		    		],
+		    		[	'name'=>'Documents Other Info and Tags',
+		    			'icon'=>'fa fa-cog',
+		    			'url'=>'xepan_communication_generalsetting_documentsetting'
+		    		],
+		    		[	'name'=>'Country/State Management',
+		    			'icon'=>' fa fa-users',
+		    			'url'=>'xepan_communication_general_countrystate'
+		    		],
+		    		[	'name'=>'Admin User Setting',
+		    			'icon'=>' fa fa-users',
+		    			'url'=>'xepan_communication_general_emailcontent_admin'
+		    		],
+		        	[	'name'=>'Frontend User Setting',
+		        		'icon'=>' fa fa-users',
+		        		'url'=>'xepan_communication_general_emailcontent_usertool'
+		        	],
+		        	[	'name'=>'Backup & Update',
+		        		'icon'=>'fa fa-users',
+		        		'url'=>'xepan_base_update'
+		        	],
+		        	[	'name'=>'Document Action Notification',
+		        		'icon'=>'fa fa-cog',
+		        		'url'=>'xepan_base_documentactionnotification'
+		        	]
+				]
+			];
+	}
+
 	function populateApplicationMenus(){
 		if(!$this->app->isAjaxOutput() && !$this->app->getConfig('hidden_xepan_communication',false)){
 			$this->app->side_menu->addItem(['Emails','icon'=>' fa fa-envelope','badge'=>["0/0",'swatch'=>' label label-primary pull-right']],'xepan_communication_emails')->setAttr(['title'=>'Emails'])->addClass('contact-and-all-email-count');
@@ -56,6 +124,14 @@ class Initiator extends \Controller_Addon {
 			// $this->app->side_menu->addItem(['General Setting','icon'=>'fa fa-cog'],'xepan_communication_generalsetting')->setAttr(['title'=>'General Setting']);
 		}
 	}
+
+	function getConfigTopApplicationMenu(){
+        return [
+                'CMS_&_Website_Config'=>[
+
+               		]
+            ];
+    }
 
 	function exportWidgets($app,&$array){
         $array[] = ['xepan\communication\Widget_UnreadMails','level'=>'Individual','title'=>'Unread Mails'];
