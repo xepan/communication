@@ -125,14 +125,6 @@ class Initiator extends \Controller_Addon {
 		}
 	}
 
-	function getConfigTopApplicationMenu(){
-        return [
-                'CMS_&_Website_Config'=>[
-
-               		]
-            ];
-    }
-
 	function exportWidgets($app,&$array){
         $array[] = ['xepan\communication\Widget_UnreadMails','level'=>'Individual','title'=>'Unread Mails'];
     }
