@@ -6,15 +6,42 @@ class page_report_employeecommunication extends \xepan\base\Page{
 
 	public $title = "Employee Communication Reports";
 	public $sub_type_1_fields;
+	public $sub_type_1_norm_unnorm_array=[];
 	public $sub_type_2_fields;
+	public $sub_type_2_norm_unnorm_array=[];
 	public $sub_type_3_fields;
+	public $sub_type_3_norm_unnorm_array=[];
 	public $communication_fields;
+	public $config_m;
 
 	function init(){
 		parent::init();
+		
+		$this->config_m = $this->add('xepan\communication\Model_Config_SubType');
+		$this->config_m->tryLoadAny();
 
-		$config_m = $this->add('xepan\communication\Model_Config_SubType');
-		$config_m->tryLoadAny();
+		// subtype 1
+		foreach(explode(",", $this->config_m['sub_type']) as $subtypes) {
+			$subtype_name = $this->app->normalizeName($subtypes);
+			$this->sub_type_1_norm_unnorm_array[$subtype_name] = $subtypes;
+		}
+
+		foreach(explode(",", $this->config_m['calling_status']) as $subtypes) {
+			$subtype_name = $this->app->normalizeName($subtypes);
+			$this->sub_type_2_norm_unnorm_array[$subtype_name] = $subtypes;
+		}
+
+		foreach(explode(",", $this->config_m['sub_type_3']) as $subtypes) {
+			$subtype_name = $this->app->normalizeName($subtypes);
+			$this->sub_type_3_norm_unnorm_array[$subtype_name] = $subtypes;
+		}		
+
+	}
+
+	function page_index(){
+		// parent::init();
+
+		$config_m = $this->config_m;
 
 		$emp_id = $this->app->stickyGET('employee_id');
 		$this->from_date = $from_date  = $this->app->stickyGET('from_date')?:$this->app->today;
@@ -104,6 +131,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			});
 		}
 
+		// $this->app->print_r($this->sub_type_1_norm_unnorm_array);
 		// sub type 2
 		$emp_model->addExpression('subtype_2')->set('""')->caption($config_m['sub_type_2_label_name']?:"Sub Type 2");
 		$model_field_array[] = "subtype_2";
@@ -132,7 +160,6 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$subtype_name = $this->app->normalizeName($sub_type_3);
 			$model_field_array[] = $subtype_name;
 			$this->sub_type_3_fields[] = $subtype_name;
-
 			$emp_model->addExpression($subtype_name)->set(function($m,$q)use($sub_type_3){
 					return $m->add('xepan\communication\Model_Communication')
 								->addCondition('created_by_id',$q->getfield('id'))
@@ -167,33 +194,33 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$communication_graph_data_label = [];
 			$comm_label_str = "";
 			if($g->model['total_email']){
-				$comm_label_str .= "Email: ".$g->model['total_email']."<br/>";
+				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('Email communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Email'))).'">'."Email: ".$g->model['total_email'].'</a><br/>';
 				$communication_graph_data[] = $g->model['total_email'];
 				$communication_graph_data_label[] = "Email: ".$g->model['total_email'];
 			}
 			if($g->model['total_comment']){
-				$comm_label_str .= "Comment: ".$g->model['total_comment']."<br/>";
+				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('Comment communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Comment'))).'">'."Comment: ".$g->model['total_comment'].'</a><br/>';
 				$communication_graph_data[] = $g->model['total_comment'];
 				$communication_graph_data_label[] = "Comment: ".$g->model['total_comment'];
 			}
 
 			if($g->model['total_meeting']){
-				$comm_label_str .= "Meeting: ".$g->model['total_meeting']."<br/>";
+				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('Meeting communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Personal'))).'">'."Meeting: ".$g->model['total_meeting'].'</a><br/>';
 				$communication_graph_data[] = $g->model['total_meeting'];
 				$communication_graph_data_label[] = "Meeting: ".$g->model['total_meeting'];
 			}
 			if($g->model['total_sms']){
-				$comm_label_str .= "SMS: ".$g->model['total_sms']."<br/>";
+				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('SMS communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Sms'))).'">'."SMS: ".$g->model['total_sms'].'</a><br/>';
 				$communication_graph_data[] = $g->model['total_sms'];
 				$communication_graph_data_label[] = "SMS: ".$g->model['total_sms'];
 			}
 			if($g->model['total_telemarketing']){
-				$comm_label_str .= "Tele: ".$g->model['total_telemarketing']."<br/>";
+				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('TeleMarketing communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'TeleMarketing'))).'">'."TeleMarketing: ".$g->model['total_telemarketing'].'</a><br/>';
 				$communication_graph_data[] = $g->model['total_telemarketing'];
 				$communication_graph_data_label[] = "Tele: ".$g->model['total_telemarketing'];
 			}
 			if($g->model['total_call']){
-				$comm_label_str .= "Call: ".$g->model['total_call']."<br/>";
+				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('TeleMarketing communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Call'))).'">'."Call: ".$g->model['total_call'].'</a><br/>';
 				$communication_graph_data[] = $g->model['total_call'];
 				$communication_graph_data_label[] = "Call: ".$g->model['total_call'];
 			}
@@ -202,15 +229,12 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$sub_type_1_graph_data = [];
 			$sub_type_1_graph_data_label = [];
 			foreach ($this->sub_type_1_fields as $name) {
-				// $sub_type_1_graph_data .= $g->model[$name].","
 				if(!$g->model[$name]) continue;
 
 				$sub_type_1_graph_data[] = $g->model[$name];
 				$sub_type_1_graph_data_label[] = $name.": ".$g->model[$name];
-				$sub_type_1_label_str .= $name.": ".$g->model[$name]."<br/>";
+				$sub_type_1_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL($name.' communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'sub_type_1'=>$name))).'"> '.$name.": ".$g->model[$name].'</a><br/>';
 			}
-			// $sub_type_1_graph_data = trim($sub_type_1_graph_data,',');
-			$sub_type_1_label_str = trim($sub_type_1_label_str,'<br/>');
 
 
 			$sub_type_2_label_str = "";
@@ -221,11 +245,9 @@ class page_report_employeecommunication extends \xepan\base\Page{
 
 				$sub_type_2_graph_data[] = $g->model[$name];
 				$sub_type_2_graph_data_label[] = $name.": ".$g->model[$name];
-				$sub_type_2_label_str .= $name.": ".$g->model[$name]."<br/>";
-				// $sub_type_2_graph_data .= $g->model[$name].",";
+				$sub_type_2_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL($name.' communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'sub_type_2'=>$name))).'"> '.$name.": ".$g->model[$name].'</a><br/>';
 			}
-			// $sub_type_2_graph_data = trim($sub_type_2_graph_data,',');
-			$sub_type_2_label_str = trim($sub_type_2_label_str,'<br/>');
+			
 
 			$sub_type_3_graph_data = [];
 			$sub_type_3_graph_data_label = [];
@@ -235,10 +257,9 @@ class page_report_employeecommunication extends \xepan\base\Page{
 
 				$sub_type_3_graph_data[] = $g->model[$name];
 				$sub_type_3_graph_data_label[] = $name.": ".$g->model[$name];
-				$sub_type_3_label_str .= $name.": ".$g->model[$name]."<br/>";
+				$sub_type_3_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL($name.' communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'sub_type_3'=>$name))).'"> '.$name.": ".$g->model[$name].'</a><br/>';
 			}
-			// $sub_type_3_graph_data = trim($sub_type_3_graph_data,',');
-			// $sub_type_3_label_str = trim($sub_type_3_label_str,'<br/>');
+			
 
 			$g->current_row_html['communication'] = '<div class="row""><div class="col-md-7"> <div data-id="'.$g->model->id.'" sparkType="pie" sparkHeight="70px" class="sparkline communication"></div></div><div class="col-md-5"> <small>'.$comm_label_str."</small></div></div>";
 			$g->current_row_html['subtype_1'] = '<div class="row"><div class="col-md-7"> <div data-id="'.$g->model->id.'" sparkType="pie" sparkHeight="70px" class="sparkline subtype1"></div></div><div class="col-md-5"><small>'.$sub_type_1_label_str."</small></div></div>";
@@ -295,153 +316,103 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		foreach ($this->sub_type_3_fields as $name) {
 			$grid->removeColumn($name);
 		}
-
-
-		// /*Report Digging*/
-		// $total_call_vp = $this->add('VirtualPage')->set(function($page){			
-		// 	$employee_id = $this->app->stickyGET('employee_id');
-		// 	$all_call = $this->add('xepan\communication\Model_Communication_Call',['table_alias'=>'employee_commni_all_calls']);
-		// 	$all_call->addCondition('created_by_id',$employee_id)
-		// 					->addCondition('communication_type','Call')
-		// 					->addCondition('created_at','>=',$_GET['from_date'])
-		// 					->addCondition('created_at','<',$this->api->nextDate($_GET['to_date']))
-		// 					;
-		// 	$grid = $page->add('xepan\hr\Grid');
-		// 	$grid->setModel($all_call,['to','title','description','sub_type','calling_status','sub_type_3','created_at','status','created_by']);
-		// 	$grid->addPaginator(10);
-		// 	$all_call->setOrder('created_at','desc');
-		// 	$grid->addHook('formatRow',function($g){
-		// 		$g->current_row_html['description'] = $g->model['description'];
-		// 	});
-		// });
-		// $grid->addMethod('format_total_call',function($g,$f)use($total_call_vp){
-		// 	// VP defined at top of init function
-		// 	$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Total Calls',$g->api->url($total_call_vp->getURL(),array('employee_id'=>$g->model->id,'from_date'=>$g->model->from_date,'to_date'=>$g->model->to_date))).'">'.$g->current_row[$f].'</a>';
-		// });
-		// $grid->addFormatter('total_call','total_call');
-
-
-		// $dial_call_vp = $this->add('VirtualPage')->set(function($page){
-		// 	// $page->add('View_Error')->set($_GET['from_date']);
-		// 	$employee_id = $this->app->stickyGET('employee_id');
-		// 	$all_call = $this->add('xepan\communication\Model_Communication_Call',['table_alias'=>'employee_commni_all_calls']);
-		// 	$all_call->addCondition('created_by_id',$employee_id)
-		// 					->addCondition('communication_type','Call')
-		// 					->addCondition('status','Called')
-		// 					->addCondition('created_at','>=',$_GET['from_date'])
-		// 					->addCondition('created_at','<',$this->api->nextDate($_GET['to_date']))
-		// 					;
-
-		// 	$grid = $page->add('xepan\hr\Grid');
-		// 	$grid->setModel($all_call,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
-		// 	$grid->addPaginator(50);
-
-		// 	$grid->addHook('formatRow',function($g){
-		// 		$g->current_row_html['description'] = $g->model['description'];
-		// 	});
-		// });
-
-		// $grid->addMethod('format_dial_call',function($g,$f)use($dial_call_vp){
-		// 		// VP defined at top of init function
-		// 	$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Dial Calls',$g->api->url($dial_call_vp->getURL(),array('employee_id'=>$g->model->id,'from_date'=>$g->model->from_date,'to_date'=>$g->model->to_date))).'">'.$g->current_row[$f].'</a>';
-		// });
-
-		// $grid->addFormatter('dial_call','dial_call');
-
-
-		// $received_call_vp = $this->add('VirtualPage')->set(function($page){
-		// 	// $page->add('View_Error')->set($_GET['from_date']);
-		// 	$employee_id = $this->app->stickyGET('employee_id');
-		// 	$all_call = $this->add('xepan\communication\Model_Communication_Call',['table_alias'=>'employee_commni_all_calls']);
-		// 	$all_call->addCondition('created_by_id',$employee_id)
-		// 					->addCondition('communication_type','Call')
-		// 					->addCondition('status','Received')
-		// 					->addCondition('created_at','>=',$_GET['from_date'])
-		// 					->addCondition('created_at','<',$this->api->nextDate($_GET['to_date']))
-		// 					;
-
-		// 	$grid = $page->add('xepan\hr\Grid');
-		// 	$grid->setModel($all_call,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
-		// 	$grid->addPaginator(50);
-
-		// 	$grid->addHook('formatRow',function($g){
-		// 		$g->current_row_html['description'] = $g->model['description'];
-		// 	});
-		// });
-
-		// $grid->addMethod('format_received_call',function($g,$f)use($received_call_vp){
-		// 		// VP defined at top of init function
-		// 	$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Dial Calls',$g->api->url($received_call_vp->getURL(),array('employee_id'=>$g->model->id,'from_date'=>$g->model->from_date,'to_date'=>$g->model->to_date))).'">'.$g->current_row[$f].'</a>';
-		// });
-
-		// $grid->addFormatter('received_call','received_call');
-
-		// /*Communication Subtype Digging*/
-		// foreach (explode(",", $config_m['sub_type']) as $subtypes) {
-		// 	// $grid->addColumn($this->app->normalizeName($subtypes));
-		// 	$subtype_vp = $this->add('VirtualPage')->set(function($page)use($subtypes){
-		// 		// $page->add('View_Error')->set($_GET['from_date']);
-		// 		$employee_id = $this->app->stickyGET('employee_id');
-		// 		$subtype_m = $page->add('xepan\communication\Model_Communication')
-		// 					->addCondition('created_by_id',$employee_id)
-		// 					->addCondition('sub_type',$subtypes)
-		// 					->addCondition('created_at','>=',$_GET['from_date'])
-		// 					->addCondition('created_at','<',$this->api->nextDate($_GET['to_date']))
-		// 					;
-
-		// 		$grid = $page->add('xepan\hr\Grid');
-		// 		$grid->setModel($subtype_m,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
-		// 		$grid->addPaginator(50);
-		// 		$grid->addHook('formatRow',function($g){
-		// 			$g->current_row_html['description'] = $g->model['description'];
-		// 		});
-		// 	});
-
-		// 	$grid->addMethod('format_'.$this->app->normalizeName($subtypes),function($g,$f)use($subtype_vp,$subtypes){
-		// 		$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL($subtypes,$g->api->url($subtype_vp->getURL(),array('employee_id'=>$g->model->id,'from_date'=>$g->model->from_date,'to_date'=>$g->model->to_date))).'">'.$g->current_row[$f].'</a>';
-		// 	});
-
-		// 	$grid->addFormatter($this->app->normalizeName($subtypes),$this->app->normalizeName($subtypes));
-		// }
-
-		// $calling_config_m = $this->add('xepan\base\Model_ConfigJsonModel',
-		// [
-		// 	'fields'=>[
-		// 				'sub_type'=>'text',
-		// 				'calling_status'=>'text',
-		// 				],
-		// 		'config_key'=>'COMMUNICATION_SUB_TYPE',
-		// 		'application'=>'Communication'
-		// ]);
-		// $calling_config_m->tryLoadAny();
-
-		// /*Communication Calling Status*/
-		// foreach (explode(",", $calling_config_m['calling_status']) as $callingstatus) {
-		// 	$callingstatus_vp = $this->add('VirtualPage')->set(function($page)use($callingstatus){
-		// 		$employee_id = $this->app->stickyGET('employee_id');
-		// 		$calling_m = $page->add('xepan\communication\Model_Communication')
-		// 						->addCondition('created_by_id',$employee_id)
-		// 						->addCondition('calling_status',$callingstatus)
-		// 						->addCondition('created_at','>=',$_GET['from_date'])
-		// 						->addCondition('created_at','<',$this->api->nextDate($_GET['to_date']))
-		// 						;
-
-		// 		$grid = $page->add('xepan\hr\Grid');
-		// 		$grid->setModel($calling_m,['from','to','to_contact_str','title','description','sub_type','calling_status','status']);
-		// 		$grid->addPaginator(50);
-		// 		$grid->addHook('formatRow',function($g){
-		// 			$g->current_row_html['description'] = $g->model['description'];
-		// 		});
-		// 	});
-
-		// 	$grid->addMethod('format_'.$this->app->normalizeName($callingstatus.'c'),function($g,$f)use($callingstatus_vp,$callingstatus){
-		// 		$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL($callingstatus,$g->api->url($callingstatus_vp->getURL(),array('employee_id'=>$g->model->id,'from_date'=>$g->model->from_date,'to_date'=>$g->model->to_date))).'">'.$g->current_row[$f].'</a>';
-		// 	});
-
-		// 	$grid->addFormatter($this->app->normalizeName($callingstatus),$this->app->normalizeName($callingstatus."c"));
-		// }	
 		
 		$grid->js(true)->_load('jquery.sparkline.min');
+
+	}
+
+	function page_commdegging(){
+		$employee_id = $this->app->stickyGET('selected_employee_id');
+		$from_date = $this->app->stickyGET('from_date');
+		$to_date = $this->app->stickyGET('to_date');
+		$communication_type = $this->app->stickyGET('communication_type');
+		$sub_type_1 = $this->app->stickyGET('sub_type_1');
+		$sub_type_2 = $this->app->stickyGET('sub_type_2');
+		$sub_type_3 = $this->app->stickyGET('sub_type_3');
+
+		$comm_model = $this->add('xepan\communication\Model_Communication');
+		$comm_model->addCondition('created_by_id',$employee_id);
+
+		if($communication_type)
+			$comm_model->addCondition('communication_type',$communication_type);
+
+		if($sub_type_1)
+			$comm_model->addCondition('sub_type',$this->sub_type_1_norm_unnorm_array[$sub_type_1]);
+		if($sub_type_2)
+			$comm_model->addCondition('calling_status',$this->sub_type_2_norm_unnorm_array[$sub_type_2]);
+		if($sub_type_3)
+			$comm_model->addCondition('sub_type_3',$this->sub_type_3_norm_unnorm_array[$sub_type_3]);
+
+		if($from_date)
+			$comm_model->addCondition('created_at','>=',$from_date);
+		if($to_date)
+			$comm_model->addCondition('created_at','<',$this->app->nextDate($to_date));
+
+		$comm_model->setOrder('id','desc');
+
+		$form = $this->add('Form');
+		$layout_array = [];
+		if(!$communication_type)
+			$layout_array['communication_type'] = 'Filter~c1~3';
+		if(!$sub_type_1)
+			$layout_array['sub_type_1~'.($this->config_m['sub_type_1_label_name']?:"Sub Type 1")] = 'c2~3';
+		if(!$sub_type_2)
+			$layout_array['sub_type_2~'.($this->config_m['sub_type_2_label_name']?:"Sub Type 2")] = 'c3~3';
+		if(!$sub_type_3)
+			$layout_array['sub_type_3~'.($this->config_m['sub_type_3_label_name']?:"Sub Type 3")] = 'c4~3';
+
+		$layout_array['FormButtons~&nbsp;'] = 'c5~3';
+
+		$form->add('xepan\base\Controller_FLC')
+			->showLables(true)
+			->addContentSpot()
+			->makePanelsCoppalsible(true)
+			->layout($layout_array);
+				
+
+		if(!$communication_type){
+			$form->addField('DropDown','communication_type')->setValueList([
+					'Email'=>'Email',
+					'Comment'=>'Comment',
+					'Call'=>'Call',
+					'Personal'=>'Personal',
+					'SMS'=>'SMS',
+					'TeleMarketing'=>'TeleMarketing'
+				])->setEmptyText('Please Select');
+		}
+		// $this->config_m['sub_type_1_label_name']
+		if(!$sub_type_1){
+			$form->addField('DropDown','sub_type_1')->setValueList($this->sub_type_1_norm_unnorm_array)->setEmptyText('Please Select ...');
+		}
+		if(!$sub_type_2){
+			$form->addField('DropDown','sub_type_2')->setValueList($this->sub_type_2_norm_unnorm_array)->setEmptyText('Please Select ...');
+		}
+		if(!$sub_type_3){
+			$form->addField('DropDown','sub_type_3')->setValueList($this->sub_type_3_norm_unnorm_array)->setEmptyText('Please Select ...');
+		}
+
+		$form->addSubmit('Filter')->addClass('btn btn-primary');
+
+		$grid = $this->add('xepan\base\Grid');
+		$grid->template->tryDel('Pannel');
+		$grid->setModel($comm_model,['title','description','created_at','from','to','created_by','sub_type','calling_status','sub_type_3']);
+		$grid->addPaginator(25);
+
+
+		if($form->isSubmitted()){
+			$reload_param = [];
+
+			if(!$communication_type)
+				$reload_param['communication_type'] = $form['communication_type'];
+			if(!$sub_type_1)
+				$reload_param['sub_type_1'] = $form['sub_type_1'];
+			if(!$sub_type_2)
+				$reload_param['sub_type_2'] = $form['sub_type_2'];
+			if(!$sub_type_3)
+				$reload_param['sub_type_3'] = $form['sub_type_3'];
+
+			$grid->js()->reload($reload_param)->execute();
+		}
 
 	}
 
