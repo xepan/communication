@@ -47,6 +47,7 @@ class Initiator extends \Controller_Addon {
         $m->addItem(['Frontend User Setting','icon'=>' fa fa-users'],$this->app->url('xepan_communication_general_emailcontent_usertool'));
         $m->addItem(['Backup & Update','icon'=>' fa fa-users'],$this->app->url('xepan_base_update'));
         $m->addItem(['Document Action Notification','icon'=>' fa fa-cog'],$this->app->url('xepan_base_documentactionnotification'));
+        $m->addItem(['Top Menu Designer','icon'=>' fa fa-cog'],$this->app->url('xepan_base_menudesigner'));
 	}
 
 	function getConfigTopApplicationMenu(){
