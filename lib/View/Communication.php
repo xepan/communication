@@ -425,6 +425,7 @@ class View_Communication extends \View {
 				'from_email_id'=>'c3~4',
 
 				'body'=>'c4~12',
+				'attachment'=>'a1~12',
 				
 				'follow_up'=>'c5~6',
 				'score_buttons~Score'=>'c7~6',
@@ -452,7 +453,14 @@ class View_Communication extends \View {
 		$subject = $form->addField('subject')->validate('required');
 		$form->addField('xepan\base\RichText','body');
 		$form->addField('to')->set($default_to_ids);
+
+		$multi_upload_field = $form->addField('xepan\base\Form_Field_Upload','attachment',"")
+									->allowMultiple()->addClass('xepan-padding');
 		
+		$filestore_image=$this->add('xepan\filestore\Model_File',['policy_add_new_type'=>true]);
+		$multi_upload_field->setModel($filestore_image);
+
+
 		$cc = $form->addField('cc');
 		$cc_me = $form->addField('Checkbox','cc_me');
 		$cc_me->js('click',$cc->js()->val($this->employee_emails));
@@ -561,8 +569,14 @@ class View_Communication extends \View {
 			if($form->hasElement('date')){
 				$communication['created_at'] = $form['date'];
 			}
-			$communication->send($send_settings);
 
+			$communication->save();
+			$upload_images_array = explode(",",$form['attachment']);
+			foreach ($upload_images_array as $file_id) {
+				$communication->addAttachment($file_id,'attach');
+			}
+
+			$communication->send($send_settings);
 			// SCORE
 			if($form['score']){
 				$model_point_system = $this->add('xepan\base\Model_PointSystem');
