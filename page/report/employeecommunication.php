@@ -12,6 +12,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 	public $sub_type_3_fields;
 	public $sub_type_3_norm_unnorm_array=[];
 	public $communication_fields;
+	public $communication_type_value = ['Email'=>'Email','Comment'=>'Comment','Call'=>'Call','Personal'=>'Meeting','Sms'=>'SMS','TeleMarketing'=>'TeleMarketing'];
 	public $config_m;
 
 	function init(){
@@ -198,36 +199,15 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$communication_graph_data = [];
 			$communication_graph_data_label = [];
 			$comm_label_str = "";
-			if($g->model['total_email']){
-				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('Email communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Email'))).'">'."Email: ".$g->model['total_email'].'</a><br/>';
-				$communication_graph_data[] = $g->model['total_email'];
-				$communication_graph_data_label[] = "Email: ".$g->model['total_email'];
-			}
-			if($g->model['total_comment']){
-				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('Comment communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Comment'))).'">'."Comment: ".$g->model['total_comment'].'</a><br/>';
-				$communication_graph_data[] = $g->model['total_comment'];
-				$communication_graph_data_label[] = "Comment: ".$g->model['total_comment'];
-			}
 
-			if($g->model['total_meeting']){
-				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('Meeting communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Personal'))).'">'."Meeting: ".$g->model['total_meeting'].'</a><br/>';
-				$communication_graph_data[] = $g->model['total_meeting'];
-				$communication_graph_data_label[] = "Meeting: ".$g->model['total_meeting'];
-			}
-			if($g->model['total_sms']){
-				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('SMS communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Sms'))).'">'."SMS: ".$g->model['total_sms'].'</a><br/>';
-				$communication_graph_data[] = $g->model['total_sms'];
-				$communication_graph_data_label[] = "SMS: ".$g->model['total_sms'];
-			}
-			if($g->model['total_telemarketing']){
-				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('TeleMarketing communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'TeleMarketing'))).'">'."TeleMarketing: ".$g->model['total_telemarketing'].'</a><br/>';
-				$communication_graph_data[] = $g->model['total_telemarketing'];
-				$communication_graph_data_label[] = "Tele: ".$g->model['total_telemarketing'];
-			}
-			if($g->model['total_call']){
-				$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL('TeleMarketing communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>'Call'))).'">'."Call: ".$g->model['total_call'].'</a><br/>';
-				$communication_graph_data[] = $g->model['total_call'];
-				$communication_graph_data_label[] = "Call: ".$g->model['total_call'];
+			foreach ($this->communication_type_value as $key => $value) {
+				$total_field_name = "total_".strtolower($value);
+
+				if($g->model[$total_field_name]){
+					$comm_label_str .= '<a href="javascript:void(0);" onclick="'.$g->js()->univ()->frameURL($value.' communication history of employee '.$g->model['name'],$g->api->url('./commdegging',array('from_date'=>$this->from_date,'to_date'=>$this->to_date,'selected_employee_id'=>$g->model['id'],'communication_type'=>$key))).'">'.$value.": ".$g->model[$total_field_name].'</a><br/>';
+					$communication_graph_data[] = $g->model[$total_field_name];
+					$communication_graph_data_label[] = $value.": ".$g->model[$total_field_name];
+				}			
 			}
 
 			$sub_type_1_label_str = "";
