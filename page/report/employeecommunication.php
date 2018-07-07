@@ -109,9 +109,10 @@ class page_report_employeecommunication extends \xepan\base\Page{
 
 		$this->communication_fields = ['total_email','total_comment','total_meeting','total_sms','total_telemarketing','total_call','dial_call','received_call'];
 		/*Communication Sub Type Form */
-		$model_field_array = ['name','communication','total_email','total_comment','total_meeting','total_sms','total_telemarketing','total_call','dial_call','received_call'];
+		$model_field_array = ['name','unique_lead','communication','total_email','total_comment','total_meeting','total_sms','total_telemarketing','total_call','dial_call','received_call','unique_leads_from','unique_leads_to'];
 
 		// sub type 1
+		$emp_model->addExpression('unique_lead')->set('""')->caption('comm. with unique lead');
 		$emp_model->addExpression('communication')->set('""');
 		$emp_model->addExpression('subtype_1')->set('""')->caption($config_m['sub_type_1_label_name']?:"Sub Type 1");
 		$model_field_array[] = "subtype_1";
@@ -188,8 +189,12 @@ class page_report_employeecommunication extends \xepan\base\Page{
 
 		// grid formatter
 		$grid->addHook('formatRow',function($g){
-			// $communication_graph_data = $g->model['total_email'].",".$g->model['total_call'].",".$g->model['total_telemarketing'].",".$g->model['total_sms'].",".$g->model['total_meeting'].",".$g->model['total_comment'];
 
+			// unique lead count
+			$unique_lead_count = count(array_unique (array_merge (explode(",", $g->model['unique_leads_from']), explode(",", $g->model['unique_leads_to']))));
+			$g->current_row_html['unique_lead'] = $unique_lead_count;
+
+			// $communication_graph_data = $g->model['total_email'].",".$g->model['total_call'].",".$g->model['total_telemarketing'].",".$g->model['total_sms'].",".$g->model['total_meeting'].",".$g->model['total_comment'];
 			$communication_graph_data = [];
 			$communication_graph_data_label = [];
 			$comm_label_str = "";
@@ -303,6 +308,9 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			}
 
 		});
+	
+		$grid->removeColumn('unique_leads_to');
+		$grid->removeColumn('unique_leads_from');
 
 		foreach ($this->communication_fields as $name) {
 			$grid->removeColumn($name);

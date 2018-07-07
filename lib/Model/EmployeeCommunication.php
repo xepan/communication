@@ -84,6 +84,36 @@ class Model_EmployeeCommunication extends \xepan\hr\Model_Employee{
 		});
 
 		
+		$this->addExpression('unique_leads_from')->set(function($m,$q){
+			$all = $this->add('xepan\communication\Model_Communication',['table_alias'=>'employeecommniallfrom']);
+			return $all->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->addCondition('from_id','<>',$q->getField('id'))
+						->_dsql()->del('fields')
+						->field('GROUP_CONCAT(DISTINCT(from_id))')
+						;
+		});
+
+		$this->addExpression('unique_leads_to')->set(function($m,$q){
+			$all = $this->add('xepan\communication\Model_Communication',['table_alias'=>'employeecommniallto']);
+			return $all->addCondition('created_by_id',$q->getField('id'))
+						->addCondition('created_at','>=',$this->from_date)
+						->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+						->addCondition('to_id','<>',$q->getField('id'))
+						->_dsql()->del('fields')
+						->field('GROUP_CONCAT(DISTINCT(to_id))')
+						;
+		});
+
+		// $this->addExpression('created_lead')->set(function($m,$q){
+		// 	$all = $this->add('xepan\base\Model_Contact',['table_alias'=>'commcontact']);
+		// 	return $all->addCondition('created_by_id',$q->getField('id'))
+		// 				->addCondition('created_at','>=',$this->from_date)
+		// 				->addCondition('created_at','<',$this->api->nextDate($this->to_date))
+		// 				->count();
+			
+		// });
 
 	}
 }
