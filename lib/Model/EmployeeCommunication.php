@@ -67,6 +67,14 @@ class Model_EmployeeCommunication extends \xepan\hr\Model_Employee{
 						->count();
 		});
 
+		$this->addExpression('attended_others_meeting')->set(function($m,$q){
+			$all_call = $this->add('xepan\communication\Model_CommunicationRelatedEmployee',['table_alias'=>'employee_commni_other_meeting']);
+			return 	$all_call->addCondition('employee_id',$q->getField('id'))
+						->addCondition('comm_created_at','>=',$this->from_date)
+						->addCondition('comm_created_at','<',$this->api->nextDate($this->to_date))
+						->count();
+		});		
+
 		$this->addExpression('total_sms')->set(function($m,$q){
 			$all_call = $this->add('xepan\communication\Model_Communication_SMS',['table_alias'=>'employee_commni_all_sms']);
 			return 	$all_call->addCondition('created_by_id',$q->getField('id'))

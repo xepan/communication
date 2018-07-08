@@ -10,6 +10,8 @@ class Model_CommunicationRelatedEmployee extends \xepan\base\Model_Table{
 		
 		$this->hasOne('xepan\communication\Model_Communication','communication_id');
 		$this->hasOne('xepan\hr\Model_Employee','employee_id');
+
+		$this->addExpression('comm_created_at')->set($this->refSql('communication_id')->fieldQuery('created_at'));
 				
 		$this->is(
 			[
