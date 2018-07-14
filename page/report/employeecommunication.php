@@ -192,7 +192,11 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		$grid->addHook('formatRow',function($g){
 
 			// unique lead count
-			$unique_lead_count = count(array_unique (array_merge (explode(",", $g->model['unique_leads_from']), explode(",", $g->model['unique_leads_to']))));
+			$temp = array_unique (array_merge (explode(",", $g->model['unique_leads_from']), explode(",", $g->model['unique_leads_to'])));
+			$unique_lead_count = count($temp);
+			if($unique_lead_count == 1 && !$temp[0]){
+				$unique_lead_count = 0;
+			}
 			$g->current_row_html['unique_lead'] = $unique_lead_count;
 
 			// $communication_graph_data = $g->model['total_email'].",".$g->model['total_call'].",".$g->model['total_telemarketing'].",".$g->model['total_sms'].",".$g->model['total_meeting'].",".$g->model['total_comment'];
