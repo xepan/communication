@@ -157,11 +157,13 @@ class Model_Communication_Abstract_Email extends Model_Communication{
 	}
 
 
-	function send(\xepan\communication\Model_Communication_EmailSetting $email_setting, $mailer=null){
+	function send(\xepan\communication\Model_Communication_EmailSetting $email_setting, $mailer=null, $add_signature=true){
 		$this['status']='Outbox';
 		$this['direction']='Out';
 		$this['mailbox']=$email_setting['email_username'].'#SENT';
-		$this['description'] = $this['description'].$email_setting['signature'];
+		$this['description'] = $this['description'];
+		if($add_signature)
+			$this['description'] = $this['description'].$email_setting['signature'];
 		if(!$this['to_id']) $this->findContact('to');
 		$this['communication_channel_id'] = $email_setting->id;
 		
