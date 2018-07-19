@@ -97,24 +97,17 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 	}
 
 	function page_duplicateemailsetting(){
-		$email_m = $this->add('xepan\base\Model_ConfigJsonModel',
-			[
-				'fields'=>[
-							'email_duplication_allowed'=>'DropDown'
-							],
-					'config_key'=>'Email_Duplication_Allowed_Settings',
-					'application'=>'base'
-			]);
+		$email_m = $this->add('xepan\base\Model_Config_DuplicateEmailAllowed');
 		$email_m->add('xepan\hr\Controller_ACL');
-		$email_m->tryLoadAny();		
+		$email_m->tryLoadAny();
 
 		$form = $this->add('Form_Stacked');
 		$form->setModel($email_m);
-		$allow_email_permission = array('duplication_allowed' =>'Duplication Allowed',
-									 'no_duplication_allowed_for_same_contact_type' =>'No Duplication Allowed For Same Contact Type',
-									 'never_duplication_allowed' =>'Never Duplication Allowed');
+		// $allow_email_permission = array('duplication_allowed' =>'Duplication Allowed',
+		// 							 'no_duplication_allowed_for_same_contact_type' =>'No Duplication Allowed For Same Contact Type',
+		// 							 'never_duplication_allowed' =>'Never Duplication Allowed');
 		$email_allowed_field =$form->getElement('email_duplication_allowed')->set($email_m['email_duplication_allowed']);
-		$email_allowed_field->setValueList($allow_email_permission);
+		// $email_allowed_field->setValueList($allow_email_permission);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
@@ -127,24 +120,13 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 	}
 
 	function page_duplicatecontactsetting(){
-		$contactno_m = $this->add('xepan\base\Model_ConfigJsonModel',
-			[
-				'fields'=>[
-							'contact_no_duplcation_allowed'=>'DropDown'
-							],
-					'config_key'=>'contact_no_duplication_allowed_settings',
-					'application'=>'base'
-			]);
+		$contactno_m = $this->add('xepan\base\Model_Config_DuplicateContactNoAllowed');
 		$contactno_m->add('xepan\hr\Controller_ACL');
 		$contactno_m->tryLoadAny();		
-
 		$form = $this->add('Form_Stacked');
 		$form->setModel($contactno_m);
-		$allow_contactno_permission = array('duplication_allowed' =>'Duplication Allowed',
-									 'no_duplication_allowed_for_same_contact_type' =>'No Duplication Allowed For Same Contact Type',
-									 'never_duplication_allowed' =>'Never Duplication Allowed');
 		$email_allowed_field =$form->getElement('contact_no_duplcation_allowed')->set($contactno_m['contact_no_duplcation_allowed']);
-		$email_allowed_field->setValueList($allow_contactno_permission);
+		// $email_allowed_field->setValueList($allow_contactno_permission);
 		$form->addSubmit('Update')->addClass('btn btn-primary');
 
 		if($form->isSubmitted()){
