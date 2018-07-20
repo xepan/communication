@@ -64,7 +64,11 @@ class View_Lister_Communication extends \CompleteLister{
 					throw $e;
 				}
 
-				$form->js(null,$this->js()->_selector('.xepan-communication-lister')->trigger('reload'))->univ()->successMessage('Done')->closeDialog()->closeDialog()->execute();
+				$form->js(null,[$this->js()->_selector('.xepan-communication-lister')->trigger('reload'),$this->js()->univ()->successMessage('Done')])
+						->closest('.dialog')
+						->dialog('close')
+						->execute();
+						// closest('.dialog')->dialog('close')
 			}
 		});	
 		
