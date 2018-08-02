@@ -10,7 +10,8 @@ class Controller_Sms extends \AbstractController{
 		if($this->app->getConfig('send_sms',true)){
 
 			if(is_array($sms_setting) && !sizeof($sms_setting)){
-				$sms_setting = $this->add('xepan\communication\Model_Communication_SMSSetting')->tryLoadAny();
+				$sms_setting = $this->add('xepan\communication\Model_Communication_DefaultSMSSetting')
+					->tryLoadAny();
 			}
 
 			if($sms_setting['sms_prefix'])

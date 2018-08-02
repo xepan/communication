@@ -13,17 +13,16 @@
 
 namespace xepan\communication;
 
-class Model_Communication_DefaultEmailSetting extends Model_Communication_EmailSetting{
+class Model_Communication_DefaultSMSSetting extends Model_Communication_SMSSetting{
 
 	function init(){
 		parent::init();
 
 		$model = $this->add('xepan\communication\Model_Config_DefaultEmailSmsAndOther');
 		$model->tryLoadAny();
-		if($model['default_email']){
-			$this->addCondition('id',$model['default_email']);
+		if($model['default_sms']){
+			$this->addCondition('id',$model['default_sms']);
 		}
-
-		$this->addCondition('is_active',true);
+		
 	}
 }

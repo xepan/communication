@@ -41,6 +41,39 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 		$settingview->setModel($email_setting);
 		$settingview->grid->addQuickSearch(['name','email_username']);
 		
+		$b = $settingview->addButton("Set Default Email")->addClass("btn btn-primary");
+		$b->js('click')->univ()->frameURL('Set System Default Email',$this->app->url('../setdefaultemail'));
+	}
+
+
+	function page_setdefaultemail(){
+		$model = $this->add('xepan\communication\Model_Config_DefaultEmailSmsAndOther');
+		$model->tryLoadAny();
+
+		$form = $this->add('Form');
+		$form->setModel($model,['default_email']);
+		$form->addSubmit('save');
+		if($form->isSubmitted()){
+			$model['default_email'] = $form['default_email'];
+			$model->save();
+			$form->js(null,[$form->js()->reload(),$form->js()->closest('.dialog')->dialog('close')])->univ()->successMessage('System Default Email Setting Updated by '.$this->app->employee['name']." ( ".$this->app->employee['post']." )")->execute();
+		}
+
+	}
+
+	function page_setdefaultsms(){
+		$model = $this->add('xepan\communication\Model_Config_DefaultEmailSmsAndOther');
+		$model->tryLoadAny();
+
+		$form = $this->add('Form');
+		$form->setModel($model,['default_sms']);
+		$form->addSubmit('save');
+		if($form->isSubmitted()){
+			$model['default_sms'] = $form['default_sms'];
+			$model->save();
+			$form->js(null,[$form->js()->reload(),$form->js()->closest('.dialog')->dialog('close')])->univ()->successMessage('System Default SMS Setting Updated by '.$this->app->employee['name']." ( ".$this->app->employee['post']." )")->execute();
+		}
+
 	}
 
 
@@ -54,6 +87,9 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 			$form->js(true)->find('button')->addClass('btn btn-primary');
 		}
 		$sms_view->setModel($sms_view_model,['name','gateway_url','sms_username','sms_password','sms_user_name_qs_param','sms_password_qs_param','sms_number_qs_param','sm_message_qs_param','sms_prefix','sms_postfix']);
+		
+		$b = $sms_view->addButton("Set Default SMS")->addClass("btn btn-primary");
+		$b->js('click')->univ()->frameURL('Set System Default SMS',$this->app->url('../setdefaultsms'));
 	}
 
 	function page_timezone(){
