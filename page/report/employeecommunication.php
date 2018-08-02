@@ -175,8 +175,9 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		$grid->setModel($emp_model,$model_field_array);
 		$order = $grid->addOrder();
 		$grid->addpaginator(10);
-		$grid->template->tryDel('Pannel');
-		
+		// $grid->template->tryDel('Pannel');
+		$grid->add("misc\Export");
+
 		if($form->isSubmitted()){
 			$grid->js()->reload(
 					[
