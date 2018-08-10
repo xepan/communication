@@ -212,7 +212,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 					'sub_type_2_label_name~Sub Type 2 Label Name'=>'c3~4',
 					'calling_status~Sub Type 2'=>'c4~8~Enter comma seperated values with no space',
 					'sub_type_3_label_name~Sub Type 3 Label Name'=>'c5~4',
-					'sub_type_3~Sub Type 2'=>'c6~8~Enter comma seperated values with no space',
+					'sub_type_3~Sub Type 3'=>'c6~8~Enter comma seperated values with no space',
 					'FormButtons~&nbsp;'=>'c10~4'
 				]);
 
