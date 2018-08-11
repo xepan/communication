@@ -33,6 +33,7 @@ class Initiator extends \Controller_Addon {
 	function populateConfigurationMenus(){
 		$m = $this->app->top_menu->addMenu('System');
     	$m->addItem(['Company Information','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_companyinfo'));
+    	$m->addItem(['Branch','icon'=>'fa fa-cog'],$this->app->url('xepan_base_branch'));
     	$m->addItem(['Email Settings','icon'=>'fa fa-envelope'],$this->app->url('xepan_communication_generalsetting_emailsetting'));
     	$m->addItem(['SMS Settings','icon'=>'fa fa-mobile'],$this->app->url('xepan_communication_generalsetting_smssettings'));
     	$m->addItem(['TimeZone Setting','icon'=>'fa fa-cog'],$this->app->url('xepan_communication_generalsetting_timezone'));
