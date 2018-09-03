@@ -504,7 +504,7 @@ class View_Communication extends \View {
 			'*'=>['followup_on','followup_type','assigned_to','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
-		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on,'follow_type_field'=>$followup_type],'existing_schedule');
 
 		if($form->isSubmitted()){
 
@@ -695,7 +695,8 @@ class View_Communication extends \View {
 			$sub_type_3_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
 		$sub_type_3_field->setEmptyText('Please Select');
 		
-		$followup_type = $form->addField('DropDown','followup_type')->setValueList($this->task_subtype)->setEmptyText('Please Select ...');
+		$followup_type = $form->addField('DropDown','followup_type');
+		$followup_type->setValueList($this->task_subtype)->setEmptyText('Please Select ...');
 
 		$form->addField('DateTimePicker','date')->validate('required')->set($this->app->now);
 
@@ -705,12 +706,14 @@ class View_Communication extends \View {
 		$from_number_field->setValueList(array_merge(array_filter($company_number),array_filter($emp_phones)));
 		$from_number_field->select_menu_options = ['tags'=>true];
 		$from_number_field->validate_values = false;
+		$from_number_field->validate('required');
 
 		$phones = $this->contact_phones;
 		$to_number_field = $form->addField('xepan\base\DropDown','to_number');
 		$to_number_field->setValueList(array_combine($phones,$phones));
 		$to_number_field->select_menu_options = ['tags'=>true];
 		$to_number_field->validate_values = false;
+		$to_number_field->validate('required');
 
 		$call_by_emp_field = $form->addField('xepan\hr\Employee','call_by_employee')->setCurrent();
 
@@ -762,7 +765,7 @@ class View_Communication extends \View {
 			'*'=>['followup_on','followup_type','assigned_to','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 		
-		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on,'follow_type_field'=>$followup_type],'existing_schedule');
 
 		if($form->isSubmitted()){
 
@@ -881,7 +884,7 @@ class View_Communication extends \View {
 
 	function manageCallReceived($call_received_icon){
 
-		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('LOg Received Call');;
+		$popup = $this->add('xepan\base\View_ModelPopup')->addClass('modal-full')->saveButtonLable('Log Received Call');
 		$popup->setTitle('Phone Received - Log Communication of '.$this->contact['name']);
 		
 		$form = $popup->add('Form');
@@ -957,13 +960,17 @@ class View_Communication extends \View {
 		$from_number_field->setValueList($contact_phones);
 		$from_number_field->select_menu_options = ['tags'=>true];
 		$from_number_field->validate_values = false;
+		$from_number_field->validate('required');
 
 		$to_number_field = $form->addField('xepan\base\DropDown','to_number');
 		$to_number_field->setValueList($emp_phones);
 		$to_number_field->select_menu_options = ['tags'=>true];
 		$to_number_field->validate_values = false;
+		$to_number_field->validate('required');
 
-		$form->addField('xepan\hr\Employee','call_received_by_employee')->setCurrent();
+		$field_call_rec_emp = $form->addField('xepan\hr\Employee','call_received_by_employee');
+		$field_call_rec_emp->setCurrent();
+		$field_call_rec_emp->validate('required');
 
 		$form->addField('xepan\base\RichText','description');
 
@@ -1013,7 +1020,7 @@ class View_Communication extends \View {
 			'*'=>['followup_on','assigned_to','followup_type','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
-		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on,'follow_type_field'=>$followup_type],'existing_schedule');
 
 		if($form->isSubmitted()){
 
@@ -1245,7 +1252,7 @@ class View_Communication extends \View {
 			'*'=>['followup_on','assigned_to','followup_type','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 			
-		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on,'follow_type_field'=>$followup_type],'existing_schedule');
 
 		if($form->isSubmitted()){
 			
@@ -1495,7 +1502,7 @@ class View_Communication extends \View {
 			'*'=>['followup_on','assigned_to','followup_type','followup_detail','existing_schedule']
 		],'div.col-md-12,div.col-md-6,div.col-md-4,div.col-md-3,div.col-md-2,div.col-md-1');
 
-		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on],'existing_schedule');
+		$form->layout->add('xepan\projects\View_EmployeeFollowupSchedule',['employee_field'=>$assigned_to,'date_field'=>$followup_on,'follow_type_field'=>$followup_type],'existing_schedule');
 		
 		if($form->isSubmitted()){
 
