@@ -63,6 +63,7 @@ class Initiator extends \Controller_Addon {
 	}
 
 	function getConfigTopApplicationMenu(){
+		if($this->app->getConfig('hidden_xepan_communication',false)){return [];}
 
 		return [
 				'System'=>[
