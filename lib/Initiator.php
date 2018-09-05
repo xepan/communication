@@ -18,7 +18,7 @@ class Initiator extends \Controller_Addon {
 			$this->populateApplicationMenus();
 
 		
-		$this->app->report_menu->addItem(['Employee Communication','icon'=>'fa fa-users'],'xepan_communication_report_employeecommunication');
+		// $this->app->report_menu->addItem(['Employee Communication','icon'=>'fa fa-users'],'xepan_communication_report_employeecommunication');
 
 		$search_communication = $this->add('xepan\communication\Model_Communication');
 		$this->app->addHook('quick_searched',[$search_communication,'quickSearch']);
@@ -49,6 +49,17 @@ class Initiator extends \Controller_Addon {
         $m->addItem(['Backup & Update','icon'=>' fa fa-users'],$this->app->url('xepan_base_update'));
         $m->addItem(['Document Action Notification','icon'=>' fa fa-cog'],$this->app->url('xepan_base_documentactionnotification'));
         $m->addItem(['Top Menu Designer','icon'=>' fa fa-cog'],$this->app->url('xepan_base_menudesigner'));
+	}
+
+	function getTopApplicationMenu(){
+		return ['Reports'=>[
+							[
+								'name'=>'Employee Communication',
+								'icon'=>'fa fa-users',
+								'url'=>'xepan_communication_report_employeecommunication'
+							]
+		                ]
+		        ];
 	}
 
 	function getConfigTopApplicationMenu(){
