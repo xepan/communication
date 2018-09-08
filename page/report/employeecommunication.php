@@ -23,17 +23,17 @@ class page_report_employeecommunication extends \xepan\base\Page{
 
 		// subtype 1
 		foreach(explode(",", $this->config_m['sub_type']) as $subtypes) {
-			$subtype_name = $this->app->normalizeName($subtypes);
+			$subtype_name = $this->app->normalizeName(trim($subtypes));
 			$this->sub_type_1_norm_unnorm_array[$subtype_name] = $subtypes;
 		}
 
 		foreach(explode(",", $this->config_m['calling_status']) as $subtypes) {
-			$subtype_name = $this->app->normalizeName($subtypes);
+			$subtype_name = $this->app->normalizeName(trim($subtypes));
 			$this->sub_type_2_norm_unnorm_array[$subtype_name] = $subtypes;
 		}
 
 		foreach(explode(",", $this->config_m['sub_type_3']) as $subtypes) {
-			$subtype_name = $this->app->normalizeName($subtypes);
+			$subtype_name = $this->app->normalizeName(trim($subtypes));
 			$this->sub_type_3_norm_unnorm_array[$subtype_name] = $subtypes;
 		}		
 
@@ -165,7 +165,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$emp_model->addExpression($subtype_name)->set(function($m,$q)use($sub_type_3){
 					return $m->add('xepan\communication\Model_Communication')
 								->addCondition('created_by_id',$q->getfield('id'))
-								->addCondition('calling_status',$sub_type_3)
+								->addCondition('sub_type_3',$sub_type_3)
 								->addCondition('created_at','>=',$this->from_date)
 								->addCondition('created_at','<',$this->api->nextDate($this->to_date))
 								->count();
@@ -359,23 +359,26 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$comm_ids = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($comm_ids)),false);
 
 			$comm_model->addCondition('id','in',$comm_ids);
-		}else
+		}
+		if($communication_type)
 			$comm_model->addCondition('communication_type',$communication_type);
 
 		if($sub_type_1)
-			$comm_model->addCondition('sub_type',$this->sub_type_1_norm_unnorm_array[$sub_type_1]);
+			$comm_model->addCondition('sub_type',trim($this->sub_type_1_norm_unnorm_array[$sub_type_1]));
+		
 		if($sub_type_2)
-			$comm_model->addCondition('calling_status',$this->sub_type_2_norm_unnorm_array[$sub_type_2]);
+			$comm_model->addCondition('calling_status',trim($this->sub_type_2_norm_unnorm_array[$sub_type_2]));
+		
 		if($sub_type_3)
-			$comm_model->addCondition('sub_type_3',$this->sub_type_3_norm_unnorm_array[$sub_type_3]);
-
+			$comm_model->addCondition('sub_type_3',trim($this->sub_type_3_norm_unnorm_array[$sub_type_3]));
+		
 		if($from_date)
 			$comm_model->addCondition('created_at','>=',$from_date);
 		if($to_date)
 			$comm_model->addCondition('created_at','<',$this->app->nextDate($to_date));
 
-		if($communication_status)
-			$comm_model->addCondition('status',$communication_status);
+		// if($communication_status)
+		// 	$comm_model->addCondition('status',$communication_status);
 
 		$comm_model->setOrder('id','desc');
 
