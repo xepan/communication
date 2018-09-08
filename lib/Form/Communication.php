@@ -25,12 +25,20 @@ class Form_Communication extends \Form {
 		$config_m->tryLoadAny();
 		$sub_type_array = explode(",",$config_m['sub_type']);
 		
-		$sub_type_field = $this->addField('dropdown','sub_type')->set($edit_model['sub_type'])->setEmptyText('Please Select');
+		$sub_type_field = $this->addField('dropdown','sub_type',$config_m['sub_type_1_label_name'])->set($edit_model['sub_type'])->setEmptyText('Please Select');
 		$sub_type_field->setValueList(array_combine($sub_type_array,$sub_type_array));
-		
+
 		$calling_status_array = explode(",",$config_m['calling_status']);
-		$calling_status_field = $this->addField('dropdown','calling_status')->set($edit_model['calling_status'])->setEmptyText('Please Select');
+		$calling_status_field = $this->addField('dropdown','calling_status',$config_m['sub_type_2_label_name'])->set($edit_model['calling_status'])->setEmptyText('Please Select');
 		$calling_status_field->setValueList(array_combine($calling_status_array,$calling_status_array));
+		
+		$sub_type_3_array = explode(",",$config_m['sub_type_3']);
+		$sub_type_field = $this->addField('dropdown','sub_type_3',$config_m['sub_type_3_label_name'])->set($edit_model['sub_type_3'])->setEmptyText('Please Select');
+		$sub_type_field->setValueList(array_combine($sub_type_3_array,$sub_type_3_array));
+
+		$this->layout->template->set('sub_type_1_label_name',$config_m['sub_type_1_label_name']);
+		$this->layout->template->set('sub_type_2_label_name',$config_m['sub_type_2_label_name']);
+		$this->layout->template->set('sub_type_3_label_name',$config_m['sub_type_3_label_name']);
 
 		if($this->app->auth->model->isSuperUser()){
 			$date_field = $this->addField('DateTimePicker','date')->set($edit_model['created_at']);
@@ -290,6 +298,7 @@ class Form_Communication extends \Form {
 		$communication['to_id']=$this->contact->id;
 		$communication['sub_type']=$this['sub_type'];
 		$communication['calling_status']=$this['calling_status'];
+		$communication['sub_type_3']=$this['sub_type_3'];
 		$communication['score']=$this['score'];
 
 		switch ($commtype) {
