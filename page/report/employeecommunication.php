@@ -49,6 +49,8 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		$this->to_date = $to_date = $this->app->stickyGET('to_date')?:$this->app->today;
 		$department = $this->app->stickyGET('department');
 
+		$post_model = $this->app->employee->ref('post_id');
+		
 		$form = $this->add('Form');
 		$form->add('xepan\base\Controller_FLC')
 			->makePanelsCoppalsible(true)
@@ -80,12 +82,36 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		});	
 
 		$emp_field = $form->addField('xepan\base\Basic','employee');
-		$emp_field->setModel($employee_model);
 				
 		$dept_field = $form->addField('xepan\base\DropDown','department');
-		$dept_field->setModel('xepan\hr\Model_Department');
-		$dept_field->setEmptyText('All');
+		$model_department = $this->add('xepan\hr\Model_Department');
 
+
+		switch ($post_model['permission_level']) {
+			case "Department":
+				$model_department->addCondition('id',$this->app->employee['department_id']);
+				$dept_field->set($this->app->employee['department_id']);
+				$dept_field->setAttr('disabled',true);
+				$department = $this->app->employee['department_id'];
+
+				$employee_model->addCondition('department_id',$this->app->employee['department_id']);
+				break;
+			case ($post_model['permission_level'] == 'Individual' || $post_model['permission_level'] == 'Sibling'):
+				$model_department->addCondition('id',$this->app->employee['department_id']);
+				$dept_field->set($this->app->employee['department_id']);
+				$dept_field->setAttr('disabled',true);
+				$department = $this->app->employee['department_id'];
+
+				$employee_model->addCondition('id',$this->app->employee->id);
+				$emp_field->set($this->app->employee->id);
+				$emp_field->other_field->setAttr('disabled',true);
+				$emp_id = $this->app->employee->id;
+				break;
+		}
+
+		$emp_field->setModel($employee_model);
+		$dept_field->setModel($model_department);
+		$dept_field->setEmptyText('All');
 		// grid
 		$grid = $this->add('xepan\hr\Grid');
 		
