@@ -229,8 +229,10 @@ class Form_Communication extends \Form {
 				}
 				$_to_field='email_to';
 
-				if(!$communication->verifyTo($this[$_to_field], $this->contact->id)){
-					throw new \Exception($commtype." of customer not present");	
+				if(isset($this->contact->id)){
+					if(!$communication->verifyTo($this[$_to_field], $this->contact->id)){
+						throw new \Exception($commtype." of customer not present");	
+					}
 				}
 				$communication['direction']='Out';
 				break;
