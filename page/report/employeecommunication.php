@@ -359,8 +359,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$comm_ids = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($comm_ids)),false);
 
 			$comm_model->addCondition('id','in',$comm_ids);
-		}
-		if($communication_type)
+		}elseif($communication_type)
 			$comm_model->addCondition('communication_type',$communication_type);
 
 		if($sub_type_1)
