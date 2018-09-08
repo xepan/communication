@@ -23,17 +23,17 @@ class page_report_employeecommunication extends \xepan\base\Page{
 
 		// subtype 1
 		foreach(explode(",", $this->config_m['sub_type']) as $subtypes) {
-			$subtype_name = $this->app->normalizeName($subtypes);
+			$subtype_name = $this->app->normalizeName(trim($subtypes));
 			$this->sub_type_1_norm_unnorm_array[$subtype_name] = $subtypes;
 		}
 
 		foreach(explode(",", $this->config_m['calling_status']) as $subtypes) {
-			$subtype_name = $this->app->normalizeName($subtypes);
+			$subtype_name = $this->app->normalizeName(trim($subtypes));
 			$this->sub_type_2_norm_unnorm_array[$subtype_name] = $subtypes;
 		}
 
 		foreach(explode(",", $this->config_m['sub_type_3']) as $subtypes) {
-			$subtype_name = $this->app->normalizeName($subtypes);
+			$subtype_name = $this->app->normalizeName(trim($subtypes));
 			$this->sub_type_3_norm_unnorm_array[$subtype_name] = $subtypes;
 		}		
 
@@ -49,6 +49,8 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		$this->to_date = $to_date = $this->app->stickyGET('to_date')?:$this->app->today;
 		$department = $this->app->stickyGET('department');
 
+		$post_model = $this->app->employee->ref('post_id');
+		
 		$form = $this->add('Form');
 		$form->add('xepan\base\Controller_FLC')
 			->makePanelsCoppalsible(true)
@@ -80,12 +82,36 @@ class page_report_employeecommunication extends \xepan\base\Page{
 		});	
 
 		$emp_field = $form->addField('xepan\base\Basic','employee');
-		$emp_field->setModel($employee_model);
 				
 		$dept_field = $form->addField('xepan\base\DropDown','department');
-		$dept_field->setModel('xepan\hr\Model_Department');
-		$dept_field->setEmptyText('All');
+		$model_department = $this->add('xepan\hr\Model_Department');
 
+
+		switch ($post_model['permission_level']) {
+			case "Department":
+				$model_department->addCondition('id',$this->app->employee['department_id']);
+				$dept_field->set($this->app->employee['department_id']);
+				$dept_field->setAttr('disabled',true);
+				$department = $this->app->employee['department_id'];
+
+				$employee_model->addCondition('department_id',$this->app->employee['department_id']);
+				break;
+			case ($post_model['permission_level'] == 'Individual' || $post_model['permission_level'] == 'Sibling'):
+				$model_department->addCondition('id',$this->app->employee['department_id']);
+				$dept_field->set($this->app->employee['department_id']);
+				$dept_field->setAttr('disabled',true);
+				$department = $this->app->employee['department_id'];
+
+				$employee_model->addCondition('id',$this->app->employee->id);
+				$emp_field->set($this->app->employee->id);
+				$emp_field->other_field->setAttr('disabled',true);
+				$emp_id = $this->app->employee->id;
+				break;
+		}
+
+		$emp_field->setModel($employee_model);
+		$dept_field->setModel($model_department);
+		$dept_field->setEmptyText('All');
 		// grid
 		$grid = $this->add('xepan\hr\Grid');
 		
@@ -165,7 +191,7 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$emp_model->addExpression($subtype_name)->set(function($m,$q)use($sub_type_3){
 					return $m->add('xepan\communication\Model_Communication')
 								->addCondition('created_by_id',$q->getfield('id'))
-								->addCondition('calling_status',$sub_type_3)
+								->addCondition('sub_type_3',$sub_type_3)
 								->addCondition('created_at','>=',$this->from_date)
 								->addCondition('created_at','<',$this->api->nextDate($this->to_date))
 								->count();
@@ -359,23 +385,25 @@ class page_report_employeecommunication extends \xepan\base\Page{
 			$comm_ids = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($comm_ids)),false);
 
 			$comm_model->addCondition('id','in',$comm_ids);
-		}else
+		}elseif($communication_type)
 			$comm_model->addCondition('communication_type',$communication_type);
 
 		if($sub_type_1)
-			$comm_model->addCondition('sub_type',$this->sub_type_1_norm_unnorm_array[$sub_type_1]);
+			$comm_model->addCondition('sub_type',trim($this->sub_type_1_norm_unnorm_array[$sub_type_1]));
+		
 		if($sub_type_2)
-			$comm_model->addCondition('calling_status',$this->sub_type_2_norm_unnorm_array[$sub_type_2]);
+			$comm_model->addCondition('calling_status',trim($this->sub_type_2_norm_unnorm_array[$sub_type_2]));
+		
 		if($sub_type_3)
-			$comm_model->addCondition('sub_type_3',$this->sub_type_3_norm_unnorm_array[$sub_type_3]);
-
+			$comm_model->addCondition('sub_type_3',trim($this->sub_type_3_norm_unnorm_array[$sub_type_3]));
+		
 		if($from_date)
 			$comm_model->addCondition('created_at','>=',$from_date);
 		if($to_date)
 			$comm_model->addCondition('created_at','<',$this->app->nextDate($to_date));
 
-		if($communication_status)
-			$comm_model->addCondition('status',$communication_status);
+		// if($communication_status)
+		// 	$comm_model->addCondition('status',$communication_status);
 
 		$comm_model->setOrder('id','desc');
 

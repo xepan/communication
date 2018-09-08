@@ -801,8 +801,9 @@ class View_Communication extends \View {
 
 			$communication['from_id'] = $form['call_by_employee'];
 			$communication['to_id'] = $this->contact->id;
-			$communication['sub_type'] = $form['communication_sub_type'];
-			$communication['calling_status'] = $form['calling_status'];
+			$communication['sub_type'] = trim($form['communication_sub_type']);
+			$communication['calling_status'] = trim($form['calling_status']);
+			$communication['sub_type_3'] = trim($form['sub_type_3']);
 			$communication['score'] = $form['score'];
 			$communication['direction'] = 'Out';
 			$communication['description'] = $form['description'];
@@ -1056,8 +1057,9 @@ class View_Communication extends \View {
 
 			$communication['from_id'] = $this->contact->id;
 			$communication['to_id'] = $form['call_received_by_employee'];
-			$communication['sub_type'] = $form['communication_sub_type'];
-			$communication['calling_status'] = $form['calling_status'];
+			$communication['sub_type'] = trim($form['communication_sub_type']);
+			$communication['sub_type_3'] = trim($form['sub_type_3']);
+			$communication['calling_status'] = trim($form['calling_status']);
 			$communication['score'] = $form['score'];
 			$communication['direction'] = 'In';
 			$communication['description'] = $form['description'];
@@ -1292,8 +1294,9 @@ class View_Communication extends \View {
 			$communication['from_id'] = $form['employee'];
 			$communication['direction'] = "Out";
 
-			$communication['sub_type'] = $form['communication_sub_type'];
-			$communication['calling_status'] = $form['calling_status'];
+			$communication['sub_type'] = trim($form['communication_sub_type']);
+			$communication['sub_type_3'] = trim($form['sub_type_3']);
+			$communication['calling_status'] = trim($form['calling_status']);
 			$communication['score'] = $form['score'];
 			$communication['description'] = $form['description'];
 			
@@ -1539,8 +1542,9 @@ class View_Communication extends \View {
 
 			$communication['from_id'] = $form['employee'];
 			$communication['to_id'] = $this->contact->id;
-			$communication['sub_type'] = $form['communication_sub_type'];
-			$communication['calling_status'] = $form['calling_status'];
+			$communication['sub_type'] = trim($form['communication_sub_type']);
+			$communication['sub_type_3'] = trim($form['sub_type_3']);
+			$communication['calling_status'] = trim($form['calling_status']);
 			$communication['score'] = $form['score'];
 			$communication['direction'] = 'Out';
 			$communication['description'] = $form['description'];
