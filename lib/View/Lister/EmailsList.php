@@ -39,6 +39,12 @@ class View_Lister_EmailsList extends \CompleteLister{
 			$this->current_row_html['check_attach']='<a href="#" class="attachment"><i class="fa fa-paperclip"></i></a>';
 		}
 
+		if($this->model['related_id']){
+			$this->current_row['replied_color']='red';
+		}else{
+			$this->current_row['replied_color']='gray';
+		}
+
 		if($this->model['status'] == "Draft"){
 			$this->current_row['draft']='draft-message';
 		}

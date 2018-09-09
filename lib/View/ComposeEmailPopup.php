@@ -295,6 +295,12 @@ class View_ComposeEmailPopup extends \View{
 				return $form->js(null,$js)->reload()->execute();
 			}
 			$mail->send($email_settings);
+			
+			if($replay_model->loaded()){
+				$replay_model['related_id']=$mail->id;
+				$replay_model->save();
+			}
+			
 			$js=[
 					$form->js()->univ()->successMessage('EMAIL SENT'),
 					$this->js()->hide(),
