@@ -40,9 +40,9 @@ class View_Lister_EmailsList extends \CompleteLister{
 		}
 
 		if($this->model['related_id']){
-			$this->current_row['replied_color']='red';
-		}else{
 			$this->current_row['replied_color']='gray';
+		}else{
+			$this->current_row['replied_color']='transparent';
 		}
 
 		if($this->model['status'] == "Draft"){
