@@ -36,6 +36,7 @@ class page_generalsetting extends \xepan\communication\page_sidebar{
 	}
 	
 	function page_emailsetting(){
+		$this->title = "Email Settings";
 		$email_setting = $this->add('xepan\communication\Model_Communication_EmailSetting');
 		$settingview = $this->add('xepan\hr\CRUD',['action_page'=>'xepan_communication_general_email'],null,['view/setting/email-setting-grid']);
 		$settingview->setModel($email_setting);
